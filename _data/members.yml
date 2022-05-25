@@ -1,0 +1,192 @@
+####Template#####
+#- firstname: 'First Name'
+#  lastname: 'Last Name'
+#  picture: 'name of picture file in members/'
+#  interests: "Short text indicating current interests."
+#  grades: % List of grades
+#    - grade:
+#      name: PhD
+#      startyear: 2020
+#      endyear:  '' % Empty string to indicate ongoing (will add '-' to page)
+
+member_list_title: Members
+
+professors:
+
+  - firstname: 'Olivier'
+    lastname: 'Bernard'
+    university: 'INSA, University of Lyon'
+    picture: 'oBernard_sub.jpg'
+    interests: "Cardiac imaging, deep learning, image simulation"
+    url: "https://www.creatis.insa-lyon.fr/~bernard/"
+    
+  - firstname: 'Hugues'
+    lastname: 'Benoit-Cattin'
+    university: 'INSA, University of Lyon'
+    picture: 'hBenoitCattin.jpg'
+    interests: "MR imaging, signal preocessing, deep learning"
+    url: "https://www.creatis.insa-lyon.fr/~yougz/"
+    
+  - firstname: 'Denis'
+    lastname: 'Friboulet'
+    university: 'INSA, University of Lyon'
+    picture: 'dFriboulet.jpg'
+    interests: "Cardiac imaging, deep learning" 
+    url: "https://www.creatis.insa-lyon.fr/site7/fr/DenisFriboulet"   
+    
+  - firstname: 'Maciej'
+    lastname: 'Orkisz'
+    university: 'University Lyon 1'    
+    picture: 'mOrkisz.jpg'
+    interests: "Pulmonary imaging, deep learning" 
+    url: "https://www.creatis.insa-lyon.fr/site7/fr/users/orkisz"
+    
+  - firstname: 'Emmanuel'
+    lastname: 'Perrin'
+    university: 'University Lyon 1'    
+    picture: 'ePerrin.jpg'
+    interests: "MR imaging, signal & image processing" 
+    
+associate_professors:
+
+  - firstname: 'Nicolas'
+    lastname: 'Duchateau'
+    university: 'University Lyon 1'
+    picture: 'nDuchateau.jpg'
+    interests: "Cardiac imaging, machine learning, deep learning"
+    url: "https://nicolasduchateau.wordpress.com/"
+    
+  - firstname: 'Carole'
+    lastname: 'Frindel'
+    university: 'INSA, University of Lyon'
+    picture: 'cFrindel.jpg'
+    interests: "Neuronal imaging, machine learning, deep learning"
+    url: "https://www.creatis.insa-lyon.fr/~frindel/"    
+    
+  - firstname: 'Thomas'
+    lastname: 'Grenier'
+    university: 'INSA, University of Lyon'
+    picture: 'tGrenier.jpg'
+    interests: "MR imaging, deep learning"
+    url: "https://www.creatis.insa-lyon.fr/~grenier/"  
+    
+  - firstname: 'Razmig'
+    lastname: 'Kechichian'
+    university: 'INSA, University of Lyon'
+    picture: 'rKechichian.jpg'
+    interests: "MR imaging, CT imaging, deep learning"
+    
+  - firstname: 'Odyssée'
+    lastname: 'Merveille'
+    university: 'INSA, University of Lyon'
+    picture: 'oMerveille.jpg'
+    interests: "Pulmonary imaging, Neuronal imaging, deep learning"          
+    url: 'http://www.odyssee-merveille.com/'
+    
+  - firstname: 'Fabien'
+    lastname: 'Millioz'
+    university: 'University Lyon 1'
+    picture: 'fMillioz.jpg'
+    interests: "Cardiac imaging, deep learning"          
+    
+  - firstname: 'Marc'
+    lastname: 'Robini'
+    university: 'INSA, University of Lyon'
+    picture: 'mRobini.jpg'
+    interests: "Applied mathematics" 
+    url: 'https://www.researchgate.net/profile/Marc-Robini-2'             
+    
+  - firstname: 'Emmanuel'
+    lastname: 'Roux'
+    university: 'University Lyon 1'
+    picture: 'eRoux.jpg'
+    interests: "Pulmonary imaging, Cardiac imaging, deep learning" 
+            
+researchers:
+
+  - firstname: 'Patrick'
+    lastname: 'Clarysse'
+    institution: 'CNRS - DR'
+    picture: 'pClarysse.jpg'
+    interests: "Cardiac imaging, biomechanical modeling"
+    url: "https://www.creatis.insa-lyon.fr/site7/fr/users/clarysse" 
+    
+  - firstname: 'Carole'
+    lastname: 'Lartizien'
+    institution: 'CNRS - DR'
+    picture: 'cLartizien.jpg'
+    interests: "Neuronal imaging, machine learning, deep learning"
+    url: "https://www.creatis.insa-lyon.fr/~lartizien/"     
+    
+  - firstname: 'Yuemin'
+    lastname: 'Zhu'
+    institution: 'CNRS - DR'
+    picture: 'yZhu.jpg'
+    interests: "Cardiac imaging, deep learning"
+    url: "https://www.creatis.insa-lyon.fr/site7/fr/users/zhu"
+    
+  - firstname: 'Monica'
+    lastname: 'Sigovan'
+    institution: 'CNRS - CR'
+    picture: 'mSigovan.jpg'
+    interests: "Cardiac imaging, MR imaging, image reconstruction"
+    
+research_engineers:
+
+  - firstname: 'Michaël'
+    lastname: 'Sdika'
+    institution: 'CNRS - IR'
+    picture: 'mSdika.jpg'
+    interests: "Neuronal imaging, deep learning"
+    url: "https://www.creatis.insa-lyon.fr/site7/en/users/sdika"
+    
+medical_doctors:
+
+  - firstname: 'Loïc'
+    lastname: 'Boussel'
+    institution: 'HCL - PUPH'
+    picture: 'icon_doctor.jpg'
+    speciality: "Radiologist"
+    expertise: "Cardio-vascular imaging"
+
+  - firstname: 'Yves'
+    lastname: 'Berthezene'
+    institution: 'HCL - PUPH'
+    picture: 'icon_doctor.jpg'
+    speciality: "Radiologist"
+    expertise: "Neuronal imaging"
+
+  - firstname: 'Philippe'
+    lastname: 'Douek'
+    institution: 'HCL - PUPH'
+    picture: 'pDouek.jpg'
+    speciality: "Radiologist"
+    expertise: "Cardio-vascular imaging"
+
+  - firstname: 'Omer'
+    lastname: 'Eker'
+    institution: 'HCL - PUPH'
+    picture: 'oEker.jpg'
+    speciality: "Radiologist"
+    expertise: "Neuronal imaging"
+
+  - firstname: 'Laurent'
+    lastname: 'Fanton'
+    institution: 'HCL - PUPH'
+    picture: 'lFanton.jpg'
+    speciality: "forensic scientist"
+
+  - firstname: 'Jean-Christophe'
+    lastname: 'Richard'
+    institution: 'HCL - PUPH'
+    picture: 'jcRichard.jpg'
+    speciality: "Reanimation"
+    expertise: "Pulmonary imaging"
+    
+  - firstname: 'Thimothée'
+    lastname: 'Jackesson'
+    institution: 'HCL - MCU-PH'
+    picture: 'tJackesson.jpg'
+    speciality: "neurosurgeon"
+    
+    
