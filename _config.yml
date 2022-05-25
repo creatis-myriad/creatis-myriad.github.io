@@ -33,6 +33,12 @@ kramdown:
    math_engine: mathjax
 theme: minima
   
+gems:
+  - jekyll-feed
+exclude:
+  - Gemfile
+  - Gemfile.lock  
+  
 #plugins:
 #  - jekyll-feed
 
