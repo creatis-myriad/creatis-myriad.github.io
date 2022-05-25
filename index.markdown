@@ -4,7 +4,7 @@
 
 layout:	page
 # title:	The MYRIAD website
-# hidden:	true  # Excluded from the menu
+hidden:	true  # Excluded from the menu
 ---
 
 <!-- -->
@@ -21,6 +21,7 @@ layout:	page
     }
 }
 </style>
+
 
 <font size="6">The MYRIAD website</font> <br />
 
