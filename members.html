@@ -266,34 +266,14 @@ permalink: /members/
                  {%if item.institution %}
                   Institution: {{ item.institution }}
                  {% endif %} </br>   
-                 {%if item.url %}
-                  Web site: <a href="{{item.url}}">{{item.url}}</a>
+		 {%if item.subject %}
+		  Subject: <em>{{ item.subject }}</em>
+		 {% endif %}                   
+                 <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
+                 </br></br>
+                 {%if item.interests %}
+                  Interests: {{ item.interests }}
                  {% endif %}
-                   <ul>
-                   {% for grade in item.grades %}
-                    <li>
-                        <strong>{{ grade.name }} </strong>
-                        {%if grade.startyear %}
-                           : {{ grade.startyear }}
-                        {% endif %}
-                        {%if grade.endyear %}
-                            - {{ grade.endyear }}
-                        {% endif %}
-                        {%if grade.comment %}
-                          <br>({{ grade.comment }})
-                       {% endif %}
-                        </br>
-                    </li>
-                   {% endfor %}
-                   </ul>
-                    {%if item.subject %}
-                        Subject: <em>{{ item.subject }}</em>
-                    {% endif %}                   
-                   <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
-                   </br></br>
-                    {%if item.interests %}
-                        Interests: {{ item.interests }}
-                    {% endif %}
              </th>
               <th>
                   {%if item.picture %}
@@ -315,25 +295,6 @@ permalink: /members/
                  {%if item.institution %}
                   Institution: {{ item.institution }}
                  {% endif %} </br>   
-                 {%if item.url %}
-                  Web site: <a href="{{item.url}}">{{item.url}}</a>
-                 {% endif %}
-                   <ul>
-                   {% for grade in item.grades %}
-                    <li>
-                        <strong>{{ grade.name }} </strong>
-                        {%if grade.startyear %}
-                           : {{ grade.startyear }}
-                        {% endif %}
-                        {%if grade.endyear %}
-                            - {{ grade.endyear }}
-                        {% endif %}
-                        {%if grade.comment %}
-                          <br>({{ grade.comment }})
-                       {% endif %}
-                        </br>
-                    </li>
-                   {% endfor %}
                    </ul>
                     {%if item.subject %}
                         Subject: <em>{{ item.subject }}</em>
@@ -363,27 +324,7 @@ permalink: /members/
                  <strong>{{ item.firstname }} {{ item.lastname }}  </strong> </br>
                  {%if item.institution %}
                   Institution: {{ item.institution }}
-                 {% endif %} </br>   
-                 {%if item.url %}
-                  Web site: <a href="{{item.url}}">{{item.url}}</a>
-                 {% endif %}
-                   <ul>
-                   {% for grade in item.grades %}
-                    <li>
-                        <strong>{{ grade.name }} </strong>
-                        {%if grade.startyear %}
-                           : {{ grade.startyear }}
-                        {% endif %}
-                        {%if grade.endyear %}
-                            - {{ grade.endyear }}
-                        {% endif %}
-                        {%if grade.comment %}
-                          <br>({{ grade.comment }})
-                       {% endif %}
-                        </br>
-                    </li>
-                   {% endfor %}
-                   </ul>
+                 {% endif %} </br>
                     {%if item.subject %}
                         Subject: <em>{{ item.subject }}</em>
                     {% endif %}                   
