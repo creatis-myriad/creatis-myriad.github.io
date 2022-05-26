@@ -286,8 +286,11 @@ permalink: /members/
                     </li>
                    {% endfor %}
                    </ul>
+                    {%if item.subject %}
+                        Subject: <em>{{ item.subject }}</em>
+                    {% endif %}                   
                    <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
-                   </br>
+                   </br></br>
                     {%if item.interests %}
                         Interests: {{ item.interests }}
                     {% endif %}
@@ -332,8 +335,11 @@ permalink: /members/
                     </li>
                    {% endfor %}
                    </ul>
+                    {%if item.subject %}
+                        Subject: <em>{{ item.subject }}</em>
+                    {% endif %}                   
                    <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
-                   </br>
+                   </br></br>
                     {%if item.interests %}
                         Interests: {{ item.interests }}
                     {% endif %}
@@ -378,8 +384,11 @@ permalink: /members/
                     </li>
                    {% endfor %}
                    </ul>
+                    {%if item.subject %}
+                        Subject: <em>{{ item.subject }}</em>
+                    {% endif %}                   
                    <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
-                   </br>
+                   </br></br>
                     {%if item.interests %}
                         Interests: {{ item.interests }}
                     {% endif %}
