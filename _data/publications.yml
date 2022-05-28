@@ -1,6 +1,6 @@
 journal_list_title: Journal papers (since 2020)
 journal:
-
+                                                                        
   - authors: 'N. Painchaud, N. Duchateau, O. Bernard and P-M. Jodoin'
     year: 2022
     title: 'Echocardiography Segmentation with Enforced Temporal Consistency'
@@ -15,6 +15,7 @@ journal:
     pages : 1-12
     doi: https://doi.org/10.1109/tmi.2022.3151606
     
+
   - authors: 'Y. Sun, F. Vixège, K. Faraz, S. Mendez, F. Nicoud, D. Garcia and O. Bernard'
     year: 2022
     title: 'A pipeline for the generation of synthetic cardiac color Doppler'
@@ -27,8 +28,8 @@ journal:
     title: 'Complex convolutional neural networks for ultrafast ultrasound imaging reconstruction from In-Phase/Quadrature signal'
     journal:  IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, 69(2)
     pages : 592-603
-    doi: https://doi.org/10.1109/TUFFC.2021.3127916    
-        
+    doi: https://doi.org/10.1109/TUFFC.2021.3127916
+    
   - authors: 'L. Penarrubia, N. Pinon, E. Roux, E.E. Dávila Serrano, J.C. Richard, M. Orkisz, D. Sarrut '
     year: 2022
     title: 'Improving motion-mask segmentation in thoracic CT with multiplanar U-nets'
@@ -56,6 +57,7 @@ journal:
     pages: 1361-8415
     journal: Medical Image Analysis, 79
     doi: https://doi.org/10.1016/j.media.2022.102437
+
               
   - authors: 'F. Vixege, A. Berod, Y. Sun, S. Mendez, O. Bernard, N. Ducros, P.Y. Courand, F. Nicoud and D. Garcia'
     year: 2021
@@ -89,64 +91,101 @@ journal:
     title: 'Right ventricular area strain from 3D echocardiography: mechanistic insight of right ventricular dysfunction in pediatric pulmonary hypertension'
     pages: 138-148
     journal: Journal of Heart and Lung Transplantation, 40
-    doi: https://doi.org/10.1016/j.healun.2020.11.005     
-   
+    doi: https://doi.org/10.1016/j.healun.2020.11.005   
+
+
   - authors: 'P. Moceri, N. Duchateau, S. Gillon, L. Jaunay, D. Baudouy, F. Squara, E. Ferrari, M. Sermesant'
     year: 2021
     title: 'Three-dimensional right ventricular shape and strain in congenital heart disease patients with right ventricular chronic volume loading'
     pages: 1174-1181
     journal: European Heart Journal - Cardiovascular Imaging, 22
-    doi: https://doi.org/10.1093/ehjci/jeaa189   
-   
+    doi: https://doi.org/10.1093/ehjci/jeaa189
+
   - authors: 'K. Faraz, T. Grenier, C. Ducottet, T. Epicier'
     year: 2021
     title: 'A Machine Learning pipeline to track the dynamics of a population of nanoparticles during in situ Environmental Transmission Electron Microscopy in gases'
     pages: 2236-2237
     journal: Microscopy and Microanalysis, 27(S1)
     doi: https://doi.org/10.1017/S1431927621008060
-      
+
   - authors: 'H.T. Nguyen, T. Grenier, B. Leporq, et al.'
     year: 2021
     title: 'Quantitative Magnetic Resonance Imaging Assessment of the Quadriceps Changes during an Extreme Mountain Ultramarathon'
     pages: 869-881
     journal: Medicine & Science in Sports & Exercice, 53(4)
     doi: https://doi.org/10.1249/MSS.0000000000002535
-            
+
+
   - authors: 'N. Loiseau-Witon, R. Kéchichian, S. Valette, A. Bartoli'
     year: 2021
     title: 'Learning 3D medical image keypoint descriptors with the triplet loss'
     pages: 141-146
     journal: International Journal of Computer Assisted Radiology and Surgery, 17(1)
     doi: https://doi.org/10.1007/s11548-021-02481-3    
-        
+
   - authors: 'O. Merveille, T. Lampert, J. Schmitz, G. Forestier, F. Feuerhake, C. Wemmert'
     year: 2021
     title: 'An automatic framework for fusing information from differently stained consecutive digital whole slide images: A case study in renal histology'
     pages: 106157
     journal: Computer Methods and Programs in Biomedicine, 208
-    doi: https://doi.org/10.1016/j.cmpb.2021.106157        
-         
-  - authors: 'J. Karkouri, H. Ratiney, M. Viallon, R. Prost and F. Millioz'
+    doi: https://doi.org/10.1016/j.cmpb.2021.106157  
+
+  - authors: 'N. Debs, T.H. Cho, D. Rousseau, Y. Berthezene, M. Buisson, O. Eker, L. Mechtouff, N. Nighoghossian, M. Ovize, C. Frindel'
     year: 2021
-    title: 'Time Undersampled Acquisition for Multidimensional Sparse Signals With Application to Magnetic Resonance Spectroscopic Imaging'
-    pages: 5289-5298
-    journal: EEE Transactions on Signal Processing, 69
-    doi: https://doi.org/10.1109/TSP.2021.3112931         
-                 
+    title: 'Impact of the reperfusion status for predicting the final stroke infarct using deep learning'
+    pages: 102548
+    journal: NeuroImage - Clinical, 29
+    doi: https://doi.org/10.1016/j.nicl.2020.102548
+
+  - authors: 'T. Jourdan, N. Debs, C. Frindel'
+    year: 2021
+    title: 'The contribution of machine learning in the validation of commercial wearable sensors for gait monitoring in matients - A systematic review'
+    pages: 4808
+    journal: Sensors, 21
+    doi: https://doi.org/10.3390/s21144808 
+
+  - authors: 'C. Dauleac, E. Bannier, F. Cotton, C. Frindel'
+    year: 2021
+    title: 'Effect of distortion corrections on the tractography quality in spinal cord diffusion-weighted imaging'
+    pages: 3241-3255
+    journal: Magnetic Resonance in Medicine, 85
+    doi: https://doi.org/10.1002/mrm.28665
+   
+  - authors: 'A. Ahmad, G. Vanel, S. Camarasu-Pop, A. Bonnet, C. Frindel, D. Rousseau'
+    year: 2021
+    title: 'MicroVIP - Microscopy image simulation on the Virtual Imaging Platform'
+    pages: 100854
+    journal: SoftwareX
+    doi: https://doi.org/10.1016/j.softx.2021.100854   
+   
   - authors: 'P. Niu, Lihuiwang, B. Xie, M. Robini, L. Boussel, P. Douek, Y. Zhu, F. Yang'
     year: 2021
     title: 'Improved Image Reconstruction Using Multi-Energy Information in Spectral Photon-Counting CT'
     pages: 97981-97989
     journal: IEEE Access, 9
     doi: https://doi.org/10.1109/ACCESS.2021.3083505                 
-                        
+
+  - authors: 'J. Karkouri, H. Ratiney, M. Viallon, R. Prost and F. Millioz'
+    year: 2021
+    title: 'Time Undersampled Acquisition for Multidimensional Sparse Signals With Application to Magnetic Resonance Spectroscopic Imaging'
+    pages: 5289-5298
+    journal: IEEE Transactions on Signal Processing, 69
+    doi: https://doi.org/10.1109/TSP.2021.3112931
+
+  - authors: 'T. Jourdan, A. Boutet, A. Bahi and C. Frindel'
+    year: 2021
+    title: 'Privacy-preserving IoT Framework for Activity Recognition in Personal Healthcare Monitoring'
+    pages: 1-22
+    journal: ACM Transactions on Computing Healthcare, 2(1)
+    doi: https://doi.org/10.1145/3416947   
+   
   - authors: 'P.P. Sengupta, S. Shrestha, B. Berthon, E. Messas, E. Donal, G. Tison, J.K. Min, J. D''hooge, J.U. Voigt, J. Dudley, J. Verjans, K. Shameer, K. Johnson, L. Lovstakken, M. Tabassian, M. Piccirilli, M. Pernot, N. Yanamala, N. Duchateau, N. Kagiyama, O. Bernard, P. Slomka, R. Deo and R. Arnaout'
     year: 2020
     title: 'Proposed requirements for cardiovascular imaging related machine learning evaluation (PRIME) checklist'
     journal: JACC Cardiovascular Imaging, 13
     pages : 2017-2035
-    doi: https://doi.org/10.1016/j.jcmg.2020.07.015
-    
+    doi: https://doi.org/10.1016/j.jcmg.2020.07.015   
+   
   - authors: 'N.Painchaud, Y.Skandarani, T.Judge, O.Bernard, A.Lalande, P-M. Jodoin'
     year: 2020
     title: 'Cardiac Segmentation with Strong Anatomical Guarantees'
@@ -168,8 +207,8 @@ journal:
     title: 'A Pilot Study on Convolutional Neural Networks for Motion Estimation from Ultrasound Images'
     pages: 2565-2573
     journal: IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, 67(12)
-    doi: https://doi.org/10.1109/TUFFC.2020.2976809       
-        
+    doi: https://doi.org/10.1109/TUFFC.2020.2976809     
+    
   - authors: 'E. Smistad, A. Østvik, I. Mjåland Salte, D. Melichova, T. Mi Nguyen, H. Brunvand, T. Edvardsen, L. Leclerc, O. Bernard, B. Grenne, L. Løvstakken'
     year: 2020
     title: 'Real-time automatic ejection fraction and foreshortening detection using deep learning'
@@ -189,8 +228,8 @@ journal:
     title: 'Quantitative-analysis of computed tomography in COVID-19 and non COVID-19 ARDS patients: A case-control study'
     pages: 169-176
     journal: Journal of Critical Care, 60
-    doi: https://doi.org/10.1016/j.jcrc.2020.08.006 
-
+    doi: https://doi.org/10.1016/j.jcrc.2020.08.006   
+    
   - authors: 'F. Yousefi Rizi, J. Au, H. Yli-Ollila, S. Golemati, M. Makūnaitė, M. Orkisz, N. Navab, M. MacDonald, T. Marja Laitinen, H. Behnam, Z. Gao, A. Gastounioti, R. Jurkonis, D. Vray, T. Laitinen, A. Sérusclat, K.S. Nikita, G. Zahnd'
     year: 2020
     title: 'Carotid wall longitudinal motion in ultrasound imaging: an expert consensus review'
@@ -217,8 +256,8 @@ journal:
     title: 'Artificial intelligence to predict clinical disability in patients with multiple sclerosis using FLAIR MRI'
     pages: 795-802
     journal: Diagnostic and Interventional Imaging, 101(12)
-    doi: https://doi.org/10.1016/j.diii.2020.05.009
-     
+    doi: https://doi.org/10.1016/j.diii.2020.05.009       
+   
   - authors: 'J.C. Brisset, S. Kremer, S. Hannoun, F. Bonneville, et al.'
     year: 2020
     title: 'New OFSEP recommendations for MRI assessment of multiple sclerosis patients: Special consideration for gadolinium deposition and frequent acquisitions'
@@ -245,12 +284,42 @@ journal:
     title: 'A stochastic approach to full inverse treatment planning for charged-particle therapy'
     pages: 853-893
     journal: Journal of Global Optimization, 77
-    doi: https://doi.org/10.1007/s10898-020-00902-2
-
-  
+    doi: https://doi.org/10.1007/s10898-020-00902-2   
+   
+  - authors: 'C. Dauleac, C. Frindel, P. Mertens, T. Jacquesson, F. Cotton'
+    year: 2020
+    title: 'Overcoming challenges of the human spinal cord tractography for routine clinical use: a review'
+    pages: 1079–1094
+    journal: Neuroradiology, 62
+    doi: https://doi.org/10.1007/s00234-020-02442-8   
     
-     
-  
+  - authors: 'A. Ahmad, C. Frindel, D. Rousseau'
+    year: 2020
+    title: 'Detecting differences of fluorescent markers distribution in single cell microscopy: textural or pointillist feature space?'
+    pages: 1–10
+    journal: Frontiers in Robotics and AI, 7
+    doi: https://doi.org/10.3389/frobt.2020.00039 
+    
+  - authors: 'P. Leclerc, C. Ray, L. Mahieu-Williame, L. Alston, C. Frindel, P.F. Brevet, D. Meyronet, J. Guyotat, B. Montcel, D. Rousseau'
+    year: 2020
+    title: 'Machine learning-based prediction of glioma margin from 5-ALA induced PpIX fluorescence spectroscopy'
+    pages: 1462
+    journal: Nature, scientific report, 10
+    doi: https://doi.org/10.1038/s41598-020-58299-7    
+    
+  - authors: 'N. Debs, P. Rasti, L. Victor, T.H. Cho, C. Frindel, D. Rousseau'
+    year: 2020
+    title: 'Simulated perfusion MRI data to boost training of convolutional neural networks for lesion fate prediction in acute stroke'
+    pages: 103579
+    journal: Computers in Biology and Medicine, 116
+    doi: https://doi.org/10.1016/j.compbiomed.2019.103579
+
+  - authors: 'N. Debs, C. Frindel, L. Mechtouff, M. Buisson, R. Riva, Y. Berthezene, N. Nighoghossian, D. Rousseau, O. Eker, T.H. Cho'
+    year: 2020
+    title: 'Voxel-based prediction of diffusion lesion reversal in ischemic stroke patients treated with thrombectomy'
+    pages: 289-290
+    journal: International Journal of Stroke, 15
+   
    
    
    
