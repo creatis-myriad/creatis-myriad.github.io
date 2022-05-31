@@ -9,10 +9,11 @@ permalink: /contribute/
 1. [Introduction](how-to-contribute.md#introduction)
 2. [Install the repository](how-to-contribute.md#install-the-creatis-myriadgithubio-repository)
 3. [Setup a Ruby environment](how-to-contribute.md#setup-a-ruby-environment)
-4. [Add your own posts](how-to-contribute.md#add-your-own-posts)
-5. [Preview your posts](how-to-contribute.md#preview-your-posts-locally)
-6. [General troubleshooting](how-to-contribute.md#troubleshooting)
+5. [Add your own posts](how-to-contribute.md#add-your-own-posts)
+6. [Preview your posts](how-to-contribute.md#preview-your-posts-locally)
+7. [General troubleshooting](how-to-contribute.md#troubleshooting)
 
+&nbsp;
 
 ## Introduction
 This site is built around [Jekyll](https://jekyllrb.com/). Jekyll takes all the markdown files and generates a static HTML
@@ -20,6 +21,7 @@ website. Therefore, to easily work on your posts and preview them locally before
 install Ruby and Jekyll. The instructions on how to setup a Ruby environment, and launch Jekyll on your local version
 of the website, are provided below.
 
+&nbsp;
 
 ## Install the `creatis-myriad.github.io` repository
 ```shell
@@ -35,14 +37,18 @@ bash ./utils/setup_hooks.sh
 It is important to navigate to the folder where you cloned the repository, since **following commands in this guide will
 assume you are working from inside this repository**.
 
+&nbsp;
 
-## Setup a Ruby environment
+## Setup a Ruby environment 
+Kindly refer to [Linux guide](how-to-contribute.md#linux-guide) for Linux users and [Windows guide](how-to-contribute.md#windows-guide) for Windows users.
+
+### Ruby setup on **Linux** <a name="linux-guide"></a>
 We strongly encourage following the method described below to install Ruby, because it does not rely on a specific Linux
 package manager, and is therefore distro-agnostic. It also avoids having to deal with possibly mismatched versions of
 Ruby in the repositories of some distributions, e.g. Ubuntu. If you follow another method to setup a Ruby environment,
 do so at your own risk!
 
-### Install rbenv in a distro-agnostic way
+#### Install rbenv in a distro-agnostic way
 Detailed instructions about how to setup Ruby can be found on the [rbenv-installer](https://github.com/rbenv/rbenv-installer)
 and [rbenv](https://github.com/rbenv/rbenv) repositories. What we list below are simply the instructions to install ruby
 and setup a working environment.
@@ -60,7 +66,7 @@ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-doctor | bash
 ```
 
-### Install Ruby
+#### Install Ruby
 ```shell
 rbenv install -v 2.7.1
 rbenv global 2.7.1
@@ -77,6 +83,16 @@ process can be lengthy. To disable this, run:
 echo "gem: --no-document" > ~/.gemrc
 ```
 
+
+### Ruby setup on **Windows** <a name="windows-guide"></a>
+For Windows users, here is a quick guide to install Ruby environment. Please visit [Jekyll on Windows](https://jekyllrb.com/docs/installation/windows/) website for more information. 
+
+
+#### Download and install Ruby + Devkit
+1. Grab the latest version of RubyInstaller from [here](https://rubyinstaller.org/downloads/).
+2. Opt for default installation. Dont forget to check the `ridk install` on the last stage of the installation wizard.
+
+
 ### Install the project's dependencies
 ```shell
 # Install `bundler` to manage dependencies
@@ -84,10 +100,14 @@ gem install bundler:2.3.14
 
 # Install the dependencies
 bundle install
+
+# Check if Jekyll has been installed properly
+jekyll -v
 ```
 
 Congratulations, you are done with setting up the Ruby environment for the MYRIAD website on your machine!
-
+ 
+&nbsp;
 
 ## Add your own posts
 
@@ -144,6 +164,7 @@ as a starting point. A more fleshed-out example of a review is provided below:
 also add anyone you think would be interested in your review;
 6. **Merge your branch** when every reviewer approved it. Once merged, the remote branch will automatically be deleted.
 
+&nbsp;
 
 ## Preview your posts locally
 It is possible to launch a Jekyll webserver locally to inspect how your local version of the repository would look like
@@ -154,6 +175,7 @@ bundle exec jekyll serve
 ```
 After the local Jekyll webserver is launched, you can access it at [http://localhost:4000](http://localhost:4000/).
 
+&nbsp;
 
 ## Troubleshooting
 
