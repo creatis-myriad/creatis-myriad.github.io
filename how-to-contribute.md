@@ -214,7 +214,7 @@ rbenv global 2.7.1
 rbenv uninstall 2.4.0
 
 # Install the dependencies for the new Ruby version
-gem install bundler:2.1.4
+gem install bundler:2.3.14
 bundle install
 ```
 After this, there shouldn't be changes in `Gemfile.lock`.
