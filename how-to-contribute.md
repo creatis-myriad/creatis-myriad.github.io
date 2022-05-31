@@ -8,10 +8,11 @@ permalink: /contribute/
 ## Table of Contents
 1. [Introduction](how-to-contribute.md#introduction)
 2. [Install the repository](how-to-contribute.md#install-the-creatis-myriadgithubio-repository)
-3. [Setup a Ruby environment](how-to-contribute.md#setup-a-ruby-environment)
-4. [Add your own posts](how-to-contribute.md#add-your-own-posts)
-5. [Preview your posts](how-to-contribute.md#preview-your-posts-locally)
-6. [General troubleshooting](how-to-contribute.md#troubleshooting)
+3. [Setup a Ruby environment **(Linux)**](how-to-contribute.md#setup-a-ruby-environment-linux)
+4. [Setup a Ruby environment **(Windows)**](how-to-contribute.md#setup-a-ruby-environment-windows)
+5. [Add your own posts](how-to-contribute.md#add-your-own-posts)
+6. [Preview your posts](how-to-contribute.md#preview-your-posts-locally)
+7. [General troubleshooting](how-to-contribute.md#troubleshooting)
 
 
 ## Introduction
@@ -36,7 +37,7 @@ It is important to navigate to the folder where you cloned the repository, since
 assume you are working from inside this repository**.
 
 
-## Setup a Ruby environment
+## Setup a Ruby environment **(Linux)** <a name="setup-a-ruby-environment-linux"></a>
 We strongly encourage following the method described below to install Ruby, because it does not rely on a specific Linux
 package manager, and is therefore distro-agnostic. It also avoids having to deal with possibly mismatched versions of
 Ruby in the repositories of some distributions, e.g. Ubuntu. If you follow another method to setup a Ruby environment,
@@ -77,16 +78,42 @@ process can be lengthy. To disable this, run:
 echo "gem: --no-document" > ~/.gemrc
 ```
 
+
 ### Install the project's dependencies
 ```shell
 # Install `bundler` to manage dependencies
-gem install bundler:2.1.4
+gem install bundler:2.3.14
 
 # Install the dependencies
 bundle install
 ```
 
 Congratulations, you are done with setting up the Ruby environment for the MYRIAD website on your machine!
+
+
+## Setup a Ruby environment **(Windows)** <a name="setup-a-ruby-environment-windows"></a>
+For Windows users, here is a quick guide to install Ruby environment. Please refer to [Jekyll on Windows](https://jekyllrb.com/docs/installation/windows/) for more information. 
+
+
+### Download and install Ruby + Devkit
+1. Grab the latest version of RubyInstaller from [here](https://rubyinstaller.org/downloads/).
+2. Opt for default installation. Dont forget to check the `ridk install` on the last stage of the installation wizard.
+
+
+### Install the project's dependencies
+Open a new terminal or command prompt window at the cloned repository's path.
+```shell
+# Install `bundler` to manage dependencies
+gem install bundler:2.3.14
+
+# Install the dependencies
+bundle install
+
+# Check if Jekyll has been installed properly
+jekyll -v
+```
+
+You're now all set to use Jekyll on your Windows machine! 
 
 
 ## Add your own posts
