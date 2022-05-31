@@ -33,14 +33,12 @@ kramdown:
    math_engine: mathjax
 theme: minima
   
-gems:
+plugins:
   - jekyll-feed
 exclude:
   - Gemfile
-  - Gemfile.lock  
-  
-#plugins:
-#  - jekyll-feed
+  - Gemfile.lock
+
 
 # Exclude from processing.
 # The following items will not be processed, by default.
