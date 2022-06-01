@@ -32,12 +32,13 @@ markdown: kramdown
 kramdown:
    math_engine: mathjax
 theme: minima
-  
+
 plugins:
   - jekyll-feed
 exclude:
   - Gemfile
   - Gemfile.lock
+
 
 
 # Exclude from processing.
@@ -59,3 +60,8 @@ exclude:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+collections_dir: collections
+collections:
+   tutorials:
+     output: true

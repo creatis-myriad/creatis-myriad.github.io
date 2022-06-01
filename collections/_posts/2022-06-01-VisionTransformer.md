@@ -30,7 +30,7 @@ This paper is in review for ICLR 2021: [https://openreview.net/forum?id=YicbFdNT
 
 # Methods
 
-![](/posts/images/vit/fig1.jpg)
+![](/collections/images/vit/fig1.jpg)
 
 ## Architecture
 
@@ -62,21 +62,21 @@ The experiments have been run on a number of datasets of image classification:
 
 As seen in the table below, ViT performs slightly better than a very large ResNet, and does so using significantly less FLOPS (for the fine-tuning phase).
 
-![](/posts/images/vit/tab2.jpg)
+![](/collections/images/vit/tab2.jpg)
 
 However, the pre-training has to involve a very large number of training samples: when this number exceeds 100 million, ViT starts to shine. Else, the ResNet performs better. See below:
 
-![](/posts/images/vit/fig3-4.jpg)
+![](/collections/images/vit/fig3-4.jpg)
 
 ViT also compares favourably in terms of pre-training FLOPS, as seen below:
 
-![](/posts/images/vit/fig5.jpg)
+![](/collections/images/vit/fig5.jpg)
 
 The "Hybrid" approach uses CNN feature vectors as tokens; it is not considered very important by the authors.
 
 The figures below serve to inspect the vision transformer architecture:
 
-![](/posts/images/vit/fig7.jpg)
+![](/collections/images/vit/fig7.jpg)
 
 # Conclusions
 

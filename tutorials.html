@@ -1,0 +1,25 @@
+---
+layout: default
+title:  Tutorials
+order: 4
+---
+
+<div class="home">
+
+  <h1 class="page-heading">Tutorials</h1>
+
+  <ul class="tutorial-list">
+    {% for tutorial in site.tutorials %}
+      <li>
+        <span class="tutorial-meta">{{ tutorial.date | date: "%b %-d, %Y" }}</span>
+
+        <h2>
+          <a class="tutorial-link" href="{{ tutorial.url | relative_url }}">{{ tutorial.title | escape }}</a>
+        </h2>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>
+
+</div>

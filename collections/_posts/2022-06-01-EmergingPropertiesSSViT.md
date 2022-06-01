@@ -40,7 +40,7 @@ training.
 The new contribution is a self-supervised training method called DINO, because it can interpreted as knowledge
 **di**stillation with **no** labels. Fig. 2 summarizes the main idea behind DINO.
 
-![](/posts/images/EmergingPropertiesSSViT/figure2.jpg)
+![](/collections/images/EmergingPropertiesSSViT/figure2.jpg)
 
 Main engineering components to ensure good training:
 - **Multi-crop training**: The self-supervised training is formulated as learning to predict the same representation for
@@ -74,11 +74,11 @@ why training fails when the framework lacks some essential tricks.
 
 The figures/tables below were selected because they detail results on common image tasks/datasets.
 
-![](/posts/images/EmergingPropertiesSSViT/figure1.jpg)
-![](/posts/images/EmergingPropertiesSSViT/table2.jpg)
-![](/posts/images/EmergingPropertiesSSViT/table5.jpg)
-![](/posts/images/EmergingPropertiesSSViT/figure4.jpg)
-![](/posts/images/EmergingPropertiesSSViT/table8.jpg)
+![](/collections/images/EmergingPropertiesSSViT/figure1.jpg)
+![](/collections/images/EmergingPropertiesSSViT/table2.jpg)
+![](/collections/images/EmergingPropertiesSSViT/table5.jpg)
+![](/collections/images/EmergingPropertiesSSViT/figure4.jpg)
+![](/collections/images/EmergingPropertiesSSViT/table8.jpg)
 
 
 # References
