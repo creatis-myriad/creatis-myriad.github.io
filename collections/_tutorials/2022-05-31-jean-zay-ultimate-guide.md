@@ -3,7 +3,7 @@ layout: post
 title:  "Jean Zay Ultimate Guide"
 author: 'Hang Jung Ling'
 date:   2022-05-31
-categories: Jean Zay, Guide
+categories: JeanZay, Guide
 ---
 
 - [**Introduction**](#introduction)
@@ -43,7 +43,7 @@ More information about Dynamic Access and Regular Access can be found [here](htt
 ### Signup on the eDARI portal <a name="idris-account"></a>
 The first thing to do is creating an account on [eDARI](https://www.edari.fr/). The next step to create an IDRIS account after logging in on [eDARI](https://www.edari.fr/).  
 
-![](/collections/images/Jean_Zay_Guide/IDRIS.png)
+![](/collections/images/Jean_Zay_Guide/IDRIS.jpg)
 
 It is quite simple to fill the application form. Most of the time, the details of Creatis lab are pre-filled when you select Creatis for the Research Lab section. Some important information is included below just in case:
 1. Directeur du laboratoire  
@@ -63,7 +63,7 @@ You will also have to fill the first 8 characters of your [eDARI](https://www.ed
 > 📝 These 8 characters will be the last 8 characters of your first Jean Zay's password. 
 
 > ⚠️ Don't forget to validate your information by clicking on click on "Valider la saisie des informations"! 
-> ![](/collections/images/Jean_Zay_Guide/computing-account-validate.png)
+> ![](/collections/images/Jean_Zay_Guide/computing-account-validate.jpg)
 
 After the submission of the application form, you will soon receive an email to fill another online questionnaire and upload your CV.
 
@@ -71,12 +71,12 @@ After the submission of the application form, you will soon receive an email to 
 ### Project creation
 While waiting for the confirmation of your IDRIS account, you can start creating your projects by clicking on `Créer ou renouveler un dossier`. If you wish to collaborate on a project, you can attach to a project created by one of your collaborators by clicking on `Se rattacher à un dossier` and then entering the project number. 
 
-![](/collections/images/Jean_Zay_Guide/project.png)
+![](/collections/images/Jean_Zay_Guide/project.jpg)
 
 In the form you have to describe your project, the type of data you use, the resources you plan to request etc. A project proposal is needed if you request more than 10k GPU hours. Again, the *Correspondant technique* is Fabrice BELLET.     
 
 > ⚠️ Don't forget to validate your information by clicking on click on "Valider la saisie des informations"!
-> ![](/collections/images/Jean_Zay_Guide/project-validate.png)
+> ![](/collections/images/Jean_Zay_Guide/project-validate.jpg)
 
 Congratulations! You have finally completed all the administrative procedures to request your access to Jean Zay. All you have to do now is wait! 😄 Yup, wait for roughly 1-2 months before getting your username and password. 
 
@@ -271,7 +271,7 @@ Next:
 * An Identification page will be loaded:  
      
   <p align="center">
-   <img src="/collections/images/Jean_Zay_Guide/1-identification.png" />
+   <img src="/collections/images/Jean_Zay_Guide/1-identification.jpg" />
   </p>
     
 * Enter your Jean Zay identifiers (username and password) and click on `Login`.
@@ -284,7 +284,7 @@ Next:
 * On the page which then displays, enter the random Jupyter password returned by the `idrjup` or `idrlab` command (in this example, `abc1defg2hijk3lmno4pqrs5tuvw6xyz`) and click on `Log in`. 
       
   <p align="center">
-   <img src="/collections/images/Jean_Zay_Guide/4-idrpassword.png" />
+   <img src="/collections/images/Jean_Zay_Guide/4-idrpassword.jpg" />
   </p> 
     
 
