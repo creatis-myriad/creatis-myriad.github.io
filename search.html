@@ -51,6 +51,16 @@ order: 5
         "url": "{{ post.url | xml_escape }}"
       }
       {% unless forloop.last %},{% endunless %}
+    {% endfor %},
+	{% for post in site.tutorials %}
+      "{{ post.url | slugify }}": {
+        "title": "{{ post.title | xml_escape }}",
+        "author": "{{ post.author | xml_escape }}",  // Author of the review
+        "content": {{ post.content | strip_html | strip_newlines | jsonify }}, // important for showing a content excerpt in search results
+        "tags": "{{ post.tags | join: ' ' }}",
+        "url": "{{ post.url | xml_escape }}"
+      }
+      {% unless forloop.last %},{% endunless %}
     {% endfor %}
   };
 </script>
