@@ -1,0 +1,20 @@
+name: check-files
+on:
+  # Trigger the workflow on push or pull request
+  push:
+  pull_request:
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run pre-commit hooks
+        run: |
+          # fetch the main branch to compare to
+          git fetch origin main
+
+          # run the pre-commit script, printing a message if the pre-commit hooks passed
+          bash ./utils/hooks/pre-commit && echo "pre-commit hooks passed"
