@@ -116,7 +116,7 @@ Let's go into the details :
 
 0. Make sure you are part of the [*creatis-myriad* GitHub organization](https://github.com/creatis-myriad). If you are not,
 you can contact [Olivier Bernard](mailto:olivier.bernard@creatis.insa-lyon.fr) to have him invite you to the organization;
-1. **Create a markdown file** titled `YYYY-MM-DD-title-of-your-review.md` and put it in the [`_posts` folder](https://github.com/creatis-myriad/creatis-myriad.github.io/tree/main/_posts)
+1. **Create a markdown file** titled `YYYY-MM-DD-title-of-your-review.md` and put it in the [`posts/_posts` folder](https://github.com/creatis-myriad/creatis-myriad.github.io/tree/main/posts/_posts)
 at the root of the repository. It is **important that you respect this format**, since the title is used to extract
 metadata about the posts. If you do not respect this format, the page will not build properly. Here is an example of a
 valid name: `2022-05-24-welcome-to-jekyll.md`;
