@@ -58,7 +58,69 @@ journal:
     journal: Medical Image Analysis, 79
     doi: https://doi.org/10.1016/j.media.2022.102437
 
+  - authors: 'O. Rouvière, R. Souchon, C. Lartizien et al.'
+    year: 2022
+    title: 'Detection of ISUP ≥2 prostate cancers using multiparametric MRI: prospective multicentre assessment of the non-inferiority of an artificial intelligence system as compared to the PI-RADS V.2.1 score (CHANGE study)'
+    pages: e051274
+    journal: BMJ Open, 12
+    doi: https://doi.org/10.1136/bmjopen-2021-051274 
               
+  - authors: 'A. Duran, G. Dussert, O. Rouvière, T. Jaouen, P.M. Jodoin, C. Lartizien'
+    year: 2022
+    title: 'ProstAttention-Net: A deep attention model for prostate cancer segmentation by aggressiveness in MRI scans'
+    pages: 102347
+    journal: Medical Image Analysis, 77
+    doi: https://doi.org/10.1016/j.media.2021.102347                            
+        
+  - authors: 'S. Wang, F. Varray, W. Liu, P. Clarysse, I.E. Magnin'
+    year: 2022
+    title: 'Measurement of local orientation of cardiomyocyte aggregates in human left ventricle free wall samples using X-ray phase-contrast microtomography'
+    pages: 102269
+    journal: Medical Image Analysis, 75
+    doi: https://doi.org/10.1016/j.media.2021.102269
+              
+  - authors: 'S. Guo, L. Wang, Q. Chen, L. Wang, J. Zhang, Y.M. Zhu'
+    year: 2022
+    title: 'Multimodal MRI Image Decision Fusion-Based Network for Glioma Classification'
+    pages: 819673
+    journal: Frontiers in oncology, 12
+    doi: https://doi.org/10.3389/fonc.2022.819673
+              
+  - authors: 'J. He, L. Wang, Y. Cao, R. Wang, Y.M. Zhu'
+    year: 2022
+    title: 'Learn Less, Infer More: Learning in the Fourier Domain for Quantitative Susceptibility Mapping'
+    pages: 837721
+    journal: Frontiers in neuroscience, 16
+    doi: https://doi.org/10.3389/fnins.2022.837721
+
+  - authors: 'X.S Zhang, E.H Liu, X.Y Wang, X.X. Zhou, H.X. Zhang, Y.M. Zhu, X.Q. Sang, Z.X. Kuai'
+    year: 2022
+    title: 'Short-Term Repeatability of in Vivo Cardiac Intravoxel Incoherent Motion Tensor Imaging in Healthy Human Volunteers'
+    pages: 854-865
+    journal: Journal of Magnetic Resonance Imaging, 55(3)
+    doi: https://doi.org/10.1002/jmri.27847
+
+  - authors: 'L. Wang, Y. Hong, Y.B. Qin, X.Y. Cheng, F. Yang, J. Yang, Y.M. Zhu'
+    year: 2022
+    title: 'Connecting macroscopic diffusion metrics of cardiac diffusion tensor imaging and microscopic myocardial structures based on simulation'
+    pages: 102325
+    journal: Medical Imaging, 77
+    doi: https://doi.org/10.1016/j.media.2021.102325
+
+  - authors: 'X.X. Zhou, X.Y. Wang, E.H. Liu, L. Zhang, H.X. Zhang, X.S. Zhang, Y.M. Zhu, Z.X. Kuai'
+    year: 2022
+    title: 'An Unsupervised Deep Learning Approach for Dynamic-Exponential Intravoxel Incoherent Motion MRI Modeling and Parameter Estimation in the Liver'
+    pages: 1-10
+    journal: Journal of Magnetic Resonance Imaging
+    doi: https://doi.org/10.1002/jmri.28074
+
+  - authors: 'S. Boccalini, S.A. Si-Mohamed, H. Lacombe, A. Diaw, M. Varasteh, P.A. Rodesch, M. Villien, M. Sigovan, R. Dessouky, P. Coulon, Y. Yagil, E. Lahoud, K. Erhard, G. Rioufol, G. Finet, E. Bonnefoy-Cudraz, C. Bergerot, L. Boussel, P.C. Douek'
+    year: 2022
+    title: 'First In-Human Results of Computed Tomography Angiography for Coronary Stent Assessment With a Spectral Photon Counting Computed Tomography'
+    pages: 212–221
+    journal: Investigative radiology, 57(4)
+    doi: https://doi.org/10.1097/RLI.0000000000000835
+
   - authors: 'F. Vixege, A. Berod, Y. Sun, S. Mendez, O. Bernard, N. Ducros, P.Y. Courand, F. Nicoud and D. Garcia'
     year: 2021
     title: 'Physics-constrained intraventricular vector flow mapping by color Doppler'
@@ -114,7 +176,6 @@ journal:
     pages: 869-881
     journal: Medicine & Science in Sports & Exercice, 53(4)
     doi: https://doi.org/10.1249/MSS.0000000000002535
-
 
   - authors: 'N. Loiseau-Witon, R. Kéchichian, S. Valette, A. Bartoli'
     year: 2021
@@ -178,6 +239,83 @@ journal:
     pages: 1-22
     journal: ACM Transactions on Computing Healthcare, 2(1)
     doi: https://doi.org/10.1145/3416947   
+   
+  - authors: 'R.Y. Parbhudayal, C. Seegers, P. Croisille, P. Clarysse, et al.'
+    year: 2021
+    title: 'Regional myocardial function at preclinical disease stage of hypertrophic cardiomyopathy in female gene variant carriers'
+    pages: 2001-2010
+    journal: Internation Journal of Cardiovascular Imaging, 37(6)
+    doi: https://doi.org/10.1007/s10554-020-02156-1   
+   
+  - authors: 'Y. Qin, H. Zheng, Y. Gu, X. Huang, L. Wang, F. Yao, Y.M. Zhu, G.Z. Yang'
+    year: 2021
+    title: 'Learning Tubule-Sensitive CNNs for Pulmonary Airway and Artery-Vein Segmentation in CT'
+    pages: 1603-1617
+    journal: IEEE Transactions on Medical Imaging, 40(6)
+    doi: https://doi.org/10.1109/TMI.2021.3062280      
+   
+  - authors: 'X.S. Zhang, X.Q Sang, Z.X. Kuai, H.X. Zhang, J. Lou, Q. Lu, Y.M. Zhu'
+    year: 2021
+    title: 'Investigation of intravoxel incoherent motion tensor imaging for the characterization of the in vivo human heart'
+    pages: 1414-1426
+    journal: Magnetic Resonance in Medicine, 85(3)
+    doi: https://doi.org/10.1002/mrm.28523
+   
+  - authors: 'S. Huang, M. Sigovan, B. Sixou'
+    year: 2021
+    title: 'Reconstruction of vascular blood flow in a vessel from tomographic projections'
+    pages: 1414-1426
+    journal: Biomedical Physics & Engineering Express, 7(6)
+    doi: https://doi.org/10.1088/2057-1976/ac2dd6   
+  
+  - authors: 'S.A. Si-Mohamed, M. Sigovan, J.C. Hsu, V. Tatard-Leitman, L. Chalabreysse, P.C. Naha, T. Garrivier, R. Dessouky, M. Carnaru, L. Boussel, D.P. Cormode, P.C. Douek'
+    year: 2021
+    title: 'In Vivo Molecular K-Edge Imaging of Atherosclerotic Plaque Using Photon-counting CT'
+    pages: 98-107
+    journal: Radiology, 300
+    doi: https://doi.org/10.1148/radiol.2021203968
+
+  - authors: 'S. Si-Mohamed, S. Boccalini, P.A. Rodesch, R. Dessouky, E. Lahoud, T. Broussaud, M. Sigovan, D. Gamondes, P. Coulon, Y. Yagil, L. Boussel, P.C. Douek'
+    year: 2021
+    title: 'Feasibility of lung imaging with a large field-of-view spectral photon-counting CT system'
+    pages: 305-312
+    journal: Diagnostic and Interventional Imaging, 102(5)
+    doi: https://doi.org/10.1016/j.diii.2021.01.001
+
+  - authors: 'S. Boccalini, S. Si-Mohamed, R. Dessouky, M. Sigovan, L. Boussel, P.C. Douek'
+    year: 2021
+    title: 'Feasibility of human vascular imaging of the neck with a large field-of-view spectral photon-counting CT system'
+    pages: 329-332
+    journal: Diagnostic and Interventional Imaging, 102(5)
+    doi: https://doi.org/10.1016/j.diii.2020.12.004
+
+  - authors: 'R. Dessouky, V. De Stasio, S. Boccalini, S. Si-Mohamed, T. Broussaud, P.C. Douek, M. Sigovan'
+    year: 2021
+    title: 'Comparison of free breathing 3D mDIXON with single breath-hold 3D inversion recovery sequences for the assessment of Late Gadolinium Enhancement'
+    pages: 109427
+    journal: European Journal of Radiology, 134
+    doi: https://doi.org/10.1016/j.ejrad.2020.109427
+   
+  - authors: 'C. Caredda, L. Mahieu-Williame, R. Sablong, M. Sdika, F.C. Schneider, J. Guyotat, B. Montcel'
+    year: 2021
+    title: 'Intraoperative Resting-State Functional Connectivity Based on RGB Imaging'
+    pages: 2067
+    journal: Diagnostics, 11
+    doi: https://doi.org/10.3390/diagnostics11112067
+       
+  - authors: 'C. Caredda, L. Mahieu-Williame, R. Sablong, M. Sdika, J. Guyotat, B. Montcel'
+    year: 2021
+    title: 'Real Time Intraoperative Functional Brain Mapping Based on RGB Imaging'
+    pages: 189-197
+    journal: IRBM, 42(3)
+    doi: https://doi.org/10.1016/j.irbm.2020.04.004
+
+  - authors: 'M. Martin, B. Sciolla, M. Sdika, P. Quétin, P. Delachartre'
+    year: 2021
+    title: 'Automatic segmentation and location learning of neonatal cerebral ventricles in 3D ultrasound data combining CNN and CPPN'
+    pages: 104268
+    journal: Computers in Biology and Medicine, 131
+    doi: https://doi.org/10.1016/j.compbiomed.2021.104268
    
   - authors: 'P.P. Sengupta, S. Shrestha, B. Berthon, E. Messas, E. Donal, G. Tison, J.K. Min, J. D''hooge, J.U. Voigt, J. Dudley, J. Verjans, K. Shameer, K. Johnson, L. Lovstakken, M. Tabassian, M. Piccirilli, M. Pernot, N. Yanamala, N. Duchateau, N. Kagiyama, O. Bernard, P. Slomka, R. Deo and R. Arnaout'
     year: 2020
@@ -320,6 +458,95 @@ journal:
     pages: 289-290
     journal: International Journal of Stroke, 15
    
+  - authors: 'Z. Alaverdyan, J. Jung, R. Bouet, C. Lartizien'
+    year: 2020
+    title: 'Regularized siamese neural network for unsupervised outlier detection on brain multiparametric magnetic resonance imaging: Application to epilepsy lesion screening'
+    pages: 101618
+    journal: Medical Image Analysis, 60
+    doi: https://doi.org/10.1016/j.media.2019.101618
    
+  - authors: 'G.K. Rumindo, J. Ohayon, P. Croisille, P. Clarysse'
+    year: 2020
+    title: 'In vivo estimation of normal left ventricular stiffness and contractility based on routine cine MR acquisition'
+    pages: 16-26
+    journal: Medical Engineering & Physics, 85
+    doi: https://doi.org/10.1016/j.medengphy.2020.09.003
+   
+  - authors: 'A. Debbich, A. Ben Abdallah, M. Maatouk, B. Hmida, M. Sigovan, P. Clarysse, M.H. Bedoui'
+    year: 2020
+    title: 'A Spatiotemporal exploration and 3D modeling of blood flow in healthy carotid artery bifurcation from two modalities: Ultrasound-Doppler and phase contrast MRI'
+    pages: 103644
+    journal: Computers in Biology and Medicine, 118
+    doi: https://doi.org/10.1016/j.compbiomed.2020.103644
+
+  - authors: 'Y. He, W. Jiao, Y. Shi, J. Lian, B. Zhao, W. Zou, Y.M. Zhu, Y. Zheng'
+    year: 2020
+    title: 'Segmenting Diabetic Retinopathy Lesions in Multispectral Images Using Low-Dimensional Spatial-Spectral Matrix Representation'
+    pages: 493-502
+    journal: IEEE Journal of Biomedical and Health Informatics, 24(2)
+    doi: https://doi.org/10.1109/JBHI.2019.2912668
+
+  - authors: 'C. Ye, D. Xu, Y. Qin, L. Wang, W. Li, Z. Kuai, Y.M. Zhu'
+    year: 2020
+    title: 'Accurate intravoxel incoherent motion parameter estimation using Bayesian fitting and reduced number of low b-values'
+    pages: 4372-4385
+    journal: Medical Physics, 47(9)
+    doi: https://doi.org/10.1002/mp.14233
+
+  - authors: 'L. Mechtouff, M. Sigovan, P.C. Douek, et al.'
+    year: 2020
+    title: 'Simultaneous assessment of microcalcifications and morphological criteria of vulnerability in carotid artery plaque using hybrid 18F-NaF PET/MRI'
+    pages: 1064-1074
+    journal: Journal of Nuclear Cardiology, 29
+    doi: https://doi.org/10.1007/s12350-020-02400-0
+
+  - authors: 'S. Si-Mohamed, N. Chebib, M. Sigovan, L. Zumbihl, S. Turquier, S. Boccalini, L. Boussel, J.F. Mornex, V. Cottin, P.C. Douek'
+    year: 2020
+    title: 'In vivo demonstration of pulmonary microvascular involvement in COVID-19 using dual-energy computed tomography'
+    pages: 2002608
+    journal: European Respiratory Journal, 56(4)
+    doi: https://doi.org/10.1183/13993003.02608-2020
+
+  - authors: 'B. Sixou, M. Sigovan, L. Boussel'
+    year: 2020
+    title: 'Contrast enhanced tomographic reconstruction of vascular blood flow based on the Navier-Stokes equation'
+    pages: 1287-1306
+    journal: Inverse Problems in Science and Engineering, 28(9)
+    doi: https://doi.org/10.1080/17415977.2020.1724108
+
+  - authors: 'A. Debbich, A. Ben Abdallah, M. Maatouk, B. Hmida, M. Sigovan, P. Clarysse, M. Hédi Bedoui'
+    year: 2020
+    title: 'A Spatiotemporal exploration and 3D modeling of blood flow in healthy carotid artery bifurcation from two modalities: Ultrasound-Doppler and phase contrast MRI'
+    pages: 103644
+    journal: Computers in Biology and Medicine, 118
+    doi: https://doi.org/10.1016/j.compbiomed.2020.103644
+
+  - authors: 'R. Ameli, O. Eker, M. Sigovan, T.-H. Cho, L. Mechtouff, M. Hermier, L.-P. Berner, N. Nighoghossian, Y. Berthezene'
+    year: 2020
+    title: 'Multifocal arterial wall contrast – enhancement in ischemic stroke: A mirror of systemic inflammatory response in acute stroke'
+    pages: 194-199
+    journal: Revue Neurologique, 176(3)
+    doi: https://doi.org/10.1016/j.neurol.2019.07.022
+
+  - authors: 'G. Bratke, T. Hickethier, D. Bar-Ness, A.C. Bunck, D. Maintz, G. Pahn, P. Coulon, S. Si-Mohamed, P.C. Douek, M. Sigovan'
+    year: 2020
+    title: 'Spectral Photon-Counting Computed Tomography for Coronary Stent Imaging'
+    pages: 61-67
+    journal: Investigative Radiology, 55(2)
+    doi: https://doi.org/10.1097/RLI.0000000000000610
+
+  - authors: 'B. Leporq, A. Bouhamama, F. Pilleul, F. Lame, C. Bihane, M. Sdika, J.Y. Blay, O. Beuf'
+    year: 2020
+    title: 'MRI-based radiomics to predict lipomatous soft tissue tumors malignancy: a pilot study'
+    pages: 61-67
+    journal: Cancer Imaging, 20(78)
+    doi: https://doi.org/10.1186/s40644-020-00354-7
+
+  - authors: 'C. Caredda, L. Mahieu-Williame, R. Sablong, M. Sdika, J. Guyotat, B. Montcel'
+    year: 2020
+    title: 'Optimal Spectral Combination of a Hyperspectral Camera for Intraoperative Hemodynamic and Metabolic Brain Mapping'
+    pages: 5158
+    journal: Applied Sciences, 10(15)
+    doi: https://doi.org/10.3390/app10155158
    
    
