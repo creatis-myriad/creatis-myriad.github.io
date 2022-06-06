@@ -38,7 +38,7 @@ professors:
     lastname: 'Orkisz'
     university: 'University Lyon 1'    
     picture: 'mOrkisz.jpg'
-    interests: "Pulmonary imaging, deep learning" 
+    interests: "3D pulmonary image analysis, motion analysis in image sequences, 3D vascular image processing" 
     url: "https://www.creatis.insa-lyon.fr/site7/fr/users/orkisz"
     
   - firstname: 'Emmanuel'
