@@ -110,6 +110,20 @@ researchers:
     picture: 'pClarysse.jpg'
     interests: "Cardiac imaging, biomechanical modeling"
     url: "https://www.creatis.insa-lyon.fr/site7/fr/users/clarysse" 
+
+  - firstname: 'Jérémy'
+    lastname: 'Cohen'
+    institution: 'CNRS - CR'
+    picture: 'jCohen.jpg'
+    interests: "Machine Learning, Hyperspectral Imaging, Matrix and Tensor Decompositions"
+    url: "https://scholar.google.com/citations?hl=en&user=MlBzHfcAAAAJ"
+
+  - firstname: 'Stéphanie'
+    lastname: 'Jehan Besson'
+    institution: 'CNRS - CR'
+    picture: 'sJehanBesson.jpg'
+    interests: "Shape optimization, applied mathematics, segmentation, fusion"
+    url: "https://scholar.google.fr/citations?user=t0oM20cAAAAJ&hl=fr"
     
   - firstname: 'Carole'
     lastname: 'Lartizien'
@@ -117,19 +131,19 @@ researchers:
     picture: 'cLartizien.jpg'
     interests: "Neuroimaging, machine learning, deep learning"
     url: "https://www.creatis.insa-lyon.fr/~lartizien/"     
+
+  - firstname: 'Monica'
+    lastname: 'Sigovan'
+    institution: 'CNRS - CR'
+    picture: 'mSigovan.jpg'
+    interests: "Cardiac imaging, MR imaging, image reconstruction"
     
   - firstname: 'Yuemin'
     lastname: 'Zhu'
     institution: 'CNRS - DR'
     picture: 'yZhu.jpg'
     interests: "Cardiac imaging, deep learning"
-    url: "https://www.creatis.insa-lyon.fr/site7/fr/users/zhu"
-    
-  - firstname: 'Monica'
-    lastname: 'Sigovan'
-    institution: 'CNRS - CR'
-    picture: 'mSigovan.jpg'
-    interests: "Cardiac imaging, MR imaging, image reconstruction"
+    url: "https://www.creatis.insa-lyon.fr/site7/fr/users/zhu"   
     
 research_engineers:
 
@@ -197,20 +211,23 @@ phd_first:
     picture: 'jPuig.jpg'
     subject: 'Doppler velocity field reconstruction by deep learning in ultrasound imaging'
     interests: "Cardiac imaging, deep learning, image simulation"
+    supervisors: D. Friboulet & F. Millioz
     
   - firstname: 'Nolann'
     lastname: 'Lainé'
     institution: 'University Lyon 1'
     picture: 'nLaine.jpg'
     subject: 'Structural and kinematic amalysis of the arterial wall in ultrasound image sequences using deep learning'
-    interests: "Vascular imaging, deep learning, image simulation"    
+    interests: "Vascular imaging, deep learning, image simulation" 
+    supervisors: M. Orkisz & H. Liebgott   
     
   - firstname: 'Matthis'
     lastname: 'Manthe'
     institution: 'INSA, University of Lyon'
     picture: 'mManthe.jpg'
     subject: 'Federated learning for medical image analysis'
-    interests: "Federated learning, deep learning"    
+    interests: "Federated learning, deep learning"
+    supervisors: C. Lartizien & S. Duffner
         
   - firstname: 'Yutaro'
     lastname: 'Kohata'
@@ -218,6 +235,7 @@ phd_first:
     picture: 'yKohata.jpg'
     subject: 'Computational fluid mechanics for stroke characterization'    
     interests: "Neuroimaging, fluid mechanics, vascular modeling"
+    supervisors: C. Frindel
     
   - firstname: 'Feng'
     lastname: 'He'
@@ -225,6 +243,7 @@ phd_first:
     picture: 'fHe.jpg'
     subject: 'Multimodal imaging-based deep learning: applications to objet detection and classification'
     interests: "Multi-modal imaging, deep learning"
+    supervisors: Y.M. Zhu
         
   - firstname: 'Aissam'
     lastname: 'Djahnine'
@@ -232,6 +251,7 @@ phd_first:
     picture: 'icon_phd.jpg'
     subject: 'Automatic detection of pathologies in conventional and spectral scanner data'    
     interests: "CT imaging, deep learning"    
+    supervisors: L. Boussel    
     
   - firstname: 'Juliette'
     lastname: 'Moreau'
@@ -239,6 +259,7 @@ phd_first:
     picture: 'jMoreau.jpg'
     subject: 'Prediction of stroke lesion evolution on CT imaging by supervised and unsupervised artificial intelligence approach'
     interests: "Neuroimaging, CT imaging, deep learning"      
+    supervisors: C. Frindel   
    
 phd_second:
 
@@ -248,6 +269,7 @@ phd_second:
     picture: 'mShekarnabi.jpg'
     subject: 'Regional pulmonary function measures by automated analysis of CT images for predictive phenotyping in COPD'    
     interests: "Pulmonary imaging, CT imaging, deep learning"
+    supervisors: M. Orkisz
     
   - firstname: 'Sophie'
     lastname: 'Carneiro Esteves'
@@ -255,6 +277,7 @@ phd_second:
     picture: 'sCarneiro.jpg'
     subject: 'Filtering and segmentation of blood vessels mixing deep learning and variational approaches'
     interests: "Vascular imaging, deep learning, variational approaches"   
+    supervisors: O. Merveille       
        
   - firstname: 'Nathan'
     lastname: 'Painchaud'
@@ -262,6 +285,7 @@ phd_second:
     picture: 'nPainchaud.jpg'
     subject: 'Deep manifold learning for improved characterization of hypertension in echocardiographic imaging'
     interests: "Cardiac imaging, deep learning"       
+    supervisors: O. Bernard, N. Duchateau, P.M. Jodoin              
               
   - firstname: 'Nicolas'
     lastname: 'Pinon'
@@ -269,12 +293,14 @@ phd_second:
     picture: 'nPinon.jpg'
     subject: 'Methodological contributions in unsupervised or weakly supervised learning for anomaly detection in neuroimaging'
     interests: "Neuroimaging, deep learning"           
+    supervisors: C. Lartizien
         
   - firstname: 'Antoine'
     lastname: 'Fraissenon'
     institution: 'University Jean Monnet, St Etienne'
     picture: 'icon_phd.jpg'
     interests: "MR imaging, deep learning"        
+    supervisors: P. Clarysse, E. Roux
         
 phd_third:
 
@@ -284,6 +310,7 @@ phd_third:
     picture: 'aBani.jpg'
     subject: 'Impact of multimodal MRI in the acute management of stroke'
     interests: "Neural imaging, MR imaging"    
+    supervisors: Y. Berthezene, C. Frindel
     
   - firstname: 'Benoit'
     lastname: 'Freiche'
@@ -291,6 +318,7 @@ phd_third:
     picture: 'icon_phd.jpg'
     subject: 'Hierarchical integration of cardiac imaging data with machine learning'
     interests: "Cardiac imaging, machine learning"        
+    supervisors: P. Clarysse, N. Duchateau
     
   - firstname: 'Ludmilla'
     lastname: 'Penarrubia'
@@ -298,6 +326,7 @@ phd_third:
     picture: 'icon_phd.jpg'
     subject: 'Quantification of pulmonary ventilation in patients with ARDS'
     interests: "Pulmonary imaging, deep learning"    
+    supervisors: M. Orkisz, J.C. Richard, E. Roux
     
   - firstname: 'Méghane'
     lastname: 'Decroocq'
@@ -305,13 +334,15 @@ phd_third:
     picture: 'mDecroocq.jpg'
     subject: 'Fluid dynamics-based perfusion imaging simulation for stroke lesion progression prediction'
     interests: "Neuroimaging, deep learning, image simulation"     
+    supervisors: C. Frindel
     
   - firstname: 'Pierre-Jean'
     lastname: 'Lartaud'
     institution: 'University Lyon 1'
     picture: 'pjLartaud.jpg'
     subject: 'Segmentation and characterization of mediastinal vessels from standard chest scans'
-    interests: "Cardiac imaging, deep learning"         
+    interests: "Cardiac imaging, deep learning"  
+    supervisors: L. Boussel
     
   - firstname: 'Daria'
     lastname: 'Zotova'
@@ -319,5 +350,5 @@ phd_third:
     picture: 'dZotova.jpg'
     subject: 'Artificial intelligence for medical image analysis'
     interests: "Neuroimaging, deep learning"         
-       
+    supervisors: C. Lartizien   
     
