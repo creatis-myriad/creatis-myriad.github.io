@@ -27,35 +27,17 @@ permalink: /members/
                  {%if item.university %}
                   Institution: {{ item.university }}
                  {% endif %} </br>   
-                 {%if item.url %}
-                  Web site: <a href="{{item.url}}">{{item.url}}</a>
-                 {% endif %}
-                   <ul>
-                   {% for grade in item.grades %}
-                    <li>
-                        <strong>{{ grade.name }} </strong>
-                        {%if grade.startyear %}
-                           : {{ grade.startyear }}
-                        {% endif %}
-                        {%if grade.endyear %}
-                            - {{ grade.endyear }}
-                        {% endif %}
-                        {%if grade.comment %}
-                          <br>({{ grade.comment }})
-                       {% endif %}
-                        </br>
-                    </li>
-                   {% endfor %}
-                   </ul>
                    <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
-                   </br>
                     {%if item.interests %}
                         Interests: {{ item.interests }}
-                    {% endif %}
+                    {% endif %} </br>
+                 {%if item.url %}
+                  <a href="{{item.url}}" target="_blank">Web site</a>
+                 {% endif %}                    
              </th>
               <th>
                   {%if item.picture %}
-                    <img src={{ item.picture }}>
+                    <img src={{item.picture}}>
                   {% endif %}
               </th>
          </tr>
@@ -73,36 +55,18 @@ permalink: /members/
                  <strong>{{ item.firstname }} {{ item.lastname }}  </strong> </br>
                  {%if item.university %}
                   Institution: {{ item.university }}
-                 {% endif %} </br>   
-                 {%if item.url %}
-                  Web site: <a href="{{item.url}}">{{item.url}}</a>
-                 {% endif %}
-                   <ul>
-                   {% for grade in item.grades %}
-                    <li>
-                        <strong>{{ grade.name }} </strong>
-                        {%if grade.startyear %}
-                           : {{ grade.startyear }}
-                        {% endif %}
-                        {%if grade.endyear %}
-                            - {{ grade.endyear }}
-                        {% endif %}
-                        {%if grade.comment %}
-                          <br>({{ grade.comment }})
-                       {% endif %}
-                        </br>
-                    </li>
-                   {% endfor %}
-                   </ul>
+                 {% endif %} </br>
                    <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
-                   </br>
                     {%if item.interests %}
                         Interests: {{ item.interests }}
-                    {% endif %}
+                    {% endif %} </br>
+		 {%if item.url %}
+                  <a href="{{item.url}}" target="_blank">Web site</a>
+                 {% endif %}
              </th>
               <th>
                   {%if item.picture %}
-                    <img src={{ item.picture }}>
+                    <img src={{item.picture}}>
                   {% endif %}
               </th>
          </tr>
@@ -122,35 +86,17 @@ permalink: /members/
                  {%if item.institution %}
                   Institution: {{ item.institution }}
                  {% endif %} </br>   
-                 {%if item.url %}
-                  Web site: <a href="{{item.url}}">{{item.url}}</a>
-                 {% endif %}
-                   <ul>
-                   {% for grade in item.grades %}
-                    <li>
-                        <strong>{{ grade.name }} </strong>
-                        {%if grade.startyear %}
-                           : {{ grade.startyear }}
-                        {% endif %}
-                        {%if grade.endyear %}
-                            - {{ grade.endyear }}
-                        {% endif %}
-                        {%if grade.comment %}
-                          <br>({{ grade.comment }})
-                       {% endif %}
-                        </br>
-                    </li>
-                   {% endfor %}
-                   </ul>
                    <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
-                   </br>
-                    {%if item.interests %}
-                        Interests: {{ item.interests }}
-                    {% endif %}
+                 {%if item.interests %}
+                  Interests: {{ item.interests }}
+                 {% endif %} </br>
+                 {%if item.url %}
+                  <a href="{{item.url}}" target="_blank">Web site</a>
+                 {% endif %}                 
              </th>
               <th>
                   {%if item.picture %}
-                    <img src={{ item.picture }}>
+                    <img src={{item.picture}}>
                   {% endif %}
               </th>
          </tr>
@@ -169,35 +115,17 @@ permalink: /members/
                  {%if item.institution %}
                   Institution: {{ item.institution }}
                  {% endif %} </br>   
-                 {%if item.url %}
-                  Web site: <a href="{{item.url}}">{{item.url}}</a>
-                 {% endif %}
-                   <ul>
-                   {% for grade in item.grades %}
-                    <li>
-                        <strong>{{ grade.name }} </strong>
-                        {%if grade.startyear %}
-                           : {{ grade.startyear }}
-                        {% endif %}
-                        {%if grade.endyear %}
-                            - {{ grade.endyear }}
-                        {% endif %}
-                        {%if grade.comment %}
-                          <br>({{ grade.comment }})
-                       {% endif %}
-                        </br>
-                    </li>
-                   {% endfor %}
-                   </ul>
                    <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
-                   </br>
-                    {%if item.interests %}
-                        Interests: {{ item.interests }}
-                    {% endif %}
+                 {%if item.interests %}
+                  Interests: {{ item.interests }}
+                 {% endif %} </br>
+                 {%if item.url %}
+                  <a href="{{item.url}}" target="_blank">Web site</a>
+                 {% endif %}                 
              </th>
               <th>
                   {%if item.picture %}
-                    <img src={{ item.picture }}>
+                    <img src={{item.picture}}>
                   {% endif %}
               </th>
          </tr>
@@ -216,28 +144,7 @@ permalink: /members/
                  {%if item.institution %}
                   Institution: {{ item.institution }}
                  {% endif %} </br>   
-                 {%if item.url %}
-                  Web site: <a href="{{item.url}}">{{item.url}}</a>
-                 {% endif %}
-                   <ul>
-                   {% for grade in item.grades %}
-                    <li>
-                        <strong>{{ grade.name }} </strong>
-                        {%if grade.startyear %}
-                           : {{ grade.startyear }}
-                        {% endif %}
-                        {%if grade.endyear %}
-                            - {{ grade.endyear }}
-                        {% endif %}
-                        {%if grade.comment %}
-                          <br>({{ grade.comment }})
-                       {% endif %}
-                        </br>
-                    </li>
-                   {% endfor %}
-                   </ul>
                    <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
-                   </br>
                     {%if item.speciality %}
                         Speciality: {{ item.speciality }}
                     {% endif %}
@@ -265,15 +172,18 @@ permalink: /members/
                  <strong>{{ item.firstname }} {{ item.lastname }}  </strong> </br>
                  {%if item.institution %}
                   Institution: {{ item.institution }}
-                 {% endif %} </br>   
+                 {% endif %} </br>
+                 {%if item.supervisors %}
+                  Supervisor(s): {{ item.supervisors }}
+                 {% endif %} </br>                 
 		 {%if item.subject %}
-		  Subject: <em>{{ item.subject }}</em>
-		 {% endif %}                   
-                 <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
-                 </br></br>
                  {%if item.interests %}
                   Interests: {{ item.interests }}
                  {% endif %}
+                 </br></br>                 
+		  Subject: <em>{{ item.subject }}</em>
+		 {% endif %}                   
+                 <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
              </th>
               <th>
                   {%if item.picture %}
@@ -294,16 +204,18 @@ permalink: /members/
                  <strong>{{ item.firstname }} {{ item.lastname }}  </strong> </br>
                  {%if item.institution %}
                   Institution: {{ item.institution }}
-                 {% endif %} </br>   
-                   </ul>
-                    {%if item.subject %}
-                        Subject: <em>{{ item.subject }}</em>
-                    {% endif %}                   
-                   <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
-                   </br></br>
-                    {%if item.interests %}
-                        Interests: {{ item.interests }}
-                    {% endif %}
+                 {% endif %} </br>
+                 {%if item.supervisors %}
+                  Supervisor(s): {{ item.supervisors }}
+                 {% endif %} </br>                 
+		 {%if item.subject %}
+                 {%if item.interests %}
+                  Interests: {{ item.interests }}
+                 {% endif %}
+                 </br></br>                 
+		  Subject: <em>{{ item.subject }}</em>
+		 {% endif %}                   
+                 <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
              </th>
               <th>
                   {%if item.picture %}
@@ -325,14 +237,17 @@ permalink: /members/
                  {%if item.institution %}
                   Institution: {{ item.institution }}
                  {% endif %} </br>
-                    {%if item.subject %}
-                        Subject: <em>{{ item.subject }}</em>
-                    {% endif %}                   
-                   <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
-                   </br></br>
-                    {%if item.interests %}
-                        Interests: {{ item.interests }}
-                    {% endif %}
+                 {%if item.supervisors %}
+                  Supervisor(s): {{ item.supervisors }}
+                 {% endif %} </br>                 
+		 {%if item.subject %}
+                 {%if item.interests %}
+                  Interests: {{ item.interests }}
+                 {% endif %}
+                 </br></br>                 
+		  Subject: <em>{{ item.subject }}</em>
+		 {% endif %}                   
+                 <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
              </th>
               <th>
                   {%if item.picture %}
