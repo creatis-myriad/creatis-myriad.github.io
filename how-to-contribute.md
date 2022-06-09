@@ -39,7 +39,7 @@ assume you are working from inside this repository**.
 
 &nbsp;
 
-## Setup a Ruby environment 
+## Setup a Ruby environment
 Kindly refer to [Linux guide](how-to-contribute.md#linux-guide) for Linux users and [Windows guide](how-to-contribute.md#windows-guide) for Windows users.
 
 ### Ruby setup on **Linux** <a name="linux-guide"></a>
@@ -58,9 +58,12 @@ and setup a working environment.
 # rbenv-installer takes care of also installing ruby-build if `rbenv install` is not already available
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
-# Add rbenv to your bashrc to make it visible to your system
+# Add rbenv to your bashrc (and source it) to make it visible to your system each time you restart your machine (and now)
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+
+# source your bashrc to make it visible to your system now
+source ~/.bashrc
 
 # Verify the state of your rbenv installation with rbenv-doctor
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-doctor | bash
@@ -85,7 +88,7 @@ echo "gem: --no-document" > ~/.gemrc
 
 
 ### Ruby setup on **Windows** <a name="windows-guide"></a>
-For Windows users, here is a quick guide to install Ruby environment. Please visit [Jekyll on Windows](https://jekyllrb.com/docs/installation/windows/) website for more information. 
+For Windows users, here is a quick guide to install Ruby environment. Please visit [Jekyll on Windows](https://jekyllrb.com/docs/installation/windows/) website for more information.
 
 
 #### Download and install Ruby + Devkit
@@ -106,7 +109,7 @@ jekyll -v
 ```
 
 Congratulations, you are done with setting up the Ruby environment for the MYRIAD website on your machine!
- 
+
 &nbsp;
 
 ## Add your own posts
