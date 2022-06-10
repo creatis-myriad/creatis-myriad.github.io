@@ -62,7 +62,7 @@ curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 
-# source your bashrc to make it visible to your system now
+# source your bashrc to make it visible to your current shell
 source ~/.bashrc
 
 # Verify the state of your rbenv installation with rbenv-doctor
