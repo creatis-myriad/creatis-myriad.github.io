@@ -58,7 +58,7 @@ and setup a working environment.
 # rbenv-installer takes care of also installing ruby-build if `rbenv install` is not already available
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
-# Add rbenv to your bashrc (and source it) to make it visible to your system each time you restart your machine (and now)
+# Add rbenv to your bashrc to make it visible to all future instances of your shell
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 
