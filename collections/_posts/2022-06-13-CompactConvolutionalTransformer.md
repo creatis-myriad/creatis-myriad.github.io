@@ -12,38 +12,41 @@ pdf: "https://arxiv.org/abs/2104.05704"
 
 # Notes
 
-* This paper was accepted in CVPR 2021
+* This paper was accepted in a workshop at CVPR 2021
 * Here are some (highly) useful links: [video](https://www.youtube.com/watch?v=AEWhf_hMBgs), [repo](https://github.com/SHI-Labs/Compact-Transformers), [blog](https://medium.com/pytorch/training-compact-transformers-from-scratch-in-30-minutes-with-pytorch-ff5c21668ed5)
 
 # Highlights
 
-* The transformer architecture, known for its performance on NLP tasks, is applied to image classification
-* The proposed architecture, "ViT" (Vision Transformer) is shown to perform as well or better than CNNs for image classification on large scale datasets
-* The usefulness/superiority of the proposed transformer over CNNs only appears when the number of images in the dataset reaches about 100 million
-* The proposed architecture brings a reduction of FLOPS of a factor of 2 to train, compared to CNNs, for a given performance
-* The authors have used more than 25,000 TPUv3 * days over their experiments
+* The objective of this work is to propose a transformer-based architecture that does not require a huge amount of data during training (just as a reminder, [VIT architecture](https://creatis-myriad.github.io/2022/06/01/VisionTransformer.html) is based on weights that have been pre-trained on over 100 million images !)
+* The proposed architecture, "CCT" (Compact Convolutional Transformer) is shown to perform as well or better than CNNs for image classification on various scale datasets (ex: CIFAR10/100, Fashion-MNIST, MNIST and ImageNet)
+* The proposed architecture brings a reduction of parameters of a factor of 30 during training (85 million to 3.7 million) compared to standard transformer architecture (VIT) for a better performance
+* The proposed architecture brings a reduction of parameters of a factor of 3 during training (10 million to 3.7 million) compared to CNNs (ResNet1001, MobileNetV2) for a given performance
+* The CCT architecture needs less than 30 minutes to be trained over their experiments on small datasets
 
 # Methods
 
-![](/collections/images/vit/fig1.jpg)
+![](/collections/images/cct/main_diagram.jpg)
 
 ## Architecture
 
-* Images are split into patches (16x16 yields the best results)
-* The patches are flattened, and become the tokens (or "words")
-* The flattened patches are projected using a MLP
-* Each flattened patch is concatenated with a vector which represents the position of the patch. A positional embedding is learned, which maps a one-dimensional patch index to a vector representation.
-* Note that this allows the very first layer to attend to any part of the image, in comparison with CNNs for which the receptive field develops over many layers.
-* The first token is a dummy, and is only there because the feature vector of the image will appear at that position at the last layer of the network.
+* Tokens are built from the input image thanks to a simple convolutional strategy. This step replaces the previous "tokenization" procedure (i.e., input image split into patches + linear projection).
+* The class token strategy used in the VIT architecture is replaced by a sequence pooling procedure whose output is used as input for a simple MLP to perform classification.
+* Several tests have also been done to reduce as much as possible the number of final parameters, in particular the number of blocks in the encoder, the kernel size of the input convolutional layers and the number of convolutional blocks. As an example, CCT-12/7x2 means CCT architecture with an encoder of 12 layers and 2 convolutional blocks with 7x7 convolutions to generate the input sequence of tokens.
+* Although its influence is less pronounced, positional embedding is retained.
 
-## Experiment design
+## 1st innovation: convolutional block
 
-* The models are pre-trained on either ImageNet (1k classes, 1.3M images), ImageNet-21k (21k classes, 14M images) or JFT (18k classes, 303M images).
-* The models are then fined-tuned on one of the datasets listed in the "Benchmarking datasets" section below.
-* Sometimes, the model is not fine tuned, but is evaluated in a few-shot regime. This is not well described in the paper: "Few-shot accuracies are obtained by solving a regularized linear regression problem that maps the (frozen) representation of a subset of training images to $$\{−1,1\}^K$$ target vectors. Though we mainly focus on fine-tuning performance, we sometimes use linear few-shot accuracies for fast on-the-fly evaluation where fine-tuning would be too costly."
-* They also have tried self-supervised pre-training, in which the model predicts masked patches. This is given little importance, and the results are "only" promising, so I will not write about this further.
+![](/collections/images/cct/convolutions.jpg)
 
-## Benchmarking datasets
+* Be careful, my feeling is that this figure is partially right (feature maps should be flatten to provide an information for each token)
+* $$d$$ filters (i.e., convolutions kernels) have to be learned to produce a sequence of $$d$$-dimensional kernels 
+* $$ x_i = MaxPool\left( ReLU\left( Conv2d(x) \right) \right) $$
+* $$x_i$$ is a feature map whose individual value corresponds to the $$i$$ component for each token.
+* The number of tokens is directly linked to the image size and the size of the MaxPool operation.
+* The output of this tokenization procedure is of size $$\mathbb{R}^{b \times n \times d}$$, where $$b$$ is the mini-batch size, $$n$$ is the number of tokens and $$d$$ is the embedding dimension.
+* This step allows the embedding of the image into a latent representation that should be more efficient for the transformer !
+
+## 2nd innovation: sequence pooling
 
 The experiments have been run on a number of datasets of image classification:
 
