@@ -19,9 +19,9 @@ pdf: "https://arxiv.org/abs/2104.05704"
 
 * The objective of this work is to propose a transformer-based architecture that does not require a huge amount of data during training (just as a reminder, [VIT architecture](https://creatis-myriad.github.io/2022/06/01/VisionTransformer.html) is based on weights that have been pre-trained on over 100 million images !)
 * The proposed architecture, "CCT" (Compact Convolutional Transformer) is shown to perform as well or better than CNNs for image classification on various scale datasets (ex: CIFAR10/100, Fashion-MNIST, MNIST and ImageNet)
-* The proposed architecture brings a reduction of parameters of a factor of 30 during training (85 million to 3.7 million) compared to standard transformer architecture (VIT) for a better performance
-* The proposed architecture brings a reduction of parameters of a factor of 3 during training (10 million to 3.7 million) compared to CNNs (ResNet1001, MobileNetV2) for a given performance
-* The CCT architecture needs less than 30 minutes to be trained over their experiments on small datasets
+* CCT brings a reduction of parameters of a factor of 30 during training (85 million to 3.7 million) compared to standard transformer architecture (ViT) with better performance
+* CCT brings a reduction of parameters of a factor of 3 during training (10 million to 3.7 million) compared to CNNs (ResNet1001, MobileNetV2) for a given performance
+* CCT is an end-to-end architecture that needs less than 30 minutes to be trained on small-sized datasets
 
 # Methods
 
@@ -30,9 +30,9 @@ pdf: "https://arxiv.org/abs/2104.05704"
 ## Architecture
 
 * Tokens are built from the input image thanks to a simple convolutional strategy. This step replaces the previous "tokenization" procedure (i.e., input image split into patches + linear projection).
-* The class token strategy used in the VIT architecture is replaced by a sequence pooling procedure whose output is used as input for a simple MLP to perform classification.
+* The class token strategy used in the ViT architecture is replaced by a sequence pooling procedure whose output is used as input for a simple MLP to perform classification.
 * Several tests have also been done to reduce as much as possible the number of final parameters, in particular the number of blocks in the encoder, the kernel size of the input convolutional layers and the number of convolutional blocks. As an example, CCT-12/7x2 means CCT architecture with an encoder of 12 layers and 2 convolutional blocks with 7x7 convolutions to generate the input sequence of tokens.
-* Although its influence is less pronounced, positional embedding is retained.
+* CCT reduces the influence of the positional embedding, which I think is appreciated :)
 
 ## 1st innovation: convolutional block
 
@@ -43,41 +43,37 @@ pdf: "https://arxiv.org/abs/2104.05704"
 * $$ x_i = MaxPool\left( ReLU\left( Conv2d(x) \right) \right) $$
 * $$x_i$$ is a feature map whose individual value corresponds to the $$i$$ component for each token.
 * The number of tokens is directly linked to the image size and the size of the MaxPool operation.
-* The output of this tokenization procedure is of size $$\mathbb{R}^{b \times n \times d}$$, where $$b$$ is the mini-batch size, $$n$$ is the number of tokens and $$d$$ is the embedding dimension.
+* The output $$x_0$$ of this tokenization procedure is of size $$\mathbb{R}^{b \times n \times d}$$, where $$b$$ is the mini-batch size, $$n$$ is the number of tokens and $$d$$ is the embedding dimension.
 * This step allows the embedding of the image into a latent representation that should be more efficient for the transformer !
 
 ## 2nd innovation: sequence pooling
 
-The experiments have been run on a number of datasets of image classification:
+![](/collections/images/cct/sequence_pooling.jpg)
 
-* ImageNet
-* ImageNet ReaL ("Reassessed Labels", from Beyer et al. 2020) [Code](https://github.com/google-research/reassessed-imagenet)
-* CIFAR10/100
-* Oxford Pets, Oxford Flowers
-* VTAB (Zhai et al., 2019b) ("VTAB evaluates low-data transfer using 1 000 examples to diverse tasks.  The tasks are divided into three groups: Natural– tasks like the above, Pets, CIFAR, etc. Specialized– medical and satellite imagery, and Structured– tasks that require geometric understanding like localization.") [Blog post](https://ai.googleblog.com/2019/11/the-visual-task-adaptation-benchmark.html)
+* Attention-based method which transforms (pools) the output sequence of tokens to a single $$d$$-dimensional vector $$z$$.
+* Let $$x_L \in \mathbb{R}^{b \times n \times d}$$ be the output of the transformer encoder and $$g(\cdot) \in \mathbb{R}^{d \times 1}$$ be a linear layer. 
+* An attention vector is first computed as follows: $$x'_{L}=softmax\left(g(x_L)^T\right) \in \mathbb{R}^{b \times 1 \times n}$$
+* A weighted sum of the output of the transformer encoder is then performed: $$ z = x'_{L} x_{L} \in \mathbb{R}^{b \times 1 \times d}$$
+* The output of the sequence pooling can be seen as a final projection (through several attention blocks) of the input image into a latent space before the application of an MLP ! Some similarities with the encoding branch of CNN networks can be made :)
+* The sequence pooling replaces the class token strategy of ViT-based architecture, which I find very interesting.
+
+## Comparison with the ViT architecture
+
+![](/collections/images/cct/main_innovations.jpg)
+
 
 # Results
 
-As seen in the table below, ViT performs slightly better than a very large ResNet, and does so using significantly less FLOPS (for the fine-tuning phase).
+As seen in the table below, CCT performs slightly better than a very large ResNet, and definitely better that the ViT architecture, using significantly less parameters on small-sized datasets.
 
-![](/collections/images/vit/tab2.jpg)
+![](/collections/images/cct/results_table1.jpg)
 
-However, the pre-training has to involve a very large number of training samples: when this number exceeds 100 million, ViT starts to shine. Else, the ResNet performs better. See below:
+CCT also performs favourably on medium-sized datasets
 
-![](/collections/images/vit/fig3-4.jpg)
-
-ViT also compares favourably in terms of pre-training FLOPS, as seen below:
-
-![](/collections/images/vit/fig5.jpg)
-
-The "Hybrid" approach uses CNN feature vectors as tokens; it is not considered very important by the authors.
-
-The figures below serve to inspect the vision transformer architecture:
-
-![](/collections/images/vit/fig7.jpg)
+![](/collections/images/cct/results_table2.jpg)
 
 # Conclusions
 
-The Vision Transformer is an architecture that can outperform CNNs given datasets in the 100M-image range. It required less FLOPS to train than the CNNs used in this paper.
+Training end-to-end transformer networks from scratch on small-sized & medium-sized datasets with highly competitive results is possible !
 
 
