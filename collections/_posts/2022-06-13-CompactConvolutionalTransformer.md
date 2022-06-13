@@ -6,7 +6,7 @@ author: "Olivier Bernard"
 cite:
     authors: "Ali Hassani, Steven Watson, Nikhil Shah, Abulikemu Abuduweili, Jiachen Li, Humphrey Shi"
     title:   "Escaping the big data paradigm with compact transformers"
-    venue:   "arXiv"
+    venue:   "CVPR LLID Workshop 2021"
 pdf: "https://arxiv.org/abs/2104.05704"
 ---
 
