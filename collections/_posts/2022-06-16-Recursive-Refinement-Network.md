@@ -15,7 +15,7 @@ In this paper a recursive refinement network (RRN) is proposed for end-to-end un
 
 # Methods
 1. Multi-level features are extracted from fixed and moving images through 3D convolutional layers. 
-2. Features are normalized (to avoid feature vanishing at higher levels, as intermediate deformation vector fields are not supervised).
+2. Features are normalized (to avoid feature vanishing at higher levels, as intermediate deformation vector fields (DVFs) are not supervised).
 3. The moving features are warped with the 2x upsampled DVF predicted at previous level (no warping for the topmost level).
 4. Local cost correlation volumes are computed in a memory efficient way (which are the inner dot product of fixed and moving features within a small radius).
 5. DVF is estimated at the topmost level by using *fixed features and cost volumes* then it is refined, level by level, by using *fixed features, cost volumes, context, and previous DVF*.
