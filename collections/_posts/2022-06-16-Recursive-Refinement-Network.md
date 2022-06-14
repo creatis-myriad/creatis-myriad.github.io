@@ -43,7 +43,7 @@ In this paper a recursive refinement network (RRN) is proposed for end-to-end un
 <figcaption align = "center">Fig.5 -  Ablation experiment using VoxelMorph as a benchmark learning-based method. </figcaption>
 
 # Conclusions
-The light weight Recursive Refinement Network (RRN) can handle large inhale-exhale deformations and outperforms state of the art pTV and VoxelMorph methods in terms of TRE on the DirLab dataset.
+The light weight Recursive Refinement Network (RRN) can handle large inhale-exhale deformations and outperforms state of the art [pTV](https://doi.org/10.1109/TMI.2016.2610583) and [VoxelMorph](https://doi.org/10.1109/TMI.2019.2897538) methods in terms of TRE on the DirLab dataset.
  
 # Remarks
 The authors have generously made their code available on [github](https://github.com/Novestars/Recursive_Refinement_Network). I was able to achieve mean TRE ~ 1.0mm on the same dataset. On our local dataset, I observed that by choosing a wider intensity range for the input images, the output deformation field does not follow the sliding motion of the lungs. 
