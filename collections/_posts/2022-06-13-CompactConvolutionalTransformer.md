@@ -12,7 +12,6 @@ pdf: "https://arxiv.org/abs/2104.05704"
 
 # Notes
 
-* This paper was accepted in a workshop at CVPR 2021
 * Here are some (highly) useful links: [video](https://www.youtube.com/watch?v=AEWhf_hMBgs), [repo](https://github.com/SHI-Labs/Compact-Transformers), [blog](https://medium.com/pytorch/training-compact-transformers-from-scratch-in-30-minutes-with-pytorch-ff5c21668ed5)
 
 # Highlights
