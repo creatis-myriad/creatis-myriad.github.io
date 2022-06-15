@@ -1,7 +1,7 @@
 ---
 layout: review
 title: "Flow over an espresso cup: Inferring 3D velocity and pressure fields from tomographic background oriented schlieren videos via physics-informed neural networks"
-tags: Flow Physics-Informed-NN PINN
+tags: Flow Physics Neural-Networks
 author: "Hang Jung Ling"
 cite:
     authors: "Shengze Cai, Zhicheng Wang, Frederik Fuest, Young-Jin Jeon, Callum Gray, George Em Karniadakis"
