@@ -2,6 +2,7 @@
 layout: review
 title: Recursive refinement network for deformable lung registration
 tags: deep-learning CNN registration medical lung CT
+author: Mehdi Shekarnabi
 cite:
     authors: "He X, Guo J, Zhang X, Bi H, Gerard S, Kaczka D, Motahari A, Hoffman E, Reinhardt J, Barr RG, Angelini E."
     title:   "Recursive Refinement Network for Deformable Lung Registration between Exhale and Inhale CT Scans"
