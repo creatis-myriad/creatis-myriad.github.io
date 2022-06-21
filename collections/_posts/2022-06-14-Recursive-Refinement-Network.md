@@ -48,3 +48,5 @@ The light weight Recursive Refinement Network (RRN) can handle large inhale-exha
  
 # Remarks
 The authors have generously made their code available on [github](https://github.com/Novestars/Recursive_Refinement_Network). I was able to achieve mean TRE ~ 1.0mm on the same dataset. On our local dataset, I observed that by choosing a wider intensity range for the input images, the output deformation field does not follow the sliding motion of the lungs. 
+
+The network is called recursive, but in the default setting, the flow estimators are different (don't share weights) with approx. 20 M parameters. However, it is optionally possible to share the same flow estimator between levels which drops the number of parameters to approx. 7 M.
