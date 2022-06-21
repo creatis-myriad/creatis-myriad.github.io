@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Transformers demystified"
+title:  "The transformer paradigm demystified"
 author: 'Olivier Bernard'
 date:   2022-06-20
 categories: transformer, encoder
@@ -12,22 +12,21 @@ categories: transformer, encoder
   - [Norm step](#norm-step)
   - [MLP step](#mlp-step)  
   - [Multi-Head Attention block](#multi-head-attention-block)  
+  - [Self-Attention module](#self-attention-module)    
 
 &nbsp;
 
 ## **Introduction**
-Transformers paradigm has been first successfully applied in Natural Langage Processing (NLP) and is currently highly investigated for image processing. 
+Transformer paradigm has been first successfully applied in Natural Langage Processing (NLP) and is currently highly investigated for image processing. 
 
-The basic concept of transformers lies in the generation of self attention maps to guide the decision making mechanism of the underlying architecture.
-
-In order to illustrate the bascis of transformer, we will open the black box of the famous [Vision Transformer (ViT)](https://creatis-myriad.github.io/2022/06/01/VisionTransformer.html) method. The overall architecture is given below:
+The basic concept of transformer lies in the generation of self attention maps to guide the decision making process of the underlying architecture. To illsutration the underlying mechanism, we will open the black box of the famous [Vision Transformer (ViT)](https://creatis-myriad.github.io/2022/06/01/VisionTransformer.html) method. The overall architecture is given below:
 
 ![](/collections/images/transformers/vit_overview.jpg)
 
 &nbsp;
 
 ## **Tokenization process**
-The first step performed by the transformers is to convert the input data into a sequence of tokens, i.e. a sequence of vectors of dimensions $$\mathbb{R}^{1 \times (P^2 \cdot C)}$$, with $$P^2 C$$ being the length of each flattened patch. This step is referred to as the tokenization process and involves a simple linear projection (i.e. a multiplication with a matrix of dimensions $$\mathbb{R}^{(P^2 \cdot C) \times D}$$ and a position embedding step with encodes spatial information. The same linear projection and position embedding are shared to encode each patch. This process is modeled as follows: 
+The first step is to convert the input data into a sequence of tokens, $$i.e.$$ a sequence of vectors of dimensions $$\mathbb{R}^{1 \times (P^2 C)}$$, with $$P^2 C$$ being the length of each flattened patch. This step is called the tokenization process and involves a simple linear projection ($$i.e.$$ a multiplication with a matrix of dimensions $$\mathbb{R}^{(P^2 C) \times D}$$) and a position embedding step which encodes spatial information. The same linear projection and position embedding are shared to encode each patch. This process is modeled as follows: 
 
 $$z_0 = [x_{class}; \, x^1_p\mathbf{E}; \, x^2_p\mathbf{E}; \, \cdots; \, x^N_p\mathbf{E}] + \mathbf{E}_{pos}$$
 
@@ -35,6 +34,7 @@ with <br>
 &nbsp; &nbsp; &nbsp; &nbsp;$$\mathbf{E}$$ being the linear projection matrix of size $$\mathbf{E} \in \mathbb{R}^{(P^2 \cdot C) \times D}$$ <br>
 &nbsp; &nbsp; &nbsp; &nbsp;$$\mathbf{E}_{pos}$$ being the output of the position embedding operation with dimensions $$\mathbf{E}_{pos} \in \mathbb{R}^{(N+1) \times D}$$
 
+&nbsp;
 
 The figure below illustrates the tokenization process used in ViT.
 
@@ -44,7 +44,7 @@ The figure below illustrates the tokenization process used in ViT.
 
 ## **Transformer encoder**
 
-The figure below presents an overview of the encoding layer of transformers. It is composed of two main steps.
+The figure below presents an overview of the encoding layer of transformer. It is composed of two main steps.
 
 ![](/collections/images/transformers/vit_encoding_layer.jpg)
 
@@ -79,11 +79,40 @@ The diagram of the MLP procedure is given below:
 ### Multi-Head Attention block
 
 The Multi-Head Attention (MHA) block is the key element of the encoding layer. It is based on the "qkv" paradigm, but what does "qkv" mean ? 
-Before answering to this question, let's have a zoom to the MHA block and have an overview of the structure.
+Before answering this question, let's zoom in on the MHA block and get an overview of its structure.
 
+![](/collections/images/transformers/vit_mha_overview.jpg)
 
+From this figure, we can see that the key element is the Self-Attention module which outputs $$k$$ head matrices of size $$\mathbb{R}^{(N+1) \times D_h}$$, where $$D_h$$ is usually computed as $$D_h=D/k$$. These head matrices contain useful information computed from attention mechanisms. The second part of the MHA block uses a linear projection to optimally merge the different heads and to output a new sequence of tokens of the same size as the input matrix, $$i.e.$$ $$\mathbb{R}^{(N+1) \times D}$$. This operation is modeled as:
 
+$$ MSA(z) = \left[ {SA}_1(z), \, {SA}_2(z), \cdots, \, {SA}_k(z) \right] \cdot \mathbf{U}_{msa} \quad \quad \quad \quad \mathbf{U}_{msa} \in \mathbb{R}^{(k D_h) \times D}$$
 
+where $${SA}_i(z)$$ represents the output of Head $$i$$ ($$SA$$ stands for Self Attention). Now it is time to investigate the Self-Attention module !
 
+&nbsp;
+
+### Self-Attention module
+
+The Self-Attention module is the core element of the MHA block. The figure below provides an overview of such a module.
+
+![](/collections/images/transformers/vit_self_attention_module.jpg)
+
+&nbsp;
+
+It involves the generation of 3 matrices $$\mathbf{Q}$$, $$\mathbf{K}$$, $$\mathbf{V}$$ of size $$\mathbb{R}^{(N+1) \times D_h}$$ computed from three different linear projection matrices $$\mathbf{U}_{qkv} \in \mathbb{R}^{D \times D_h}$$. This step is modeled as follows:
+
+$$ [\mathbf{Q}, \mathbf{K}, \mathbf{V}] = z \mathbf{U}_{qkv} \quad \quad \quad \quad \mathbf{U}_{qkv} \in \mathbb{R}^{D \times D_h}$$
+
+&nbsp;
+
+$$\mathbf{Q}$$ and $$\mathbf{K}$$ are used to create a self-attention matrix $$\mathbf{A} \in \mathbb{R}^{(N+1) \times (N+1)}$$. Since this matrix is computed from scalar products, it expresses the proximity between token $$i$$ and all token $$j$$. The Softmax operation is applied to each row of $$\mathbf{A}$$ individually to ensure that the sum of the elements of each row is equal to $$1$$. The corresponding operation is:
+
+$$ \mathbf{A} = softmax\left( \frac{\mathbf{Q} \cdot \boldsymbol{K}^T}{\sqrt{D_h}} \right)$$
+
+&nbsp;
+
+Finally, this self-attention matrix $$\mathbf{A}$$ is used to compute the final Head matrix $$SA(z) \in \mathbb{R}^{(N+1)\times D_h}$$ whose rows correspond to a weighted sum of the tokens obtained in the $$\mathbf{V}$$ matrix. This is done by using the following simple multiplication operation:
+
+$$ SA(z) = \mathbf{A} \cdot \mathbf{V}$$
 
 
