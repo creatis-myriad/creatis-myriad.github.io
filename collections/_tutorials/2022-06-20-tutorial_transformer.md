@@ -6,6 +6,12 @@ date:   2022-06-20
 categories: transformer, encoder
 ---
 
+# Notes
+
+* Here is a link to an interesting video to understand the transformer theory: [video](https://www.youtube.com/watch?v=YAgjfMR9R_M)
+
+&nbsp;
+
 - [**Introduction**](#introduction)
 - [**Tokenization process**](#tokenization-process)
 - [**Transformer encoder**](#transformer-encoder)
