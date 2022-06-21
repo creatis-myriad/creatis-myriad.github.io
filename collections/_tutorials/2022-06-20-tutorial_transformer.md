@@ -11,6 +11,7 @@ categories: transformer, encoder
 - [**Transformer encoder**](#transformer-encoder)
   - [Norm step](#norm-step)
   - [MLP step](#mlp-step)  
+  - [Multi-Head Attention block](#multi-head-attention-block)  
 
 &nbsp;
 
@@ -72,4 +73,17 @@ Normalization was inserted into the encoding layer to control the dynamics of th
 The diagram of the MLP procedure is given below:
 
 ![](/collections/images/transformers/vit_mlp_step.jpg)
+
+&nbsp;
+
+### Multi-Head Attention block
+
+The Multi-Head Attention (MHA) block is the key element of the encoding layer. It is based on the "qkv" paradigm, but what does "qkv" mean ? 
+Before answering to this question, let's have a zoom to the MHA block and have an overview of the structure.
+
+
+
+
+
+
 
