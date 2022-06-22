@@ -25,11 +25,11 @@ for them, since the distance between axial slices (of which there are typically 
 
 
 # Data
-The authors use the CMR data of a cohort of 4525 patients from the UK Biobank (UKB) for which contours were manually
-annotated by experts. These manual contour annotations were used as reference points to register a
-high-resolution 3D shape atlas[^1] to each volume, to obtain an accurate 3D volume for each patient. The registration is
-done in two steps: i) a global affine registration, and ii) a region-based non-rigid registration, where each region
-corresponds to one of the structures to segment.
+The authors use the *Cardiac Magnetic Resonance* (CMR) data of a cohort of 4525 patients from the UK Biobank (UKB) for
+which contours were manually annotated by experts. These manual contour annotations were used as reference points to
+register a high-resolution 3D shape atlas[^1] to each volume, to obtain an accurate 3D volume for each patient. The
+registration is done in two steps: i) a global affine registration, and ii) a region-based non-rigid registration, where
+each region corresponds to one of the structures to segment.
 
 To note that the paper goes into quite a bit of detail to justify the choice of registration algorithm.
 
