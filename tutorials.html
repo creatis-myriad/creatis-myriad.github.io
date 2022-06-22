@@ -9,7 +9,8 @@ order: 4
   <h1 class="page-heading">Tutorials</h1>
 
   <ul class="post-list">
-    {% for tutorial in site.tutorials %}
+    {% assign sortedTutorials = site.tutorials | date_sort | reverse %}
+    {% for tutorial in sortedTutorials %}
       <li>
         <span class="post-meta">{{ tutorial.date | date: "%b %-d, %Y" }}</span>
 
