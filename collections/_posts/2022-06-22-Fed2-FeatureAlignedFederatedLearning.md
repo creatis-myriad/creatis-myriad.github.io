@@ -6,7 +6,7 @@ author: "Matthis Manthe"
 cite:
     authors: "Yu, Fuxun, Weishan Zhang, Zhuwei Qin, Zirui Xu, Di Wang, Chenchen Liu, Zhi Tian, Xiang Chen"
     title:   "Fed2: Feature-Aligned Federated Learning"
-    venue:   "Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery & Data Mining, KDD ’21."
+    venue:   "ACM SIGKDD Conference on Knowledge Discovery & Data Mining, KDD ’21."
 pdf: "https://arxiv.org/abs/2111.14248"
 ---
 
@@ -17,7 +17,7 @@ pdf: "https://arxiv.org/abs/2111.14248"
 $$F(X) = w_1w_0X = (w_1\Pi)(\Pi^Tw_0)X, \Pi \text{ a permutation matrix}$$ 
 
 * The same happens to Convolutional Networks and their filters.
-* It implies a complex problem in Model Fusion and Federated Learning: **How to be sure that the neurons combined by a parameters average encode the same learned features ?**.
+* It implies a complex problem in Model Fusion and Federated Learning: **How to be sure that the neurons combined by averaging parameters encode the same learned features ?**.
 * Previous methods used neurons matching based on the distance between weight matrices or activation values [[1]](https://arxiv.org/abs/2002.06440), computation of a Wasserstein barycenter [[2]](https://arxiv.org/abs/1910.05653) or Bayesian probabiltistic models [[3]](https://arxiv.org/abs/1905.12022).
 
 
@@ -35,9 +35,9 @@ $$F(X) = w_1w_0X = (w_1\Pi)(\Pi^Tw_0)X, \Pi \text{ a permutation matrix}$$
 They define before training **which parts of the local networks will be aggregated together**, by fixing which class logits are outputted by which groups of parameters in the model architecture.
 
 ## Feature allocation strategy
-* After a number of classical convolutional layers, use group convolution to partition the network into independant parts,
+* After a number of classical convolutional layers, use group convolution to partition the network into independent parts,
 * Do not use fully connected layer at the end, but one connected head on each group, outputting the logits of specific classes (partitioned among groups),
-* Leverage the evolution of the total variation of features of a layer to determine at which depth decoupling the parameters (e.g. how many layers are kept shared).
+* Leverage the evolution of the total variation of features of a layer to determine at which depth to decouple the parameters (e.g. how many layers are kept shared).
 
 ![](/collections/images/Fed2_Feature_Aligned_FL/fed2_decouple.jpg)
 
