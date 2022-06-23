@@ -48,7 +48,7 @@ They show in tables below that their method outperforms Federated Averaging and 
 
 ![](/collections/images/Fed2_Feature_Aligned_FL/Fed2_results_cifar10.jpg)
 
-They show similar results on CIFAR100, to evacuate the idea that the decoupling strategy only works with a small number of classes.
+They show similar results on CIFAR100, to highlight the fact that the decoupling strategy works even with a high number of classes.
 
 ![](/collections/images/Fed2_Feature_Aligned_FL/Fed2_cifar100.jpg)
 
