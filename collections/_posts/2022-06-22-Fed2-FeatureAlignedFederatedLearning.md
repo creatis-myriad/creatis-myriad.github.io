@@ -37,7 +37,7 @@ They define before training **which parts of the local networks will be aggregat
 ## Feature allocation strategy
 * After a number of classical convolutional layers, use group convolution to partition the network into independant parts,
 * Do not use fully connected layer at the end, but one connected head on each group, outputting the logits of specific classes (partitioned among groups),
-* Leverage the evolution of the total variation of features of a layer to determine at which depth decoupling the parameters (e.g. how many layers are kept shared).
+* Leverage the evolution of the total variation of features of a layer to determine at which depth to decouple the parameters (e.g. how many layers are kept shared).
 
 ![](/collections/images/Fed2_Feature_Aligned_FL/fed2_decouple.jpg)
 
