@@ -35,7 +35,7 @@ $$F(X) = w_1w_0X = (w_1\Pi)(\Pi^Tw_0)X, \Pi \text{ a permutation matrix}$$
 They define before training **which parts of the local networks will be aggregated together**, by fixing which class logits are outputted by which groups of parameters in the model architecture.
 
 ## Feature allocation strategy
-* After a number of classical convolutional layers, use group convolution to partition the network into independant parts,
+* After a number of classical convolutional layers, use group convolution to partition the network into independent parts,
 * Do not use fully connected layer at the end, but one connected head on each group, outputting the logits of specific classes (partitioned among groups),
 * Leverage the evolution of the total variation of features of a layer to determine at which depth to decouple the parameters (e.g. how many layers are kept shared).
 
