@@ -17,7 +17,7 @@ pdf: "https://arxiv.org/abs/2111.14248"
 $$F(X) = w_1w_0X = (w_1\Pi)(\Pi^Tw_0)X, \Pi \text{ a permutation matrix}$$ 
 
 * The same happens to Convolutional Networks and their filters.
-* It implies a complex problem in Model Fusion and Federated Learning: **How to be sure that the neurons combined by a parameters average encode the same learned features ?**.
+* It implies a complex problem in Model Fusion and Federated Learning: **How to be sure that the neurons combined by averaging parameters encode the same learned features ?**.
 * Previous methods used neurons matching based on the distance between weight matrices or activation values [[1]](https://arxiv.org/abs/2002.06440), computation of a Wasserstein barycenter [[2]](https://arxiv.org/abs/1910.05653) or Bayesian probabiltistic models [[3]](https://arxiv.org/abs/1905.12022).
 
 
