@@ -47,8 +47,8 @@ in the figure below:
 
 ![](/collections/images/3D+tCmrQuantification/figure4.jpg)
 
-From the first output MCSI-Net (the PCA components), the authors seem to reconstruct the 3D shape using a linear
-generative model and mean and covariance statistics computed on the shapes in the training set.
+From the first output of MCSI-Net (the PCA components), the authors reconstruct the 3D shape using a linear generative
+model and mean and covariance statistics computed on the shapes in the training set.
 
 To train both sub-networks, the authors use L2 losses to regress the PCA components/transformation parameters (but they
 use the geodesic distance for the rotation parameters).
