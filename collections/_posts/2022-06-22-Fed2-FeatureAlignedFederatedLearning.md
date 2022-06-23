@@ -6,7 +6,7 @@ author: "Matthis Manthe"
 cite:
     authors: "Yu, Fuxun, Weishan Zhang, Zhuwei Qin, Zirui Xu, Di Wang, Chenchen Liu, Zhi Tian, Xiang Chen"
     title:   "Fed2: Feature-Aligned Federated Learning"
-    venue:   "Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery & Data Mining, KDD ’21."
+    venue:   "ACM SIGKDD Conference on Knowledge Discovery & Data Mining, KDD ’21."
 pdf: "https://arxiv.org/abs/2111.14248"
 ---
 
