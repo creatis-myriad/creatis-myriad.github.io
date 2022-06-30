@@ -58,7 +58,7 @@ The figure below presents an overview of the encoding layer of a transformer. It
 
 The goal of the first step is to compute attention maps between tokens. The output corresponds to $$z^{'}_l$$ which is modeled as follows:
 
-$$z^{'}_l = \text{MSA}(\text{LN}(z_{l-1})) + z_{l-1} \quad \quad \quad \quad l=1 \cdots L$$
+$$z^{'}_l = \text{MHA}(\text{LN}(z_{l-1})) + z_{l-1} \quad \quad \quad \quad l=1 \cdots L$$
 
 The goal of the second step is to introduce non-linearities to compute more relevant sequence of tokens. The output corresponds to $$z_l$$ which is modeled as follows:
 
@@ -91,7 +91,7 @@ Before answering this question, let's zoom in on the MHA block and get an overvi
 
 From this figure, we can see that the key element is the Self-Attention module which outputs $$k$$ head matrices of size $$\mathbb{R}^{(N+1) \times D_h}$$, where $$D_h$$ is usually computed as $$D_h=D/k$$. These head matrices contain useful information computed from attention mechanisms. The second part of the MHA block uses a linear projection to optimally merge the different heads and to output a new sequence of tokens of the same size as the input matrix, *i.e.* $$\mathbb{R}^{(N+1) \times D}$$. This operation is modeled as:
 
-$$ \text{MSA}(z) = \left[ \text{SA}_1(z), \, \text{SA}_2(z), \cdots, \, \text{SA}_k(z) \right] \cdot \mathbf{U}_{msa} \quad \quad \quad \quad \mathbf{U}_{msa} \in \mathbb{R}^{(k D_h) \times D}$$
+$$ \text{MHA}(z) = \left[ \text{SA}_1(z), \, \text{SA}_2(z), \cdots, \, \text{SA}_k(z) \right] \cdot \mathbf{U}_{msa} \quad \quad \quad \quad \mathbf{U}_{msa} \in \mathbb{R}^{(k D_h) \times D}$$
 
 where $$\text{SA}_i(z)$$ represents the output of Head $$i$$ ($$\text{SA}$$ stands for Self Attention). Now it is time to investigate the Self-Attention module !
 
