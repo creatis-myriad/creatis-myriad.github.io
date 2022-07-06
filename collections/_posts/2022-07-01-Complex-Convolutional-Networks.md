@@ -64,9 +64,11 @@ This activation allows to maintain both phase and module information as data is 
 ![](/collections/images/complex_cnns/amplitude_maxout.jpg)
 
 3. The loss function is the **complex mean squared error**. 
+
 $$
 L(\Theta)=\frac{1}{n} \sum_{i=1}^{n}\left\|\hat{Y}_{i}-Y_{i}\right\|^{2}
 $$
+
 **Back-propagation** is performed with respect to the real and imaginary parts of the weights.
 
 > "In order to perform backpropagation in a complex-valued neural network, a sufficient condition is to have a cost function and activations that are differentiable with respect to the real and imaginary parts of each complex parameter in the network."
