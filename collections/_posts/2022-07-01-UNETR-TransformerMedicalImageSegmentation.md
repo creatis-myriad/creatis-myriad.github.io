@@ -1,78 +1,101 @@
 ---
 layout: review
-title: "Escaping the big data paradigm with compact transformers"
-tags: CNN transformer classification
-author: "Olivier Bernard"
+title: "UNETR: Transformers for 3D Medical Image Segmentation"
+tags: deep-learning CNN transformer segmentation medical
+author: "Pierre Rougé"
 cite:
-    authors: "Ali Hassani, Steven Watson, Nikhil Shah, Abulikemu Abuduweili, Jiachen Li, Humphrey Shi"
-    title:   "Escaping the big data paradigm with compact transformers"
-    venue:   "CVPR LLID Workshop 2021"
-pdf: "https://arxiv.org/abs/2104.05704"
+    authors: "Ali Hatamizadeh, Yucheng Tang, Vishwesh Nath, Dong Yang, Andriy Myronenko, Bennet Landman, Holger R. Roth, Daguang Xu"
+    title:   "UNETR: Transformers for 3D Medical Image Segmentation"
+    venue:   " IEEE Winter Conference on Applications of Computer Vision (WACV) 2022"
+pdf: "https://arxiv.org/abs/2103.10504"
 ---
 
 # Notes
 
-* Here are some (highly) useful links: [video](https://www.youtube.com/watch?v=AEWhf_hMBgs), [repo](https://github.com/SHI-Labs/Compact-Transformers), [blog](https://medium.com/pytorch/training-compact-transformers-from-scratch-in-30-minutes-with-pytorch-ff5c21668ed5)
+* Code is available on [github](https://github.com/Project-MONAI/research-contributions/tree/main/UNETR/BTCV) and [monai](https://docs.monai.io/en/stable/networks.html#unetr)
 
 # Highlights
 
-* The objective of this work is to propose a transformer-based architecture that does not require a huge amount of data during training (just as a reminder, [VIT architecture](https://creatis-myriad.github.io/2022/06/01/VisionTransformer.html) is based on weights that have been pre-trained on over 100 million images !)
-* The proposed architecture, "CCT" (Compact Convolutional Transformer) is shown to perform as well or better than CNNs for image classification on various scale datasets (ex: CIFAR10/100, Fashion-MNIST, MNIST and ImageNet)
-* CCT brings a reduction of parameters of a factor of 30 during training (85 million to 3.7 million) compared to standard transformer architecture (ViT) with better performance
-* CCT brings a reduction of parameters of a factor of 3 during training (10 million to 3.7 million) compared to CNNs (ResNet1001, MobileNetV2) for a given performance
-* CCT is an end-to-end architecture that needs less than 30 minutes to be trained on small-sized datasets
+* The goal is to take advantage of the transformer's capacity to learn long-range dependencies to overcome the limitations of CNNs 
+* The proposed architecture, UNETR (UNEt TRansfomers) uses a transfomer as an encoder and convolutional layer in the decoder to compute the segmentation output
+* The method is validated on the Multi Atlas Labeling Beyond The Cranial Vault (BTCV) dataset for multiorgan segmentation and the Medical Segmentation Decathlon (MSD) dataset for brain tumor and spleen segmentation tasks.
+* Method shows new state-of-the-art performance on the BTCV leaderboard.
 
 # Methods
 
-![](/collections/images/cct/main_diagram.jpg)
+![](/collections/images/unetr/overview_method.jpg)
 
 ## Architecture
 
-* Tokens are built from the input image thanks to a simple convolutional strategy. This step replaces the previous "tokenization" procedure (i.e., input image split into patches + linear projection).
-* The class token strategy used in the ViT architecture is replaced by a sequence pooling procedure whose output is used as input for a simple MLP to perform classification.
-* Several tests have also been done to reduce as much as possible the number of final parameters, in particular the number of blocks in the encoder, the kernel size of the input convolutional layers and the number of convolutional blocks. As an example, CCT-12/7x2 means CCT architecture with an encoder of 12 layers and 2 convolutional blocks with 7x7 convolutions to generate the input sequence of tokens.
-* CCT reduces the influence of the positional embedding, which I think is appreciated :)
+* The architecture is transformer based, so you can refer to this [tutorial](https://creatis-myriad.github.io./tutorials/2022-06-20-tutorial_transformer.html) if you need more details. 
 
-## 1st innovation: convolutional block
+* 3D input volume $$\mathbf{x} \in \mathbb{R}^{H \times W \times D \times C}$$ is divided into non-overlapping patches of size $$(P, P, P)$$ which are flattened to give $$N$$ tokens arrange in a matrix $$\mathbf{x_v} \in \mathbb{R}^{N \times (P^3.C)}$$
 
-![](/collections/images/cct/convolutions.jpg)
+* A linear layer is used to project the patches into a $$K$$ dimensional embedding space, then a 1D learnable positional embedding is added giving $$\mathbf{z}_{0} \in \mathbb{R}^{N \times K}$$ :
 
-* Be careful, my feeling is that this figure is partially right (feature maps should be flatten to provide an information for each token)
-* $$d$$ filters (i.e., convolutions kernels) have to be learned to produce a sequence of $$d$$-dimensional kernels 
-* $$ x_i = MaxPool\left( ReLU\left( Conv2d(x) \right) \right) $$
-* $$x_i$$ is a feature map whose individual value corresponds to the $$i$$ component for each token.
-* The number of tokens is directly linked to the image size and the size of the MaxPool operation.
-* The output $$x_0$$ of this tokenization procedure is of size $$\mathbb{R}^{b \times n \times d}$$, where $$b$$ is the mini-batch size, $$n$$ is the number of tokens and $$d$$ is the embedding dimension.
-* This step allows the embedding of the image into a latent representation that should be more efficient for the transformer !
+ $$ \mathbf{z}_{0} = [\mathbf{x}_{v}^{1}\mathbf{E}; \mathbf{x}_{v}^{2}\mathbf{E};...;\mathbf{x}_{v}^{N}\mathbf{E}] + \mathbf{E}_{pos}$$
 
-## 2nd innovation: sequence pooling
+with 
+	 $$\mathbf{E} \in \mathbb{R}^{(P^3.C) \times K}$$ the projection matrix to learn
 
-![](/collections/images/cct/sequence_pooling.jpg)
+* Note : No class token here because is not classification
 
-* Attention-based method which transforms (pools) the output sequence of tokens to a single $$d$$-dimensional vector $$z$$.
-* Let $$x_L \in \mathbb{R}^{b \times n \times d}$$ be the output of the transformer encoder and $$g(\cdot) \in \mathbb{R}^{d \times 1}$$ be a linear layer. 
-* An attention vector is first computed as follows: $$x'_{L}=softmax\left(g(x_L)^T\right) \in \mathbb{R}^{b \times 1 \times n}$$
-* A weighted sum of the output of the transformer encoder is then performed: $$ z = x'_{L} x_{L} \in \mathbb{R}^{b \times 1 \times d}$$
-* The output of the sequence pooling can be seen as a final projection (through several attention blocks) of the input image into a latent space before the application of an MLP ! Some similarities with the encoding branch of CNN networks can be made :)
-* The sequence pooling replaces the class token strategy of ViT-based architecture, which I find very interesting.
+* Then this embedding is use as the input of multiple transformer block like in a classical transformer architecture (see tutorial for more details).
 
-## Comparison with the ViT architecture
 
-![](/collections/images/cct/main_innovations.jpg)
+* At the end of each transformer block $$l$$ we have a matrix $$\mathbf{z}_l \in \mathbb{R}^{N \times K}$$ with $$N = (H * W * D)/P^3$$
 
+* These matrixes are extracted for different transformer block ($${3, 6, 9, 12}$$) and reshape into a feature map of shape $$ \frac{H}{P} * \frac{W}{P} * \frac{D}{P} * K$$ 
+
+* At the bottleneck, deconvolutional (transposed convolution) layer is applied to increase the resolution of the feature map. Then the resized feature map is concatenated with the feature map of the previous transformer block and processed by a convolutional layer.
+
+* This process is repeated for all the other subsequent layers up to the original input resolution where the final output is fed into a 1×1×1 convolutional layer with a softmax activation function to generate voxel-wise segmentation map.
+
+![](/collections/images/unetr/architecture.jpg)
+
+## Experiments
+
+* Loss is a combination of soft dice and cross-entropy 
+* Method is evaluated on BTCV and MSD datasets
+* BTCV : 30 patients with abdominal CT scans where 13 organs are annotated (13 class segmentation problem)
+* MSD :  484 multi-modal and multi-site MRI (Flair, T1w, T1gd, T2w) for the brain tumor segmentaion task and 41 CT scan for the spleen segmentation task
+* Dice and 95% Hausdorff Distance (HD) are use as evaluation metrics
+
+* Transformer parameters used : $$L=12$$ transformer block, embedding size of $$K=768$$, patch size of $$ 16 * 16 * 16$$ 	
+* Average training time : 10 hours for 20 000 epochs
+
+* Note : the transformer backbone is not pre-trained at all
 
 # Results
 
-As seen in the table below, CCT performs slightly better than a very large ResNet, and definitely better that the ViT architecture, using significantly less parameters on small-sized datasets.
+As seen in the table below, UNETR outperforms the state-of-the-art methods on the BTCV leaderboard ( which are CNN or transformer based methods[^1][^2][^3]) 
 
-![](/collections/images/cct/results_table1.jpg)
+![](/collections/images/unetr/results_BTCV.jpg)
 
-CCT also performs favourably on medium-sized datasets
+Same for the MSD dataset
 
-![](/collections/images/cct/results_table2.jpg)
+![](/collections/images/unetr/results_MSD.jpg)
+
+Some visual results on the BTCV dataset::
+
+![](/collections/images/unetr/visual_results_BTCV.jpg)
+
+# Ablation studies
+
+Authors compare their decoder architecture with three other design called Naive UPsampling (NUP), Progressive UPsampling (PUP) and MuLti-scale Aggregation (MLA) [^1]
+
+![](/collections/images/unetr/ablation_decoder.jpg)
+
+They also compare model complexity with other architectures:
+
+![](/collections/images/unetr/parameters.jpg)
 
 # Conclusions
 
-Training end-to-end transformer networks from scratch on small-sized & medium-sized datasets with highly competitive results is possible !
+UNETR set a first step toward transformer based models for segmentation
 
+# References
 
+[^1]: [Sixiao Zheng et al, *Rethinking semantic segmentation from a sequence-to-sequence perspective with transformers*, Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (2021)](https://arxiv.org/abs/2012.15840)
+[^2]: [Jieneng Chen et al, *Transunet: Transformers make strong encoders for medical image segmentation*, arXiv preprint (2021)](https://arxiv.org/abs/2102.04306)
+[^3]: [Yutong Xie et al, *Cotr: Efficiently bridging cnn and transformer for 3d medical image segmentation*, International conference on medical image computing and computer-assisted intervention  (2021)](https://arxiv.org/abs/2103.03024)
