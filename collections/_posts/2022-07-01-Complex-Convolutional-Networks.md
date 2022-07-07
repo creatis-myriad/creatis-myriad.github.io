@@ -33,10 +33,8 @@ The complex CNN has 3 main building blocks:
 1.  The **complex convolution** was defined in [[2]](https://arxiv.org/abs/1705.09792) and uses complex weights $$W = W_r + jW_i.$$ It is defined as:
 
 $$
-\left[\begin{array}{c}
-Z_r \\
-Z_i
-\end{array}\right]=
+Z
+=
 \left[\begin{array}{c}
 \operatorname{Re}(W * X) \\
 \operatorname{Im}(W * X)
