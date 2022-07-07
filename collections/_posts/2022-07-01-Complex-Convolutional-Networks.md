@@ -30,7 +30,7 @@ pdf: "https://arxiv.org/pdf/2009.11536.pdf"
 
 The complex CNN has 3 main building blocks:
 
-1.  The **complex convolution** was defined in [[2]](https://arxiv.org/abs/1705.09792) and uses complex weights $$W = W_r + jW_i.$$ It is defined as:
+* The **complex convolution** was defined in [[2]](https://arxiv.org/abs/1705.09792) and uses complex weights $$W = W_r + jW_i.$$ It is defined as:
 
 $$
 Z
@@ -51,7 +51,7 @@ $$
 
 Obs: In the figure above, the bottom right expression should be: $$ W_{i} * X_{r} + W_{r} * X_{i}. $$ 
 
-2. The maxout activation function (MU) used in the previous work is replaced by the **amplitude maxout** (AMU). Given a complex convolutional layer output $$Z$$ and its module $$Z_a = |Z|$$, the amplitude maxout of $$Z$$ is defined as:
+* The maxout activation function (MU) used in the previous work is replaced by the **amplitude maxout** (AMU). Given a complex convolutional layer output $$Z$$ and its module $$Z_a = \lvert Z\rvert$$, the amplitude maxout of $$Z$$ is defined as:
 
 $$
 \left[\begin{array}{c}
