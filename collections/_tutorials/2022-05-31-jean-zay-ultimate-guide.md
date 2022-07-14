@@ -288,11 +288,23 @@ Next:
   </p> 
     
 
-Again, more detailed explanations can be found [here](http://www.idris.fr/eng/jean-zay/pre-post/jean-zay-jupyter-notebook-eng.html).
+Again, more detailed explanations can be found [here](http://www.idris.fr/eng/jean-zay/pre-post/jean-zay-jupyter-notebook-eng.html).  
+
+> 📝 If you intend run a Jupyter script for a long time (few hours), it is better to include the following lines in your ```~/.ssh/config``` on your personal machine. This is to prevent the ssh's connection loss and the job deletion due to the inactive of the ssh client.   
+> 
+>  ```shell
+>  # Create the config file
+>  touch ~/.ssh/config
+>
+>  # Append the following lines in your config file
+>  host *
+>  UseRoaming no
+>  ServerAliveInterval 300
+>  ```
 
 &nbsp;
 
-## **Job submission**
+## **Job submission**  
 For those who are familiar with Creatis cluster, the job submission on Jean Zay is quite similar. For job management on Jean Zay, `slurm` is used instead of `pbs`. You have the possibility to submit an interactive or a batch job.  
 
 ### Interactive job
@@ -306,37 +318,55 @@ srun --pty --nodes=1 --ntasks-per-node=1 --cpus-per-task=10 --gres=gpu:1 --hint=
 More details can be found [here](http://www.idris.fr/eng/jean-zay/gpu/jean-zay-gpu-exec_interactif-eng.html).
 
 ### Batch job
-To submit a batch job, you have to create a submission script `xxxx.slurm`. Here is an example for a job with 1 GPU in default GPU partition
+To submit a batch job, you have to create a submission script `xxxx.slurm`. Here is an example for a job with 1 GPU in default GPU partition. The ```%j``` in the ```--output``` line tells SLURM to substitute the job ID in the name of the output file.
 
 ```
-
 #!/bin/bash
 #SBATCH --job-name=single_gpu        # name of job
-##SBATCH --partition=gpu_p2          # uncomment for gpu_p2 partition gpu_p2
-#SBATCH --nodes=1                    # we request one node
-#SBATCH --ntasks-per-node=1          # with one task per node (= number of GPUs here)
+#SBATCH --mail-type=END,FAIL         # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=email@ufl.edu    # Where to send mail
+##SBATCH --partition=gpu_p2          # uncomment for gpu_p2 partition gpu_p2	
+#SBATCH --nodes=1                    # Run all processes on a single node	
+#SBATCH --ntasks=1                   # Run a single task
 #SBATCH --gres=gpu:1                 # number of GPUs (1/4 of GPUs)
-#SBATCH --cpus-per-task=10           # number of cores per task (1/4 of the 4-GPUs node)
-##SBATCH --cpus-per-task=3           # number of cores per task (with gpu_p2: 1/8 of the 8-GPUs node)
+#SBATCH --cpus-per-task=10           # Number of CPU cores per task
+#SBATCH --mem=80gb                   # Job memory request
 # /!\ Caution, "multithread" in Slurm vocabulary refers to hyperthreading.
 #SBATCH --hint=nomultithread         # hyperthreading is deactivated
-#SBATCH --time=00:10:00              # maximum execution time requested (HH:MM:SS)
-#SBATCH --output=gpu_single%j.out    # name of output file
-#SBATCH --error=gpu_single%j.out     # name of error file (here, in common with the output file)
+#SBATCH --time=20:00:00              # maximum execution time requested (HH:MM:SS) (Maximum 20 hours for gpu_p1 and 100 hours for gpu_p2)
+#SBATCH --output=gpu_single_%j.out   # name of output file
+#SBATCH --error=gpu_single_%j.err    # name of error file
  
-# cleans out the modules loaded in interactive and inherited by default 
-module purge
- 
-# loading of modules
-module load ...
- 
-# echo of launched commands
-set -x
+# Activate conda environment
+source /gpfswork/rech/obh/<your-username>/miniconda3/etc/profile.d/conda.sh
+conda activate <your-environment-name>
+
  
 # code execution
-./single_gpu_exe
-
+python -u script_mono_gpu.py        # option -u (= unbuffered) deactivates the buffering of standard outputs which are automatically effectuated by Slurm
 ```
+
+<br />
+Some useful commands:
+* To submit the script via the ```sbatch``` command:  
+   <br />
+   ```shell
+   sbatch single_gpu.slurm
+   ```
+
+* To monitor jobs which are waiting or in execution:
+   ```shell
+   squeue -u $USER
+
+   # Example of output
+   JOBID  PARTITION  NAME  USER  ST   TIME  NODES  NODELIST(REASON)   
+   235  part_name  test   abc   R  00:02      1  r6i3n1 
+   ```
+
+* To cancel an execution:
+   ```shell
+   scancel $JOBID
+   ```
 
 &nbsp;
 
