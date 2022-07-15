@@ -246,7 +246,7 @@ In this section, I will only focus on how to correctly install Jupyter-related p
 Your `base` environment now supports JupyterLab/Notebook. To be able to switch environment after launching JupyterLab/Notebook in the `base` environment, make sure you install `ipykernel` in every future environment you create. A simple way to do so:
 
 ```shell
-conda create -n <your-env-name> ipykernel
+conda create -n <your-environment> ipykernel
 ```
 
 To launch JupyterLab/Notebook on Jean Zay, type:
@@ -342,8 +342,8 @@ To submit a batch job, you have to create a submission script `xxxx.slurm`. Here
 module purge
  
 # activate conda environement
-source /gpfswork/rech/<your account>/<your username>/miniconda3/etc/profile.d/conda.sh
-conda activate <your environment>
+source /gpfswork/rech/<your-project-account>/<jean-zay-username>/miniconda3/etc/profile.d/conda.sh
+conda activate <your-environment>
 
 # loading of modules (optional)
 module load ...
@@ -389,7 +389,7 @@ There are two options to transfer your data to Jean Zay, depending on the IP add
 pTarget=...     # target path
 pSource=...     # source path
 
-scp -r $pSource_0 <your Jean Zay username>@jean-zay.idris.fr:$pTarget
+scp -r $pSource <jean-zay-username>@jean-zay.idris.fr:$pTarget
 ```
 
 ```shell
@@ -399,7 +399,7 @@ scp -r $pSource_0 <your Jean Zay username>@jean-zay.idris.fr:$pTarget
 pTarget=...     # target path
 pSource=...     # source path
 
-scp -r $pSource <your Creatis username>@tux.creatis.insa-lyon.fr:$pTarget
+scp -r $pSource <creatis-username>@tux.creatis.insa-lyon.fr:$pTarget
 ```
 
 For data transfer from Jean Zay to tux, it is possible to use ``` rsync ```, which is much faster than ``` scp ``` for large folders.
