@@ -25,7 +25,7 @@ This paper presents two methods, Attention Rollout and Attention Flow, that allo
 
 # Methods
 
-With raw attention maps, informations from different token get increasingly mixed after each layer and become uniform after few layers.
+With raw attention maps, informations from different tokens get increasingly mixed after each layer and become uniform after few layers.
 
 ![](/collections/images/att_rollout/embedding_attention.jpg)
 
@@ -35,16 +35,16 @@ Moreover, raw attention maps don't take into account the residual connection in 
 
 To account this residual connections they add an identity matrix to the attention matrix and re-normalize : $$A = 0.5W_{att} + 0.5I$$
 
-It is possible to analyse each head separately but in the paper they propose to average the attention at each layer over all heads. 
+It is possible to analyze each head separately but in the paper they propose to average the attention at each layer over all heads. 
 
 # Attention Rollout
 
 We can see the network as a graph with :
 * **Nodes** : tokens
-* **Edges** : attention from the nodes of layer to those of the previous layers
-* **Weights** : attention weight
+* **Edges** : attention from the nodes of a layer to those of the previous layers
+* **Weights** : attention weights
 
-In Attention Rollout the weights are considered as **the proportion of information ** transfered between two nodes. 
+In Attention Rollout, the weights are considered as **the proportion of information ** transfered between two nodes. 
 
 To compute the attention from layer $$i$$ to layer $$j$$ we can use this equation : 
 <center>
@@ -59,11 +59,11 @@ With $$\tilde{A}$$ the attention rollout. To compute **input attention** $$j$$ i
 
 # Attention Flow
 
-In Attention Flow the weights are considered as **the capacity** of the edge. In graph theory, the flow of the graph must satisfies two conditions : 
+In Attention Flow, the weights are considered as **the capacity** of the edge. In graph theory, the flow of the graph must satisfies two conditions : 
 * **Capacity constraint** : for each edge the flow should not exceed its capacity
 * **Flow conservation** : for all nodes (except source and target) the input flow is equal to the output flow
 
-Using any maximum flow algorithm it is possible to compute the maximum attention flow from any nodes of an hidden layers to any input node.
+Using any maximum flow algorithm it is possible to compute the maximum attention flow from any nodes of a hidden layers to any input node.
 
 # Experiment
 
