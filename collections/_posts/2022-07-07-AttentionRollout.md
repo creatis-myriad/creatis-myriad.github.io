@@ -6,13 +6,13 @@ author: "Gaspard Dussert"
 cite:
     authors: "Samira Abnar, Willem Zuidema"
     title:   "Quantifying Attention Flow in Transformers"
-    venue:   ""
+    venue:   "Annual Meeting of the Association for Computational Linguistics (ACL) 2020"
 pdf: "https://aclanthology.org/2020.acl-main.385.pdf"
 ---
 
 # Introduction
 
-This paper presents two methods, Attention Rollout and Attention Flow, that allow to vizualise the attention to the input tokens. It was designed for the [original NLP transformer](https://arxiv.org/abs/1706.03762) but the authors of the [Vision Transformer](https://creatis-myriad.github.io/tutorials/2022-06-20-tutorial_transformer.html) showed that Attention Rollout still works with images. 
+This paper presents two methods, Attention Rollout and Attention Flow, that allow to vizualise the attention to the input tokens. It was designed for the original NLP transformer[^1]  but the authors of the Vision Transformer[^2] showed that Attention Rollout still works with images. 
 
 ![](/collections/images/att_rollout/example.jpg)
 
@@ -47,14 +47,14 @@ We can see the network as a graph with :
 In Attention Rollout, the weights are considered as **the proportion of information ** transfered between two nodes. 
 
 To compute the attention from layer $$i$$ to layer $$j$$ we can use this equation : 
-<center>
+
 $$
 \tilde{A}\left(l_{i}\right)=\left\{\begin{array}{ll}
 A\left(l_{i}\right) \tilde{A}\left(l_{i-1}\right) & \text { if } i>j \\
 A\left(l_{i}\right) & \text { if } i=j
 \end{array}\right.
 $$
-</center>
+
 With $$\tilde{A}$$ the attention rollout. To compute **input attention** $$j$$ is set to 0.
 
 # Attention Flow
@@ -81,3 +81,8 @@ Using any maximum flow algorithm it is possible to compute the maximum attention
 
 * Attention rollout is more focused than attention flow
 * Attention flow indicates a set of tokens that are important for the final decision
+
+# References
+
+[^1]: [Ashish Vaswani et al, *Attention is All you Need*, Advances in Neural Information Processing Systems 30 (NIPS 2017)](https://arxiv.org/abs/1706.03762)
+[^2]: [Review of the Vision Transformer](https://creatis-myriad.github.io/tutorials/2022-06-20-tutorial_transformer.html)
