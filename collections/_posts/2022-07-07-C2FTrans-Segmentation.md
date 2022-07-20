@@ -6,11 +6,9 @@ author: "Hang Jung Ling"
 cite:
     authors: "Xian Lin, Zengqiang Yan, Li Yu, and Kwang-Ting Cheng"
     title:   "C2FTrans: Coarse-to-Fine Transformers for Medical Image Segmentation"
-    venue:   "arxiv"
-pdf: "https://arxiv.org/pdf/2206.14409v1.pdf"
+    venue:   "arxiv (Submitted to IEEE TMI)"
+pdf: "https://arxiv.org/pdf/2206.14409.pdf"
 ---
-
-> 📝 This paper has been submitted to IEEE TMI and is currently under review at the time of writing this post.  
 
 # Notes
 * Code is available on GitHub: [https://github.com/xianlin7/C2FTrans](https://github.com/xianlin7/C2FTrans).
@@ -25,7 +23,7 @@ pdf: "https://arxiv.org/pdf/2206.14409v1.pdf"
 
 # Architecture
 ![](/collections/images/C2Ftrans/architecture.jpg)
-The authors use a full U-Net as backbone for the feature extraction and add transformer modules (CGT and BLT) to the decoder the U-Net. This idea is quite different from [UNETR]({% post_url 2022-07-01-UNETR-TransformerMedicalImageSegmentation %}){:target="_blank"} that replaces directly the encoder of the U-Net with transformers. 
+The authors use a full U-Net as backbone for the feature extraction and add transformer modules (CGT and BLT) to the decoder of the U-Net. This idea is quite different from UNETR[^1] that replaces directly the encoder of the U-Net with transformers. 
 
 ## Cross-scale Global Transformer (CGT)
 ![](/collections/images/C2Ftrans/CGT.jpg)
@@ -64,16 +62,16 @@ To obtain the final CGT output, $$ F_{CGT} $$:
 
 > ⚠️ <span style="color:red">In the paper, it is written that they learn two projection matrices and apply a residual connection to get $$ F_{CGT} $$, which contradicts their GitHub code.</span>
 
-Three functionalities of $$ F_{CGT} $$:
-* Used to compute boundary-aware windows for BLT.
+$$ F_{CGT} $$ is then transformed for the downstream tasks:
+* Computation of boundary-aware windows for BLT.
 
 $$ F_{CGT} \xrightarrow[1 \times 1 \text{ conv}]{} \mathbb{R}^{\text{num class} \times \frac{\text{H}}{4} \times \frac{\text{W}}{4}} \xrightarrow[\text{softmax}]{} P_{CGT} $$
 
-* Generate a low-resolution mask for multiscale loss computation.
+* Generation of a low-resolution mask for multiscale loss computation.
 
 $$ P_{CGT} \xrightarrow[\text{argmax}]{} \mathbb{R}^{\text{num class} \times \frac{\text{H}}{4} \times \frac{\text{W}}{4}} $$
 
-* Upsampled to obtain the probability map of initial image dimension that will be concatenated with the another two probability maps from U-Net and BLT to form the final probability map.  
+* Generation of a probability map of initial image dimension (via upsampling) that will be concatenated with the another two probability maps from U-Net and BLT to form the final probability map.  
 
 $$ F_{CGT} \xrightarrow[\text{expand}]{} \mathbb{R}^{\text{D} \times \frac{\text{H}}{4} \times \frac{\text{W}}{4} \times 1} \xrightarrow[\text{repeat along last dim}]{} \mathbb{R}^{\text{D} \times \frac{\text{H}}{4} \times \frac{\text{W}}{4} \times 16} \xrightarrow[\text{reshape}]{} \mathbb{R}^{\text{D} \times \text{H} \times \text{W}} $$
 
@@ -93,7 +91,7 @@ Projections of $$ \{f^{*} \} $$ to obtain $$ Q_{2,k} $$, $$ K_{2,k} $$, and $$ V
 
 $$ \{f^{*} \} \in \mathbb{R}^{\frac{\text{HW}}{4} \times 2\text{C}}  \xrightarrow[\text{tokenization}]{\mathbb{R}^{2 \text{C} \times \text{D}}} \mathbb{R}^{\frac{\text{HW}}{4} \times \text{D}} \xrightarrow[\text{projection}]{\text{E}_{q,k,v} \in \mathbb{R}^{\text(D) \times \text{D}_h}} Q_{2,k}, K_{2,k},  V_{2,k} \in \mathbb{R}^{\frac{\text{HW}}{4} \times \text{D}_h} $$
 
-For each transformer head, the self-attention, $$ F_{sa,k} $$ is computed. Then, the outputs of all head are concatenated to form $$ F_{sa} $$. Just like the CGT, the final BLT output, $$ F_{BLT} $$ will be used to generate the low-res probability map for loss computation and upsampled to produce the full scale probability map.
+For each transformer head, the self-attention, $$ F_{sa,k} $$ is computed. Then, the outputs of all the heads are concatenated to form $$ F_{sa} $$. Just like the CGT, the final BLT output, $$ F_{BLT} $$ will be used to generate the low-res probability map for loss computation and upsampled to produce the full scale probability map.
 
 &nbsp;
 
@@ -131,11 +129,11 @@ The authors mention the comparison between the SOTA methods but it lacks the com
 &nbsp;
 
 # Conclusions
-The introduction of C2F transformer in medical image segmentation is interesting, especially the Cross-scale Global Transformer. However, the paper is not well written as some important details are missing, e.g. the generation and combination of $$ Q $$, $$ K $$, and $$ V $$ of different dimension in the CGT. Moreover, there are some contradictories between some steps described in their paper and GitHub code. 
+The introduction of C2F transformer in medical image segmentation is interesting, especially the Cross-scale Global Transformer. However, the paper is not well written as some important details are missing, e.g. the generation and combination of $$ Q $$, $$ K $$, and $$ V $$ of different dimension in the CGT. Moreover, there are some contradictions between some of steps described in their paper and their GitHub code. 
 
-Their GitHub repository is hard to use (incorrect requirements.txt to setup the appropriate virtual environement). I have tested their algorithm on Camus dataset and the results were worse than those given by nnUNet, which made me to doubt the correctness of their results.
+Their GitHub repository is hard to use (incorrect _requirements.txt_ to setup a working virtual environment). I have tested their algorithm on the Camus dataset and the results were worse than those given by nnUNet, which made me doubt the correctness of their results.
 
+&nbsp;
 
-
-
-
+# References
+[^1]: Review of "UNETR: Transformers for 3D Medical Image Segmentation": [https://creatis-myriad.github.io/2022/07/01/UNETR-TransformerMedicalImageSegmentation.html](https://creatis-myriad.github.io/2022/07/01/UNETR-TransformerMedicalImageSegmentation.html)
