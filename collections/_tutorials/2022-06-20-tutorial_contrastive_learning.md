@@ -22,19 +22,19 @@ categories: contrastive learning, unsupervised learning
 &nbsp;
 
 ## **Introduction**
-The goal of unsupervised-based model is to learn effective representation without human supervision. Most mainstream approaches fall into one of the two classes: generative or discriminative.  
+The goal of the unsupervised model is to learn effective representation without human supervision. Most mainstream approaches can be divided into two classes: generative or discriminative. 
 
->> Generative approaches learn to generate samples in the input space, such as GAN [[1]](https://arxiv.org/abs/1406.2661?context=cs). 
+> Generative approaches learn to generate samples in the input space, such as GAN [[1]](https://arxiv.org/abs/1406.2661?context=cs). 
 	
->> Discriminative approaches learn representation by performing pretext tasks where both the input and label are derived from an unlabeled dataset [[2]](https://arxiv.org/abs/1803.07728).
+> Discriminative approaches learn representation by performing pretext tasks where both the input and label are derived from an unlabeled dataset [[2]](https://arxiv.org/abs/1803.07728).
 
-Discriminative approaches based on contrastive learning in the latent space have recently shown great promise, achieving state-of-the-art results. The purpose of this tutorial is to introduce the key steps / concepts of this formalism, as well as the results that follow from it. 
+Recently, the discriminative approach based on contrastive learning in the latent space has shown great promise and achieved state-of-the-art results. The purpose of this tutorial is to introduce the key steps/concepts of this formalism, as well as the results obtained. 
 
 &nbsp;
 
 ## **SimCLR framework**
 
-To illustrate the contrastive learning mechanism, we will study the now famous simple framework for contrastive learning of visual representation, called [SimCLR](https://arxiv.org/pdf/2002.05709.pdf). The corresponding architecture is given below:
+To understand the contrastive learning mechanism, we will start by looking at the simple contrastive learning framework for visual representation, called [SimCLR](https://arxiv.org/pdf/2002.05709.pdf). The corresponding architecture is given below:
 
 ![](/collections/images/contrastive_learning/simCLR_overview.jpg)
 
@@ -102,15 +102,15 @@ $$ \mathcal{L} = \frac{1}{2N} \sum_{k=1}^{N}{ \left[ l(2k-1,2k) + l(2k,2k-1) \ri
 
 <p align = "center"><img src ="/collections/images/contrastive_learning/result_1.jpg" style="width:60%"></p>
 
-* Composition of data augmentation operation (in particular random cropping and rnadom color distortion) is crucial for learning good representations.
+* A composition of data augmentation operations (in particular **random cropping** and **random color distortion** ) is crucial for learning good representations.
 
 * Unsupervised contrastive learning benefits more from bigger models than its suerpvised counterpart.
 
-* A nonlinear projection head improves the representation quality of the layer before it !
+* A nonlinear projection head improves the representation quality of the layer before it!
 
-* Normalized cross entropy loss with adjustable temperature works better than alternatives.
+* Normalized cross-entropy loss with adjustable temperature works better than its alternatives.
 
-* Contrastive learning benefits (more) from larger batch sizes and longer training
+* Contrastive learning benefits (more) from larger batch sizes and longer training epochs.
 
 <p align = "center"><img src ="/collections/images/contrastive_learning/result_2.jpg" style="width:60%"></p>
 
