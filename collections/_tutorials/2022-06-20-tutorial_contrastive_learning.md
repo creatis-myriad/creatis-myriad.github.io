@@ -104,7 +104,7 @@ $$ \mathcal{L} = \frac{1}{2N} \sum_{k=1}^{N}{ \left[ l(2k-1,2k) + l(2k,2k-1) \ri
 
 * A composition of data augmentation operations (in particular **random cropping** and **random color distortion** ) is crucial for learning good representations.
 
-* Unsupervised contrastive learning benefits more from bigger models than its suerpvised counterpart.
+* Unsupervised contrastive learning benefits more from larger models than its supervised counterpart.
 
 * A nonlinear projection head improves the representation quality of the layer before it!
 
