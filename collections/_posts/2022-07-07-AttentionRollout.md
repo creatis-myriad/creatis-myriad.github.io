@@ -44,7 +44,7 @@ We can see the network as a graph with :
 * **Edges** : attention from the nodes of a layer to those of the previous layers
 * **Weights** : attention weights
 
-In Attention Rollout, the weights are considered as **the proportion of information ** transfered between two nodes. 
+In Attention Rollout, the weights are considered as **the proportion of information** transfered between two nodes. 
 
 To compute the attention from layer $$i$$ to layer $$j$$ we can use this equation : 
 
