@@ -6,11 +6,6 @@ date:   2022-07-09
 categories: contrastive learning, unsupervised learning
 ---
 
-# Notes
-
-* Here is a link to an interesting video to better understand the contrastive learning paradigm: [video](https://www.youtube.com/watch?v=IEiytaXnggI&ab_channel=DeepMindELLISUCLCSMLSeminarSeries)
-
-&nbsp;
 
 - [**Introduction**](#introduction)
 - [**SimCLR framework**](#simclr-framework)
@@ -18,6 +13,13 @@ categories: contrastive learning, unsupervised learning
   - [Contrastive loss](#contrastive-loss)
   - [Training tricks](#training-tricks)
   - [Highlights and results](#highlights-and-results)  
+
+&nbsp;
+
+# Notes
+
+* Here is a link to an interesting video to better understand the contrastive learning paradigm: [video](https://www.youtube.com/watch?v=IEiytaXnggI&ab_channel=DeepMindELLISUCLCSMLSeminarSeries)
+
 
 &nbsp;
 
@@ -44,15 +46,15 @@ To understand the contrastive learning mechanism, we will start by looking at th
 
 As illustrated in the figure above, SimCLR comprises four major components: 
 
-* A stochasitc data augmentation module that transforms any given data sample $$x$$ randomly resulting in two correlated views of the same sample, denoted as $$\tilde{x}_i$$ and $$\tilde{x}_j$$ and considered as positive pair. **Random cropping**, **random color distortions** and **random Gaussian blur** are classically combined to transform data samples. 
+* A stochastic data augmentation module that randomly transforms any given data sample $$x$$, resulting in two correlated views of the same sample, denoted as $$\tilde{x}_i$$ and $$\tilde{x}_j$$. These views are considered as a positive pair. The transformation applied here is the combination of **random cropping**, **random color distortions**, and **random Gaussian blur**. 
 
-* A neural network base encoder $$f(\cdot)$$ that extracts representation vectors from augmented data samples. This step can be realized by any standard network architecture, such as ResNet. This step is modeled as follows:
+* A neural-network-based encoder $$f(\cdot)$$ that extracts the representation vectors from the augmented data samples. This step can be realized by any standard network architecture, such as ResNet. The step is modeled as follows:
 
 $$h_i = f(\tilde{x}_i)=\texttt{ResNet}(\tilde{x}_i)$$
 
-&nbsp; &nbsp; &nbsp; &nbsp; where $$h_i \in \mathbb{R}^{d}$$ is the output vector after average pooling layer. 
+&nbsp; &nbsp; &nbsp; &nbsp; where $$h_i \in \mathbb{R}^{d}$$ is the output vector after the average pooling layer. 
 
-* A simple neural network projection head $$g(\cdot)$$ that maps representations to the space where the contrastive loss is applied. A simple MLP with one hidden layer is  used for this step which outputs a vector $$z_i \in \mathbb{R}^{d'}$$ with $$d'=128$$. This allows to project the representation to a 128-dimensional latent space.
+* A simple neural network projection head $$g(\cdot)$$ that maps the representations to the space where the contrastive loss is applied. A simple MLP with one hidden layer is  used in this step to output a vector $$z_i \in \mathbb{R}^{d'}$$ with $$d'=128$$. This allows to project the representation to a 128-dimensional latent space.
 
 * A contrastive loss function defined for a contrastive prediction task. Given a set of $$\{\tilde{x}_k\}$$ including a positive pair of samples $$\tilde{x}_i$$ and $$\tilde{x}_j$$, the contrastive prediction task aims to identify $$\tilde{x}_j$$ in $$\{\tilde{x}_k\}_{k \neq i}$$ for a given $$\tilde{x}_i$$.
 
@@ -66,15 +68,15 @@ $$h_i = f(\tilde{x}_i)=\texttt{ResNet}(\tilde{x}_i)$$
 
 * For each minibatch, one pair is considered as positive and the others $$2(N-1)$$ as negative examples. 
 
-* The cosine similarity between two samples $$u$$ and $$v$$ is computed from the conventional dot product $$sim(u,v)=u^{T}v/\left(\|u\|\|v\|\right)$$ . The corresponding value varies between 0 (when u and v are orthogonal) and 1 (when u and v are aligned).
+* The cosine similarity between two samples $$u$$ and $$v$$ is computed from the conventional dot product $$sim(u,v)=u^{T}v/\left(\|u\|\|v\|\right)$$. The corresponding value varies between 0 (when $$u$$ and $$v$$ are orthogonal) and 1 (when $$u$$ and $$v$$ are aligned).
 
-* The following loss function for a positive pair of samples $$(i,j)$$ is defined as:
+* The loss function for a positive pair of samples $$(i,j)$$ is defined as:
 
 $$l(i,j)=-\log{\left(\frac{ \exp\left(sim(z_i,z_j)/\tau\right) }{ \sum_{k=1}^{2N}{\mathbb{1}_{[k \neq i]}\exp\left(sim(z_i,z_k)/\tau\right) } }\right)}$$
 
-&nbsp; &nbsp; &nbsp; &nbsp; where $$\mathbb{1}_{[k \neq i]} \in [0,1]$$ is an indicator function evaluating to 1 iff $$k \neq i$$ and $$\tau$$ is a parameter.
+&nbsp; &nbsp; &nbsp; &nbsp; where $$\mathbb{1}_{[k \neq i]} \in [0,1]$$ is an indicator function that outputs 1 if $$k \neq i$$ while $$\tau$$ is a parameter.
 
->> Since both the numerator and denominator involve exponential terms, the values inside the $$-\log(\cdot)$$ function varie between 0 and 1. As a reminder, we display above the corresponding curve. From this figure, on can see that the loss function will tend to its minimum when the numerator and the denominator will be close, i.e. when the set $$\{\exp\left(sim(z_i,z_k)/\tau\right)\}_{[k \neq (i,j)]}$$ will be as low as possible and when $$\exp\left(sim(z_i,z_j)/\tau\right)$$ will be high, making the two points $$z_i$$ and $$z_j$$ to be as close as possible and in the meanwhile the other points to be as orthogonal as possible to these two points. The minimization of the contrastive loss thus allows to structure the latent space according to visual representation.
+> Since both the numerator and denominator involve exponential terms, the values inside the $$-\log(\cdot)$$ function vary between 0 and 1. As a reminder, the corresponding curve is plotted right below. This curve shows that the loss function tends to its minimum when the numerator and the denominator are close. This means the set $$\{\exp\left(sim(z_i,z_k)/\tau\right)\}_{[k \neq (i,j)]}$$ is as low as possible and $$\exp\left(sim(z_i,z_j)/\tau\right)$$ is high, making the two points $$z_i$$ and $$z_j$$ to be as close as possible while the other points are as orthogonal as possible to these two points. Thus, the minimization of the contrastive loss allows the structuring of the latent space according to the visual representation.
 
 <p align = "center"><img src ="/collections/images/contrastive_learning/minus_log.jpg" alt="Trulli" style="width:40%"></p>
 
@@ -86,25 +88,25 @@ $$ \mathcal{L} = \frac{1}{2N} \sum_{k=1}^{N}{ \left[ l(2k-1,2k) + l(2k,2k-1) \ri
 
 ### Training tricks
 
-* The model was trained at batch size N=4096 for 100 epochs.
+* The model was trained with a batch size, N=4096 for 100 epochs.
 
-* The training was stabilized thanks to the use of the [LARS](https://arxiv.org/abs/1708.03888) optimizer for all batch sizes.
+* The training was stabilized thanks to the use of the [LARS](https://arxiv.org/abs/1708.03888) optimizer.
 
-* The model was trained with 128 TPU v3 core.
+* The model was trained with 128 TPU v3 cores.
 
-* It took around 1.5 hours to train a SimCRL model composed of ResNet-50 with a batch size of 4096 for 100 epochs. 
+* It took around 1.5 hours to train a SimCRL model that composed of a ResNet-50 with the configurations mentionned before. 
 
 &nbsp;
 
 ### Highlights and results
 
-* SimCRL achieved results comparable to those of supervised methods but with much more parameters to train !
+* SimCRL achieved comparable results to those of supervised methods but with much more parameters to train !
 
 <p align = "center"><img src ="/collections/images/contrastive_learning/result_1.jpg" style="width:60%"></p>
 
 * A composition of data augmentation operations (in particular **random cropping** and **random color distortion** ) is crucial for learning good representations.
 
-* Unsupervised contrastive learning benefits more from larger models than its supervised counterpart.
+* Unsupervised contrastive learning benefits more from bigger models than its suerpvised counterpart.
 
 * A nonlinear projection head improves the representation quality of the layer before it!
 
