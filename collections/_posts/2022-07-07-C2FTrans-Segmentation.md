@@ -129,9 +129,7 @@ The authors mention the comparison between the SOTA methods but it lacks the com
 &nbsp;
 
 # Conclusions
-The introduction of C2F transformer in medical image segmentation is interesting, especially the Cross-scale Global Transformer. However, the paper is not well written as some important details are missing, e.g. the generation and combination of $$ Q $$, $$ K $$, and $$ V $$ of different dimension in the CGT. Moreover, there are some contradictions between some of the steps described in their paper and their GitHub code. 
-
-Their GitHub repository is hard to use (incorrect _requirements.txt_ to setup a working virtual environment, barely commented codes, etc.). I have tested their algorithm on the Camus dataset and the results were worse than those given by nnUNet.
+The introduction of C2F transformer in medical image segmentation is interesting, especially the Cross-scale Global Transformer. However, their GitHub repository is not easy to use. I had a hard time setting up the correct environment. I have also tested their algorithm on the Camus dataset and the results were worse than those given by nnUNet.
 
 &nbsp;
 
