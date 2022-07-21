@@ -87,11 +87,11 @@ Generation of boundary-aware windows:
 **3)** Apply non-maximum suppression to keep the highest score windows and discard overlapping boxes. A filtered window set $$ \{w^{*} \} $$ is obtained.  
 **4)** Align $$ \{w^{*} \} $$ with $$ F_2 $$ to form the corresponding feature map $$ \{f^{*} \} $$.
 
-Projections of $$ \{f^{*} \} $$ to obtain $$ Q_{2,k} $$, $$ K_{2,k} $$, and $$ V_{2,k} $$, where $$ k $$ denotes the number of self-attention heads:
+Projections of $$ \{f^{*} \} $$ to obtain $$ Q_{2,k} $$, $$ K_{2,k} $$, and $$ V_{2,k} $$, where $$ k $$ denotes the number of windows. The size of each window is fixed at $$ 16 \times 16 $$:
 
-$$ \{f^{*} \} \in \mathbb{R}^{\frac{\text{HW}}{4} \times 2\text{C}}  \xrightarrow[\text{tokenization}]{\mathbb{R}^{2 \text{C} \times \text{D}}} \mathbb{R}^{\frac{\text{HW}}{4} \times \text{D}} \xrightarrow[\text{projection}]{\text{E}_{q,k,v} \in \mathbb{R}^{\text(D) \times \text{D}_h}} Q_{2,k}, K_{2,k},  V_{2,k} \in \mathbb{R}^{\frac{\text{HW}}{4} \times \text{D}_h} $$
+$$ f^{*}  \in \mathbb{R}^{(16 \times 16) \times 2\text{C}}  \xrightarrow[\text{tokenization}]{\mathbb{R}^{2 \text{C} \times \text{D}}} \mathbb{R}^{(16 \times 16) \times \text{D}} \xrightarrow[\text{projection}]{\text{E}_{q,k,v} \in \mathbb{R}^{\text{D} \times \text{D}_h}} Q_{2,k}, K_{2,k},  V_{2,k} \in \mathbb{R}^{(16 \times 16) \times \text{D}_h} $$
 
-For each transformer head, the self-attention, $$ F_{sa,k} $$ is computed. Then, the outputs of all the heads are concatenated to form $$ F_{sa} $$. Just like the CGT, the final BLT output, $$ F_{BLT} $$ will be used to generate the low-res probability map for loss computation and upsampled to produce the full scale probability map.
+For each window, the self-attention is computed. The authors do not mention how these self-attention maps are combined. The combined attention maps with the residual connection with the tokenized $$ F_2 $$ will then be fed to a FFN to obtain $$ F_{sa,i}, i \in \{1 \cdots \text{g}\} $$, where $$ \text{g} $$ is the number of transformer heads. Afterwards, the outputs of all the heads are concatenated to form $$ F_{sa} $$. Just like the CGT, the final BLT output, $$ F_{BLT} $$ will be used to generate the low-res probability map for loss computation and upsampled to produce the full scale probability map.
 
 &nbsp;
 
@@ -131,7 +131,7 @@ The authors mention the comparison between the SOTA methods but it lacks the com
 # Conclusions
 The introduction of C2F transformer in medical image segmentation is interesting, especially the Cross-scale Global Transformer. However, the paper is not well written as some important details are missing, e.g. the generation and combination of $$ Q $$, $$ K $$, and $$ V $$ of different dimension in the CGT. Moreover, there are some contradictions between some of the steps described in their paper and their GitHub code. 
 
-Their GitHub repository is hard to use (incorrect _requirements.txt_ to setup a working virtual environment). I have tested their algorithm on the Camus dataset and the results were worse than those given by nnUNet, which made me doubt the correctness of their results.
+Their GitHub repository is hard to use (incorrect _requirements.txt_ to setup a working virtual environment, barely commented codes, etc.). I have tested their algorithm on the Camus dataset and the results were worse than those given by nnUNet, which made me doubt the correctness of their results.
 
 &nbsp;
 
