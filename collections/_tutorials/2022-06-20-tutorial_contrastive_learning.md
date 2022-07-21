@@ -68,7 +68,7 @@ $$h_i = f(\tilde{x}_i)=\texttt{ResNet}(\tilde{x}_i)$$
 
 * For each minibatch, one pair is considered as positive and the others $$2(N-1)$$ as negative examples. 
 
-* The cosine similarity between two samples $$u$$ and $$v$$ is computed from the conventional dot product $$sim(u,v)=u^{T}v/\left(\|u\|\|v\|\right)$$. The corresponding value varies between 0 (when $$u$$ and $$v$$ are orthogonal) and 1 (when $$u$$ and $$v$$ are aligned).
+* The cosine similarity between two samples $$u$$ and $$v$$ is computed from the conventional dot product $$sim(u,v)=u^{T}v/\left(\|u\|\|v\|\right)$$. The corresponding value varies between -1 (when $$u$$ and $$v$$ are opposite) and 1 (when $$u$$ and $$v$$ are aligned).
 
 * The loss function for a positive pair of samples $$(i,j)$$ is defined as:
 
@@ -76,7 +76,7 @@ $$l(i,j)=-\log{\left(\frac{ \exp\left(sim(z_i,z_j)/\tau\right) }{ \sum_{k=1}^{2N
 
 &nbsp; &nbsp; &nbsp; &nbsp; where $$\mathbb{1}_{[k \neq i]} \in [0,1]$$ is an indicator function that outputs 1 if $$k \neq i$$ while $$\tau$$ is a parameter.
 
-> Since both the numerator and denominator involve exponential terms, the values inside the $$-\log(\cdot)$$ function vary between 0 and 1. As a reminder, the corresponding curve is plotted right below. This curve shows that the loss function tends to its minimum when the numerator and the denominator are close. This means the set $$\{\exp\left(sim(z_i,z_k)/\tau\right)\}_{[k \neq (i,j)]}$$ is as low as possible and $$\exp\left(sim(z_i,z_j)/\tau\right)$$ is high, making the two points $$z_i$$ and $$z_j$$ to be as close as possible while the other points are as orthogonal as possible to these two points. Thus, the minimization of the contrastive loss allows the structuring of the latent space according to the visual representation.
+> Since both the numerator and denominator involve exponential terms, the values inside the $$-\log(\cdot)$$ function vary between 0 and 1. As a reminder, the corresponding curve is plotted right below. This curve shows that the loss function tends to its minimum when the numerator and the denominator are close. This means the set $$\{\exp\left(sim(z_i,z_k)/\tau\right)\}_{[k \neq (i,j)]}$$ is as low as possible and $$\exp\left(sim(z_i,z_j)/\tau\right)$$ is high, making the two points $$z_i$$ and $$z_j$$ to be as close as possible while the other points should be as far away as possible to these two points. Thus, the minimization of the contrastive loss allows the structuring of the latent space according to the visual representation!
 
 <p align = "center"><img src ="/collections/images/contrastive_learning/minus_log.jpg" alt="Trulli" style="width:40%"></p>
 
