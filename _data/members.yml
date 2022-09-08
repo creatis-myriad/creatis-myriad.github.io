@@ -260,6 +260,14 @@ phd_first:
     subject: 'Prediction of stroke lesion evolution on CT imaging by supervised and unsupervised artificial intelligence approach'
     interests: "Neuroimaging, CT imaging, deep learning"      
     supervisors: C. Frindel   
+    
+  - firstname: 'Pierre'
+    lastname: 'Rougé'
+    institution: 'University Reims Champagne-Ardenne, INSA'
+    picture: 'pRouge.jpg'
+    subject: 'Segmentation and modeling of the brain vascular network from MRA images'
+    interests: "Neuroimaging, vascular imaging, deep learning"      
+    supervisors: N. Passat, O. Merveille   
    
 phd_second:
 

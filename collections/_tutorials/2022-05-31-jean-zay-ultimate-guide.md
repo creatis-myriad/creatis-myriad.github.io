@@ -6,6 +6,8 @@ date:   2022-05-31
 categories: JeanZay, Guide
 ---
 
+(Updated on 14 July 2022)
+
 - [**Introduction**](#introduction)
 - [**Jean Zay account application**](#jean-zay-account-application)
   - [Signup on the eDARI portal <a name="idris-account"></a>](#signup-on-the-edari-portal-)
@@ -17,7 +19,8 @@ categories: JeanZay, Guide
 - [**Job submission**](#job-submission)
   - [Interactive job](#interactive-job)
   - [Batch job](#batch-job)
-- [**TODO**](#todo)
+- [**Data Transfer to/from Jean Zay**](#data-transfer-tofrom-jean-zay)
+- [**References**](#references)
 
 &nbsp;
 
@@ -243,7 +246,7 @@ In this section, I will only focus on how to correctly install Jupyter-related p
 Your `base` environment now supports JupyterLab/Notebook. To be able to switch environment after launching JupyterLab/Notebook in the `base` environment, make sure you install `ipykernel` in every future environment you create. A simple way to do so:
 
 ```shell
-conda create -n <your-env-name> ipykernel
+conda create -n <your-environment> ipykernel
 ```
 
 To launch JupyterLab/Notebook on Jean Zay, type:
@@ -288,64 +291,126 @@ Next:
   </p> 
     
 
-Again, more detailed explanations can be found [here](http://www.idris.fr/eng/jean-zay/pre-post/jean-zay-jupyter-notebook-eng.html).
+Again, more detailed explanations can be found [here](http://www.idris.fr/eng/jean-zay/pre-post/jean-zay-jupyter-notebook-eng.html).  
+
+> 📝 If you intend to run a Jupyter script for a long time (few hours), it is better to include the following lines in your ```~/.ssh/config``` on your personal machine. This is to prevent the ssh's connection loss and the job deletion due to the inactive of the ssh client.   
+> 
+>  ```shell
+>  # Create the config file
+>  touch ~/.ssh/config
+>
+>  # Append the following lines in your config file
+>  host *
+>  UseRoaming no
+>  ServerAliveInterval 300
+>  ```
 
 &nbsp;
 
-## **Job submission**
+## **Job submission**  
 For those who are familiar with Creatis cluster, the job submission on Jean Zay is quite similar. For job management on Jean Zay, `slurm` is used instead of `pbs`. You have the possibility to submit an interactive or a batch job.  
 
 ### Interactive job
 The command to start an interactive bash terminal: 
 
 ```shell
-
 srun --pty --nodes=1 --ntasks-per-node=1 --cpus-per-task=10 --gres=gpu:1 --hint=nomultithread [--other-options] bash
-
 ```
 More details can be found [here](http://www.idris.fr/eng/jean-zay/gpu/jean-zay-gpu-exec_interactif-eng.html).
 
 ### Batch job
-To submit a batch job, you have to create a submission script `xxxx.slurm`. Here is an example for a job with 1 GPU in default GPU partition
+To submit a batch job, you have to create a submission script `xxxx.slurm`. Here is an example for a job with 1 GPU in default GPU partition. The ```%j``` in the ```--output``` line tells SLURM to substitute the job ID in the name of the output file.
 
 ```
-
 #!/bin/bash
+#SBATCH --account=xxx@v100           # select the account to use for multi-account user
 #SBATCH --job-name=single_gpu        # name of job
-##SBATCH --partition=gpu_p2          # uncomment for gpu_p2 partition gpu_p2
-#SBATCH --nodes=1                    # we request one node
-#SBATCH --ntasks-per-node=1          # with one task per node (= number of GPUs here)
-#SBATCH --gres=gpu:1                 # number of GPUs (1/4 of GPUs)
-#SBATCH --cpus-per-task=10           # number of cores per task (1/4 of the 4-GPUs node)
-##SBATCH --cpus-per-task=3           # number of cores per task (with gpu_p2: 1/8 of the 8-GPUs node)
+#SBATCH --mail-type=END,FAIL         # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=email@ufl.edu    # Where to send mail
+##SBATCH --qos=qos_gpu-t4            # uncoment to use the Quality of Service (QoS) t4	
+#SBATCH --nodes=1                    # Run all processes on a single node	
+#SBATCH --ntasks=1                   # Run a single task
+#SBATCH --gres=gpu:1                 # number of GPUs
+#SBATCH --cpus-per-task=10           # Number of CPU cores per task
 # /!\ Caution, "multithread" in Slurm vocabulary refers to hyperthreading.
 #SBATCH --hint=nomultithread         # hyperthreading is deactivated
-#SBATCH --time=00:10:00              # maximum execution time requested (HH:MM:SS)
-#SBATCH --output=gpu_single%j.out    # name of output file
-#SBATCH --error=gpu_single%j.out     # name of error file (here, in common with the output file)
+#SBATCH --time=20:00:00              # maximum execution time requested (HH:MM:SS) 
+#SBATCH --output=gpu_single_%j.out   # name of output file
+#SBATCH --error=gpu_single_%j.err    # name of error file
  
 # cleans out the modules loaded in interactive and inherited by default 
 module purge
  
-# loading of modules
+# activate conda environement
+source /gpfswork/rech/<your-project-account>/<jean-zay-username>/miniconda3/etc/profile.d/conda.sh
+conda activate <your-environment>
+
+# loading of modules (optional)
 module load ...
- 
+
 # echo of launched commands
 set -x
- 
-# code execution
-./single_gpu_exe
 
+# code execution
+python -u script_mono_gpu.py        # option -u (= unbuffered) deactivates the buffering of standard outputs which are automatically effectuated by Slurm
+```
+By default, the submitted GPU job will be run on partition ``` gpu_p13 ```, which allows a maximum execution time of 20 hours. You will have to resume your job manually afterwards. If you intend to submit a job that lasts longer than 20 hours, you may specify the Quality of Service (QoS) ``` qos_gpu-t4 ``` that allows a maximum execution time of 100 hours. However, this means your job is less prioritized than those queue for ``` gpu_p13 ```. To know more about Jean Zay's GPU Slurm partitions, click [here](http://www.idris.fr/eng/jean-zay/gpu/jean-zay-gpu-exec_partition_slurm-eng.html).
+
+<br />
+Some useful commands:
+* To submit the script via the ```sbatch``` command:  
+   <br />
+   ```shell
+   sbatch single_gpu.slurm
+   ```
+
+* To monitor jobs which are waiting or in execution:
+   ```shell
+   squeue -u $USER
+
+   # Example of output
+   JOBID  PARTITION  NAME  USER  ST   TIME  NODES  NODELIST(REASON)   
+   235  part_name  test   abc   R  00:02      1  r6i3n1 
+   ```
+
+* To cancel an execution:
+   ```shell
+   scancel $JOBID
+   ```
+&nbsp;
+
+## **Data Transfer to/from Jean Zay**
+There are two options to transfer your data to Jean Zay, depending on the IP address you provided for the account creation. If you've provided the IP address of your own desktop computer, you can simply use ``` sshfs ``` or ``` FileZilla ```. What if you've provided the IP address of tux? Well, in this case (just like me who have a laptop 😥), you've to transfer your data to tux first (via ``` sshfs ```), then transfer it to Jean via ``` scp ```. To facilitate the transfer, it's better to create a bash file. For example:
+
+```shell
+# Sample bash file to transfer data from tux to Jean Zay
+#!/bin/bash
+
+pTarget=...     # target path
+pSource=...     # source path
+
+scp -r $pSource <jean-zay-username>@jean-zay.idris.fr:$pTarget
 ```
 
+```shell
+# Sample bash file to transfer data from Jean Zay to tux
+#!/bin/bash
+
+pTarget=...     # target path
+pSource=...     # source path
+
+scp -r $pSource <creatis-username>@tux.creatis.insa-lyon.fr:$pTarget
+```
+
+For data transfer from Jean Zay to tux, it is possible to use ``` rsync ```, which is much faster than ``` scp ``` for large folders.
+
 &nbsp;
 
-### **Feel free to [email me](mailto:hang-jung.ling@creatis.insa-lyon.fr) if you have any question! 😁** <!-- omit in toc -->
+## **References**
+* [http://www.idris.fr/eng/ia/index.html](http://www.idris.fr/eng/ia/index.html)
 
 &nbsp;
 
-## **TODO**
-- [ ] File copy from Jean Zay to local machine and vice versa
-- [ ] Finish Job submission section
+### **Feel free to [email me](mailto:hang-jung.ling@creatis.insa-lyon.fr) if you have any question or if you want to contribute to this guide! 😁** <!-- omit in toc -->
 
 
