@@ -15,7 +15,7 @@ pdf: "https://arxiv.org/pdf/2104.10036.pdf"
 
 * **Anomaly detection**, also called *outlier detection* or *one-class classification*, is the process of detecting events/items that deviate significantly from the normality. A distribution of the *normal class* is estimated and the event/item is said to be anomalous if does not belong to this distribution.
 * Here we tackle the problem of anomaly detection in images in the context of machine learning, meaning we will train a network (or another kind of algorithm) on *normal* images only, and then, at inference, we will try to classify images as normal VS anomalous.
-![](/collections//images/VT-ADL/mvtec_ad.png)  
+![](/collections//images/VT-ADL/mvtec_ad.jpg)  
 *Example of normal (green) VS anomalous (red) image on the MVTecAD dataset*
 * The objective of this paper is to propose an anomaly detection method which make use of a **transformer**, a **decoder** and a Gaussian Mixture Model (**GMM**) **estimation network**.
 * The authors also introduce a database similar to MVTecAD, containing 3 objects named BTAD.
@@ -42,7 +42,7 @@ With $$H \times W$$ the size of the base image, $$C$$ the channel size, $$P \tim
 
 **The reduction operation is thus done in the linear projection layer**.
 
-![](/collections/images/VT-ADL/fig2_short.png)
+![](/collections/images/VT-ADL/fig2_short.jpg)
 
 
 <sup> Note : In the paper the authors mention a dimension $$(N+1)$$ as if there is a class token, but I saw no use of a class token, nor do they speak about it, so I think the dimension is $$N$$ and not $$(N+1)$$. </sup>   
@@ -73,7 +73,7 @@ $$ \mathbb{R}^{N \times D} \xrightarrow[\text{estimation}]{\text{mixture weights
 
 
 ### Global view :
-![](/collections/images/VT-ADL/fig2.png)
+![](/collections/images/VT-ADL/fig2.jpg)
 After inspection of the code on github we found : $$H = W = 512$$, $$P = 32$$, $$N = \frac{HW}{P^2} = 256$$, $$D = 512$$ (which is a coincidence that it is equal to $$H$$ and $$W$$).
 
 ### Loss (training/testing) :
@@ -93,15 +93,15 @@ To perform anomaly localization (where is the anomaly in the image ?) the author
 ### Anomaly detection (is there an anomaly in the image ?)
 
 The authors report SOTA results on MNIST (one digit considered normal VS the 9 others)
-![](/collections/images/VT-ADL/tab2.png)
+![](/collections/images/VT-ADL/tab2.jpg)
 
 ### Anomaly localization (where is the anomaly in the image ?)
 
 The authors report SOTA results on MVTec.
 
-![](/collections/images/VT-ADL/fig3.png)
+![](/collections/images/VT-ADL/fig3.jpg)
 
-![](/collections/images/VT-ADL/tab3.png)
+![](/collections/images/VT-ADL/tab3.jpg)
 
 The authors also introduce their model performance on the BTAD database that they introduced. 
 
@@ -109,4 +109,8 @@ The authors also introduce their model performance on the BTAD database that the
 
 The authors introduced a database that shares many similarities with MVTecAD, thus being smaller.  
 They also introduce an anomaly detection model consisting of a transformer, a decoder and a gaussian mixture model estimator. It cleverly combines these 3 blocks to achieve SOTA performance on anomaly detection tasks (MNIST, MVTec) and anomaly localization tasks (MVTec).
+
+![](/collections/images/VT-ADL/fig1.jpg)
+
+BTAD dataset.
 
