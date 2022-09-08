@@ -53,7 +53,6 @@ $$
 Obs: In the figure above, the bottom right expression should be: $$ W_{i} * X_{r} + W_{r} * X_{i}. $$ 
 
 * The maxout activation function (MU) used in the previous work is replaced by the **amplitude maxout** (AMU). Given a complex convolutional layer output $$Z$$ and its module $$Z_a = \lvert Z\rvert$$, the amplitude maxout of $$Z$$ is defined as:
->>>>>>> main
 
 $$
 \left[\begin{array}{c}
