@@ -13,7 +13,7 @@ categories: autoencoder, encoder, decoder, vae
 &nbsp;
 
 - [**Intuition**](#intuition)
-- [**Fondamental knowledge**](#fondamental-knowledge)
+- [**Fondamental concepts**](#fondamental-concepts)
   - [Information quantification](#information-quantification)
   - [Entropy](#entropy)
   - [Kullback-Liebler divergence](#kullback-liebler-divergence)    
@@ -26,7 +26,7 @@ categories: autoencoder, encoder, decoder, vae
 &nbsp;
 
 ## **Intuition**
-Let's start with the basic representation of an auto-encoder
+Let's start with the basic representation of an autoencoder
 
 ![](/collections/images/vae/autoencoder.jpg)
 
@@ -62,26 +62,32 @@ VAE thus offers two extremely interesting opportunities:
 
 &nbsp;
 
-## **Fondamental knowledge**
-TODO
-
-&nbsp;
+## **Fondamental concepts**
 
 ### Information quantification
 
-TODO
+Information $$I$$ can be quantified through the following expression:
+
+$$I = -log(p(x))$$
+
+with $$x$$ being an event and $$p(x)$$ the probability of this event. 
+
+>>From this equation, one can see that when the probability of an event is high (close to $$1$$), the corresponding information is low, which makes sense. For instance, the probability that the weather will be hot in France during summer is very high, so this sentence does not provide any useful information in a conversation
+
 
 &nbsp;
 
 ### Entropy
 
-TODO
+Entropy $$H$$ corresponds to the ***average information of a process***. Its expression can be naturally written as:
+
+$$H = -\sum_{i=1}^{N}{p(x_i)\cdot log\left(p(x_i)\right)} \quad \quad \quad \text{or} \quad \quad \quad H = -\int{p(x)\cdot log\left(p(x)\right)}\,dx$$
 
 &nbsp;
 
 ### Kullback-Liebler divergence
 
-TODO
+The Kullback-Liebler divergence (KL div) allows to measure the distance between two distributions through the use of relative entropy concepts.
 
 
 
