@@ -46,11 +46,17 @@ This corresponds to the well know PCA (Principal Component Analysis) paradigm.
 
 >>Autoencoders can thus be seen as a generalization of the dimensionality reduction PCA formalism by evolving more complex projection operations defined through $$\mathbf{e}$$ and $$\mathbf{d}$$ networks.
 
+&nbsp;
 
 
+VAE thus offers two extremely interesting opportunities:
+* the mastery of the encoder allows to optimize the projection operation $$p(z/x)$$ to a latent space with reduced dimensionality for interpretation purposes. This corresponds to ***manifold learning paradigm***.
 
+![](/collections/images/vae/encoder_illustration.jpg)
 
+* the mastery of the decoder allows to optimize the projection operation $$p(x/z)$$ for the generation of data with a complex distribution. This corresponds to ***generative model framework***.
 
+![](/collections/images/vae/decoder_illustration.jpg)
 
 &nbsp;
 
