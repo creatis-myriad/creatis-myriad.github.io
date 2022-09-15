@@ -54,7 +54,7 @@ associate_professors:
     university: 'University Lyon 1'
     picture: 'nDuchateau.jpg'
     interests: "Cardiac imaging, machine learning, deep learning"
-    url: "https://nicolasduchateau.wordpress.com/"
+    url: "https://www.creatis.insa-lyon.fr/~duchateau/"
     
   - firstname: 'Carole'
     lastname: 'Frindel'
