@@ -40,7 +40,7 @@ $$ \mathbb{R}^{H \times W \times C} \xrightarrow[\text{division}]{\text{patch}} 
 
 With $$H \times W$$ the size of the base image, $$C$$ the channel size, $$P \times P$$ the patch size and $$N$$ the number of patch.  
 
-**The reduction operation is thus done in the linear projection layer**.
+**The reduction operation here is done in the linear projection layer (because $$D > P \times P \times C$$, this is not always the case)**.
 
 ![](/collections/images/VT-ADL/fig2_short.jpg)
 
@@ -55,7 +55,7 @@ $$ \mathbb{R}^{N \times D} \xrightarrow[\text{projection}]{\text{linear}} \mathb
 
 ### 2) Decoder
 
-The decoder is a **classical CNN decoder**, consisting of 5 transposed convolutional layers, with batch-normalization and ReLu activation, except for the last layer which uses tanh activation.
+The decoder is a **classical CNN decoder**, consisting of 5 transposed convolutional layers, with batch-normalization and ReLu activation, except for the last layer which uses tanh activation. The 1D vector is first reshaped as a 2D matrix.
 
 $$ \mathbb{R}^{D} \xrightarrow[\text{ }]{\text{decoder}} \mathbb{R}^{N \times P \times P \times C} $$
 
@@ -69,7 +69,8 @@ Then given the data samples and the estimated distribution, one can compute the 
 
 $$ \mathbb{R}^{N \times D} \xrightarrow[\text{estimation}]{\text{mixture weights}} [0, 1]^{N \times K} \times \mathbb{R_+}^{N \times K} \times \mathbb{R}^{N \times K} \xrightarrow[\text{}]{\text{NLL}} \mathbb{R}^{N}$$
 
-<sup> Note : this process is different than the "usual" process consisting for a network to output the membership of each sample, and then analytically determining the mixture weights, means and variances. </sup> 
+<sup> Note : this process is different than the "usual" process consisting for a network to output the membership of each sample, and then analytically determining the mixture weights, means and variances.  
+Also note that here $$K = 150$$ </sup> 
 
 
 ### Global view :
