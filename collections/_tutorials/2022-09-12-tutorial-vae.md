@@ -95,19 +95,19 @@ $$H_{pq} = -\int{p(x)\cdot log\left(q(x)\right)}\,dx$$
 
 where $$H_{p}$$ corresponds to the entropy relative to the distribution $$p(x)$$ and $$H_{pq}$$ the average information brings by $$g(x)$$ but weighted by $$p(x)$$. From these notations, the KL divergence $$D_{KL}$$ can be expressed as:
 
-$$D_{KL}\left(p || q \right) = H_{pq} - H_{p}$$
+$$D_{KL}\left(p \parallel q \right) = H_{pq} - H_{p}$$
 
-$$D_{KL}\left(p || q \right) = -\int{p(x)\cdot log\left(q(x)\right)}\,dx + \int{p(x)\cdot log\left(p(x)\right)}\,dx$$
+$$D_{KL}\left(p \parallel q \right) = -\int{p(x)\cdot log\left(q(x)\right)}\,dx + \int{p(x)\cdot log\left(p(x)\right)}\,dx$$
 
-$$D_{KL}\left(p || q \right) = -\int{p(x)\cdot log\left(\frac{q(x)}{p(x)}\right)}\,dx$$
+$$D_{KL}\left(p \parallel q \right) = -\int{p(x)\cdot log\left(\frac{q(x)}{p(x)}\right)}\,dx$$
 
-$$D_{KL}\left(p || q \right) = \int{p(x)\cdot log\left(\frac{p(x)}{q(x)}\right)}\,dx$$
+$$D_{KL}\left(p \parallel q \right) = \int{p(x)\cdot log\left(\frac{p(x)}{q(x)}\right)}\,dx$$
 
 KL divergence allows to measure a distance between two distributions with the following properties:
 * $$D_{KL}$$ is always positif:
-$$\quad \quad D_{KL}\left(p || q \right) \geq 0$$
+$$\quad \quad D_{KL}\left(p \parallel q \right) \geq 0$$
 * $$D_{KL}$$ is not symmetric:
-$$\quad \quad D_{KL}\left(p || q \right) \neq D_{KL}\left(q || p \right)$$
+$$\quad \quad D_{KL}\left(p \parallel q \right) \neq D_{KL}\left(q \parallel p \right)$$
 
 &nbsp;
 
@@ -143,7 +143,7 @@ Moreover, for simplification purposes, we will also try to project the input dat
 
 3. The KL divergence is then exploited to measure the quality in terms of distribution fitting !
 
-$$D_{KL}\left(q(z) || p(z/x) \right) = - \int{q(z) \cdot log\left(\frac{p(z/x)}{q(z)}\right) \,dz}$$
+$$D_{KL}\left(q(z) \parallel p(z/x) \right) = - \int{q(z) \cdot log\left(\frac{p(z/x)}{q(z)}\right) \,dz}$$
 
 By using the ***conditional probability*** relation:
 
@@ -151,13 +151,13 @@ $$p(z/x) = \frac{p(x,z)}{p(x)}$$
 
 where $$p(x,z)$$ is the joint distribution of event $$x$$ and $$z$$, the above expression can be rewritten as:
 
-$$D_{KL}\left(q(z) || p(z/x) \right) = - \int{q(z) \cdot log\left(\frac{p(x,z)}{p(x) \cdot q(z)}\right) \,dz}$$
+$$D_{KL}\left(q(z) \parallel p(z/x) \right) = - \int{q(z) \cdot log\left(\frac{p(x,z)}{p(x) \cdot q(z)}\right) \,dz}$$
 
-$$D_{KL}\left(q(z) || p(z/x) \right) = - \int{q(z) \cdot \left[ log\left(\frac{p(x,z)}{q(z)}\right) + log\left(\frac{1}{p(x)}\right) \right] \,dz}$$
+$$D_{KL}\left(q(z) \parallel p(z/x) \right) = - \int{q(z) \cdot \left[ log\left(\frac{p(x,z)}{q(z)}\right) + log\left(\frac{1}{p(x)}\right) \right] \,dz}$$
 
-$$D_{KL}\left(q(z) || p(z/x) \right) = - \int{q(z) \cdot log\left(\frac{p(x,z)}{q(z)}\right) \,dz} \,+\, log\left(p(x)\right) \cdot \underbrace{\int{q(z)\,dz}}_{=1}$$
+$$D_{KL}\left(q(z) \parallel p(z/x) \right) = - \int{q(z) \cdot log\left(\frac{p(x,z)}{q(z)}\right) \,dz} \,+\, log\left(p(x)\right) \cdot \underbrace{\int{q(z)\,dz}}_{=1}$$
 
-$$D_{KL}\left(q(z) || p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
+$$D_{KL}\left(q(z) \parallel p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
 
 where $$\mathcal{L}$$ is defined as the ***lower bound*** whose expression is given by:
 
@@ -169,27 +169,27 @@ $$\mathcal{L} = \int{q(z) \cdot log\left(\frac{p(x,z)}{q(z)}\right) \,dz}$$
 
 Let's take a closer look at the previous derived equation:
 
-$$D_{KL}\left(q(z) || p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
+$$D_{KL}\left(q(z) \parallel p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
 
 The following observations can be made:
 * since $$0\leq p(x) \leq 1$$, $$log\left(p(x)\right) \leq 0$$
 
 * since $$x$$ is the observation, $$log\left(p(x)\right)$$ is a fixed value
 
-* by definition $$D_{KL}\left(q(z) \| p(z/x) \right) \geq 0$$
+* by definition $$D_{KL}\left(q(z) \parallel p(z/x) \right) \geq 0$$
 
-* since $$\mathcal{L} = -D_{KL}\left(q(z) \| p(x,z)\right)$$, $$\mathcal{L} \leq 0$$
+* since $$\mathcal{L} = -D_{KL}\left(q(z) \parallel p(x,z)\right)$$, $$\mathcal{L} \leq 0$$
 
 
 The previous expression can thus be rewritten as follows:
 
-$$\underbrace{D_{KL}\left(q(z) || p(z/x) \right)}_{\geq 0} \,+\, \underbrace{\mathcal{L}}_{\leq 0} \,=\, \underbrace{log\left(p(x)\right)}_{\leq 0 \,\, \text{and fixed}}$$
+$$\underbrace{D_{KL}\left(q(z) \parallel p(z/x) \right)}_{\geq 0} \,+\, \underbrace{\mathcal{L}}_{\leq 0} \,=\, \underbrace{log\left(p(x)\right)}_{\leq 0 \,\, \text{and fixed}}$$
 
 >>At this point, it is important to remember that $$p(z/x)$$ is the unknown and that we have the possibility to play with the expression of $$q(z)$$ to minimize $$D_{KL}\left(q(z) \| p(z/x) \right)$$.
 
 &nbsp;
 
-With the above observations, the following strategy can be implemented: by playing with $$q(z)$$, we can seek to maximize the lower bound $$\mathcal{L}$$, which will imply the minimization of the KL divergence $$D_{KL}\left(q(z) \| p(z/x) \right)$$, and thus to find a distribution $$q(z)$$ which will approach $$p(z/x)$$. The table below provides an illustration of such a strategy. 
+With the above observations, the following strategy can be implemented: by playing with $$q(z)$$, we can seek to maximize the lower bound $$\mathcal{L}$$, which will imply the minimization of the KL divergence $$D_{KL}\left(q(z) \parallel p(z/x) \right)$$, and thus to find a distribution $$q(z)$$ which will approach $$p(z/x)$$. The table below provides an illustration of such a strategy. 
 
 <style>
 table th:first-of-type {
@@ -225,11 +225,80 @@ $$\mathcal{L} = \int{q(z) \cdot \left[ log\left(p(x/z)\right) + log\left(\frac{p
 
 $$\mathcal{L} = \int{q(z) \cdot log\left(p(x/z)\right) \,dz} + \int{q(z) \cdot log\left(\frac{p(z)}{q(z)}\right) \,dz}$$
 
-$$\mathcal{L} =  \mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q(z)||p(z)\right)$$
+$$\mathcal{L} =  \mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q(z)\parallel p(z)\right)$$
 
 &nbsp;
 
 ### From lower bound to vae
+
+Here is a summary of what we have done so far
+
+1. We want to estimate a non-linear projection $$p(z/x)$$ to go from an input space to a space of reduced dimension, and this through a probabilistic framework.
+
+2. To do this, we introduced a third party distribution $$q(z)$$ to estimate the target distribution $$p(z/x)$$.
+
+3. We used the KL divergence metric which measures the proximity between the two distributions, the objective being to minimize this metric.
+
+4. The minimization of the KL divergence leads to the maximization of the following equation:
+
+<!--
+<div style="background-color:#d7efd5; text-align:center; vertical-align: middle; padding:5px 0;">
+$$\mathcal{L} =  \mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q(z)||p(z)\right)$$
+</div>
+-->
+
+$$\mathcal{L} =  \mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q(z)\parallel p(z)\right)$$
+
+&nbsp;
+
+The maximization of the above equation can be handled by the following graph.
+
+![](/collections/images/vae/vae_final_step.jpg)
+
+>>From this graph, we can see that the maximization of the lower bound equation can be handled by a decoder (first part) and an encoder (second part)!
+
+&nbsp;
+
+**Let's start working on the decoder side** 
+
+Our goal is to output an instance $$\hat{x}$$ that will be close to the input $$x$$. Since the decoder will be implemented through a network, the link between $$z$$ and $$\hat{x}$$ is deterministic. We thus have 
+
+$$p(x/z) \equiv p(x/\hat{x})$$
+
+If $$p$$ is a Gaussian distribution, then 
+
+$$p(x/\hat{x}) \propto \exp{\left(-\frac{\|x-\hat{x}\|^2}{\sigma^2}\right)}$$
+
+$$log\left(p(x/\hat{x})\right) = -\|x-\hat{x}\|^2 + Cst$$
+
+So the maximization of $$\mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right]$$ can be obtained through the minimization of $$\|x-\hat{x}\|^2$$, which is the conventional reconstruction error!
+
+>>If we make the assumption that $$\,p$$ follows a Bernouilli distribution, then we can demonstrate that the maximization of $$\,\mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right]$$ leads to the minimization of the cross entropy function!
+
+&nbsp;
+
+**Let's start working on the encoder side** 
+
+Our goal is to minimize $$D_{KL}\left(q(z)\parallel p(z)\right)$$.
+
+In order to make the equation simpler and to structure the latent space, we first force $$p(z)$$ to follow a Gaussian distribution $$\mathcal{N}(0,1)$$. This is a strong choice of VAE formalism. The encoder should thus minimize the following loss:
+
+$$D_{KL}\left(q(z)\parallel \mathcal{N}(0,1)\right)$$
+
+A very important point here is that we must think in terms of probability function since we want to fit two distributions. In other words, the encoder must generate the parameters of the distribution that will generate the $$z$$ sample. 
+
+>>The execution of the encoder for the same input $$x$$ will generate different $$z$$ samples whose values should be close to $$\mathcal{N}(0,1)$$.
+
+&nbsp;
+
+Given the needs for distribution modeling, the graph below shows the final network structure used in the VAE formalism.
+
+![](/collections/images/vae/vae_final_representation.jpg)
+
+The following equation is also used as a loss term:
+
+$$\text{loss}=\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,1\right)\right) $$
+
 
 
 
