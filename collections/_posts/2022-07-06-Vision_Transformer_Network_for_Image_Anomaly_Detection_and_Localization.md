@@ -78,7 +78,7 @@ After inspection of the code on github we found : $$H = W = 512$$, $$P = 32$$, $
 
 ### Loss (training/testing) :
 
-The loss fonction consists of three terms to balance, two to measure the quality of the reconstruction error (the **$l_2$ norm** and the **structural similarity**) that affects the transformer, encoder and decoder, and a third term (**NLL**) that affects the transformer and the GMM estimation network.  
+The loss function consists of three terms to balance, two to measure the quality of the reconstruction error (the **$$l_2$$ norm** and the **structural similarity**) that affects the transformer, encoder and decoder, and a third term (**NLL**) that affects the transformer and the GMM estimation network.  
 
 
 $$ L(x) = NLL(GMM(\text{transformer}(x))) + \lambda_1 ||x - \hat{x}||_2^2 + \lambda_2 SSIM(x, \hat{x}) $$
