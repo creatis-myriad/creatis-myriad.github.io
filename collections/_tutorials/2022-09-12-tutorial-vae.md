@@ -129,7 +129,7 @@ Indeed, from the perspective of the purple distribution, the distance between po
 
 The key concept around VAE is that we will try to optimize the learning of the non-linear projection operation $$p(z/x)$$ thanks to the variational inference formalism. Indeed, variational inference allows to approximate a complex probability (in our case $$p(z/x)$$) by a simpler model thanks to the use of the KL divergence tool.
 
-Moreover, for simplification purposes, we will also try to project the input data in a Z space with a Gaussian probability density (i.e. $$p(z) = \mathcal{N}(0,1)$$). This will allow us to efficiently structure the latent space by concentrating the information close to the origin while avoiding holes. 
+Moreover, for simplification purposes, we will also try to project the input data in a Z space with a Gaussian probability density (i.e. $$p(z) = \mathcal{N}(0,I)$$). This will allow us to efficiently structure the latent space by concentrating the information close to the origin while avoiding holes. 
 
 ![](/collections/images/vae/vae_latent_space_gaussian.jpg)
 
@@ -281,13 +281,13 @@ So the maximization of $$\mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\ri
 
 Our goal is to minimize $$D_{KL}\left(q(z)\parallel p(z)\right)$$.
 
-In order to make the equation simpler and to structure the latent space, we first force $$p(z)$$ to follow a Gaussian distribution $$\mathcal{N}(0,1)$$. This is a strong choice of VAE formalism. The encoder should thus minimize the following loss:
+In order to make the equation simpler and to structure the latent space, we first force $$p(z)$$ to follow a Gaussian distribution $$\mathcal{N}(0,I)$$. This is a strong choice of VAE formalism. The encoder should thus minimize the following loss:
 
-$$D_{KL}\left(q(z)\parallel \mathcal{N}(0,1)\right)$$
+$$D_{KL}\left(q(z)\parallel \mathcal{N}(0,I)\right)$$
 
 A very important point here is that we must think in terms of probability function since we want to fit two distributions. In other words, the encoder must generate the parameters of the distribution that will generate the $$z$$ sample. 
 
->>The execution of the encoder for the same input $$x$$ will generate different $$z$$ samples whose values should be close to $$\mathcal{N}(0,1)$$.
+>>The execution of the encoder for the same input $$x$$ will generate different $$z$$ samples whose values should be close to $$\mathcal{N}(0,I)$$.
 
 &nbsp;
 
@@ -297,7 +297,7 @@ Given the needs for distribution modeling, the graph below shows the final netwo
 
 The following equation is also used as a loss term:
 
-$$\text{loss}=\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,1\right)\right) $$
+$$\text{loss}=\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
 
 
 
