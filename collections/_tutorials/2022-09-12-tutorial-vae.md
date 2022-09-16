@@ -3,7 +3,7 @@ layout: post
 title:  "The variational autoencoder paradigm demystified"
 author: 'Olivier Bernard'
 date:   2022-09-12
-categories: autoencoder, encoder, decoder, vae
+categories: autoencoder, encoder, decoder, VAE
 ---
 
 # Notes
@@ -19,9 +19,9 @@ categories: autoencoder, encoder, decoder, vae
   - [Kullback-Liebler divergence](#kullback-liebler-divergence)    
 - [**Variational inference**](#variational-inference)
   - [Key concept](#key-concept)
-  - [Lower bound](#lower-bound)
-  - [Lower bound reformulation](#lower-bound-reformulation)  
-  - [From lower bound to vae](#from-lower-bound-to-)    
+  - [Evidence lower bound](#evidence-lower-bound)
+  - [ELBO reformulation](#elbo-reformulation)  
+  - [From ELBO to vae](#from-elbo-to-vae)    
 
 &nbsp;
 
@@ -42,7 +42,7 @@ where $$\mathbf{e} \in \mathbb{R}^{M \times N}$$ and $$\mathbf{d} \in \mathbb{R}
 
 $$\mathbf{z} = \mathbf{U}^T\mathbf{x} \quad\quad \text{and} \quad\quad \mathbf{\hat{x}} = \mathbf{U}\mathbf{z}=\mathbf{U}\mathbf{U}^T\mathbf{x}$$
 
-This corresponds to the well know PCA (Principal Component Analysis) paradigm. 
+This corresponds to the well know PCA (Principal Component Analysis) paradigm. A more formal proof can be found [in this article](https://arxiv.org/pdf/1804.10253.pdf).
 
 >>Autoencoders can thus be seen as a generalization of the dimensionality reduction PCA formalism by evolving more complex projection operations defined through $$\mathbf{e}$$ and $$\mathbf{d}$$ networks.
 
@@ -58,7 +58,7 @@ VAE thus offers two extremely interesting opportunities:
 
 ![](/collections/images/vae/decoder_illustration.jpg)
 
->>In the rest of this tutorial, we will see how the vae formalism allows to optimize these two tasks through the theory of variational inference.
+>>In the rest of this tutorial, we will see how the VAE formalism allows to optimize these two tasks through the theory of variational inference.
 
 &nbsp;
 
@@ -70,10 +70,17 @@ Information $$I$$ can be quantified through the following expression:
 
 $$I = -log(p(x))$$
 
-with $$x$$ being an event and $$p(x)$$ the probability of this event. 
+with $$x$$ being an event and $$p(x)$$ the probability of this event. Since $$0\leq p(x) \leq 1$$, $$I$$ is positive and tends to infinity when $$p(x)=0$$.
 
 >>From this equation, one can see that when the probability of an event is high (close to $$1$$), the corresponding information is low, which makes sense. For instance, the probability that the weather will be hot in France during summer is very high, so this sentence does not provide any useful information in a conversation
 
+&nbsp;
+
+Please note that the information $$I$$ comes with a unit. If the log is a natural logarithm, we call it a "nat" and if the log has a base 2, we call it a "bit", just like the binary information stored in a computer. Think about it, if you randomly pick one such binary variable in a computer, its chance of being $$0$$ or a $$1$$ is $$50\%$$. Thus, the information associated to the event of observing a $$0$$ or a $$1$$ in a binary computer variable is:
+
+$$-log_2\left(\frac{1}{2}\right)=log_2(2)=1$$
+
+i.e., one bit.
 
 &nbsp;
 
@@ -82,6 +89,8 @@ with $$x$$ being an event and $$p(x)$$ the probability of this event.
 Entropy $$H$$ corresponds to the ***average information of a process***. Its expression can be naturally written as:
 
 $$H = -\sum_{i=1}^{N}{p(x_i)\cdot log\left(p(x_i)\right)} \quad \quad \quad \text{or} \quad \quad \quad H = -\int{p(x)\cdot log\left(p(x)\right)}\,dx$$
+
+>>Since the information $$-log\left(p(x)\right)$$ is always positive and that $$p(x)$$ is also positive, then the entropy $$H$$ is also positive!
 
 &nbsp;
 
@@ -93,7 +102,11 @@ $$H_{p} = -\int{p(x)\cdot log\left(p(x)\right)}\,dx$$
 
 $$H_{pq} = -\int{p(x)\cdot log\left(q(x)\right)}\,dx$$
 
-where $$H_{p}$$ corresponds to the entropy relative to the distribution $$p(x)$$ and $$H_{pq}$$ the average information brings by $$g(x)$$ but weighted by $$p(x)$$. From these notations, the KL divergence $$D_{KL}$$ can be expressed as:
+where $$H_{p}$$ corresponds to the entropy relative to the distribution $$p(x)$$ and $$H_{pq}$$ the average information brought by $$g(x)$$ but weighted by $$p(x)$$. Note that one can prove that $$H_{pq}>H_{p}$$ whever $$p\neq q$$.
+
+&nbsp;
+
+From these notations, the KL divergence $$D_{KL}$$ can be expressed as:
 
 $$D_{KL}\left(p \parallel q \right) = H_{pq} - H_{p}$$
 
@@ -104,7 +117,7 @@ $$D_{KL}\left(p \parallel q \right) = -\int{p(x)\cdot log\left(\frac{q(x)}{p(x)}
 $$D_{KL}\left(p \parallel q \right) = \int{p(x)\cdot log\left(\frac{p(x)}{q(x)}\right)}\,dx$$
 
 KL divergence allows to measure a distance between two distributions with the following properties:
-* $$D_{KL}$$ is always positif:
+* $$D_{KL}$$ is always positive (because $$H_{pq}>H_{p}$$):
 $$\quad \quad D_{KL}\left(p \parallel q \right) \geq 0$$
 * $$D_{KL}$$ is not symmetric:
 $$\quad \quad D_{KL}\left(p \parallel q \right) \neq D_{KL}\left(q \parallel p \right)$$
@@ -127,7 +140,7 @@ Indeed, from the perspective of the purple distribution, the distance between po
 
 ### Key concept
 
-The key concept around VAE is that we will try to optimize the learning of the non-linear projection operation $$p(z/x)$$ thanks to the variational inference formalism. Indeed, variational inference allows to approximate a complex probability (in our case $$p(z/x)$$) by a simpler model thanks to the use of the KL divergence tool.
+The key concept around VAE is that we will try to optimize the learning of the non-linear projection operation $$p(z/x)$$ thanks to the variational inference formalism. Indeed, variational inference allows to approximate a complex probability (in our case $$p(z/x)$$) by a simpler model with the help of the KL divergence tool.
 
 Moreover, for simplification purposes, we will also try to project the input data in a Z space with a Gaussian probability density (i.e. $$p(z) = \mathcal{N}(0,I)$$). This will allow us to efficiently structure the latent space by concentrating the information close to the origin while avoiding holes. 
 
@@ -137,13 +150,13 @@ Moreover, for simplification purposes, we will also try to project the input dat
 
 &nbsp;
 
-1. Let's say we have a distribution $$p(z/x)$$ that we don't know
+1. Let's say we have a distribution $$p(z/x)$$ that cannot be easily estimated.
 
-2. We use a new (simpler) distribution $$q(z)$$ to estimate $$p(z/x)$$
+2. Thus, instead of estimating $$p(z/x)$$ we could approximate it with a simpler distribution $$q(z/x)$$.
 
-3. The KL divergence is then exploited to measure the quality in terms of distribution fitting !
+3. The KL divergence given above is then exploited to measure the distance between these two distributions. If $$q(z/x)$$ has been well chosen, then its KL divergence to $$p(z/x)$$ should be low.
 
-$$D_{KL}\left(q(z) \parallel p(z/x) \right) = - \int{q(z) \cdot log\left(\frac{p(z/x)}{q(z)}\right) \,dz}$$
+$$D_{KL}\left(q(z/x) \parallel p(z/x) \right) = - \int{q(z/x) \cdot log\left(\frac{p(z/x)}{q(z/x)}\right) \,dz}$$
 
 By using the ***conditional probability*** relation:
 
@@ -151,45 +164,45 @@ $$p(z/x) = \frac{p(x,z)}{p(x)}$$
 
 where $$p(x,z)$$ is the joint distribution of event $$x$$ and $$z$$, the above expression can be rewritten as:
 
-$$D_{KL}\left(q(z) \parallel p(z/x) \right) = - \int{q(z) \cdot log\left(\frac{p(x,z)}{p(x) \cdot q(z)}\right) \,dz}$$
+$$D_{KL}\left(q(z/x) \parallel p(z/x) \right) = - \int{q(z/x) \cdot log\left(\frac{p(x,z)}{p(x) \cdot q(z/x)}\right) \,dz}$$
 
-$$D_{KL}\left(q(z) \parallel p(z/x) \right) = - \int{q(z) \cdot \left[ log\left(\frac{p(x,z)}{q(z)}\right) + log\left(\frac{1}{p(x)}\right) \right] \,dz}$$
+$$D_{KL}\left(q(z/x) \parallel p(z/x) \right) = - \int{q(z/x) \cdot \left[ log\left(\frac{p(x,z)}{q(z/x)}\right) + log\left(\frac{1}{p(x)}\right) \right] \,dz}$$
 
-$$D_{KL}\left(q(z) \parallel p(z/x) \right) = - \int{q(z) \cdot log\left(\frac{p(x,z)}{q(z)}\right) \,dz} \,+\, log\left(p(x)\right) \cdot \underbrace{\int{q(z)\,dz}}_{=1}$$
+$$D_{KL}\left(q(z/x) \parallel p(z/x) \right) = - \int{q(z/x) \cdot log\left(\frac{p(x,z)}{q(z/x)}\right) \,dz} \,+\, log\left(p(x)\right) \cdot \underbrace{\int{q(z/x)\,dz}}_{=1}$$
 
-$$D_{KL}\left(q(z) \parallel p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
+$$D_{KL}\left(q(z/x) \parallel p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
 
-where $$\mathcal{L}$$ is defined as the ***lower bound*** whose expression is given by:
+where $$\mathcal{L}$$ is defined as the ***Evidence Lower BOund (ELBO)*** whose expression is given by:
 
-$$\mathcal{L} = \int{q(z) \cdot log\left(\frac{p(x,z)}{q(z)}\right) \,dz}$$
+$$\mathcal{L} = \int{q(z/x) \cdot log\left(\frac{p(x,z)}{q(z/x)}\right) \,dz}$$
 
 &nbsp;
 
-### Lower bound
+### Evidence lower bound
 
 Let's take a closer look at the previous derived equation:
 
-$$D_{KL}\left(q(z) \parallel p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
+$$D_{KL}\left(q(z/x) \parallel p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
 
 The following observations can be made:
 * since $$0\leq p(x) \leq 1$$, $$log\left(p(x)\right) \leq 0$$
 
 * since $$x$$ is the observation, $$log\left(p(x)\right)$$ is a fixed value
 
-* by definition $$D_{KL}\left(q(z) \parallel p(z/x) \right) \geq 0$$
+* by definition $$D_{KL}\left(q(z/x) \parallel p(z/x) \right) \geq 0$$
 
-* since $$\mathcal{L} = -D_{KL}\left(q(z) \parallel p(x,z)\right)$$, $$\mathcal{L} \leq 0$$
+* since $$\mathcal{L} = -D_{KL}\left(q(z/x) \parallel p(x,z)\right)$$, $$\mathcal{L} \leq 0$$
 
 
 The previous expression can thus be rewritten as follows:
 
-$$\underbrace{D_{KL}\left(q(z) \parallel p(z/x) \right)}_{\geq 0} \,+\, \underbrace{\mathcal{L}}_{\leq 0} \,=\, \underbrace{log\left(p(x)\right)}_{\leq 0 \,\, \text{and fixed}}$$
+$$\underbrace{D_{KL}\left(q(z/x) \parallel p(z/x) \right)}_{\geq 0} \,+\, \underbrace{\mathcal{L}}_{\leq 0} \,=\, \underbrace{log\left(p(x)\right)}_{\leq 0 \,\, \text{and fixed}}$$
 
->>At this point, it is important to remember that $$p(z/x)$$ is the unknown and that we have the possibility to play with the expression of $$q(z)$$ to minimize $$D_{KL}\left(q(z) \| p(z/x) \right)$$.
+>>At this point, it is important to remember that $$p(z/x)$$ is the unknown and that the goal is to find the best $$q(z/x)$$, i.e. the one that shall minimize $$D_{KL}\left(q(z/x) \parallel p(z/x) \right)$$.
 
 &nbsp;
 
-With the above observations, the following strategy can be implemented: by playing with $$q(z)$$, we can seek to maximize the lower bound $$\mathcal{L}$$, which will imply the minimization of the KL divergence $$D_{KL}\left(q(z) \parallel p(z/x) \right)$$, and thus to find a distribution $$q(z)$$ which will approach $$p(z/x)$$. The table below provides an illustration of such a strategy. 
+With the above observations, the following strategy can be implemented: by tweaking $$q(z/x)$$, we can seek to maximize the ELBO $$\mathcal{L}$$, which will imply the minimization of the KL divergence $$D_{KL}\left(q(z/x) \parallel p(z/x) \right)$$, and thus to find a distribution $$q(z/x)$$ that is close to $$p(z/x)$$. The table below provides an illustration of such a strategy. 
 
 <style>
 table th:first-of-type {
@@ -213,33 +226,37 @@ table th:nth-of-type(3) {
 
 &nbsp;
 
-### Lower bound reformulation
+### ELBO reformulation
 
-The lower bound $$\mathcal{L}$$ should be reformulated so to justify the loss involved in the VAE framework. The corresponding derivation is provided below.
+The ELBO $$\mathcal{L}$$ should be reformulated so to justify the loss involved in the VAE framework. The corresponding derivation is provided below.
 
-$$\mathcal{L} = \int{q(z) \cdot log\left(\frac{p(x,z)}{q(z)}\right) \,dz}$$
+$$\mathcal{L} = \int{q(z/x) \cdot log\left(\frac{p(x,z)}{q(z/x)}\right) \,dz}$$
 
-$$\mathcal{L} = \int{q(z) \cdot log\left(\frac{p(x/z)\cdot p(z)}{q(z)}\right) \,dz}$$
+$$\mathcal{L} = \int{q(z/x) \cdot log\left(\frac{p(x/z)\cdot p(z)}{q(z/x)}\right) \,dz}$$
 
-$$\mathcal{L} = \int{q(z) \cdot \left[ log\left(p(x/z)\right) + log\left(\frac{p(z)}{q(z)}\right) \right] \,dz}$$
+$$\mathcal{L} = \int{q(z/x) \cdot \left[ log\left(p(x/z)\right) + log\left(\frac{p(z)}{q(z/x)}\right) \right] \,dz}$$
 
-$$\mathcal{L} = \int{q(z) \cdot log\left(p(x/z)\right) \,dz} + \int{q(z) \cdot log\left(\frac{p(z)}{q(z)}\right) \,dz}$$
+$$\mathcal{L} = \int{q(z/x) \cdot log\left(p(x/z)\right) \,dz} + \int{q(z/x) \cdot log\left(\frac{p(z)}{q(z/x)}\right) \,dz}$$
 
-$$\mathcal{L} =  \mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q(z)\parallel p(z)\right)$$
+$$\mathcal{L} =  \mathbb{E}_{z\sim q(z/x)} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q(z/x)\parallel p(z)\right)$$
 
 &nbsp;
 
-### From lower bound to vae
+where $$\mathbb{E}_{z\sim q(z/x)}$$ is the mathematical expectation with respect to $$q(z/x)$$.
 
-Here is a summary of what we have done so far
+&nbsp;
+
+### From ELBO to VAE
+
+Here is a summary of what have been done so far.
 
 1. We want to estimate a non-linear projection $$p(z/x)$$ to go from an input space to a space of reduced dimension, and this through a probabilistic framework.
 
-2. To do this, we introduced a third party distribution $$q(z)$$ to estimate the target distribution $$p(z/x)$$.
+2. To do this, we introduced a third party distribution $$q(z/x)$$ to estimate the target distribution $$p(z/x)$$.
 
 3. We used the KL divergence metric which measures the proximity between the two distributions, the objective being to minimize this metric.
 
-4. The minimization of the KL divergence leads to the maximization of the following equation:
+4. The minimization of the KL divergence leads to the maximization of the following ELBO equation:
 
 <!--
 <div style="background-color:#d7efd5; text-align:center; vertical-align: middle; padding:5px 0;">
@@ -247,7 +264,7 @@ $$\mathcal{L} =  \mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right] - D
 </div>
 -->
 
-$$\mathcal{L} =  \mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q(z)\parallel p(z)\right)$$
+$$\mathcal{L} =  \mathbb{E}_{z\sim q(z/x)} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q(z/x)\parallel p(z)\right)$$
 
 &nbsp;
 
@@ -255,13 +272,13 @@ The maximization of the above equation can be handled by the following graph.
 
 ![](/collections/images/vae/vae_final_step.jpg)
 
->>From this graph, we can see that the maximization of the lower bound equation can be handled by a decoder (first part) and an encoder (second part)!
+>>From this graph, we can see that the maximization of the ELBO equation can be handled by a decoder (first part) and an encoder (second part)!
 
 &nbsp;
 
-**Let's start working on the decoder side** 
+**Let's work on the decoder** 
 
-Our goal is to output an instance $$\hat{x}$$ that will be close to the input $$x$$. Since the decoder will be implemented through a network, the link between $$z$$ and $$\hat{x}$$ is deterministic. We thus have 
+Our goal is to output an instance $$\hat{x}$$ that is close to the input $$x$$. Since the decoder is a neural network, the link between $$z$$ and $$\hat{x}$$ is deterministic. We thus have 
 
 $$p(x/z) \equiv p(x/\hat{x})$$
 
@@ -277,13 +294,13 @@ So the maximization of $$\mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\ri
 
 &nbsp;
 
-**Let's start working on the encoder side** 
+**Let's work on the encoder** 
 
-Our goal is to minimize $$D_{KL}\left(q(z)\parallel p(z)\right)$$.
+Our goal is to minimize $$D_{KL}\left(q(z/z)\parallel p(z)\right)$$.
 
 In order to make the equation simpler and to structure the latent space, we first force $$p(z)$$ to follow a Gaussian distribution $$\mathcal{N}(0,I)$$. This is a strong choice of VAE formalism. The encoder should thus minimize the following loss:
 
-$$D_{KL}\left(q(z)\parallel \mathcal{N}(0,I)\right)$$
+$$D_{KL}\left(q(z/x)\parallel \mathcal{N}(0,I)\right)$$
 
 A very important point here is that we must think in terms of probability function since we want to fit two distributions. In other words, the encoder must generate the parameters of the distribution that will generate the $$z$$ sample. 
 
