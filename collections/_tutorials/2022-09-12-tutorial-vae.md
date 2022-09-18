@@ -8,24 +8,32 @@ categories: autoencoder, encoder, decoder, VAE
 
 # Notes
 
-* Here are links to four video that I used to create this tutorial: [video1](https://www.youtube.com/watch?v=4toWtb7PRH4), [video2](https://www.youtube.com/watch?v=uKxtmkfeuxg), [video3](https://www.youtube.com/watch?v=BxkZcS1pLpw), [video4](https://www.youtube.com/watch?v=uaaqyVS9-rM)
+* Here are links to four video that I used to create this tutorial: [video1](https://www.youtube.com/watch?v=4toWtb7PRH4), [video2](https://www.youtube.com/watch?v=uKxtmkfeuxg), [video3](https://www.youtube.com/watch?v=BxkZcS1pLpw), [video4](https://www.youtube.com/watch?v=uaaqyVS9-rM). 
+* I was also strongly inspired by this excellent [post](https://towardsdatascience.com/understanding-variational-autoencoders-vaes-f70510919f73).
 
 &nbsp;
 
 - [**Intuition**](#intuition)
+  - [Autoencoder VS PCA](#autoencoder-vs-pca)
+  - [Why get hurt with a probabilistic context?](#why-get-hurt-with-a-probabilistic-context)
 - [**Fondamental concepts**](#fondamental-concepts)
   - [Information quantification](#information-quantification)
   - [Entropy](#entropy)
   - [Kullback-Liebler divergence](#kullback-liebler-divergence)    
+  - [Bayes theorem](#bayes-theorem)
 - [**Variational inference**](#variational-inference)
   - [Key concept](#key-concept)
   - [Evidence lower bound](#evidence-lower-bound)
   - [ELBO reformulation](#elbo-reformulation)  
-  - [From ELBO to vae](#from-elbo-to-vae)    
+  - [From ELBO to VAE](#from-elbo-to-vae)    
+  - [VAE network architecture](#vae-network-architecture)    
 
 &nbsp;
 
 ## **Intuition**
+
+### Autoencoder VS PCA
+
 Let's start with the basic representation of an autoencoder
 
 ![](/collections/images/vae/autoencoder.jpg)
@@ -48,15 +56,55 @@ This corresponds to the well know PCA (Principal Component Analysis) paradigm. A
 
 &nbsp;
 
+### Why get hurt with a probabilistic context?
+
+VAEs can be considered as an extension of autoencoders with the introduction of regularization mechanisms (encoder side) to ensure that the generated latent space has good properties allowing the generative process (decoder side). The regularity that is expected from the latent space in order to make generative process possible can be expressed through two main properties: 
+* ***continuity***: two close points in the latent space should not give two completely different contents once decoded.
+* ***completeness***: for a chosen distribution, a point sampled from the latent space should give “meaningful” content once decoded.
+
+These two aspects are optimized within VAEs thanks to a ***probabilistic framework***. 
+
+&nbsp;
+
+#### **Continuity**
+
+In order to introduce local regularization to structure the latent space, the encoding-decoding process is slightly modified: instead of encoding an input as a single point, we encode it as a Gaussian distribution $$q_x(z) = \mathcal{N}\left(\mu_x,\sigma_x\right)$$ over the latent space. Thus, a point $$x\in \mathbb{R}^N$$ at the input of the encoder will correspond to a Gaussian distribution $$q_x(z)$$ at the output, as shown below:
+
+![](/collections/images/vae/vae_local_regularization.jpg)
+
+
+This will ensure that the sampling of a local region in the latent space should produce results that are close.
+
+![](/collections/images/vae/vae_local_regularization_with_decoder.jpg)
+
+
+However, this property is not sufficient to guarantee continuity and completeness. Indeed encoder can either learn distributions with tiny variances (which would correspond to classical autoencoders) or return distributions with very different means (which would be far apart from each other in the latent space), as illustrated in the figure below.
+
+![](/collections/images/vae/vae_no_global_regularization.jpg)
+
+&nbsp;
+
+#### **Completeness**
+
+In order to avoid these effects the covariance matrix and the mean of the distributions returned by the encoder need to be also regularized. In practice, this new regularization is done by enforcing distributions to be close to a standard normal distribution (centred and reduced). This way, the covariance matrices are required to be close to the identity, preventing punctual distributions, and the mean to be close to 0, preventing encoded distributions to be too far apart from each others, as illustrated in the figure below.
+
+![](/collections/images/vae/vae_with_global_regularization.jpg)
+
+&nbsp;
+
+>>Thanks to this regularization strategy, we prevent the model to encode data far apart in the latent space and encourage as much as possible returned distributions to overlap, satisfying this way the expected continuity and completeness conditions!
+
+&nbsp;
+
 
 VAE thus offers two extremely interesting opportunities:
 * the mastery of the encoder allows to optimize the projection operation $$p(z/x)$$ to a latent space with reduced dimensionality for interpretation purposes. This corresponds to ***manifold learning paradigm***.
 
-![](/collections/images/vae/encoder_illustration.jpg)
+![](/collections/images/vae/encoder_illustration_2.jpg)
 
 * the mastery of the decoder allows to optimize the projection operation $$p(x/z)$$ for the generation of data with a complex distribution. This corresponds to ***generative model framework***.
 
-![](/collections/images/vae/decoder_illustration.jpg)
+![](/collections/images/vae/decoder_illustration_2.jpg)
 
 >>In the rest of this tutorial, we will see how the VAE formalism allows to optimize these two tasks through the theory of variational inference.
 
@@ -133,6 +181,14 @@ Indeed, from the perspective of the purple distribution, the distance between po
 &nbsp;
 
 >>$$D_{KL}$$ can thus be used to measure a distance between two distributions. Its is always positive and it is not symmetric.
+
+&nbsp;
+
+### Bayes theorem
+
+Let’s assume a model where data $$x$$ are generated from a probability distribution depending on an unknown parameter $$z$$. Let’s also assume that we have a prior knowledge about the parameter $$z$$ that can be expressed as a probability distribution $$p\left(z\right)$$. Then, when data $$x$$ are observed, we can update the prior knowledge about this parameter using the Bayes theorem as follows:
+
+![](/collections/images/vae/bayes_theorem.jpg)
 
 &nbsp;
 
@@ -316,6 +372,9 @@ The following equation is also used as a loss term:
 
 $$\text{loss}=\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
 
+&nbsp;
+
+### VAE network architecture
 
 
 
