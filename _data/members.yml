@@ -122,8 +122,8 @@ researchers:
     lastname: 'Jehan Besson'
     institution: 'CNRS - CR'
     picture: 'sJehanBesson.jpg'
-    interests: "Shape optimization, applied mathematics, segmentation, fusion"
-    url: "https://scholar.google.fr/citations?user=t0oM20cAAAAJ&hl=fr"
+    interests: "Segmentation and filtering using continuous optimization methods, Evaluation and fusion using shape metrics"
+    url: "https://jehanbessonresearch.blogspot.com"
     
   - firstname: 'Carole'
     lastname: 'Lartizien'
