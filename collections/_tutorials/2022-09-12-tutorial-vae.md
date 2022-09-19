@@ -59,8 +59,8 @@ This corresponds to the well know PCA (Principal Component Analysis) paradigm. A
 ### Why get hurt with a probabilistic context?
 
 VAEs can be considered as an extension of autoencoders with the introduction of regularization mechanisms (encoder side) to ensure that the generated latent space has good properties allowing the generative process (decoder side). The regularity that is expected from the latent space in order to make generative process possible can be expressed through two main properties: 
-* ***continuity***: two close points in the latent space should not give two completely different contents once decoded.
-* ***completeness***: for a chosen distribution, a point sampled from the latent space should give “meaningful” content once decoded.
+* ***continuity***: two close points in the latent space should give close contents when decoded.
+* ***completeness***: a point sampled from the latent space should give “meaningful” content once decoded.
 
 These two aspects are optimized within VAEs thanks to a ***probabilistic framework***. 
 
@@ -70,7 +70,7 @@ These two aspects are optimized within VAEs thanks to a ***probabilistic framewo
 
 In order to introduce local regularization to structure the latent space, the encoding-decoding process is slightly modified: instead of encoding an input as a single point, we encode it as a Gaussian distribution $$q_x(z) = \mathcal{N}\left(\mu_x,\sigma_x\right)$$ over the latent space. Thus, a point $$x\in \mathbb{R}^N$$ at the input of the encoder will correspond to a Gaussian distribution $$q_x(z)$$ at the output, as shown below:
 
-![](/collections/images/vae/vae_local_regularization.jpg)
+![](/collections/images/vae/vae_local_regularization_2.jpg)
 
 
 This will ensure that the sampling of a local region in the latent space should produce results that are close.
@@ -86,9 +86,9 @@ However, this property is not sufficient to guarantee continuity and completenes
 
 #### **Completeness**
 
-In order to avoid these effects the covariance matrix and the mean of the distributions returned by the encoder need to be also regularized. In practice, this new regularization is done by enforcing distributions to be close to a standard normal distribution (centred and reduced). This way, the covariance matrices are required to be close to the identity, preventing punctual distributions, and the mean to be close to 0, preventing encoded distributions to be too far apart from each others, as illustrated in the figure below.
+In order to avoid these effects the covariance matrix and the mean of the distributions returned by the encoder need to be also regularized. In practice, this new regularization is done by enforcing distributions to be close to a standard normal distribution $$\mathcal{N}\left(0,I\right)$$. This way, the covariance matrices are required to be close to the identity, preventing punctual distributions, and the mean to be close to 0, preventing encoded distributions to be too far apart from each others, as illustrated in the figure below.
 
-![](/collections/images/vae/vae_with_global_regularization.jpg)
+![](/collections/images/vae/vae_with_global_regularization_2.jpg)
 
 &nbsp;
 
@@ -97,14 +97,22 @@ In order to avoid these effects the covariance matrix and the mean of the distri
 &nbsp;
 
 
+Using the previous reasoning, the overall architecture of the VAE can be represented as follows.
+
+![](/collections/images/vae/vae_overall_architecture_1.jpg)
+
+&nbsp;
+
 VAE thus offers two extremely interesting opportunities:
 * the mastery of the encoder allows to optimize the projection operation $$p(z/x)$$ to a latent space with reduced dimensionality for interpretation purposes. This corresponds to ***manifold learning paradigm***.
 
-![](/collections/images/vae/encoder_illustration_2.jpg)
+<!--[](/collections/images/vae/encoder_illustration_2.jpg)-->
 
 * the mastery of the decoder allows to optimize the projection operation $$p(x/z)$$ for the generation of data with a complex distribution. This corresponds to ***generative model framework***.
 
-![](/collections/images/vae/decoder_illustration_2.jpg)
+<!--![](/collections/images/vae/decoder_illustration_2.jpg)-->
+
+&nbsp;
 
 >>In the rest of this tutorial, we will see how the VAE formalism allows to optimize these two tasks through the theory of variational inference.
 
@@ -196,13 +204,21 @@ Let’s assume a model where data $$x$$ are generated from a probability distrib
 
 ### Key concept
 
+In the VAE formalism, we first make the assumption that $$p(z)$$ is a standard Gaussian distribution and that $$p(x/z)$$ is a Gaussian distribution whose mean is defined by a deterministic function $$f$$ of the variable $$z$$ and whose covariance matrix has the form of a positive constant $$c$$ that multiplies the identity matrix $$I$$.
+
+$$p(z) = \mathcal{N}(0,I)$$
+
+$$p(x/z) = \mathcal{N}(f(z),cI)$$
+
 The key concept around VAE is that we will try to optimize the learning of the non-linear projection operation $$p(z/x)$$ thanks to the variational inference formalism. Indeed, variational inference allows to approximate a complex probability (in our case $$p(z/x)$$) by a simpler model with the help of the KL divergence tool.
 
-Moreover, for simplification purposes, we will also try to project the input data in a Z space with a Gaussian probability density (i.e. $$p(z) = \mathcal{N}(0,I)$$). This will allow us to efficiently structure the latent space by concentrating the information close to the origin while avoiding holes. 
+<!--Moreover, for simplification purposes, we will also try to project the input data in a Z space with a Gaussian probability density (i.e. $$p(z) = \mathcal{N}(0,I)$$). This will allow us to efficiently structure the latent space by concentrating the information close to the origin while avoiding holes. 
 
 ![](/collections/images/vae/vae_latent_space_gaussian.jpg)
 
->>This aspect of VAE can be seen as manifold learning
+>>This aspect of VAE can be seen as manifold learning-->
+
+TODO
 
 &nbsp;
 
