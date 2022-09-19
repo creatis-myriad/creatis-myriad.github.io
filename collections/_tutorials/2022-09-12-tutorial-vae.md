@@ -70,7 +70,7 @@ These two aspects are optimized within VAEs thanks to a ***probabilistic framewo
 
 In order to introduce local regularization to structure the latent space, the encoding-decoding process is slightly modified: instead of encoding an input as a single point, we encode it as a Gaussian distribution $$q_x(z) = \mathcal{N}\left(\mu_x,\sigma_x\right)$$ over the latent space. Thus, a point $$x\in \mathbb{R}^N$$ at the input of the encoder will correspond to a Gaussian distribution $$q_x(z)$$ at the output, as shown below:
 
-![](/collections/images/vae/vae_local_regularization_2.jpg)
+![](/collections/images/vae/vae_local_regularization_3.jpg)
 
 
 This will ensure that the sampling of a local region in the latent space should produce results that are close.
@@ -99,7 +99,7 @@ In order to avoid these effects the covariance matrix and the mean of the distri
 
 Using the previous reasoning, the overall architecture of the VAE can be represented as follows.
 
-![](/collections/images/vae/vae_overall_architecture_1.jpg)
+![](/collections/images/vae/vae_overall_architecture_2.jpg)
 
 &nbsp;
 
@@ -204,13 +204,29 @@ Let’s assume a model where data $$x$$ are generated from a probability distrib
 
 ### Key concept
 
-In the VAE formalism, we first make the assumption that $$p(z)$$ is a standard Gaussian distribution and that $$p(x/z)$$ is a Gaussian distribution whose mean is defined by a deterministic function $$f$$ of the variable $$z$$ and whose covariance matrix has the form of a positive constant $$c$$ that multiplies the identity matrix $$I$$.
+In the VAE formalism, we first make the assumption that $$p(z)$$ is a standard Gaussian distribution (to ensure completeness) and that $$p(x/z)$$ is a Gaussian distribution whose mean is defined by a deterministic function $$f$$ of the variable $$z$$ and whose covariance matrix has the form of a positive constant $$c$$ that multiplies the identity matrix $$I$$. We will see that this last assumption allows to keep most of the information of the data structure in the reduced representations.
 
 $$p(z) = \mathcal{N}(0,I)$$
 
 $$p(x/z) = \mathcal{N}(f(z),cI)$$
 
-The key concept around VAE is that we will try to optimize the learning of the non-linear projection operation $$p(z/x)$$ thanks to the variational inference formalism. Indeed, variational inference allows to approximate a complex probability (in our case $$p(z/x)$$) by a simpler model with the help of the KL divergence tool.
+The key concept around VAE is that we will try to optimize the computation of $$p(z/x)$$. Indeed, it can be demonstrated that the computation of $$p(z/x)$$ is often complicated and requires the use of approximation techniques such as ***variational inference***.
+
+&nbsp;
+
+>>In statistics, variational inference is a technique to approximate complex distributions. The idea is to set a parametrised family of distribution, usuall the family of Gaussians whose parameters are the mean and the covariance, and to look for the best approximation of the target distribution among this family. The best element in the family is one that minimise a given approximation error measurement, most of the time the KL divergence between approximation and target.
+
+&nbsp;
+
+In the VAE formalism, $$p(z/x)$$ is approximated by a Gaussian distribution $$q_x(z)$$ whose mean and covariance are defined by two functions $$g(x)$$ and $$h(x)$$. 
+
+$$q_x(z) = \mathcal{N}\left(g(x),h(x)\right)$$
+
+
+We thus have a family of candidates for variational inference and need to find the best approximation among this family by minimising the KL divergence between the approximation and the target $$p(z/x)$$. In other words, we are looking for the optimal $$g^*$$ and $$h^*$$ such that:
+
+$$\left(g^*,h^*\right) = \underset{(g,h)}{\arg\min} \,\,\, D_{KL}\left(q_x(z) \parallel p(z/x) \right)$$
+
 
 <!--Moreover, for simplification purposes, we will also try to project the input data in a Z space with a Gaussian probability density (i.e. $$p(z) = \mathcal{N}(0,I)$$). This will allow us to efficiently structure the latent space by concentrating the information close to the origin while avoiding holes. 
 
@@ -218,17 +234,10 @@ The key concept around VAE is that we will try to optimize the learning of the n
 
 >>This aspect of VAE can be seen as manifold learning-->
 
-TODO
+Let's now reformulate the KL divergence expression.
 
-&nbsp;
 
-1. Let's say we have a distribution $$p(z/x)$$ that cannot be easily estimated.
-
-2. Thus, instead of estimating $$p(z/x)$$ we could approximate it with a simpler distribution $$q(z/x)$$.
-
-3. The KL divergence given above is then exploited to measure the distance between these two distributions. If $$q(z/x)$$ has been well chosen, then its KL divergence to $$p(z/x)$$ should be low.
-
-$$D_{KL}\left(q(z/x) \parallel p(z/x) \right) = - \int{q(z/x) \cdot log\left(\frac{p(z/x)}{q(z/x)}\right) \,dz}$$
+$$D_{KL}\left(q_x(z) \parallel p(z/x) \right) = - \int{q_x(z) \cdot log\left(\frac{p(z/x)}{q_x(z)}\right) \,dz}$$
 
 By using the ***conditional probability*** relation:
 
@@ -236,17 +245,17 @@ $$p(z/x) = \frac{p(x,z)}{p(x)}$$
 
 where $$p(x,z)$$ is the joint distribution of event $$x$$ and $$z$$, the above expression can be rewritten as:
 
-$$D_{KL}\left(q(z/x) \parallel p(z/x) \right) = - \int{q(z/x) \cdot log\left(\frac{p(x,z)}{p(x) \cdot q(z/x)}\right) \,dz}$$
+$$D_{KL}\left(q_x(z) \parallel p(z/x) \right) = - \int{q_x(z) \cdot log\left(\frac{p(x,z)}{p(x) \cdot q_x(z)}\right) \,dz}$$
 
-$$D_{KL}\left(q(z/x) \parallel p(z/x) \right) = - \int{q(z/x) \cdot \left[ log\left(\frac{p(x,z)}{q(z/x)}\right) + log\left(\frac{1}{p(x)}\right) \right] \,dz}$$
+$$D_{KL}\left(q_x(z) \parallel p(z/x) \right) = - \int{q_x(z) \cdot \left[ log\left(\frac{p(x,z)}{q_x(z)}\right) + log\left(\frac{1}{p(x)}\right) \right] \,dz}$$
 
-$$D_{KL}\left(q(z/x) \parallel p(z/x) \right) = - \int{q(z/x) \cdot log\left(\frac{p(x,z)}{q(z/x)}\right) \,dz} \,+\, log\left(p(x)\right) \cdot \underbrace{\int{q(z/x)\,dz}}_{=1}$$
+$$D_{KL}\left(q_x(z) \parallel p(z/x) \right) = - \int{q_x(z) \cdot log\left(\frac{p(x,z)}{q_x(z)}\right) \,dz} \,+\, log\left(p(x)\right) \cdot \underbrace{\int{q_x(z)\,dz}}_{=1}$$
 
-$$D_{KL}\left(q(z/x) \parallel p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
+$$D_{KL}\left(q_x(z) \parallel p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
 
 where $$\mathcal{L}$$ is defined as the ***Evidence Lower BOund (ELBO)*** whose expression is given by:
 
-$$\mathcal{L} = \int{q(z/x) \cdot log\left(\frac{p(x,z)}{q(z/x)}\right) \,dz}$$
+$$\mathcal{L} = \int{q_x(z) \cdot log\left(\frac{p(x,z)}{q_x(z)}\right) \,dz}$$
 
 &nbsp;
 
@@ -254,27 +263,27 @@ $$\mathcal{L} = \int{q(z/x) \cdot log\left(\frac{p(x,z)}{q(z/x)}\right) \,dz}$$
 
 Let's take a closer look at the previous derived equation:
 
-$$D_{KL}\left(q(z/x) \parallel p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
+$$D_{KL}\left(q_x(z) \parallel p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
 
 The following observations can be made:
 * since $$0\leq p(x) \leq 1$$, $$log\left(p(x)\right) \leq 0$$
 
 * since $$x$$ is the observation, $$log\left(p(x)\right)$$ is a fixed value
 
-* by definition $$D_{KL}\left(q(z/x) \parallel p(z/x) \right) \geq 0$$
+* by definition $$D_{KL}\left(q_x(z) \parallel p(z/x) \right) \geq 0$$
 
-* since $$\mathcal{L} = -D_{KL}\left(q(z/x) \parallel p(x,z)\right)$$, $$\mathcal{L} \leq 0$$
+* since $$\mathcal{L} = -D_{KL}\left(q_x(z) \parallel p(x,z)\right)$$, $$\mathcal{L} \leq 0$$
 
 
 The previous expression can thus be rewritten as follows:
 
-$$\underbrace{D_{KL}\left(q(z/x) \parallel p(z/x) \right)}_{\geq 0} \,+\, \underbrace{\mathcal{L}}_{\leq 0} \,=\, \underbrace{log\left(p(x)\right)}_{\leq 0 \,\, \text{and fixed}}$$
+$$\underbrace{D_{KL}\left(q_x(z) \parallel p(z/x) \right)}_{\geq 0} \,+\, \underbrace{\mathcal{L}}_{\leq 0} \,=\, \underbrace{log\left(p(x)\right)}_{\leq 0 \,\, \text{and fixed}}$$
 
->>At this point, it is important to remember that $$p(z/x)$$ is the unknown and that the goal is to find the best $$q(z/x)$$, i.e. the one that shall minimize $$D_{KL}\left(q(z/x) \parallel p(z/x) \right)$$.
+>>At this point, it is important to remember that $$p(z/x)$$ is the unknown and that the goal is to find the best $$q_x(z)$$, i.e. the one that shall minimize $$D_{KL}\left(q_x(z) \parallel p(z/x) \right)$$.
 
 &nbsp;
 
-With the above observations, the following strategy can be implemented: by tweaking $$q(z/x)$$, we can seek to maximize the ELBO $$\mathcal{L}$$, which will imply the minimization of the KL divergence $$D_{KL}\left(q(z/x) \parallel p(z/x) \right)$$, and thus to find a distribution $$q(z/x)$$ that is close to $$p(z/x)$$. The table below provides an illustration of such a strategy. 
+With the above observations, the following strategy can be implemented: by tweaking $$q_x(z)$$, we can seek to maximize the ELBO $$\mathcal{L}$$, which will imply the minimization of the KL divergence $$D_{KL}\left(q_x(z) \parallel p(z/x) \right)$$, and thus to find a distribution $$q_x(z)$$ that is close to $$p(z/x)$$. The table below provides an illustration of such a strategy. 
 
 <style>
 table th:first-of-type {
@@ -302,19 +311,29 @@ table th:nth-of-type(3) {
 
 The ELBO $$\mathcal{L}$$ should be reformulated so to justify the loss involved in the VAE framework. The corresponding derivation is provided below.
 
-$$\mathcal{L} = \int{q(z/x) \cdot log\left(\frac{p(x,z)}{q(z/x)}\right) \,dz}$$
+$$\mathcal{L} = \int{q_x(z) \cdot log\left(\frac{p(x,z)}{q_x(z)}\right) \,dz}$$
 
-$$\mathcal{L} = \int{q(z/x) \cdot log\left(\frac{p(x/z)\cdot p(z)}{q(z/x)}\right) \,dz}$$
+$$\mathcal{L} = \int{q_x(z) \cdot log\left(\frac{p(x/z)\cdot p(z)}{q_x(z)}\right) \,dz}$$
 
-$$\mathcal{L} = \int{q(z/x) \cdot \left[ log\left(p(x/z)\right) + log\left(\frac{p(z)}{q(z/x)}\right) \right] \,dz}$$
+$$\mathcal{L} = \int{q_x(z) \cdot \left[ log\left(p(x/z)\right) + log\left(\frac{p(z)}{q_x(z)}\right) \right] \,dz}$$
 
-$$\mathcal{L} = \int{q(z/x) \cdot log\left(p(x/z)\right) \,dz} + \int{q(z/x) \cdot log\left(\frac{p(z)}{q(z/x)}\right) \,dz}$$
+$$\mathcal{L} = \int{q_x(z) \cdot log\left(p(x/z)\right) \,dz} + \int{q_x(z) \cdot log\left(\frac{p(z)}{q_x(z)}\right) \,dz}$$
 
-$$\mathcal{L} =  \mathbb{E}_{z\sim q(z/x)} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q(z/x)\parallel p(z)\right)$$
+$$\mathcal{L} =  \mathbb{E}_{z\sim q_x} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q_x(z)\parallel p(z)\right)$$
+
+$$\mathcal{L} =  \mathbb{E}_{z\sim q_x} \left[-\frac{\|x-f(z)\|^2}{2c}\right] - D_{KL}\left(q_x(z)\parallel p(z)\right)$$
 
 &nbsp;
 
-where $$\mathbb{E}_{z\sim q(z/x)}$$ is the mathematical expectation with respect to $$q(z/x)$$.
+where $$\mathbb{E}_{z\sim q_x}$$ is the mathematical expectation with respect to $$q_x(z)$$. 
+
+We are finally looking for:
+
+$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\max} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[-\frac{\|x-f(z)\|^2}{2c}\right] - D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
+
+or 
+
+$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[\frac{\|x-f(z)\|^2}{2c}\right] + D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
 
 &nbsp;
 
@@ -324,7 +343,7 @@ Here is a summary of what have been done so far.
 
 1. We want to estimate a non-linear projection $$p(z/x)$$ to go from an input space to a space of reduced dimension, and this through a probabilistic framework.
 
-2. To do this, we introduced a third party distribution $$q(z/x)$$ to estimate the target distribution $$p(z/x)$$.
+2. To do this, we introduced a third party parametric distribution $$q_x(z)$$ to estimate the target distribution $$p(z/x)$$.
 
 3. We used the KL divergence metric which measures the proximity between the two distributions, the objective being to minimize this metric.
 
@@ -336,7 +355,8 @@ $$\mathcal{L} =  \mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right] - D
 </div>
 -->
 
-$$\mathcal{L} =  \mathbb{E}_{z\sim q(z/x)} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q(z/x)\parallel p(z)\right)$$
+$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\max} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[-\frac{\|x-f(z)\|^2}{2c}\right] - D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
+
 
 &nbsp;
 
