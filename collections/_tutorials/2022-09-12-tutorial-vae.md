@@ -26,7 +26,7 @@ categories: autoencoder, encoder, decoder, VAE
   - [Evidence lower bound](#evidence-lower-bound)
   - [ELBO reformulation](#elbo-reformulation)  
   - [From ELBO to VAE](#from-elbo-to-vae)    
-  - [VAE network architecture](#vae-network-architecture)    
+<!--  - [VAE network architecture](#vae-network-architecture)-->
 
 &nbsp;
 
@@ -210,20 +210,20 @@ $$p(z) = \mathcal{N}(0,I)$$
 
 $$p(x/z) = \mathcal{N}(f(z),cI)$$
 
-The key concept around VAE is that we will try to optimize the computation of $$p(z/x)$$. Indeed, it can be demonstrated that the computation of $$p(z/x)$$ is often complicated and requires the use of approximation techniques such as ***variational inference***.
+The key concept around VAE is that we will try to optimize the computation of the non-linear projection $$p(z/x)$$. Indeed, it can be demonstrated that the computation of $$p(z/x)$$ is often complicated and requires the use of approximation techniques such as ***variational inference***.
 
 &nbsp;
 
->>In statistics, variational inference is a technique to approximate complex distributions. The idea is to set a parametrised family of distribution, usuall the family of Gaussians whose parameters are the mean and the covariance, and to look for the best approximation of the target distribution among this family. The best element in the family is one that minimise a given approximation error measurement, most of the time the KL divergence between approximation and target.
+>>In statistics, variational inference is a technique to approximate complex distributions. The idea is to set a parametrised family of distributions, usuall the family of Gaussians whose parameters are the mean and the covariance, and to look for the best approximation of the target distribution among this family. The best element in the family is one that minimise a given approximation error measurement, most of the time the KL divergence between approximation and target.
 
 &nbsp;
 
-In the VAE formalism, $$p(z/x)$$ is approximated by a Gaussian distribution $$q_x(z)$$ whose mean and covariance are defined by two functions $$g(x)$$ and $$h(x)$$. 
+In the VAE formalism, $$p(z/x)$$ is approximated by a Gaussian distribution $$q_x(z)$$ whose mean $$\mu_x$$ and covariance $$\sigma_x$$ are defined by two functions $$g(x)$$ and $$h(x)$$. 
 
 $$q_x(z) = \mathcal{N}\left(g(x),h(x)\right)$$
 
 
-We thus have a family of candidates for variational inference and need to find the best approximation among this family by minimising the KL divergence between the approximation and the target $$p(z/x)$$. In other words, we are looking for the optimal $$g^*$$ and $$h^*$$ such that:
+We thus have a family of candidates for variational inference and need to find the best approximation among this family by minimising the KL divergence between the approximation $$q_x(z)$$ and the target $$p(z/x)$$. In other words, we are looking for the optimal $$g^*$$ and $$h^*$$ such that:
 
 $$\left(g^*,h^*\right) = \underset{(g,h)}{\arg\min} \,\,\, D_{KL}\left(q_x(z) \parallel p(z/x) \right)$$
 
@@ -313,6 +313,12 @@ The ELBO $$\mathcal{L}$$ should be reformulated so to justify the loss involved 
 
 $$\mathcal{L} = \int{q_x(z) \cdot log\left(\frac{p(x,z)}{q_x(z)}\right) \,dz}$$
 
+By using the conditional probability relation:
+
+$$p(x/z) = \frac{p(x,z)}{p(z)}$$
+
+the above expression can be rewritten as:
+
 $$\mathcal{L} = \int{q_x(z) \cdot log\left(\frac{p(x/z)\cdot p(z)}{q_x(z)}\right) \,dz}$$
 
 $$\mathcal{L} = \int{q_x(z) \cdot \left[ log\left(p(x/z)\right) + log\left(\frac{p(z)}{q_x(z)}\right) \right] \,dz}$$
@@ -321,7 +327,11 @@ $$\mathcal{L} = \int{q_x(z) \cdot log\left(p(x/z)\right) \,dz} + \int{q_x(z) \cd
 
 $$\mathcal{L} =  \mathbb{E}_{z\sim q_x} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q_x(z)\parallel p(z)\right)$$
 
-$$\mathcal{L} =  \mathbb{E}_{z\sim q_x} \left[-\frac{\|x-f(z)\|^2}{2c}\right] - D_{KL}\left(q_x(z)\parallel p(z)\right)$$
+&nbsp;
+
+Recalling that $$p(x/z)$$ is approximated by a Gaussian distribution $$\mathcal{N}\left(f(z),cI\right)$$, we finally have
+
+$$\mathcal{L} \propto \mathbb{E}_{z\sim q_x} \left[\|x-f(z)\|^2\right] - D_{KL}\left(q_x(z)\parallel p(z)\right)$$
 
 &nbsp;
 
@@ -329,11 +339,11 @@ where $$\mathbb{E}_{z\sim q_x}$$ is the mathematical expectation with respect to
 
 We are finally looking for:
 
-$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\max} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[-\frac{\|x-f(z)\|^2}{2c}\right] - D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
+$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\max} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[-\|x-f(z)\|^2\right] - D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
 
 or 
 
-$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[\frac{\|x-f(z)\|^2}{2c}\right] + D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
+$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[\|x-f(z)\|^2\right] + D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
 
 &nbsp;
 
@@ -347,7 +357,7 @@ Here is a summary of what have been done so far.
 
 3. We used the KL divergence metric which measures the proximity between the two distributions, the objective being to minimize this metric.
 
-4. The minimization of the KL divergence leads to the maximization of the following ELBO equation:
+4. The minimization of the KL divergence leads to the minimization of the following equation:
 
 <!--
 <div style="background-color:#d7efd5; text-align:center; vertical-align: middle; padding:5px 0;">
@@ -355,44 +365,38 @@ $$\mathcal{L} =  \mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right] - D
 </div>
 -->
 
-$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\max} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[-\frac{\|x-f(z)\|^2}{2c}\right] - D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
+$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[\|x-f(z)\|^2\right] + D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
 
 
 &nbsp;
 
-The maximization of the above equation can be handled by the following graph.
+The minimization of the above equation can be handled by the following graph.
 
 ![](/collections/images/vae/vae_final_step.jpg)
 
->>From this graph, we can see that the maximization of the ELBO equation can be handled by a decoder (first part) and an encoder (second part)!
+>>From this graph, we can see that the maximization of the ELBO equation (or the minimization of the above equation) can be handled by an encoder and an decoder!
 
 &nbsp;
 
 **Let's work on the decoder** 
 
-Our goal is to output an instance $$\hat{x}$$ that is close to the input $$x$$. Since the decoder is a neural network, the link between $$z$$ and $$\hat{x}$$ is deterministic. We thus have 
+The decoder will be in charge of the optimization of $$p(x/z)$$, i.e. the first part of the above equation. This is done through a neural network with the following loss function:
 
-$$p(x/z) \equiv p(x/\hat{x})$$
+$$\mathcal{L}_{decoder} = \|x-\hat{x}\|^2 \,=\, \|x-d(z)\|^2$$
 
-If $$p$$ is a Gaussian distribution, then 
+where $$d(z)$$ is the ouput of the decoder. This correponds to the classical $$L_2$$ loss function!
 
-$$p(x/\hat{x}) \propto \exp{\left(-\frac{\|x-\hat{x}\|^2}{\sigma^2}\right)}$$
+&nbsp;
 
-$$log\left(p(x/\hat{x})\right) = -\|x-\hat{x}\|^2 + Cst$$
-
-So the maximization of $$\mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right]$$ can be obtained through the minimization of $$\|x-\hat{x}\|^2$$, which is the conventional reconstruction error!
-
->>If we make the assumption that $$\,p$$ follows a Bernouilli distribution, then we can demonstrate that the maximization of $$\,\mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right]$$ leads to the minimization of the cross entropy function!
+>>If we make the assumption that $$\,p(x/z)$$ follows a Bernouilli distribution, then we can demonstrate that the maximization of $$\,\mathbb{E}_{z\sim q_x} \left[log\left(p(x/z)\right)\right]$$ leads to the minimization of the cross entropy function!
 
 &nbsp;
 
 **Let's work on the encoder** 
 
-Our goal is to minimize $$D_{KL}\left(q(z/z)\parallel p(z)\right)$$.
+The encoder will be in charge of the optimization of $$p(z/x)$$, i.e. the second part of the above equation. This is done through a neural network with the following loss function:
 
-In order to make the equation simpler and to structure the latent space, we first force $$p(z)$$ to follow a Gaussian distribution $$\mathcal{N}(0,I)$$. This is a strong choice of VAE formalism. The encoder should thus minimize the following loss:
-
-$$D_{KL}\left(q(z/x)\parallel \mathcal{N}(0,I)\right)$$
+$$\mathcal{L}_{encoder} = D_{KL}\left(q_x(z) \parallel \mathcal{N}(0,I)\right)$$
 
 A very important point here is that we must think in terms of probability function since we want to fit two distributions. In other words, the encoder must generate the parameters of the distribution that will generate the $$z$$ sample. 
 
@@ -400,9 +404,9 @@ A very important point here is that we must think in terms of probability functi
 
 &nbsp;
 
-Given the needs for distribution modeling, the graph below shows the final network structure used in the VAE formalism.
+The graph below shows the final network structure used in the VAE formalism.
 
-![](/collections/images/vae/vae_final_representation.jpg)
+![](/collections/images/vae/vae_final_representation_2.jpg)
 
 The following equation is also used as a loss term:
 
@@ -410,7 +414,8 @@ $$\text{loss}=\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\
 
 &nbsp;
 
+<!--
 ### VAE network architecture
-
+-->
 
 
