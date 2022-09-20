@@ -26,7 +26,7 @@ categories: autoencoder, encoder, decoder, VAE
   - [Evidence lower bound](#evidence-lower-bound)
   - [ELBO reformulation](#elbo-reformulation)  
   - [From ELBO to VAE](#from-elbo-to-vae)    
-<!--  - [VAE network architecture](#vae-network-architecture)-->
+  - [And what about backpropagation?](#and-what-about-backpropagation)
 
 &nbsp;
 
@@ -359,12 +359,6 @@ Here is a summary of what have been done so far.
 
 4. The minimization of the KL divergence leads to the minimization of the following equation:
 
-<!--
-<div style="background-color:#d7efd5; text-align:center; vertical-align: middle; padding:5px 0;">
-$$\mathcal{L} =  \mathbb{E}_{z\sim q(z)} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q(z)||p(z)\right)$$
-</div>
--->
-
 $$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[\|x-f(z)\|^2\right] + D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
 
 
@@ -380,11 +374,11 @@ The minimization of the above equation can be handled by the following graph.
 
 **Let's work on the decoder** 
 
-The decoder will be in charge of the optimization of $$p(x/z)$$, i.e. the first part of the above equation. This is done through a neural network with the following loss function:
+The decoder will be in charge of the optimization of $$p(x/z)$$, i.e. the first part of the above equation. This is done through a neural network that will optimize the $$f$$ function through the minimization of the following loss function:
 
-$$\mathcal{L}_{decoder} = \|x-\hat{x}\|^2 \,=\, \|x-d(z)\|^2$$
+$$\mathcal{L}_{decoder} = \|x-\hat{x}\|^2 \,=\, \|x-\underbrace{f(z)}_{\text{decoder}}\|^2$$
 
-where $$d(z)$$ is the ouput of the decoder. This correponds to the classical $$L_2$$ loss function!
+where $$f(z)$$ is the ouput of the decoder. This correponds to the classical $$L_2$$ loss function!
 
 &nbsp;
 
@@ -394,9 +388,9 @@ where $$d(z)$$ is the ouput of the decoder. This correponds to the classical $$L
 
 **Let's work on the encoder** 
 
-The encoder will be in charge of the optimization of $$p(z/x)$$, i.e. the second part of the above equation. This is done through a neural network with the following loss function:
+The encoder will be in charge of the optimization of $$p(z/x)$$, i.e. the second part of the above equation. This is done through a neural network that will optimize $$g$$ and $$h$$ functions through the minimization of the following loss function:
 
-$$\mathcal{L}_{encoder} = D_{KL}\left(q_x(z) \parallel \mathcal{N}(0,I)\right)$$
+$$\mathcal{L}_{encoder} = D_{KL}(\underbrace{q_x(z)}_{encoder} \parallel \mathcal{N}(0,I))$$
 
 A very important point here is that we must think in terms of probability function since we want to fit two distributions. In other words, the encoder must generate the parameters of the distribution that will generate the $$z$$ sample. 
 
@@ -408,14 +402,54 @@ The graph below shows the final network structure used in the VAE formalism.
 
 ![](/collections/images/vae/vae_final_representation_2.jpg)
 
-The following equation is also used as a loss term:
+&nbsp;
+
+The following equation is used as a loss term:
 
 $$\text{loss}=\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
 
 &nbsp;
 
-<!--
-### VAE network architecture
--->
+### And what about backpropagation?
+
+So far, we have established a probabilistic framework that depends on three functions, $$f$$, $$g$$ and $$h$$ that are modeled by neural networks in an encoder-decoder architecture. In practice, g and h are not defined by two completely independent networks but share a part of their architecture and their weights so that we have:
+
+$$g(x)=g_2(g_1(x)) \quad\quad\quad\quad h(x)=h_2(g_1(x))$$
+
+Moreover, for simplification purposes, we also make the assumption that $$q_x(z)$$ is a multidimensional Gaussian distribution with diagonal covariance matrix (i.e. variables independence assumption). $$h(x)$$ is thus simply a vector containing the diagonal elements of the covariance matrix and as the same size as $$g(x)$$.
+
+![](/collections/images/vae/encoder_final_structure.jpg)
+
+&nbsp;
+
+We also need to be very careful about the way we sample from the distribution returned by the encoder during the training.
+
+>>The sampling process has to be expressed in a way that allows the error to be backpropagated through the network.
+
+&nbsp;
+
+A ***reparametrisation trick*** is used to make the gradient descent possible despite the random sampling. It consists in using the fact that if $$z$$ is a random variable following a Gaussian distribution with mean $$g(x)$$ and with covariance $$H(x)=h(x) \cdot h'(x)$$ then it can be expressed as:
+
+$$z = h(x) \zeta + g(x) \quad\quad\quad \zeta \sim \mathcal{N}(0,I)$$
+
+&nbsp;
+
+This parametrization trick can be summarized as follows:
+
+![](/collections/images/vae/parametrization_trick.jpg)
+
+&nbsp;
+
+The graph below shows the final network used to implement VAE with the possibility to perform backpropagation.
+
+![](/collections/images/vae/vae_backpropagation_architecture.jpg)
+
+&nbsp;
+
+We recall that the following equation is used as the loss term:
+
+$$\text{loss} = \|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
+
+$$\text{loss} = \|x-f(z)\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(g(x),h(x)\right),\mathcal{N}\left(0,I\right)\right) $$
 
 
