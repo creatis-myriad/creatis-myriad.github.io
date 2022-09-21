@@ -16,7 +16,7 @@ professors:
   - firstname: 'Olivier'
     lastname: 'Bernard'
     university: 'INSA, University of Lyon'
-    picture: 'oBernard_sub.jpg'
+    picture: 'oBernard.jpg'
     interests: "Cardiac imaging, deep learning, image simulation"
     url: "https://www.creatis.insa-lyon.fr/~bernard/"
     
