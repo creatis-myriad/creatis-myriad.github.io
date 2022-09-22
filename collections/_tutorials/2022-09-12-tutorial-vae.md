@@ -46,13 +46,13 @@ Let us now consider the simple case where $$\mathbf{e}$$ and $$\mathbf{d}$$ corr
 
 ![](/collections/images/vae/simplified_autoencoder.jpg)
 
-where $$\mathbf{e} \in \mathbb{R}^{M \times N}$$ and $$\mathbf{d} \in \mathbb{R}^{N \times M}$$ are two linear projection matrices. In the particular case where $$\mathbf{e} = \mathbf{U}^T$$ and $$\mathbf{d} = \mathbf{U}$$, the autoencoder expressions can be written as:
+where $$\mathbf{e} \in \mathbb{R}^{N \times M}$$ and $$\mathbf{d} \in \mathbb{R}^{M \times N}$$ are two linear projection matrices. In the particular case where $$\mathbf{e} = \mathbf{U}^T$$ and $$\mathbf{d} = \mathbf{U}$$, the autoencoder expressions can be written as:
 
 $$\mathbf{z} = \mathbf{U}^T\mathbf{x} \quad\quad \text{and} \quad\quad \mathbf{\hat{x}} = \mathbf{U}\mathbf{z}=\mathbf{U}\mathbf{U}^T\mathbf{x}$$
 
 This corresponds to the well know PCA (Principal Component Analysis) paradigm. A more formal proof can be found [in this article](https://arxiv.org/pdf/1804.10253.pdf).
 
->>Autoencoders can thus be seen as a generalization of the dimensionality reduction PCA formalism by evolving more complex projection operations defined through $$\mathbf{e}$$ and $$\mathbf{d}$$ networks.
+>Autoencoders can thus be seen as a generalization of the dimensionality reduction PCA formalism by evolving more complex projection operations defined through $$\mathbf{e}$$ and $$\mathbf{d}$$ networks.
 
 &nbsp;
 
@@ -70,7 +70,7 @@ These two aspects are optimized within VAEs thanks to a ***probabilistic framewo
 
 In order to introduce local regularization to structure the latent space, the encoding-decoding process is slightly modified: instead of encoding an input as a single point, we encode it as a Gaussian distribution $$q_x(z) = \mathcal{N}\left(\mu_x,\sigma_x\right)$$ over the latent space. Thus, a point $$x\in \mathbb{R}^N$$ at the input of the encoder will correspond to a Gaussian distribution $$q_x(z)$$ at the output, as shown below:
 
-![](/collections/images/vae/vae_local_regularization_3.jpg)
+![](/collections/images/vae/vae_local_regularization.jpg)
 
 
 This will ensure that the sampling of a local region in the latent space should produce results that are close.
@@ -88,33 +88,29 @@ However, this property is not sufficient to guarantee continuity and completenes
 
 In order to avoid these effects the covariance matrix and the mean of the distributions returned by the encoder need to be also regularized. In practice, this new regularization is done by enforcing distributions to be close to a standard normal distribution $$\mathcal{N}\left(0,I\right)$$. This way, the covariance matrices are required to be close to the identity, preventing punctual distributions, and the mean to be close to 0, preventing encoded distributions to be too far apart from each others, as illustrated in the figure below.
 
-![](/collections/images/vae/vae_with_global_regularization_2.jpg)
+![](/collections/images/vae/vae_with_global_regularization.jpg)
 
 &nbsp;
 
->>Thanks to this regularization strategy, we prevent the model to encode data far apart in the latent space and encourage as much as possible returned distributions to overlap, satisfying this way the expected continuity and completeness conditions!
+>Thanks to this regularization strategy, we prevent the model to encode data far apart in the latent space and encourage as much as possible returned distributions to overlap, satisfying this way the expected continuity and completeness conditions!
 
 &nbsp;
 
 
 Using the previous reasoning, the overall architecture of the VAE can be represented as follows.
 
-![](/collections/images/vae/vae_overall_architecture_2.jpg)
+![](/collections/images/vae/vae_overall_architecture.jpg)
 
 &nbsp;
 
 VAE thus offers two extremely interesting opportunities:
 * the mastery of the encoder allows to optimize the projection operation $$p(z/x)$$ to a latent space with reduced dimensionality for interpretation purposes. This corresponds to ***manifold learning paradigm***.
 
-<!--[](/collections/images/vae/encoder_illustration_2.jpg)-->
-
 * the mastery of the decoder allows to optimize the projection operation $$p(x/z)$$ for the generation of data with a complex distribution. This corresponds to ***generative model framework***.
-
-<!--![](/collections/images/vae/decoder_illustration_2.jpg)-->
 
 &nbsp;
 
->>In the rest of this tutorial, we will see how the VAE formalism allows to optimize these two tasks through the theory of variational inference.
+>In the rest of this tutorial, we will see how the VAE formalism allows to optimize these two tasks through the theory of variational inference.
 
 &nbsp;
 
@@ -128,7 +124,7 @@ $$I = -log(p(x))$$
 
 with $$x$$ being an event and $$p(x)$$ the probability of this event. Since $$0\leq p(x) \leq 1$$, $$I$$ is positive and tends to infinity when $$p(x)=0$$.
 
->>From this equation, one can see that when the probability of an event is high (close to $$1$$), the corresponding information is low, which makes sense. For instance, the probability that the weather will be hot in France during summer is very high, so this sentence does not provide any useful information in a conversation
+>From this equation, one can see that when the probability of an event is high (close to $$1$$), the corresponding information is low, which makes sense. For instance, the probability that the weather will be hot in France during summer is very high, so this sentence does not provide any useful information in a conversation
 
 &nbsp;
 
@@ -146,7 +142,7 @@ Entropy $$H$$ corresponds to the ***average information of a process***. Its exp
 
 $$H = -\sum_{i=1}^{N}{p(x_i)\cdot log\left(p(x_i)\right)} \quad \quad \quad \text{or} \quad \quad \quad H = -\int{p(x)\cdot log\left(p(x)\right)}\,dx$$
 
->>Since the information $$-log\left(p(x)\right)$$ is always positive and that $$p(x)$$ is also positive, then the entropy $$H$$ is also positive!
+>Since the information $$-log\left(p(x)\right)$$ is always positive and that $$p(x)$$ is also positive, then the entropy $$H$$ is also positive!
 
 &nbsp;
 
@@ -188,13 +184,13 @@ Indeed, from the perspective of the purple distribution, the distance between po
 
 &nbsp;
 
->>$$D_{KL}$$ can thus be used to measure a distance between two distributions. Its is always positive and it is not symmetric.
+>$$D_{KL}$$ can thus be used to measure a distance between two distributions. Its is always positive and it is not symmetric.
 
 &nbsp;
 
 ### Bayes theorem
 
-Let’s assume a model where data $$x$$ are generated from a probability distribution depending on an unknown parameter $$z$$. Let’s also assume that we have a prior knowledge about the parameter $$z$$ that can be expressed as a probability distribution $$p\left(z\right)$$. Then, when data $$x$$ are observed, we can update the prior knowledge about this parameter using the Bayes theorem as follows:
+Let’s assume a model where data $$x$$ are generated from a probability distribution depending on an unknown parameter $$z$$. Let’s also assume that we have a prior knowledge about the parameter $$z$$ that can be expressed as a probability distribution $$p\left(z\right)$$. Then, when data $$x$$ are observed, we can update the prior knowledge about this parameter using Bayes theorem as follows:
 
 ![](/collections/images/vae/bayes_theorem.jpg)
 
@@ -214,7 +210,7 @@ The key concept around VAE is that we will try to optimize the computation of th
 
 &nbsp;
 
->>In statistics, variational inference is a technique to approximate complex distributions. The idea is to set a parametrised family of distributions, usuall the family of Gaussians whose parameters are the mean and the covariance, and to look for the best approximation of the target distribution among this family. The best element in the family is one that minimise a given approximation error measurement, most of the time the KL divergence between approximation and target.
+>In statistics, variational inference is a technique to approximate complex distributions. The idea is to set a parametrised family of distributions, usuall the family of Gaussians whose parameters are the mean and the covariance, and to look for the best approximation of the target distribution among this family. The best element in the family is one that minimise a given approximation error measurement, most of the time the KL divergence between approximation and target.
 
 &nbsp;
 
@@ -227,15 +223,7 @@ We thus have a family of candidates for variational inference and need to find t
 
 $$\left(g^*,h^*\right) = \underset{(g,h)}{\arg\min} \,\,\, D_{KL}\left(q_x(z) \parallel p(z/x) \right)$$
 
-
-<!--Moreover, for simplification purposes, we will also try to project the input data in a Z space with a Gaussian probability density (i.e. $$p(z) = \mathcal{N}(0,I)$$). This will allow us to efficiently structure the latent space by concentrating the information close to the origin while avoiding holes. 
-
-![](/collections/images/vae/vae_latent_space_gaussian.jpg)
-
->>This aspect of VAE can be seen as manifold learning-->
-
 Let's now reformulate the KL divergence expression.
-
 
 $$D_{KL}\left(q_x(z) \parallel p(z/x) \right) = - \int{q_x(z) \cdot log\left(\frac{p(z/x)}{q_x(z)}\right) \,dz}$$
 
@@ -279,7 +267,7 @@ The previous expression can thus be rewritten as follows:
 
 $$\underbrace{D_{KL}\left(q_x(z) \parallel p(z/x) \right)}_{\geq 0} \,+\, \underbrace{\mathcal{L}}_{\leq 0} \,=\, \underbrace{log\left(p(x)\right)}_{\leq 0 \,\, \text{and fixed}}$$
 
->>At this point, it is important to remember that $$p(z/x)$$ is the unknown and that the goal is to find the best $$q_x(z)$$, i.e. the one that shall minimize $$D_{KL}\left(q_x(z) \parallel p(z/x) \right)$$.
+>At this point, it is important to remember that $$p(z/x)$$ is the unknown and that the goal is to find the best $$q_x(z)$$, i.e. the one that shall minimize $$D_{KL}\left(q_x(z) \parallel p(z/x) \right)$$.
 
 &nbsp;
 
@@ -368,7 +356,7 @@ The minimization of the above equation can be handled by the following graph.
 
 ![](/collections/images/vae/vae_final_step.jpg)
 
->>From this graph, we can see that the maximization of the ELBO equation (or the minimization of the above equation) can be handled by an encoder and an decoder!
+>From this graph, we can see that the maximization of the ELBO equation (or the minimization of the above equation) can be handled by an encoder and an decoder!
 
 &nbsp;
 
@@ -382,7 +370,7 @@ where $$f(z)$$ is the ouput of the decoder. This correponds to the classical $$L
 
 &nbsp;
 
->>If we make the assumption that $$\,p(x/z)$$ follows a Bernouilli distribution, then we can demonstrate that the maximization of $$\,\mathbb{E}_{z\sim q_x} \left[log\left(p(x/z)\right)\right]$$ leads to the minimization of the cross entropy function!
+>If we make the assumption that $$\,p(x/z)$$ follows a Bernouilli distribution, then we can demonstrate that the maximization of $$\,\mathbb{E}_{z\sim q_x} \left[log\left(p(x/z)\right)\right]$$ leads to the minimization of the cross entropy function!
 
 &nbsp;
 
@@ -394,13 +382,13 @@ $$\mathcal{L}_{encoder} = D_{KL}(\underbrace{q_x(z)}_{encoder} \parallel \mathca
 
 A very important point here is that we must think in terms of probability function since we want to fit two distributions. In other words, the encoder must generate the parameters of the distribution that will generate the $$z$$ sample. 
 
->>The execution of the encoder for the same input $$x$$ will generate different $$z$$ samples whose values should be close to $$\mathcal{N}(0,I)$$.
+>The execution of the encoder for the same input $$x$$ will generate different $$z$$ samples whose values should be close to $$\mathcal{N}(0,I)$$.
 
 &nbsp;
 
 The graph below shows the final network structure used in the VAE formalism.
 
-![](/collections/images/vae/vae_final_representation_2.jpg)
+![](/collections/images/vae/vae_final_representation.jpg)
 
 &nbsp;
 
@@ -424,7 +412,7 @@ Moreover, for simplification purposes, we also make the assumption that $$q_x(z)
 
 We also need to be very careful about the way we sample from the distribution returned by the encoder during the training.
 
->>The sampling process has to be expressed in a way that allows the error to be backpropagated through the network.
+>The sampling process has to be expressed in a way that allows the error to be backpropagated through the network.
 
 &nbsp;
 
