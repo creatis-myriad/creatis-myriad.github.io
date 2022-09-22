@@ -16,7 +16,7 @@ professors:
   - firstname: 'Olivier'
     lastname: 'Bernard'
     university: 'INSA, University of Lyon'
-    picture: 'oBernard_sub.jpg'
+    picture: 'oBernard.jpg'
     interests: "Cardiac imaging, deep learning, image simulation"
     url: "https://www.creatis.insa-lyon.fr/~bernard/"
     
@@ -54,7 +54,7 @@ associate_professors:
     university: 'University Lyon 1'
     picture: 'nDuchateau.jpg'
     interests: "Cardiac imaging, machine learning, deep learning"
-    url: "https://nicolasduchateau.wordpress.com/"
+    url: "https://www.creatis.insa-lyon.fr/~duchateau/"
     
   - firstname: 'Carole'
     lastname: 'Frindel'
@@ -122,8 +122,8 @@ researchers:
     lastname: 'Jehan Besson'
     institution: 'CNRS - CR'
     picture: 'sJehanBesson.jpg'
-    interests: "Shape optimization, applied mathematics, segmentation, fusion"
-    url: "https://scholar.google.fr/citations?user=t0oM20cAAAAJ&hl=fr"
+    interests: "Segmentation and filtering using continuous optimization methods, Evaluation and fusion using shape metrics"
+    url: "https://jehanbessonresearch.blogspot.com"
     
   - firstname: 'Carole'
     lastname: 'Lartizien'
