@@ -86,7 +86,7 @@ However, this property is not sufficient to guarantee continuity and completenes
 
 #### **Completeness**
 
-In order to avoid these effects the covariance matrix and the mean of the distributions returned by the encoder need to be also regularized. In practice, this new regularization is done by enforcing distributions to be close to a standard normal distribution $$\mathcal{N}\left(0,I\right)$$. This way, the covariance matrices are required to be close to the identity, preventing punctual distributions, and the mean to be close to 0, preventing encoded distributions to be too far apart from each others, as illustrated in the figure below.
+In order to avoid these effects the covariance matrix and the mean of the distributions returned by the encoder need to be also regularized. In practice, this new regularization is done by enforcing distributions to be close to a standard normal distribution $$\mathcal{N}\left(0,I\right)$$. This way, the covariance matrices are required to be close to the identity, preventing punctual distributions, and the mean to be close to 0, preventing encoded distributions to be too far apart from each other, as illustrated in the figure below.
 
 ![](/collections/images/vae/vae_with_global_regularization.jpg)
 
