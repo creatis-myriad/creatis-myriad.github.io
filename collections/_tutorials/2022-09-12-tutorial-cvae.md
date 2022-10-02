@@ -8,9 +8,7 @@ categories: autoencoder, conditional, variational, VAE
 
 # Notes
 
-* This tutorial was mainly inspired by the following [paper1](https://papers.nips.cc/paper/2015/hash/8d55a249e6baa5c06772297520da2051-Abstract.html) and [paper2](https://proceedings.neurips.cc/paper/2018/file/473447ac58e1cd7e96172575f48dca3b-Paper.pdf).
-
-&nbsp;
+* This tutorial was mainly inspired by the following two papers: [paper1](https://papers.nips.cc/paper/2015/hash/8d55a249e6baa5c06772297520da2051-Abstract.html) and [paper2](https://proceedings.neurips.cc/paper/2018/file/473447ac58e1cd7e96172575f48dca3b-Paper.pdf).
 
 - [**Introduction**](#introduction)
   - [VAE](#vae)
@@ -20,13 +18,16 @@ categories: autoencoder, conditional, variational, VAE
   - [Formulation of the KL divergence](#formulation-of-the-kl-divergence)  
   - [Evidence lower bound](#evidence-lower-bound)
   - [ELBO reformulation](#elbo-reformulation)
+- [**Various scenarios**](#various-scenarios)
+  - [Pior modeling](#pior-modeling)
+  - [References content](#references-content)
 
 &nbsp;
 
 ## **Introduction**
 
 Conditional variational autoencoders (cVAE) should not been seen as an extension of conventional VAE! cVAE are also based on variational inference, but the overall objective is different: 
-* In the VAE formalism, a pipeline is optimized to produce output as close as possible to the input data in order to build an efficient ***latent space with reduced dimensionality***. This latent space is then used in inference for interpretation purposes.
+* In the VAE formalism, a pipeline is optimized to produce outputs as close as possible to the input data in order to build an efficient ***latent space with reduced dimensionality***. This latent space is then used in inference for interpretation purposes.
 * In cVAE formalism, a pipeline is optimize to build a latent space that captures ***reference variability***. This latent space is then used in inference to generate a set of plausible outputs for a given input $$x$$.
 
 ### VAE
@@ -85,17 +86,19 @@ In the conditional VAE formalism, the posterior $$p(z/x,y)$$ is approximated by 
 
 $$q(z/x,y) = \mathcal{N}\left(g(x,y),h(x,y)\right)$$
 
-We thus have a family of candidates for variational inference and need to find the best approximation among this family by minimizing the KL divergence between the approximation $$q(z/x,y)$$ and the target $$p(z/x,y)$$. In other words, we are looking for the optimal $$g^∗$$ and $$h^∗$$ such that:
+We thus have a family of candidates for variational inference and need to find the best approximation among this family by minimizing the KL divergence between the approximation $$q(z/x,y)$$ and the target $$p(z/x,y)$$. In other words, we are looking for the optimal $$g^∗$$ and $$h^∗$$ functions such that:
 
 $$\left(g^*,h^*\right) = \underset{(g,h)}{\arg\min} \,\,\, D_{KL}\left(q(z/x,y) \parallel p(z/x,y) \right)$$
 
->One particularity of the conditional VAE formalism is that the prior $$p(z/x)$$ is also approximated by a Gaussian distribution $$p(z/x)$$ whose mean $$\mu_{prior}$$ and covariance $$\sigma_{prior}$$ are defined by two functions $$k(x,y)$$ and $$l(x,y)$$.
+&nbsp;
+
+One particularity of the conditional VAE formalism is that the prior $$p(z/x)$$ is also approximated by a Gaussian distribution $$p(z/x)$$ whose mean $$\mu_{prior}$$ and covariance $$\sigma_{prior}$$ are defined by two functions $$k(x,y)$$ and $$l(x,y)$$.
 
 $$p(z/x)$$ is thus modeled as:
 
 $$p(z/x) = \mathcal{N}\left(k(x,y),l(x,y)\right)$$
 
-As we will see later, minimizing the KL divergence between the approximation $$q(z/x,y)$$ and the target $$p(z/x,y)$$ also leads to finding the optimal $$k^*$$ and $$l^*$$.
+>As we will see later, minimizing the KL divergence between the approximation $$q(z/x,y)$$ and the target $$p(z/x,y)$$ also leads to finding the optimal $$k^*$$ and $$l^*$$ functions.
 
 &nbsp;
 
@@ -176,7 +179,7 @@ The ELBO $$\mathcal{L}$$ should be reformulated so to justify the loss involved 
 
 $$\mathcal{L} = \int{q(z/x,y) \cdot log\left(\frac{p(y,z/x)}{q(z/x,y)}\right) \,dz}$$
 
-By using the following ***conditional probability** relations:
+By using the following ***conditional probability*** relations:
 
 $$
 p(x,y,z) = \left\{
@@ -218,4 +221,27 @@ Noting that the generative model $$p(y/x,z)$$ is also modeled by a neural networ
 $$\left(f^*,g^*,h^*,k^*,l^*\right) = \underset{(f,g,h,k,l)}{\arg\max} \,\,\, \left( \mathbb{E}_{z\sim q(z/x,y)} [log(\underbrace{p(y/x,z)}_{f})] - D_{KL}(\underbrace{q(z/x,y)}_{g,h}\parallel \underbrace{p(z/x)}_{k,l}) \right)$$
 
 $$\left(f^*,g^*,h^*,k^*,l^*\right) = \underset{(f,g,h,k,l)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q(z/x,y)} [-log(\underbrace{p(y/x,z)}_{f})] + D_{KL}(\underbrace{q(z/x,y)}_{g,h}\parallel \underbrace{p(z/x)}_{k,l}) \right)$$
+
+&nbsp;
+
+## Various scenarios
+
+There are different exploitations of the cVAE formalism depending on the prior modeling $$p(z/x)$$ and the content of the $$y$$ references.
+
+### Pior modeling
+
+The prior $$p(z/x)$$ outputs a latent variable $$z$$ depending on the input $$x$$. This means that the corresponding latent space will be structured according to a varying input $$x$$ as illustrated in the figure below.
+
+![](/collections/images/cvae/cvae_prior_depending_on_x.jpg)
+
+TODO => Center everything on the origin of the space with covariance of 1 in the latent space => close to VAE formalism
+
+![](/collections/images/cvae/cvae_prior_no_depending_on_x.jpg)
+
+### References content
+
+
+
+
+
 
