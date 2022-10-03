@@ -276,7 +276,21 @@ During inference, the latent space modeled by the prior is several multiple time
 
 ## Simple example
 
+In this example, we will use the conditional VAE formalism to model the variability of handwriting digits. In this context, the input $$x$$ refers to an one-hot vector of a specific digit and $$\{y_i\}_{i=1:L}$$ refers to the corresponding handwriting images, as shown in the figure below.
 
+![](/collections/images/cvae/mnist_data.jpg)
+
+&nbsp;
+
+Thanks to the conditional VAE formalism, the variability of the manual tracing of the digits is captured during the learning phase through the following architecture.
+
+![](/collections/images/cvae/cvae_mnist_training.jpg)
+
+&nbsp;
+
+During inference, a digit is given as input to the prior $$p(z/x)$$ and several $$z_i$$ are sampled in the corresponding latent space. This allows the generation a set of plausible output digits $$\hat{y}_i$$ integrating the variability of learned shapes, as illustrated below.
+
+![](/collections/images/cvae/cvae_mnist_inference.jpg)
 
 
 
