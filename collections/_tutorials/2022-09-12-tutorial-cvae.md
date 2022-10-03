@@ -217,7 +217,7 @@ where $$\mathbb{E}_{z\sim q(z/x,y)}$$ is the mathematical expectation with respe
 
 &nbsp;
 
-At this stage of analysis, it is necessary to model $$p(y/x,y)$$ via an a priori distribution. Let's first note that $$p(y/x,z)$$ is modeled by a neural network $$f(\cdot)$$ so that $$\hat{y}=f(x,z)$$. Since this function is deterministic, it will allow to modeled $$p\left(y/\hat{y}\right)$$. By approximating $$p\left(y/\hat{y}\right)$$ by a Bernoulli distribution, we have
+At this stage of analysis, it is necessary to model $$p(y/x,y)$$ via an ***a priori distribution***. Let's first note that $$p(y/x,z)$$ is modeled by a neural network $$f(\cdot)$$ so that $$\hat{y}=f(x,z)$$. Since this function is deterministic, it will allow to model $$p\left(y/\hat{y}\right)$$. By approximating $$p\left(y/\hat{y}\right)$$ by a Bernoulli distribution, we have
 
 $$\mathbb{E}_{z\sim q(z/x,y)} \left[log\left(p(y/\hat{y})\right)\right] = \mathbb{E}_{z\sim q(z/x,y)} \left[log\left( {\hat{y}}^y \cdot \left(1-\hat{y}\right)^{1-y} \right)\right]$$
 
@@ -225,7 +225,7 @@ $$ = \mathbb{E}_{z\sim q(z/x,y)} \left[ y \, log\left( \hat{y} \right) + \left(1
 
 $$ = \mathbb{E}_{z\sim q(z/x,y)} \left[-CE\left( y,f\left(x,z\right)\right)\right]$$
 
-where $$CE(\cdot)$$ corresponds to the conventional cross entropy function !
+where $$CE(\cdot)$$ corresponds to the conventional ***cross entropy function*** !
 
 &nbsp;
 
@@ -243,12 +243,12 @@ There are different exploitations of the cVAE formalism depending on the prior m
 
 ### Pior modeling
 
-The prior $$p(z/x)$$ outputs a latent variable $$z$$ depending on the input $$x$$. This means that the corresponding latent space will be structured according to a varying input $$x$$ as illustrated in the figure below.
+* The prior $$p(z/x)$$ outputs a latent variable $$z$$ depending on the input $$x$$. This means that the corresponding latent space will be structured according to a varying input $$x$$ as illustrated in the figure below.
 
 ![](/collections/images/cvae/cvae_prior_depending_on_x.jpg)
 
 
-Several works in the literature propose to relax this constraint to make the latent variables statistically independent of input variables, i.e. $$p(z/x) = p(z)$$ with $$z \sim \mathcal{N}\left(0,I\right)$$. This implies that the latent space is forced to be centered at the origin with unit variance, which makes the posterior modeling strategy close to that used in standard VAE, as illustrated in the figure below.
+* Several works in the literature propose to relax this constraint to make the latent variables statistically independent of input variables, i.e. $$p(z/x) = p(z)$$ with $$z \sim \mathcal{N}\left(0,I\right)$$. This implies that the latent space is forced to be centered at the origin with unit variance, which makes the posterior modeling strategy close to that used in standard VAE, as illustrated in the figure below.
 
 ![](/collections/images/cvae/cvae_prior_no_depending_on_x.jpg)
 
