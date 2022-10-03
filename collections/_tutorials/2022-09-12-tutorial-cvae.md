@@ -8,7 +8,7 @@ categories: autoencoder, conditional, variational, VAE
 
 # Notes
 
-* This tutorial was mainly inspired by the following two papers: [paper1](https://papers.nips.cc/paper/2015/hash/8d55a249e6baa5c06772297520da2051-Abstract.html) and [paper2](https://proceedings.neurips.cc/paper/2018/file/473447ac58e1cd7e96172575f48dca3b-Paper.pdf).
+* This tutorial was mainly inspired by the following two papers: [Sohn *et al.*, NeurIPS 2015](https://papers.nips.cc/paper/2015/hash/8d55a249e6baa5c06772297520da2051-Abstract.html) and [Kohl *et al.*, NeurIPS 2018](https://proceedings.neurips.cc/paper/2018/file/473447ac58e1cd7e96172575f48dca3b-Paper.pdf).
 
 - [**Introduction**](#introduction)
   - [VAE](#vae)
@@ -21,6 +21,7 @@ categories: autoencoder, conditional, variational, VAE
 - [**Various scenarios**](#various-scenarios)
   - [Pior modeling](#pior-modeling)
   - [References content](#references-content)
+- [**Simple example**](#simple-example)
 
 &nbsp;
 
@@ -216,11 +217,23 @@ where $$\mathbb{E}_{z\sim q(z/x,y)}$$ is the mathematical expectation with respe
 
 &nbsp;
 
-Noting that the generative model $$p(y/x,z)$$ is also modeled by a neural network $$f(\cdot)$$, we are finally looking for:
+At this stage of analysis, it is necessary to model $$p(y/x,y)$$ via an a priori distribution. Let's first note that $$p(y/x,z)$$ is modeled by a neural network $$f(\cdot)$$ so that $$\hat{y}=f(x,z)$$. Since this function is deterministic, it will allow to modeled $$p\left(y/\hat{y}\right)$$. By approximating $$p\left(y/\hat{y}\right)$$ by a Bernoulli distribution, we have
 
-$$\left(f^*,g^*,h^*,k^*,l^*\right) = \underset{(f,g,h,k,l)}{\arg\max} \,\,\, \left( \mathbb{E}_{z\sim q(z/x,y)} [log(\underbrace{p(y/x,z)}_{f})] - D_{KL}(\underbrace{q(z/x,y)}_{g,h}\parallel \underbrace{p(z/x)}_{k,l}) \right)$$
+$$\mathbb{E}_{z\sim q(z/x,y)} \left[log\left(p(y/\hat{y})\right)\right] = \mathbb{E}_{z\sim q(z/x,y)} \left[log\left( {\hat{y}}^y \cdot \left(1-\hat{y}\right)^{1-y} \right)\right]$$
 
-$$\left(f^*,g^*,h^*,k^*,l^*\right) = \underset{(f,g,h,k,l)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q(z/x,y)} [-log(\underbrace{p(y/x,z)}_{f})] + D_{KL}(\underbrace{q(z/x,y)}_{g,h}\parallel \underbrace{p(z/x)}_{k,l}) \right)$$
+$$ = \mathbb{E}_{z\sim q(z/x,y)} \left[ y \, log\left( \hat{y} \right) + \left(1-y\right) \, log\left(1-\hat{y}\right) \right]$$
+
+$$ = \mathbb{E}_{z\sim q(z/x,y)} \left[-CE\left( y,f\left(x,z\right)\right)\right]$$
+
+where $$CE(\cdot)$$ corresponds to the conventional cross entropy function !
+
+&nbsp;
+
+Thanks to this modeling, we are finally looking for:
+
+$$\left(f^*,g^*,h^*,k^*,l^*\right) = \underset{(f,g,h,k,l)}{\arg\max} \,\,\, \left( \mathbb{E}_{z\sim q(z/x,y)} [-CE\left( y,f\left(x,z\right)\right)] - D_{KL}(\underbrace{q(z/x,y)}_{g,h}\parallel \underbrace{p(z/x)}_{k,l}) \right)$$
+
+$$\left(f^*,g^*,h^*,k^*,l^*\right) = \underset{(f,g,h,k,l)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q(z/x,y)} [CE\left( y,f\left(x,z\right)\right)] + D_{KL}(\underbrace{q(z/x,y)}_{g,h}\parallel \underbrace{p(z/x)}_{k,l}) \right)$$
 
 &nbsp;
 
@@ -234,12 +247,34 @@ The prior $$p(z/x)$$ outputs a latent variable $$z$$ depending on the input $$x$
 
 ![](/collections/images/cvae/cvae_prior_depending_on_x.jpg)
 
-TODO => Center everything on the origin of the space with covariance of 1 in the latent space => close to VAE formalism
+
+Several works in the literature propose to relax this constraint to make the latent variables statistically independent of input variables, i.e. $$p(z/x) = p(z)$$ with $$z \sim \mathcal{N}\left(0,I\right)$$. This implies that the latent space is forced to be centered at the origin with unit variance, which makes the posterior modeling strategy close to that used in standard VAE, as illustrated in the figure below.
 
 ![](/collections/images/cvae/cvae_prior_no_depending_on_x.jpg)
 
 ### References content
 
+Depending on the type of reference available, the value of conditional VAE can be different.
+
+* If there exist only one reference for a given input, the interest of the conditional VAE resides in the mixing of the input $$x$$ data with the corresponding $$y$$ in the latent space through the modeling of $$p(z/x,y)$$. This can be viewed as a regularisation process that "efficiently" integrates reference information during inference thanks to the deicated latant space and the mapping $$p(y/x,z)$$. 
+
+> In the context of segmentation, modeling $$p(z/x,y)$$ can be seen as an "efficient" way to integrate shape prior into the latent space. 
+
+&nbsp;
+
+* If there exists several references for a given input, which is the case when we want to model inter/intra-expert variability, the interest of the conditional VAE resides in the capacity of modeling the reference variability into the latent space through the modeling of $$p(z/x,y)$$. In this way, a single input corresponds to several latent variables that are located in a nearby region of the space, as illustated in the figure below.
+
+![](/collections/images/cvae/cvae_prior_depending_on_x_multiple_y.jpg)
+
+During inference, the latent space modeled by the prior is several multiple times to generate multiple plausible references $$\hat{y}_i$$ from a given input $$x$$ taking into account the learned variability, as shown in the figure below.
+
+![](/collections/images/cvae/cvae_prior_depending_on_x_multiple_y_inference.jpg)
+
+> In the context of segmentation, this approach is useful for learning about inter-expert variability.
+
+&nbsp;
+
+## Simple example
 
 
 
