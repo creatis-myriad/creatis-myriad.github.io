@@ -20,7 +20,7 @@ categories: autoencoder, conditional, variational, VAE
   - [ELBO reformulation](#elbo-reformulation)
 - [**Various scenarios**](#various-scenarios)
   - [Prior modeling](#prior-modeling)
-  - [References content](#references-content)
+  - [Nature of the references](#nature-of-the-references)
 - [**Simple example**](#simple-example)
 
 &nbsp;
@@ -73,7 +73,7 @@ In parallel, the prior network learns to match this distribution by learning $$p
 ### Overall strategy
 
 The goal of conditional VAE is to approximate a $$p(y \vert x)$$ distribution through a latent space that captures the variability of references by learning the $$p(z \vert x,y)$$ distribution. This way, the distribution $$p(y \vert x,z)$$ will allow to generate multiple plausible references from a given $$x$$. The following scheme is applied:
-* for a given observation $$x$$, a set of latent variables $$z_i$$ is generated from $$p(z \vert x,y)$$ thanks to the sampling of the corresponding latent space.
+* for a given observation $$x$$, a set of latent variables $$z_i$$ is generated from $$p(z \vert x,y)$$ thanks to the sampling of the latent space posterior.
 * The set of latent variables are then combined with the observation and passed through the conditional generative process $$p(y \vert x,z)$$ to generate samples from the distribution $$y$$.
 * The resulting predictive distribution is finally obtained through the following expression:
 
@@ -81,7 +81,7 @@ $$p(y \vert x) = \int_z{p(y \vert x,z) \cdot p(z \vert x) \,dz}$$
 
 &nbsp;
 
-As for the variational autoencoders, the key concept around conditional VAE is the optimization of the computation of the posterior $$p(z \vert x,y)$$. Indeed, due to intractable properties, the derivation of this distribution is complicated and requires the use of approximation techniques such as variational inference.
+As for the variational autoencoders, the key challenge around conditional VAE is the optimization of the computation of the posterior $$p(z \vert x,y)$$. Indeed, due to intractable properties, the derivation of this distribution is complicated and requires the use of approximation techniques such as variational inference.
 
 In the conditional VAE formalism, the posterior $$p(z \vert x,y)$$ is approximated by a Gaussian distribution $$q(z \vert x,y)$$ whose mean $$\mu_{post}$$ and covariance $$\sigma_{post}$$ are defined by two functions $$g(x,y)$$ and $$h(x,y)$$.
 
@@ -176,7 +176,7 @@ $$\underbrace{D_{KL}\left(q(z \vert x,y) \parallel p(z \vert x,y) \right)}_{\geq
 
 ### ELBO reformulation
 
-The ELBO $$\mathcal{L}$$ should be reformulated so to justify the loss involved in the conditional VAE framework. The corresponding derivation is provided below.
+The ELBO $$\mathcal{L}$$ must be reformulated to justify the loss involved in the conditional VAE framework. The corresponding derivation is provided below.
 
 $$\mathcal{L} = \int{q(z \vert x,y) \cdot log\left(\frac{p(y,z \vert x)}{q(z \vert x,y)}\right) \,dz}$$
 
@@ -239,7 +239,7 @@ $$\left(f^*,g^*,h^*,k^*,l^*\right) = \underset{(f,g,h,k,l)}{\arg\min} \,\,\, \le
 
 ## Various scenarios
 
-There are different exploitations of the cVAE formalism depending on the prior modeling $$p(z \vert x)$$ and the content of the $$y$$ references.
+There are different ways to leverage the cVAE formalism depending on the prior modeling $$p(z \vert x)$$ and the content of the $$y$$ references.
 
 ### Prior modeling
 
@@ -252,7 +252,7 @@ There are different exploitations of the cVAE formalism depending on the prior m
 
 ![](/collections/images/cvae/cvae_prior_no_depending_on_x.jpg)
 
-### References content
+### Nature of the references
 
 Depending on the type of reference available, the value of conditional VAE can be different.
 
