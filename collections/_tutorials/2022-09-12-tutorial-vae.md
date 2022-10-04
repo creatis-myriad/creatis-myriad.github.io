@@ -40,19 +40,19 @@ Let's start with the basic representation of an autoencoder
 
 Autoencoders belong to the family of dimension reduction methods. This method takes as input a vector $$\mathbf{x} \in \mathbb{R}^N$$ and outputs a closed vector $$\mathbf{\hat{x}} \in \mathbb{R}^N$$ with the restriction of passing through a space with reduced dimensionality $$Z \in \mathbb{R}^M$$. This is usually achieved through the minimization of the $$L_2$$ norm function: $$\lVert \mathbf{x} - \mathbf{\hat{x}} \rVert^2$$.
 
-$$\mathbf{e}$$ and $$\mathbf{d}$$ are two different networks that model the (non linear) projections from the input space $$X$$ to the latent space $$Z$$ in both directions. 
+$$\mathbf{e}$$ and $$\mathbf{d}$$ are two different networks that model the (non linear) mappings from the input space $$X$$ to the latent space $$Z$$ in both directions. 
 
 Let us now consider the simple case where $$\mathbf{e}$$ and $$\mathbf{d}$$ correspond to two single-layer networks without any non-linearity. The corresponding autoencoder can be represented as follows:
 
 ![](/collections/images/vae/simplified_autoencoder.jpg)
 
-where $$\mathbf{e} \in \mathbb{R}^{N \times M}$$ and $$\mathbf{d} \in \mathbb{R}^{M \times N}$$ are two linear projection matrices. In the particular case where $$\mathbf{e} = \mathbf{U}^T$$ and $$\mathbf{d} = \mathbf{U}$$, the autoencoder expressions can be written as:
+where $$\mathbf{e} \in \mathbb{R}^{N \times M}$$ and $$\mathbf{d} \in \mathbb{R}^{M \times N}$$ are two linear matrices. In the particular case where $$\mathbf{e} = \mathbf{U}^T$$ and $$\mathbf{d} = \mathbf{U}$$, the autoencoder expressions can be written as:
 
 $$\mathbf{z} = \mathbf{U}^T\mathbf{x} \quad\quad \text{and} \quad\quad \mathbf{\hat{x}} = \mathbf{U}\mathbf{z}=\mathbf{U}\mathbf{U}^T\mathbf{x}$$
 
 This corresponds to the well know PCA (Principal Component Analysis) paradigm. A more formal proof can be found [in this article](https://arxiv.org/pdf/1804.10253.pdf).
 
->Autoencoders can thus be seen as a generalization of the dimensionality reduction PCA formalism by evolving more complex projection operations defined through $$\mathbf{e}$$ and $$\mathbf{d}$$ networks.
+>Autoencoders can thus be seen as a generalization of the dimensionality reduction PCA formalism by evolving more complex operations defined through $$\mathbf{e}$$ and $$\mathbf{d}$$ networks.
 
 &nbsp;
 
@@ -104,9 +104,9 @@ Using the previous reasoning, the overall architecture of the VAE can be represe
 &nbsp;
 
 VAE thus offers two extremely interesting opportunities:
-* the mastery of the encoder allows to optimize the projection operation $$p(z/x)$$ to a latent space with reduced dimensionality for interpretation purposes. This corresponds to ***manifold learning paradigm***.
+* the mastery of the encoder allows to optimize the mapping operation $$p(z \vert x)$$ to a latent space with reduced dimensionality for interpretation purposes. This corresponds to ***manifold learning paradigm***.
 
-* the mastery of the decoder allows to optimize the projection operation $$p(x/z)$$ for the generation of data with a complex distribution. This corresponds to ***generative model framework***.
+* the mastery of the decoder allows to optimize the mapping operation $$p(x \vert z)$$ for the generation of data with a complex distribution. This corresponds to ***generative model framework***.
 
 &nbsp;
 
@@ -200,13 +200,13 @@ Let’s assume a model where data $$x$$ are generated from a probability distrib
 
 ### Key concept
 
-In the VAE formalism, we first make the assumption that $$p(z)$$ is a standard Gaussian distribution (to ensure completeness) and that $$p(x/z)$$ is a Gaussian distribution whose mean is defined by a deterministic function $$f$$ of the variable $$z$$ and whose covariance matrix has the form of a positive constant $$c$$ that multiplies the identity matrix $$I$$. We will see that this last assumption allows to keep most of the information of the data structure in the reduced representations.
+In the VAE formalism, we first make the assumption that $$p(z)$$ is a standard Gaussian distribution (to ensure completeness) and that $$p(x \vert z)$$ is a Gaussian distribution whose mean is defined by a deterministic function $$f$$ of the variable $$z$$ and whose covariance matrix has the form of a positive constant $$c$$ that multiplies the identity matrix $$I$$. We will see that this last assumption allows to keep most of the information of the data structure in the reduced representations.
 
 $$p(z) = \mathcal{N}(0,I)$$
 
-$$p(x/z) = \mathcal{N}(f(z),cI)$$
+$$p(x \vert z) = \mathcal{N}(f(z),cI)$$
 
-The key concept around VAE is that we will try to optimize the computation of the non-linear projection $$p(z/x)$$. Indeed, it can be demonstrated that the computation of $$p(z/x)$$ is often complicated and requires the use of approximation techniques such as ***variational inference***.
+The key concept around VAE is that we will try to optimize the computation of the non-linear mapping $$p(z \vert x)$$. Indeed, it can be demonstrated that the computation of $$p(z \vert x)$$ is often complicated and requires the use of approximation techniques such as ***variational inference***.
 
 &nbsp;
 
@@ -214,32 +214,32 @@ The key concept around VAE is that we will try to optimize the computation of th
 
 &nbsp;
 
-In the VAE formalism, $$p(z/x)$$ is approximated by a Gaussian distribution $$q_x(z)$$ whose mean $$\mu_x$$ and covariance $$\sigma_x$$ are defined by two functions $$g(x)$$ and $$h(x)$$. 
+In the VAE formalism, $$p(z \vert x)$$ is approximated by a Gaussian distribution $$q_x(z)$$ whose mean $$\mu_x$$ and covariance $$\sigma_x$$ are defined by two functions $$g(x)$$ and $$h(x)$$. 
 
 $$q_x(z) = \mathcal{N}\left(g(x),h(x)\right)$$
 
 
-We thus have a family of candidates for variational inference and need to find the best approximation among this family by minimising the KL divergence between the approximation $$q_x(z)$$ and the target $$p(z/x)$$. In other words, we are looking for the optimal $$g^*$$ and $$h^*$$ such that:
+We thus have a family of candidates for variational inference and need to find the best approximation among this family by minimising the KL divergence between the approximation $$q_x(z)$$ and the target $$p(z \vert x)$$. In other words, we are looking for the optimal $$g^*$$ and $$h^*$$ such that:
 
-$$\left(g^*,h^*\right) = \underset{(g,h)}{\arg\min} \,\,\, D_{KL}\left(q_x(z) \parallel p(z/x) \right)$$
+$$\left(g^*,h^*\right) = \underset{(g,h)}{\arg\min} \,\,\, D_{KL}\left(q_x(z) \parallel p(z \vert x) \right)$$
 
 Let's now reformulate the KL divergence expression.
 
-$$D_{KL}\left(q_x(z) \parallel p(z/x) \right) = - \int{q_x(z) \cdot log\left(\frac{p(z/x)}{q_x(z)}\right) \,dz}$$
+$$D_{KL}\left(q_x(z) \parallel p(z \vert x) \right) = - \int{q_x(z) \cdot log\left(\frac{p(z \vert x)}{q_x(z)}\right) \,dz}$$
 
 By using the ***conditional probability*** relation:
 
-$$p(z/x) = \frac{p(x,z)}{p(x)}$$
+$$p(z \vert x) = \frac{p(x,z)}{p(x)}$$
 
 where $$p(x,z)$$ is the joint distribution of event $$x$$ and $$z$$, the above expression can be rewritten as:
 
-$$D_{KL}\left(q_x(z) \parallel p(z/x) \right) = - \int{q_x(z) \cdot log\left(\frac{p(x,z)}{p(x) \cdot q_x(z)}\right) \,dz}$$
+$$D_{KL}\left(q_x(z) \parallel p(z \vert x) \right) = - \int{q_x(z) \cdot log\left(\frac{p(x,z)}{p(x) \cdot q_x(z)}\right) \,dz}$$
 
-$$D_{KL}\left(q_x(z) \parallel p(z/x) \right) = - \int{q_x(z) \cdot \left[ log\left(\frac{p(x,z)}{q_x(z)}\right) + log\left(\frac{1}{p(x)}\right) \right] \,dz}$$
+$$D_{KL}\left(q_x(z) \parallel p(z \vert x) \right) = - \int{q_x(z) \cdot \left[ log\left(\frac{p(x,z)}{q_x(z)}\right) + log\left(\frac{1}{p(x)}\right) \right] \,dz}$$
 
-$$D_{KL}\left(q_x(z) \parallel p(z/x) \right) = - \int{q_x(z) \cdot log\left(\frac{p(x,z)}{q_x(z)}\right) \,dz} \,+\, log\left(p(x)\right) \cdot \underbrace{\int{q_x(z)\,dz}}_{=1}$$
+$$D_{KL}\left(q_x(z) \parallel p(z \vert x) \right) = - \int{q_x(z) \cdot log\left(\frac{p(x,z)}{q_x(z)}\right) \,dz} \,+\, log\left(p(x)\right) \cdot \underbrace{\int{q_x(z)\,dz}}_{=1}$$
 
-$$D_{KL}\left(q_x(z) \parallel p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
+$$D_{KL}\left(q_x(z) \parallel p(z \vert x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
 
 where $$\mathcal{L}$$ is defined as the ***Evidence Lower BOund (ELBO)*** whose expression is given by:
 
@@ -251,27 +251,27 @@ $$\mathcal{L} = \int{q_x(z) \cdot log\left(\frac{p(x,z)}{q_x(z)}\right) \,dz}$$
 
 Let's take a closer look at the previous derived equation:
 
-$$D_{KL}\left(q_x(z) \parallel p(z/x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
+$$D_{KL}\left(q_x(z) \parallel p(z \vert x) \right) \,+\, \mathcal{L} \,=\, log\left(p(x)\right)$$
 
 The following observations can be made:
 * since $$0\leq p(x) \leq 1$$, $$log\left(p(x)\right) \leq 0$$
 
 * since $$x$$ is the observation, $$log\left(p(x)\right)$$ is a fixed value
 
-* by definition $$D_{KL}\left(q_x(z) \parallel p(z/x) \right) \geq 0$$
+* by definition $$D_{KL}\left(q_x(z) \parallel p(z \vert x) \right) \geq 0$$
 
 * since $$\mathcal{L} = -D_{KL}\left(q_x(z) \parallel p(x,z)\right)$$, $$\mathcal{L} \leq 0$$
 
 
 The previous expression can thus be rewritten as follows:
 
-$$\underbrace{D_{KL}\left(q_x(z) \parallel p(z/x) \right)}_{\geq 0} \,+\, \underbrace{\mathcal{L}}_{\leq 0} \,=\, \underbrace{log\left(p(x)\right)}_{\leq 0 \,\, \text{and fixed}}$$
+$$\underbrace{D_{KL}\left(q_x(z) \parallel p(z \vert x) \right)}_{\geq 0} \,+\, \underbrace{\mathcal{L}}_{\leq 0} \,=\, \underbrace{log\left(p(x)\right)}_{\leq 0 \,\, \text{and fixed}}$$
 
->At this point, it is important to remember that $$p(z/x)$$ is the unknown and that the goal is to find the best $$q_x(z)$$, i.e. the one that shall minimize $$D_{KL}\left(q_x(z) \parallel p(z/x) \right)$$.
+>At this point, it is important to remember that $$p(z \vert x)$$ is the unknown and that the goal is to find the best $$q_x(z)$$, i.e. the one that shall minimize $$D_{KL}\left(q_x(z) \parallel p(z \vert x) \right)$$.
 
 &nbsp;
 
-With the above observations, the following strategy can be implemented: by tweaking $$q_x(z)$$, we can seek to maximize the ELBO $$\mathcal{L}$$, which will imply the minimization of the KL divergence $$D_{KL}\left(q_x(z) \parallel p(z/x) \right)$$, and thus to find a distribution $$q_x(z)$$ that is close to $$p(z/x)$$. The table below provides an illustration of such a strategy. 
+With the above observations, the following strategy can be implemented: by tweaking $$q_x(z)$$, we can seek to maximize the ELBO $$\mathcal{L}$$, which will imply the minimization of the KL divergence $$D_{KL}\left(q_x(z) \parallel p(z \vert x) \right)$$, and thus to find a distribution $$q_x(z)$$ that is close to $$p(z \vert x)$$. The table below provides an illustration of such a strategy. 
 
 <style>
 table th:first-of-type {
@@ -303,35 +303,38 @@ $$\mathcal{L} = \int{q_x(z) \cdot log\left(\frac{p(x,z)}{q_x(z)}\right) \,dz}$$
 
 By using the conditional probability relation:
 
-$$p(x/z) = \frac{p(x,z)}{p(z)}$$
+$$p(x \vert z) = \frac{p(x,z)}{p(z)}$$
 
 the above expression can be rewritten as:
 
-$$\mathcal{L} = \int{q_x(z) \cdot log\left(\frac{p(x/z)\cdot p(z)}{q_x(z)}\right) \,dz}$$
+$$\mathcal{L} = \int{q_x(z) \cdot log\left(\frac{p(x \vert z)\cdot p(z)}{q_x(z)}\right) \,dz}$$
 
-$$\mathcal{L} = \int{q_x(z) \cdot \left[ log\left(p(x/z)\right) + log\left(\frac{p(z)}{q_x(z)}\right) \right] \,dz}$$
+$$\mathcal{L} = \int{q_x(z) \cdot \left[ log\left(p(x \vert z)\right) + log\left(\frac{p(z)}{q_x(z)}\right) \right] \,dz}$$
 
-$$\mathcal{L} = \int{q_x(z) \cdot log\left(p(x/z)\right) \,dz} + \int{q_x(z) \cdot log\left(\frac{p(z)}{q_x(z)}\right) \,dz}$$
+$$\mathcal{L} = \int{q_x(z) \cdot log\left(p(x \vert z)\right) \,dz} + \int{q_x(z) \cdot log\left(\frac{p(z)}{q_x(z)}\right) \,dz}$$
 
-$$\mathcal{L} =  \mathbb{E}_{z\sim q_x} \left[log\left(p(x/z)\right)\right] - D_{KL}\left(q_x(z)\parallel p(z)\right)$$
-
-&nbsp;
-
-Recalling that $$p(x/z)$$ is approximated by a Gaussian distribution $$\mathcal{N}\left(f(z),cI\right)$$, we finally have
-
-$$\mathcal{L} \propto \mathbb{E}_{z\sim q_x} \left[\|x-f(z)\|^2\right] - D_{KL}\left(q_x(z)\parallel p(z)\right)$$
-
-&nbsp;
+$$\mathcal{L} =  \mathbb{E}_{z\sim q_x} \left[log\left(p(x \vert z)\right)\right] - D_{KL}\left(q_x(z)\parallel p(z)\right)$$
 
 where $$\mathbb{E}_{z\sim q_x}$$ is the mathematical expectation with respect to $$q_x(z)$$. 
 
+&nbsp;
+
+At this stage of analysis, it is important to remember that $$p(x \vert z)$$ is modeled by a neural network $$f\left( \cdot \right)$$ so that $$\hat{x}=f(z)$$. Since this function is deterministic, it will allow to model $$p\left(x \vert \hat{x}\right)$$. By approximating $$p\left(x \vert \hat{x}\right)$$ by a Gaussian distribution with a fixed covariance matrix $$cI$$, we have
+
+$$\mathcal{L} \propto \mathbb{E}_{z\sim q_x} \left[-\alpha\|x-f(z)\|^2\right] - D_{KL}\left(q_x(z)\parallel p(z)\right)$$
+
+where $$\alpha$$ comes from the constant covariance information. 
+
+&nbsp;
+
+
 We are finally looking for:
 
-$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\max} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[-\|x-f(z)\|^2\right] - D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
+$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\max} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[-\alpha\|x-f(z)\|^2\right] - D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
 
 or 
 
-$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[\|x-f(z)\|^2\right] + D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
+$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[\alpha\|x-f(z)\|^2\right] + D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
 
 &nbsp;
 
@@ -339,15 +342,15 @@ $$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{
 
 Here is a summary of what have been done so far.
 
-1. We want to estimate a non-linear projection $$p(z/x)$$ to go from an input space to a space of reduced dimension, and this through a probabilistic framework.
+1. We want to estimate a non-linear mapping $$p(z \vert x)$$ to go from an input space to a space of reduced dimension, and this through a probabilistic framework.
 
-2. To do this, we introduced a third party parametric distribution $$q_x(z)$$ to estimate the target distribution $$p(z/x)$$.
+2. To do this, we introduced a third party parametric distribution $$q_x(z)$$ to estimate the target distribution $$p(z \vert x)$$.
 
 3. We used the KL divergence metric which measures the proximity between the two distributions, the objective being to minimize this metric.
 
 4. The minimization of the KL divergence leads to the minimization of the following equation:
 
-$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[\|x-f(z)\|^2\right] + D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
+$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[\alpha\|x-f(z)\|^2\right] + D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
 
 
 &nbsp;
@@ -362,21 +365,21 @@ The minimization of the above equation can be handled by the following graph.
 
 **Let's work on the decoder** 
 
-The decoder will be in charge of the optimization of $$p(x/z)$$, i.e. the first part of the above equation. This is done through a neural network that will optimize the $$f$$ function through the minimization of the following loss function:
+The decoder will be in charge of the optimization of $$p(x \vert z)$$, i.e. the first part of the above equation. This is done through a neural network that will optimize the $$f$$ function through the minimization of the following loss function:
 
-$$\mathcal{L}_{decoder} = \|x-\hat{x}\|^2 \,=\, \|x-\underbrace{f(z)}_{\text{decoder}}\|^2$$
+$$\mathcal{L}_{decoder} = \alpha\|x-\hat{x}\|^2 \,=\, \alpha\|x-\underbrace{f(z)}_{\text{decoder}}\|^2$$
 
 where $$f(z)$$ is the ouput of the decoder. This correponds to the classical $$L_2$$ loss function!
 
 &nbsp;
 
->If we make the assumption that $$\,p(x/z)$$ follows a Bernouilli distribution, then we can demonstrate that the maximization of $$\,\mathbb{E}_{z\sim q_x} \left[log\left(p(x/z)\right)\right]$$ leads to the minimization of the cross entropy function!
+>If we make the assumption that $$\,p(x \vert z)$$ follows a Bernouilli distribution, then we can demonstrate that the maximization of $$\,\mathbb{E}_{z\sim q_x} \left[log\left(p(x \vert z)\right)\right]$$ leads to the minimization of the cross entropy function!
 
 &nbsp;
 
 **Let's work on the encoder** 
 
-The encoder will be in charge of the optimization of $$p(z/x)$$, i.e. the second part of the above equation. This is done through a neural network that will optimize $$g$$ and $$h$$ functions through the minimization of the following loss function:
+The encoder will be in charge of the optimization of $$p(z \vert x)$$, i.e. the second part of the above equation. This is done through a neural network that will optimize $$g$$ and $$h$$ functions through the minimization of the following loss function:
 
 $$\mathcal{L}_{encoder} = D_{KL}(\underbrace{q_x(z)}_{encoder} \parallel \mathcal{N}(0,I))$$
 
@@ -394,7 +397,7 @@ The graph below shows the final network structure used in the VAE formalism.
 
 The following equation is used as a loss term:
 
-$$\text{loss}=\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
+$$\text{loss}=\alpha\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
 
 &nbsp;
 
@@ -436,8 +439,8 @@ The graph below shows the final network used to implement VAE with the possibili
 
 We recall that the following equation is used as the loss term:
 
-$$\text{loss} = \|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
+$$\text{loss} = \alpha\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
 
-$$\text{loss} = \|x-f(z)\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(g(x),h(x)\right),\mathcal{N}\left(0,I\right)\right) $$
+$$\text{loss} = \alpha\|x-f(z)\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(g(x),h(x)\right),\mathcal{N}\left(0,I\right)\right) $$
 
 
