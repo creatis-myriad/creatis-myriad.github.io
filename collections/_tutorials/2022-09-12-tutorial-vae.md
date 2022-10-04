@@ -40,19 +40,19 @@ Let's start with the basic representation of an autoencoder
 
 Autoencoders belong to the family of dimension reduction methods. This method takes as input a vector $$\mathbf{x} \in \mathbb{R}^N$$ and outputs a closed vector $$\mathbf{\hat{x}} \in \mathbb{R}^N$$ with the restriction of passing through a space with reduced dimensionality $$Z \in \mathbb{R}^M$$. This is usually achieved through the minimization of the $$L_2$$ norm function: $$\lVert \mathbf{x} - \mathbf{\hat{x}} \rVert^2$$.
 
-$$\mathbf{e}$$ and $$\mathbf{d}$$ are two different networks that model the (non linear) projections from the input space $$X$$ to the latent space $$Z$$ in both directions. 
+$$\mathbf{e}$$ and $$\mathbf{d}$$ are two different networks that model the (non linear) mappings from the input space $$X$$ to the latent space $$Z$$ in both directions. 
 
 Let us now consider the simple case where $$\mathbf{e}$$ and $$\mathbf{d}$$ correspond to two single-layer networks without any non-linearity. The corresponding autoencoder can be represented as follows:
 
 ![](/collections/images/vae/simplified_autoencoder.jpg)
 
-where $$\mathbf{e} \in \mathbb{R}^{N \times M}$$ and $$\mathbf{d} \in \mathbb{R}^{M \times N}$$ are two linear projection matrices. In the particular case where $$\mathbf{e} = \mathbf{U}^T$$ and $$\mathbf{d} = \mathbf{U}$$, the autoencoder expressions can be written as:
+where $$\mathbf{e} \in \mathbb{R}^{N \times M}$$ and $$\mathbf{d} \in \mathbb{R}^{M \times N}$$ are two linear matrices. In the particular case where $$\mathbf{e} = \mathbf{U}^T$$ and $$\mathbf{d} = \mathbf{U}$$, the autoencoder expressions can be written as:
 
 $$\mathbf{z} = \mathbf{U}^T\mathbf{x} \quad\quad \text{and} \quad\quad \mathbf{\hat{x}} = \mathbf{U}\mathbf{z}=\mathbf{U}\mathbf{U}^T\mathbf{x}$$
 
 This corresponds to the well know PCA (Principal Component Analysis) paradigm. A more formal proof can be found [in this article](https://arxiv.org/pdf/1804.10253.pdf).
 
->Autoencoders can thus be seen as a generalization of the dimensionality reduction PCA formalism by evolving more complex projection operations defined through $$\mathbf{e}$$ and $$\mathbf{d}$$ networks.
+>Autoencoders can thus be seen as a generalization of the dimensionality reduction PCA formalism by evolving more complex operations defined through $$\mathbf{e}$$ and $$\mathbf{d}$$ networks.
 
 &nbsp;
 
@@ -104,9 +104,9 @@ Using the previous reasoning, the overall architecture of the VAE can be represe
 &nbsp;
 
 VAE thus offers two extremely interesting opportunities:
-* the mastery of the encoder allows to optimize the projection operation $$p(z \vert x)$$ to a latent space with reduced dimensionality for interpretation purposes. This corresponds to ***manifold learning paradigm***.
+* the mastery of the encoder allows to optimize the mapping operation $$p(z \vert x)$$ to a latent space with reduced dimensionality for interpretation purposes. This corresponds to ***manifold learning paradigm***.
 
-* the mastery of the decoder allows to optimize the projection operation $$p(x \vert z)$$ for the generation of data with a complex distribution. This corresponds to ***generative model framework***.
+* the mastery of the decoder allows to optimize the mapping operation $$p(x \vert z)$$ for the generation of data with a complex distribution. This corresponds to ***generative model framework***.
 
 &nbsp;
 
@@ -206,7 +206,7 @@ $$p(z) = \mathcal{N}(0,I)$$
 
 $$p(x \vert z) = \mathcal{N}(f(z),cI)$$
 
-The key concept around VAE is that we will try to optimize the computation of the non-linear projection $$p(z \vert x)$$. Indeed, it can be demonstrated that the computation of $$p(z \vert x)$$ is often complicated and requires the use of approximation techniques such as ***variational inference***.
+The key concept around VAE is that we will try to optimize the computation of the non-linear mapping $$p(z \vert x)$$. Indeed, it can be demonstrated that the computation of $$p(z \vert x)$$ is often complicated and requires the use of approximation techniques such as ***variational inference***.
 
 &nbsp;
 
@@ -315,23 +315,26 @@ $$\mathcal{L} = \int{q_x(z) \cdot log\left(p(x \vert z)\right) \,dz} + \int{q_x(
 
 $$\mathcal{L} =  \mathbb{E}_{z\sim q_x} \left[log\left(p(x \vert z)\right)\right] - D_{KL}\left(q_x(z)\parallel p(z)\right)$$
 
-&nbsp;
-
-Recalling that $$p(x \vert z)$$ is approximated by a Gaussian distribution $$\mathcal{N}\left(f(z),cI\right)$$, we finally have
-
-$$\mathcal{L} \propto \mathbb{E}_{z\sim q_x} \left[\|x-f(z)\|^2\right] - D_{KL}\left(q_x(z)\parallel p(z)\right)$$
-
-&nbsp;
-
 where $$\mathbb{E}_{z\sim q_x}$$ is the mathematical expectation with respect to $$q_x(z)$$. 
+
+&nbsp;
+
+At this stage of analysis, it is important to remember that $$p(x \vert z)$$ is modeled by a neural network $$f\left( \cdot \right)$$ so that $$\hat{x}=f(z)$$. Since this function is deterministic, it will allow to model $$p\left(x \vert \hat{x}\right)$$. By approximating $$p\left(x \vert \hat{x}\right)$$ by a Gaussian distribution with a fixed covariance matrix $$cI$$, we have
+
+$$\mathcal{L} \propto \mathbb{E}_{z\sim q_x} \left[-\alpha\|x-f(z)\|^2\right] - D_{KL}\left(q_x(z)\parallel p(z)\right)$$
+
+where $$\alpha$$ comes from the constant covariance information. 
+
+&nbsp;
+
 
 We are finally looking for:
 
-$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\max} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[-\|x-f(z)\|^2\right] - D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
+$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\max} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[-\alpha\|x-f(z)\|^2\right] - D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
 
 or 
 
-$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[\|x-f(z)\|^2\right] + D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
+$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[\alpha\|x-f(z)\|^2\right] + D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
 
 &nbsp;
 
@@ -339,7 +342,7 @@ $$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{
 
 Here is a summary of what have been done so far.
 
-1. We want to estimate a non-linear projection $$p(z \vert x)$$ to go from an input space to a space of reduced dimension, and this through a probabilistic framework.
+1. We want to estimate a non-linear mapping $$p(z \vert x)$$ to go from an input space to a space of reduced dimension, and this through a probabilistic framework.
 
 2. To do this, we introduced a third party parametric distribution $$q_x(z)$$ to estimate the target distribution $$p(z \vert x)$$.
 
@@ -347,7 +350,7 @@ Here is a summary of what have been done so far.
 
 4. The minimization of the KL divergence leads to the minimization of the following equation:
 
-$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[\|x-f(z)\|^2\right] + D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
+$$\left(f^*,g^*,h^*\right) = \underset{(f,g,h)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q_x} \left[\alpha\|x-f(z)\|^2\right] + D_{KL}\left(q_x(z)\parallel p(z)\right) \right)$$
 
 
 &nbsp;
@@ -364,7 +367,7 @@ The minimization of the above equation can be handled by the following graph.
 
 The decoder will be in charge of the optimization of $$p(x \vert z)$$, i.e. the first part of the above equation. This is done through a neural network that will optimize the $$f$$ function through the minimization of the following loss function:
 
-$$\mathcal{L}_{decoder} = \|x-\hat{x}\|^2 \,=\, \|x-\underbrace{f(z)}_{\text{decoder}}\|^2$$
+$$\mathcal{L}_{decoder} = \alpha\|x-\hat{x}\|^2 \,=\, \alpha\|x-\underbrace{f(z)}_{\text{decoder}}\|^2$$
 
 where $$f(z)$$ is the ouput of the decoder. This correponds to the classical $$L_2$$ loss function!
 
@@ -394,7 +397,7 @@ The graph below shows the final network structure used in the VAE formalism.
 
 The following equation is used as a loss term:
 
-$$\text{loss}=\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
+$$\text{loss}=\alpha\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
 
 &nbsp;
 
@@ -436,8 +439,8 @@ The graph below shows the final network used to implement VAE with the possibili
 
 We recall that the following equation is used as the loss term:
 
-$$\text{loss} = \|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
+$$\text{loss} = \alpha\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
 
-$$\text{loss} = \|x-f(z)\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(g(x),h(x)\right),\mathcal{N}\left(0,I\right)\right) $$
+$$\text{loss} = \alpha\|x-f(z)\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(g(x),h(x)\right),\mathcal{N}\left(0,I\right)\right) $$
 
 
