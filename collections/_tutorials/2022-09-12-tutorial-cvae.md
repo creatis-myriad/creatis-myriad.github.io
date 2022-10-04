@@ -12,14 +12,14 @@ categories: autoencoder, conditional, variational, VAE
 
 - [**Introduction**](#introduction)
   - [VAE](#vae)
-  - [cVAE](#cvae)  
+  - [cVAE](#cvae)
 - [**Variational inference**](#variational-inference)
   - [Overall strategy](#overall-strategy)
-  - [Formulation of the KL divergence](#formulation-of-the-kl-divergence)  
+  - [Formulation of the KL divergence](#formulation-of-the-kl-divergence)
   - [Evidence lower bound](#evidence-lower-bound)
   - [ELBO reformulation](#elbo-reformulation)
 - [**Various scenarios**](#various-scenarios)
-  - [Pior modeling](#pior-modeling)
+  - [Prior modeling](#prior-modeling)
   - [References content](#references-content)
 - [**Simple example**](#simple-example)
 
@@ -28,17 +28,17 @@ categories: autoencoder, conditional, variational, VAE
 ## **Introduction**
 
 Conditional variational autoencoders (cVAE) should not been seen as an extension of conventional VAE! cVAE are also based on variational inference, but the overall objective is different: 
-* In the VAE formalism, a pipeline is optimized to produce outputs as close as possible to the input data in order to build an efficient ***latent space with reduced dimensionality***. This latent space is then used in inference for interpretation purposes.
-* In cVAE formalism, a pipeline is optimize to build a latent space that captures ***reference variability***. This latent space is then used in inference to generate a set of plausible outputs for a given input $$x$$.
+* In the VAE formalism, a pipeline is optimized to produce outputs as close as possible to the input data in order to build an efficient ***latent space with reduced dimensionality***. This latent space is then used during inference for interpretation purposes.
+* In the cVAE formalism, a pipeline is optimized to build a latent space that captures ***reference variability***. This latent space is then used in inference to generate a set of plausible outputs for a given input $$x$$.
 
 ### VAE
 
-A complete tutorial on VAE can be found [here](https://creatis-myriad.github.io/tutorials/2022-09-12-tutorial-vae.html). The graph below summarizes the overall strategy used in VAE formalism ***during training***.
+A complete tutorial on VAEs can be found [here](https://creatis-myriad.github.io/tutorials/2022-09-12-tutorial-vae.html). The graph below summarizes the overall strategy used in VAE formalism ***during training***.
 
 ![](/collections/images/cvae/vae_training.jpg)
 
 
->The goal of VAE is to learn an embedding (latent) space that efficiently represents the distribution of the $$x$$ input in a lower dimensional space for easier interpretation.
+>The goal of VAEs is to learn an embedding (latent) space that efficiently represents the distribution of the $$x$$ input in a lower dimensional space for easier interpretation.
 
 &nbsp;
 
@@ -58,13 +58,13 @@ In comparison, the two graphs below shows the overall strategy used in the condi
 
 This is achieved by learning the distribution $$p(z/x,y)$$ which generates a latent space that embeds joint effective information from $$x$$ and $$y$$.
 
-In parallel, the prior network learns to match this distribution by learning $$p(z/x)$$ through the Kullback-Liebler (KL) divergence. The interest of this network after training is that we do not need anymore $$y$$ to get the mapping from $$x$$ to the corresponding latent space. This will be very useful for inference.
+In parallel, the prior network learns to match this distribution by learning $$p(z/x)$$ through the Kullback-Liebler (KL) divergence. The interest of this network after training is that we no longer need $$y$$ to get the mapping from $$x$$ to the corresponding latent space. This will be very useful for inference.
 
 &nbsp;
 
 ![](/collections/images/cvae/cvae_inference.jpg)
 
->At time of inference, a new sample $$x$$ is given as input to the prior $$p(z/x)$$ and several points $$z_i$$ are sampled in the corresponding latent space to generate a set of plausible outputs $$\hat{y}_i$$ that will represent the learned variability of the references for a given $$x$$.
+>During inference, a new sample $$x$$ is given as input to the prior $$p(z/x)$$ and several points $$z_i$$ are sampled in the corresponding latent space to generate a set of plausible outputs $$\hat{y}_i$$ that will represent the learned variability of the references for a given $$x$$.
 
 &nbsp;
 
@@ -72,7 +72,7 @@ In parallel, the prior network learns to match this distribution by learning $$p
 
 ### Overall strategy
 
-The goal of conditional VAE is to approximate a $$p(y/x)$$ distribution through a latent space that captures the variability of references by learning the $$p(z/x,y)$$ distribution. In this way, the distribution $$p(y/x,z)$$ will allow to generate multiple plausible references from a given $$x$$. The following scheme is applied:
+The goal of conditional VAE is to approximate a $$p(y/x)$$ distribution through a latent space that captures the variability of references by learning the $$p(z/x,y)$$ distribution. This way, the distribution $$p(y/x,z)$$ will allow to generate multiple plausible references from a given $$x$$. The following scheme is applied:
 * for a given observation $$x$$, a set of latent variables $$z_i$$ is generated from $$p(z/x,y)$$ thanks to the sampling of the corresponding latent space.
 * The set of latent variables are then combined with the observation and passed through the conditional generative process $$p(y/x,z)$$ to generate samples from the distribution $$y$$.
 * The resulting predictive distribution is finally obtained through the following expression:
@@ -144,7 +144,7 @@ log\left(\frac{p(y,z/x)}{q(z/x,y)}\right)\,dz} + log\left(p(y/x)\right) \cdot \u
 
 $$D_{KL}\left(q(z/x,y) \parallel p(z/x,y) \right) \,+\, \mathcal{L} \,=\, log\left(p(y/x)\right)$$
 
-where $$\mathcal{L}$$ is defined as the ***Evidence Lower BOund (ELBO)*** whose expression is given by:
+where $$\mathcal{L}$$ is defined as the ***Evidence Lower BOund (ELBO)***, whose expression is given by:
 
 $$\mathcal{L} = \int{q(z/x,y) \cdot log\left(\frac{p(y,z/x)}{q(z/x,y)}\right) \,dz}$$
 
@@ -170,7 +170,7 @@ The previous expression can thus be rewritten as follows:
 
 $$\underbrace{D_{KL}\left(q(z/x,y) \parallel p(z/x,y) \right)}_{\geq 0} \,+\, \underbrace{\mathcal{L}}_{\leq 0} \,=\, \underbrace{log\left(p(y/x)\right)}_{\leq 0 \,\, \text{and fixed}}$$
 
->Thus, by tweaking q(z/x,y), we can seek to maximize the ELBO $$\mathcal{L}$$, which will imply the minimization of the KL divergence $$D_{KL}\left(q(z/x,y) \parallel p(z/x,y) \right)$$, and thus to find a distribution $$q(z/x,y)$$ that is close to $$p(z/x,y)$$.
+>Thus, by tweaking q(z/x,y), we can seek to maximize the ELBO $$\mathcal{L}$$, which will imply the minimization of the KL divergence $$D_{KL}\left(q(z/x,y) \parallel p(z/x,y) \right)$$, and consequently a distribution $$q(z/x,y)$$ that is close to $$p(z/x,y)$$.
 
 &nbsp;
 
@@ -241,7 +241,7 @@ $$\left(f^*,g^*,h^*,k^*,l^*\right) = \underset{(f,g,h,k,l)}{\arg\min} \,\,\, \le
 
 There are different exploitations of the cVAE formalism depending on the prior modeling $$p(z/x)$$ and the content of the $$y$$ references.
 
-### Pior modeling
+### Prior modeling
 
 * The prior $$p(z/x)$$ outputs a latent variable $$z$$ depending on the input $$x$$. This means that the corresponding latent space will be structured according to a varying input $$x$$ as illustrated in the figure below.
 
@@ -256,27 +256,27 @@ There are different exploitations of the cVAE formalism depending on the prior m
 
 Depending on the type of reference available, the value of conditional VAE can be different.
 
-* If there exist only one reference for a given input, the interest of the conditional VAE resides in the mixing of the input $$x$$ data with the corresponding $$y$$ in the latent space through the modeling of $$p(z/x,y)$$. This can be viewed as a regularisation process that "efficiently" integrates reference information during inference thanks to the deicated latant space and the mapping $$p(y/x,z)$$. 
+* If there exists only one reference for a given input, the interest of the conditional VAE resides in the mixing of the input $$x$$ data with the corresponding $$y$$ in the latent space through the modeling of $$p(z/x,y)$$. This can be viewed as a regularisation process that "efficiently" integrates reference information during inference thanks to the dedicated latent space and the mapping $$p(y/x,z)$$. 
 
 > In the context of segmentation, modeling $$p(z/x,y)$$ can be seen as an "efficient" way to integrate shape prior into the latent space. 
 
 &nbsp;
 
-* If there exists several references for a given input, which is the case when we want to model inter/intra-expert variability, the interest of the conditional VAE resides in the capacity of modeling the reference variability into the latent space through the modeling of $$p(z/x,y)$$. In this way, a single input corresponds to several latent variables that are located in a nearby region of the space, as illustated in the figure below.
+* If there exists several references for a given input, which is the case when we want to model inter/intra-expert variability, the interest of the conditional VAE resides in its capacity to model the reference variability in the latent space through the modeling of $$p(z/x,y)$$. This way, a single input corresponds to several latent variables that are located in the same region of the space, as illustrated in the figure below.
 
 ![](/collections/images/cvae/cvae_prior_depending_on_x_multiple_y.jpg)
 
-During inference, the latent space modeled by the prior is several multiple times to generate multiple plausible references $$\hat{y}_i$$ from a given input $$x$$ taking into account the learned variability, as shown in the figure below.
+During inference, the latent space modeled by the prior is sampled several times to generate multiple plausible references $$\hat{y}_i$$ from a given input $$x$$, taking into account the learned variability as shown in the figure below.
 
 ![](/collections/images/cvae/cvae_prior_depending_on_x_multiple_y_inference.jpg)
 
-> In the context of segmentation, this approach is useful for learning about inter-expert variability.
+> In the context of segmentation, this approach is useful for learning inter-expert variability.
 
 &nbsp;
 
 ## Simple example
 
-In this example, we will use the conditional VAE formalism to model the variability of handwriting digits. In this context, the input $$x$$ refers to an one-hot vector of a specific digit and $$\{y_i\}_{i=1:L}$$ refers to the corresponding handwriting images, as shown in the figure below.
+In this example, we will use the conditional VAE formalism to model the variability of handwritten digits. In this context, the input $$x$$ refers to a one-hot vector of a specific digit and $$\{y_i\}_{i=1:L}$$ refers to the corresponding handwritten images, as shown in the figure below.
 
 ![](/collections/images/cvae/mnist_data.jpg)
 
@@ -288,7 +288,7 @@ Thanks to the conditional VAE formalism, the variability of the manual tracing o
 
 &nbsp;
 
-During inference, a digit is given as input to the prior $$p(z/x)$$ and several $$z_i$$ are sampled in the corresponding latent space. This allows the generation a set of plausible output digits $$\hat{y}_i$$ integrating the variability of learned shapes, as illustrated below.
+During inference, a digit is given as input to the prior $$p(z/x)$$ and several $$z_i$$ are sampled in the corresponding latent space. This generates a set of plausible output digits $$\hat{y}_i$$ integrating the variability of learned shapes, as illustrated below.
 
 ![](/collections/images/cvae/cvae_mnist_inference.jpg)
 
