@@ -19,7 +19,7 @@ categories: autoencoder, conditional, variational, VAE
   - [Evidence lower bound](#evidence-lower-bound)
   - [ELBO reformulation](#elbo-reformulation)
 - [**Various scenarios**](#various-scenarios)
-  - [Prior modeling](#prior-modeling)
+  - [Modeling of $$p(z \vert x))$$](#modeling-of)
   - [Nature of the references](#nature-of-the-references)
 - [**Simple example**](#simple-example)
 
@@ -44,7 +44,7 @@ A complete tutorial on VAEs can be found [here](https://creatis-myriad.github.io
 
 ![](/collections/images/cvae/vae_inference.jpg)
 
->During inference, a new input $$x$$ is given as input to the encoder $$p(z/x)$$ and a dedicated analysis can be performed within the latent space.
+>During inference, a new input $$x$$ is given as input to the encoder $$p(z \vert x)$$ and a dedicated analysis can be performed within the latent space.
 
 &nbsp;
 
@@ -64,7 +64,7 @@ In parallel, the prior network learns to match this distribution by learning $$p
 
 ![](/collections/images/cvae/cvae_inference.jpg)
 
->During inference, a new sample $$x$$ is given as input to the prior $$p(z \vert x)$$ and several points $$z_i$$ are sampled in the corresponding latent space to generate a set of plausible outputs $$\hat{y}_i$$ that will represent the learned variability of the references for a given $$x$$.
+>During inference, a new sample $$x$$ is given as input to $$p(z \vert x)$$ and several points $$z_i$$ are sampled in the corresponding latent space to generate a set of plausible outputs $$\hat{y}_i$$ that will represent the learned variability of the references for a given $$x$$.
 
 &nbsp;
 
@@ -81,7 +81,7 @@ $$p(y \vert x) = \int_z{p(y \vert x,z) \cdot p(z \vert x) \,dz}$$
 
 &nbsp;
 
-As for the variational autoencoders, the key challenge around conditional VAE is the optimization of the computation of the posterior $$p(z \vert x,y)$$. Indeed, due to intractable properties, the derivation of this distribution is complicated and requires the use of approximation techniques such as variational inference.
+As for the variational autoencoders, the key challenge around conditional VAE is the computation of the posterior $$p(z \vert x,y)$$. Indeed, due to intractable properties, the derivation of this distribution is complicated and requires the use of approximation techniques such as variational inference.
 
 In the conditional VAE formalism, the posterior $$p(z \vert x,y)$$ is approximated by a Gaussian distribution $$q(z \vert x,y)$$ whose mean $$\mu_{post}$$ and covariance $$\sigma_{post}$$ are defined by two functions $$g(x,y)$$ and $$h(x,y)$$.
 
@@ -93,7 +93,7 @@ $$\left(g^*,h^*\right) = \underset{(g,h)}{\arg\min} \,\,\, D_{KL}\left(q(z \vert
 
 &nbsp;
 
-One particularity of the conditional VAE formalism is that the prior $$p(z \vert x)$$ is also approximated by a Gaussian distribution $$p(z \vert x)$$ whose mean $$\mu_{prior}$$ and covariance $$\sigma_{prior}$$ are defined by two functions $$k(x,y)$$ and $$l(x,y)$$.
+One particularity of the conditional VAE formalism is that the distribution $$p(z \vert x)$$ is also approximated by a Gaussian distribution $$p(z \vert x)$$ whose mean $$\mu_{prior}$$ and covariance $$\Sigma_{prior}$$ are defined by two functions $$k(x,y)$$ and $$l(x,y)$$.
 
 $$p(z \vert x)$$ is thus modeled as:
 
@@ -157,13 +157,13 @@ Let's take a closer look at the previous derived equation:
 $$D_{KL}\left(q(z \vert x,y) \parallel p(z \vert x,y) \right) \,+\, \mathcal{L} \,=\, log\left(p(y \vert x)\right)$$
 
 The following observations can be made:
-* since $$0\leq p(y \vert x) \leq 1$$, $$log\left(p(y \vert x)\right) \leq 0$$
+* since $$0\leq p(y \vert x) \leq 1$$, then $$log\left(p(y \vert x)\right) \leq 0$$
 
-* since $$x$$ and $$y$$ are known, $$log\left(p(y \vert x)\right)$$ is a fixed value
+* since $$x$$ and $$y$$ are known, then $$log\left(p(y \vert x)\right)$$ is a fixed value
 
 * by definition $$D_{KL}\left(q(z \vert x,y) \parallel p(z \vert x,y) \right) \geq 0$$
 
-* since $$\mathcal{L} = -D_{KL}\left(q(z \vert x,y) \parallel p(y,z \vert x)\right)$$, $$\mathcal{L} \leq 0$$
+* since $$\mathcal{L} = -D_{KL}\left(q(z \vert x,y) \parallel p(y,z \vert x)\right)$$, then $$\mathcal{L} \leq 0$$
 
 
 The previous expression can thus be rewritten as follows:
@@ -176,7 +176,7 @@ $$\underbrace{D_{KL}\left(q(z \vert x,y) \parallel p(z \vert x,y) \right)}_{\geq
 
 ### ELBO reformulation
 
-The ELBO $$\mathcal{L}$$ must be reformulated to justify the loss involved in the conditional VAE framework. The corresponding derivation is provided below.
+The ELBO $$\mathcal{L}$$ must be reformulated to derive the loss involved in the conditional VAE framework. The corresponding derivation is provided below:
 
 $$\mathcal{L} = \int{q(z \vert x,y) \cdot log\left(\frac{p(y,z \vert x)}{q(z \vert x,y)}\right) \,dz}$$
 
@@ -217,7 +217,7 @@ where $$\mathbb{E}_{z\sim q(z \vert x,y)}$$ is the mathematical expectation with
 
 &nbsp;
 
-At this stage of analysis, it is necessary to model $$p(y \vert x,y)$$ via an ***a priori distribution***. Let's first note that $$p(y \vert x,z)$$ is modeled by a neural network $$f(\cdot)$$ so that $$\hat{y}=f(x,z)$$. Since this function is deterministic, it will allow to model $$p\left(y \vert \hat{y}\right)$$. By approximating $$p\left(y \vert \hat{y}\right)$$ by a Bernoulli distribution, we have
+At this stage of analysis, it is important to note that $$p(y \vert x,y)$$ will be approximated by a neural network $$f(\cdot)$$ so that $$\hat{y}=f(x,z)$$. Since this function is deterministic, it will allow to model $$p\left(y \vert \hat{y}\right)$$. By approximating $$p\left(y \vert \hat{y}\right)$$ by a Bernoulli distribution, we have
 
 $$\mathbb{E}_{z\sim q(z \vert x,y)} \left[log\left(p(y \vert \hat{y})\right)\right] = \mathbb{E}_{z\sim q(z \vert x,y)} \left[log\left( {\hat{y}}^y \cdot \left(1-\hat{y}\right)^{1-y} \right)\right]$$
 
@@ -229,9 +229,11 @@ where $$CE(\cdot)$$ corresponds to the conventional ***cross entropy function***
 
 &nbsp;
 
-Thanks to this modeling, we are finally looking for:
+Following this modeling, we are finally looking for:
 
 $$\left(f^*,g^*,h^*,k^*,l^*\right) = \underset{(f,g,h,k,l)}{\arg\max} \,\,\, \left( \mathbb{E}_{z\sim q(z \vert x,y)} [-CE\left( y,f\left(x,z\right)\right)] - D_{KL}(\underbrace{q(z \vert x,y)}_{g,h}\parallel \underbrace{p(z \vert x)}_{k,l}) \right)$$
+
+which is equivalent to
 
 $$\left(f^*,g^*,h^*,k^*,l^*\right) = \underset{(f,g,h,k,l)}{\arg\min} \,\,\, \left( \mathbb{E}_{z\sim q(z \vert x,y)} [CE\left( y,f\left(x,z\right)\right)] + D_{KL}(\underbrace{q(z \vert x,y)}_{g,h}\parallel \underbrace{p(z \vert x)}_{k,l}) \right)$$
 
@@ -239,11 +241,13 @@ $$\left(f^*,g^*,h^*,k^*,l^*\right) = \underset{(f,g,h,k,l)}{\arg\min} \,\,\, \le
 
 ## Various scenarios
 
-There are different ways to leverage the cVAE formalism depending on the prior modeling $$p(z \vert x)$$ and the content of the $$y$$ references.
+There are different ways to leverage the cVAE formalism depending on the modeling of $$p(z \vert x)$$ and the content of the $$y$$ references.
 
-### Prior modeling
+&nbsp;
 
-* The prior $$p(z \vert x)$$ outputs a latent variable $$z$$ depending on the input $$x$$. This means that the corresponding latent space will be structured according to a varying input $$x$$ as illustrated in the figure below.
+### Modeling of $$p(z \vert x)$$
+
+* The distribution $$p(z \vert x)$$ outputs a latent variable $$z$$ depending on the input $$x$$. This means that the corresponding latent space will be structured according to a varying input $$x$$ as illustrated in the figure below.
 
 ![](/collections/images/cvae/cvae_prior_depending_on_x.jpg)
 
@@ -266,7 +270,7 @@ Depending on the type of reference available, the value of conditional VAE can b
 
 ![](/collections/images/cvae/cvae_prior_depending_on_x_multiple_y.jpg)
 
-During inference, the latent space modeled by the prior is sampled several times to generate multiple plausible references $$\hat{y}_i$$ from a given input $$x$$, taking into account the learned variability as shown in the figure below.
+During inference, the latent space modeled by the prior network is sampled several times to generate multiple plausible references $$\hat{y}_i$$ from a given input $$x$$, taking into account the learned variability as shown in the figure below.
 
 ![](/collections/images/cvae/cvae_prior_depending_on_x_multiple_y_inference.jpg)
 
@@ -288,7 +292,7 @@ Thanks to the conditional VAE formalism, the variability of the manual tracing o
 
 &nbsp;
 
-During inference, a digit is given as input to the prior $$p(z \vert x)$$ and several $$z_i$$ are sampled in the corresponding latent space. This generates a set of plausible output digits $$\hat{y}_i$$ integrating the variability of learned shapes, as illustrated below.
+During inference, a digit is given as input to $$p(z \vert x)$$ and several $$z_i$$ are sampled in the corresponding latent space. This generates a set of plausible output digits $$\hat{y}_i$$ integrating the variability of learned shapes, as illustrated below.
 
 ![](/collections/images/cvae/cvae_mnist_inference.jpg)
 
