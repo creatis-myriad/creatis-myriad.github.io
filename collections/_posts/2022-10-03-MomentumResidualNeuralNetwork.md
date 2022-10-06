@@ -12,33 +12,29 @@ pdf: "https://arxiv.org/pdf/2102.07870.pdf"
 
 <!-- Do not include the following disclaimer in your own review -->
 
-# Reminders on Residual Neural Networks
+# Reminder on Residual Neural Networks
 
 Seminal work on Residual Neural Network : ["Deep Residual Learning for Image Recognition", K. He, X. Zhang, R. Zen and J. Sun, CVPR 2016](https://arxiv.org/pdf/1512.03385.pdf)
 
 Main points:
 
 * Deeper neural networks are more difficult to train
-* Residual learning framework have been introduced to ease the training of deeper networks
+* Residual learning framework has been introduced to ease the training of deeper networks
 * Layers are reformulated as learning residual functions with reference to the previous layer inputs, instead of learning unreferenced functions.
 * These residual networks are easier to optimize, and can gain accuracy from considerably increased depth.
 
 
 # Highlights of the paper
 
-* Exploration of Memory costs issues in residual neural network due to backpropagation schemes
+* Exploration of memory costs issues in residual neural network due to backpropagation schemes
 * Proposition of a new model, Momentum ResNets, which circumvents these memory issues by being invertible
 * Compared to other invertible models, this model is simple to integrate into the usual ResNets architectures and provides a rigorous mathematical setting.
 * Momentum ResNets can be interpreted as second order ordinary differential equations (ODEs).
-Momentum ResNets separate point clouds that ResNets fail to separate
-
-## Bibliography in the field 
-* Momentum in deep networks : (He et al., 2020; Chun et al., 2020; Nguyen et al., 2020; Li et al. 2018) 
-* Second-order models : (Norcliffe et al., 2020; Rusch & Mishra, 2021; Lu et al.,2018; Massaroli et al., 2020) 
+* Momentum ResNets separate point clouds that ResNets fail to separate
 
 # Introduction
 
-The main goal of this paper is to explore the properties of a new model, Momentum ResNets, that circumvent the memory issues of ResNets by being invertible. It lies on the modification of the ResNet's forward rule.
+The main goal of this paper is to explore the properties of a new model, Momentum ResNets, that circumvents the memory issues of ResNets by being invertible. It relies on the modification of the ResNet's forward rule.
 
 # Momentum Residual Neural Networks
 
@@ -69,23 +65,23 @@ $$v_n=\frac{1}{\gamma} (v_{n+1}-(1-\gamma)f(x_n,\theta_n))$$
 This avoids the memory issues occuring due to the backpropagation step.
 
 Note: Momentum gradient descent is an alternative to classical gradient descent algorithms using second order partial derivatives.
-A overview of gradient descent optimization algorithms is given in the paper of S.Ruder (http://arxiv.org/abs/1609.04747) as mentioned in the paper.
+A overview of gradient descent optimization algorithms is given in a [review by S.Ruder](http://arxiv.org/abs/1609.04747), referenced in the paper.
 
 ## Memory cost
-For usual ResNets, one need to store the weights of the network and the values of all activations for the training set at each layer. The memory needed is $$O(k*d*n_{batch})$$ while for the Momentum ResNets the memory need is $$O((1-\gamma)*k*d*n_{batch})$$.
+For usual ResNets, one needs to store the weights of the network and the values of all activations for the training set at each layer. The memory needed is $$O(k*d*n_{batch})$$ while for the Momentum ResNets the memory need is $$O((1-\gamma)*k*d*n_{batch})$$ where $$k$$ is the depth of the network, $$d$$ the size of the vector $$x$$, and $$n_{batch}$$ the size of the training set.
 
 ![](/collections/images/MomentumResNets/fig_memory_momentum.jpg)
 
 ## The role of momentum
 When $$\gamma=0$$, they get a Classical ResNet. When $$\gamma \rightarrow 1$$, they get a special case of the invertible RevNet (Gomez et al, 2017). 
 
-The advantage of the Momentum ResNet compared to RevNet where two learnable functions are used, is its stability for convergence (proofs given in the paper).
+The advantage of the Momentum ResNet compared to RevNet, where two learnable functions are used, is its stability for convergence (proofs given in the paper).
 
 ## Link with ODE (Ordinary Differential Equations)
 
 ![](/collections/images/MomentumResNets/fig_momentum_odes.jpg)
  
-ResNets can be interpreted as a first order ODE. Indeed the term $$x_{n+1} - x_n$$ can be seen as the discretized partial derivative $$\dot{x}$$.
+ResNets can be interpreted as a first order ODE. Indeed, the term $$x_{n+1} - x_n$$ can be seen as the discretized partial derivative $$\dot{x}$$.
 
 $$ \dot{x} \quad  \rightarrow  \quad x_{n+1}-x_{n}$$
 
@@ -104,12 +100,12 @@ The second order derivative $$\ddot{x}$$ can be discretized using $$x_{n+1}-2x_n
 
 $$\epsilon \ddot{x}+\dot{x}=f(x,\theta)$$
 
-Briefly : "In the same way that ResNets can be seen as discretization of first order ODEs, Momentum ResNets can be seen as discretization of second-order ones."
+>"In the same way that ResNets can be seen as discretization of first order ODEs, Momentum ResNets can be seen as discretization of second-order ones."
 
 When $$\epsilon \rightarrow 0$$, they get the first order model.
 
 ## Representation capabilies
-These analogies between ODEs lead to some interesting mathematical properties. The first order model can represent homeomorphism mappings (continuous, bijective with continuous inverse). However first order ODEs are not universal approximators and some mappings are not possible (see the example on point clouds separation). Momentum ResNets can capture non-homeomorphic dynamics. The authors present some proofs on this aspect called "representation capabilities" of models.
+These analogies between ODEs lead to some interesting mathematical properties. The first order model can represent homeomorphism mappings (continuous, bijective with continuous inverse). However, first order ODEs are not universal approximators and some mappings are not possible (see the example on point clouds separation). Momentum ResNets can capture non-homeomorphic dynamics. The authors present some proofs on this aspect called "representation capabilities" of models.
 
 # Experiments
 
@@ -118,7 +114,7 @@ These analogies between ODEs lead to some interesting mathematical properties. T
 * Experiments on 4 rings (2 classes) of point clouds 
 ![](/collections/images/MomentumResNets/momentum_points_clouds.jpg)
 
-These classes failed to be separated using classical ResNets but not with Momentum ResNets. 
+Momentum ResNets are able to separate these classes, whereas classical ResNets fail.
 
 ## Real data sets
 
