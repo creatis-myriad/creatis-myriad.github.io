@@ -26,11 +26,11 @@ Main points:
 
 # Highlights of the paper
 
-* Exploration of memory costs issues in residual neural network due to backpropagation schemes
-* Proposition of a new model, Momentum ResNets, which circumvents these memory issues by being invertible
+* Exploration of memory costs issues in residual neural network due to backpropagation schemes.
+* Proposition of a new model, Momentum ResNets, which circumvents these memory issues by being invertible.
 * Compared to other invertible models, this model is simple to integrate into the usual ResNets architectures and provides a rigorous mathematical setting.
 * Momentum ResNets can be interpreted as second order ordinary differential equations (ODEs).
-* Momentum ResNets separate point clouds that ResNets fail to separate
+* Momentum ResNets separate point clouds that ResNets fail to separate.
 
 # Introduction
 
@@ -62,10 +62,10 @@ $$x_n=x_{n+1}-v_{n+1}$$
 
 $$v_n=\frac{1}{\gamma} (v_{n+1}-(1-\gamma)f(x_n,\theta_n))$$
 
-This avoids the memory issues occuring due to the backpropagation step.
+This avoids the memory issues occurring due to the backpropagation step.
 
 Note: Momentum gradient descent is an alternative to classical gradient descent algorithms using second order partial derivatives.
-A overview of gradient descent optimization algorithms is given in a [review by S.Ruder](http://arxiv.org/abs/1609.04747), referenced in the paper.
+An overview of gradient descent optimization algorithms is given in a [review by S. Ruder](http://arxiv.org/abs/1609.04747), referenced in the paper.
 
 ## Memory cost
 For usual ResNets, one needs to store the weights of the network and the values of all activations for the training set at each layer. The memory needed is $$O(k*d*n_{batch})$$ while for the Momentum ResNets the memory need is $$O((1-\gamma)*k*d*n_{batch})$$ where $$k$$ is the depth of the network, $$d$$ the size of the vector $$x$$, and $$n_{batch}$$ the size of the training set.
@@ -104,7 +104,7 @@ $$\epsilon \ddot{x}+\dot{x}=f(x,\theta)$$
 
 When $$\epsilon \rightarrow 0$$, they get the first order model.
 
-## Representation capabilies
+## Representation capabilities
 These analogies between ODEs lead to some interesting mathematical properties. The first order model can represent homeomorphism mappings (continuous, bijective with continuous inverse). However, first order ODEs are not universal approximators and some mappings are not possible (see the example on point clouds separation). Momentum ResNets can capture non-homeomorphic dynamics. The authors present some proofs on this aspect called "representation capabilities" of models.
 
 # Experiments
@@ -136,11 +136,9 @@ They study the accuracy, the effect of the momentum term $$\gamma$$, and the mem
 # Conclusions
 * This paper introduces Momentum ResNets, new invertible residual neural networks operating with a significantly reduced memory footprint compared to ResNets. 
 * In contrast with existing invertible architectures, they propose a simple modification of the ResNet forward rule. 
-* Momentum ResNets interpolate between ResNets (γ = 0) and RevNets
-(γ = 1), and are a natural second-order extension of neural
-ODEs with nice mathematical properties and more generic representation capabilities.
+* Momentum ResNets interpolate between ResNets (γ = 0) and RevNets (γ = 1), and are a natural second-order extension of neural ODEs with nice mathematical properties and more generic representation capabilities.
 
 # Remarks
-* A python package is available here: [Momentum GitHub](https://github.com/michaelsdr/momentumnet)
+* A python package is available here: [Momentum GitHub](https://github.com/michaelsdr/momentumnet).
 * [This video](https://slideslive.com/38959153/momentum-residual-neural-networks?ref=speaker-83006) is a good presentation of the paper. 
 
