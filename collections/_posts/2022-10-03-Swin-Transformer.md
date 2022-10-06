@@ -12,91 +12,118 @@ pdf: "https://arxiv.org/abs/2103.14030"
 
 # Highlights
 
-* ViT has a quadratic complexity with respect to the number of token ( and therefore image size)
-
-* In the proposed architecture the Multi-Head Self Attention block (MSA) is replace by a module based on \textb{shifted windows }(W-MSA).
-
+* ViT has a quadratic complexity with respect to the number of tokens ( and therefore image size). This makes ViT unsuitable for dense prediction task requiring a huge number of tokens such as segmentation.
+* In the proposed architecture the Multi-Head Self Attention block (MSA) is replace by a module based on **shifted windows** (W-MSA) which allow to obtain a **linear complexity** with respect to the number of token. 
 * Also in the ViT architecture the dimension of feature maps is fixed and constant
+* The proposed architecture build **hierarchical feature maps** by merging tokens in deeper layers
 
-* The proposed architecture build hierarchical feature maps by merging tokens in deeper layers
+
+# Architecture
+
+![](/collections/images/Swin-Transformer/architecture.jpg)
+
+* First the image of size $$H*W$$ is split in $$N$$ patches of size 4 x 4 to create tokens of size $$4*4*3=48$$
+
+  > ViT have patches of size 16 x 16
+
+* Then a linear embedding layer is applied to project it to an arbitrary dimensions $$C$$ 
+
+* Two Swin Transfomer blocks (with modified self-attention) are applied giving a new matrix $$\mathbf{z} \in \mathbb{R}^{N \times C}$$
+
+* To produce a hierarchical representation, the number of tokens is reduced by patch merging layers as the network gets deeper
+
+* First, features of each group of 2 x 2 neighboring patches are concatenates giving a matrix $$\mathbf{z} \in \mathbb{R}^{\frac{N}{4} \times 4C}$$
+
+* A linear layer is applied to set the dimension of tokens to 2C and Swin Transformers blocks are applied
+
+* This first block of patch merging is referred as Stage 2
+
+* This process is repeated in Stage 3 ans Stage 4 to obtain a final matrix $$\mathbf{z} \in \mathbb{R}^{\frac{N}{64} \times 8C}$$
+
+  > These steps produce a hierarchical representation similar to a convolutional networks. Therefore Swin Transformers can serve as a general backbone for several vision tasks.
+
+
+# Shifted Window based Self-Attention
+
+* Swin Transformer block is built by replacing the standard multi-head self attention (MSA) module in a Transformer block by a module based on  **shifted windows** with other layers kept the same.
+
+  ![](/collections/images/Swin-Transformer/transformer-block.jpg)
+
+
+
+
+* The self-attention is compute within local windows. The windows are arranged to evenly partition the image in a non-overlapping manner.
+
+* For windows of size M x M patches and an image of h x w patches  the computational complexity of a standard MSA module and a window based self-attention module (W-MSA) are :
+
+  $$ \Omega(MSA) = 4hwC^{2} + 2 (hw)^{2}C $$
+
+  $$\Omega(W-MSA) = 4hwC^{2} + 2 M^{2}hwC $$
 
   
 
-# Methods
-
-![](/collections/images/unetr/overview_method.jpg)
-
-## Architecture
-
-* First the image of size $$H*W$$ is split in $$\frac{H*W}{16}$$ patches of size $$4*4$$ to create tokens of size $$4*4*3=48$$ 
-
-* 3D input volume $$\mathbf{x} \in \mathbb{R}^{H \times W \times D \times C}$$ is divided into non-overlapping patches of size $$(P, P, P)$$ which are flattened to give $$N$$ tokens arrange in a matrix $$\mathbf{x_v} \in \mathbb{R}^{N \times (P^3.C)}$$
-
-* A linear layer is used to project the patches into a $$K$$ dimensional embedding space, then a 1D learnable positional embedding is added giving $$\mathbf{z}_{0} \in \mathbb{R}^{N \times K}$$ :
-
- $$ \mathbf{z}_{0} = [\mathbf{x}_{v}^{1}\mathbf{E}; \mathbf{x}_{v}^{2}\mathbf{E};...;\mathbf{x}_{v}^{N}\mathbf{E}] + \mathbf{E}_{pos}$$
-
-with 
-	 $$\mathbf{E} \in \mathbb{R}^{(P^3.C) \times K}$$ the projection matrix to learn
-
-* Note: no class token is involved in this architecture since the targeted task is not classification but segmentation
-
-* Then this embedding is used as the input of multiple transformer block like in a classical transformer architecture (see tutorial for more details).
+  >Standard self-attention is quadratic to patch number $$hw$$ whereas window based self-attention is linear where M is fixed 
 
 
-* At the end of each transformer block $$l$$ we have a matrix $$\mathbf{z}_l \in \mathbb{R}^{N \times K}$$ with $$N = (H * W * D)/P^3$$
 
-* These matrixes are extracted for different transformer block ($${3, 6, 9, 12}$$) and reshape into a feature map of shape $$ \frac{H}{P} * \frac{W}{P} * \frac{D}{P} * K$$ 
+* The W-MSA module lacks connections across windows. To overcome this problem windows are shifted alternatively between two different partitioning configuration in consecutive Swin Transformer block 
 
-* At the bottleneck, deconvolutional (transposed convolution) layer is applied to increase the resolution of the feature map. Then the resized feature map is concatenated with the feature map of the previous transformer block and processed by a convolutional layer.
+  ![](/collections/images/Swin-Transformer/shifted-window.jpg)
 
-* This process is repeated for all the other subsequent layers up to the original input resolution where the final output is fed into a 1×1×1 convolutional layer with a softmax activation function to generate voxel-wise segmentation map.
+  > This shifting scheme introduces new connections across windows
 
-![](/collections/images/unetr/architecture.jpg)
 
-## Experiments
 
-* Loss is a combination of soft dice and cross-entropy 
-* Method is evaluated on BTCV and MSD datasets
-* BTCV : 30 patients with abdominal CT scans where 13 organs are annotated (13 class segmentation problem)
-* MSD :  484 multi-modal and multi-site MRI (Flair, T1w, T1gd, T2w) for the brain tumor segmentaion task and 41 CT scan for the spleen segmentation task
-* Dice and 95% Hausdorff Distance (HD) are used as evaluation metrics
+# Experiments
 
-* Transformer parameters used : $$L=12$$ transformer block, embedding size of $$K=768$$, patch size of $$ 16 * 16 * 16$$ 	
-* Average training time : 10 hours for 20 000 epochs
+* The method is evaluated on three tasks:
 
-* Note : the transformer backbone is not pre-trained at all
+  * image classification : ImageNet-1K
 
-# Results
+  * object detection : COCO
 
-As seen in the table below, UNETR outperforms the state-of-the-art methods on the BTCV leaderboard ( which are CNN or transformer based methods[^1][^2][^3]) 
+  * semantic segmentation  : ADE20K
 
-![](/collections/images/unetr/results_BTCV.jpg)
+> The paper presents four model variants:
+>
+> * Swin-T: C = 96, layer numbers = {2, 2, 6, 2}
+> * Swin-S: C = 96, layer numbers ={2, 2, 18, 2}
+> * Swin-B: C = 128, layer numbers ={2, 2, 18, 2}
+> * Swin-L: C = 192, layer numbers ={2, 2, 18, 2}
 
-Same for the MSD dataset
+## Image classification on ImageNet-1k
 
-![](/collections/images/unetr/results_MSD.jpg)
+* Training from scratch on ImageNet-1k 
+  * Swin Transformers surpass others transformers architecture (DeiT architecture and ViT architecture)
+  * And is comparable with convolution based architecture (EfficientNet and Regnet)
+* Pre-training on ImageNet-20k and fine tuning on ImageNet-1k
+  * Pre-training improve the results but it's less significant than ViT
 
-Some visual results on the BTCV dataset::
+![](/collections/images/Swin-Transformer/classification-results.jpg) 
 
-![](/collections/images/unetr/visual_results_BTCV.jpg)
+## Object Detection on COCO
 
-# Ablation studies
+* Comparison to ResNet and DeiT (transformer) as a backbone for object detection framework
 
-Authors compare their decoder architecture with three other designs called Naive UPsampling (NUP), Progressive UPsampling (PUP) and MuLti-scale Aggregation (MLA) [^1]
+* Swin Transformers surpass  previous state-of-the-art
 
-![](/collections/images/unetr/ablation_decoder.jpg)
+  ![](/collections/images/Swin-Transformer/detection-results.jpg) 
 
-They also compare model complexity with other architectures:
+## Semantic Segmentation on ADE20K
 
-![](/collections/images/unetr/parameters.jpg)
+* Comparison with different method/backbone pairs
+* With the same method (UperNet) Swin-T is a better backbone than ResNet-101 and DeiT-S
+
+![](/collections/images/Swin-Transformer/segmentation-results.jpg) 
+
+## Ablation study on shifted windows
+
+
+
+![](/collections/images/Swin-Transformer/shifted-windows-study.jpg) 
+
+> Ablation study shows that the shifted windows method is neccesary to build connections among windows
 
 # Conclusions
 
-UNETR has taken a first step towards transformer based models for segmentation
-
-# References
-
-[^1]: [Sixiao Zheng et al, *Rethinking semantic segmentation from a sequence-to-sequence perspective with transformers*, Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (2021)](https://arxiv.org/abs/2012.15840)
-[^2]: [Jieneng Chen et al, *Transunet: Transformers make strong encoders for medical image segmentation*, arXiv preprint (2021)](https://arxiv.org/abs/2102.04306)
-[^3]: [Yutong Xie et al, *Cotr: Efficiently bridging cnn and transformer for 3d medical image segmentation*, International conference on medical image computing and computer-assisted intervention  (2021)](https://arxiv.org/abs/2103.03024)
+Swin Transformers achieve state-of-the-art performance on several vision tasks. Thanks to the linear computational complexity Swin Transformers seem to be more a scalable backbone for transformer based architecture.
