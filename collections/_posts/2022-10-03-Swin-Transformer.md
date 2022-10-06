@@ -24,7 +24,7 @@ pdf: "https://arxiv.org/abs/2103.14030"
 
 * First the image of size $$H*W$$ is split in $$N$$ patches of size 4 x 4 to create tokens of size $$4*4*3=48$$
 
-  > ViT have patches of size 16 x 16
+  > ViT have bigger patches of size 16 x 16 ( so less suitable for dense prediction task such as segmentation)
 
 * Then a linear embedding layer is applied to project it to an arbitrary dimensions $$C$$ 
 
@@ -62,7 +62,7 @@ pdf: "https://arxiv.org/abs/2103.14030"
 
   
 
-  >Standard self-attention is quadratic to patch number $$hw$$ whereas window based self-attention is linear where M is fixed 
+  >Standard self-attention is quadratic to patch number $$hw$$ whereas window based self-attention is linear when M is fixed 
 
 
 
