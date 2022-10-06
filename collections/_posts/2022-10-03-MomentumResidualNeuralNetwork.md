@@ -18,8 +18,8 @@ Seminal work on Residual Neural Network : ["Deep Residual Learning for Image Rec
 
 Main points:
 
-* Deeper neural networks are more difficult to train
-* Residual learning framework has been introduced to ease the training of deeper networks
+* Deeper neural networks are more difficult to train.
+* Residual learning framework has been introduced to ease the training of deeper networks.
 * Layers are reformulated as learning residual functions with reference to the previous layer inputs, instead of learning unreferenced functions.
 * These residual networks are easier to optimize, and can gain accuracy from considerably increased depth.
 
@@ -73,7 +73,7 @@ For usual ResNets, one needs to store the weights of the network and the values 
 ![](/collections/images/MomentumResNets/fig_memory_momentum.jpg)
 
 ## The role of momentum
-When $$\gamma=0$$, they get a Classical ResNet. When $$\gamma \rightarrow 1$$, they get a special case of the invertible RevNet (Gomez et al, 2017). 
+When $$\gamma=0$$, they get a Classical ResNet. When $$\gamma \rightarrow 1$$, they get a special case of the invertible RevNet [(Gomez et al, 2017)](https://proceedings.neurips.cc/paper/2017/file/f9be311e65d81a9ad8150a60844bb94c-Paper.pdf). 
 
 The advantage of the Momentum ResNet compared to RevNet, where two learnable functions are used, is its stability for convergence (proofs given in the paper).
 
@@ -135,8 +135,7 @@ They study the accuracy, the effect of the momentum term $$\gamma$$, and the mem
 
 # Conclusions
 * This paper introduces Momentum ResNets, new invertible residual neural networks operating with a significantly reduced memory footprint compared to ResNets. 
-* In contrast with existing invertible architectures, they are made possible by a simple modification of the ResNet forward rule. 
-
+* In contrast with existing invertible architectures, they propose a simple modification of the ResNet forward rule. 
 * Momentum ResNets interpolate between ResNets (γ = 0) and RevNets
 (γ = 1), and are a natural second-order extension of neural
 ODEs with nice mathematical properties and more generic representation capabilities.
