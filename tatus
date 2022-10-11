@@ -1,0 +1,28 @@
+[1mdiff --git a/collections/_posts/2022-10-11-ProbabilisticUNet.md b/collections/_posts/2022-10-11-ProbabilisticUNet.md[m
+[1mindex 151057a..60d34be 100755[m
+[1m--- a/collections/_posts/2022-10-11-ProbabilisticUNet.md[m
+[1m+++ b/collections/_posts/2022-10-11-ProbabilisticUNet.md[m
+[36m@@ -18,18 +18,20 @@[m [mpdf: "https://proceedings.neurips.cc/paper/2018/file/473447ac58e1cd7e96172575f48[m
+ [m
+ * TODO[m
+ [m
+[31m-## Architecture[m
+[32m+[m[32m## Method[m
+ [m
+ * The architecture is based on the ***conditional VAE*** whose details are provided in the following [tutorial](https://creatis-myriad.github.io/tutorials/2022-09-12-tutorial-cvae.html).[m
+ * The innovation comes from the use of a U-Net architecture to model the distribution $$p(y \vert x,z)$$.[m
+[32m+[m[32m* The latent vector $$z$$ is first passed to a decoder to produce a $$N$$-channel feature map with the same spatial dimensions as the segmentation map. This feature map is then concatenated with the last activation map of a U-Net before being convolved by a last layer to produce the final segmentation map with the desired number of classes.[m
+ [m
+[31m-The image below gives an overview of the architecture deployed during the training.[m
+[32m+[m[32mThe image below provides an overview of the architecture deployed during the training. The distributions $$p(z \vert x,y)$$, $$p(z \vert x)$$ and $$p(y \vert x,z)$$ displayed in blue are modeled by three distinct neural networks.[m
+ [m
+ ![](/collections/images/probabilistic_unet/proba_unet_training.jpg)[m
+ [m
+[31m-The following image illustrates the use of the architecture during inference.[m
+ [m
+[32m+[m[32mThe following image illustrates the use of the architecture during inference.[m
+ [m
+[32m+[m[32m![](/collections/images/probabilistic_unet/proba_unet_inference.jpg)[m
+ [m
+ # Results[m
+ [m
