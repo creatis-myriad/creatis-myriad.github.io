@@ -16,9 +16,9 @@ pdf: "https://proceedings.neurips.cc/paper/2018/file/473447ac58e1cd7e96172575f48
 
 # Highlights
 
-* The objectif if this article is to learn a distribution over segmentations given an input.
-* The main innovation concerns the design of a generative segmentation model based on a combination of a U-Net with a conditional VAE.
-* The proposed framework is able to also learn hypotheses that have a low probability and to predict them with the corresponding frequency .
+* The objective of this paper is to learn a distribution of segmentations from an input.
+* The main innovation concerns the design of a generative segmentation model based on the combination of a U-Net with a conditional VAE.
+* The proposed framework is also capable of learning hypotheses that have a low probability and predicting them with the corresponding frequency.
 
 
 # Method
@@ -38,18 +38,19 @@ The following image illustrates the use of the architecture during inference.
 
 ![](/collections/images/probabilistic_unet/proba_unet_inference.jpg)
 
+&nbsp;
 
 ## Implementation details
 
-* The dimension of the latent space has been experimentally fixed at $$M=6$$ and is kept fixed in all experiments.
+* The dimensions of the latent space has been experimentally fixed at $$M=6$$ and is kept fixed in all experiments.
 * The difference between the predicted segmentation and the ground truth is optimized using a Cross Entropy loss.
 * The training is done from scratch with randomly initialized weights 
-* When drawing $$m$$ samples for the same input image, the prior network output and U-Net feature activations can be reused without the need for recomputation, making the overall strategy computationally efficient.
+* When drawing $$m$$ samples for the same input image, the output of the prior network and the feature activations of the U-Net can be reused without the need for recomputation, making the overall strategy computationally efficient.
 
 ## Performance measures
 
-* The performance of the methods was evaluated by comparing distributions of segmentations
-* This was done through the ***generalized energy distance*** whose expression is given below:
+* The performance of the methods was evaluated by comparing distributions of segmentations.
+* This was done through the computation of ***generalized energy distance*** whose expression is given below:
 
 $$D^2_{GED}(P_{gt},P_{out}) = 2 \, \mathbb{E} \left[d\left(S,Y\right) \right] - \mathbb{E} \left[d\left(S,S'\right) \right] - \mathbb{E} \left[d\left(Y,Y'\right) \right]$$
 
@@ -73,16 +74,36 @@ As shown in the figure below, the probabilistic U-Net network outperforms state-
 
 ![](/collections/images/probabilistic_unet/LIDC_results.jpg)
 
+&nbsp;
+
 ## Analysis of the latent space
 
-* The authors proposed to visualize the latent space by arranging the samples to represent their corresponding position in a 2D plane, i.e. the dimension of the latent space is set to $$2$$ and each latent variable is normalized by the inferred mean and standard deviation computed from the tested image: $$\hat{z}=\left(z-\mu\right)/\sigma$$.
+* The authors proposed to visualize the latent space by arranging the samples to represent their corresponding position in a 2D plane, i.e. the dimension of the latent space was set to $$2$$ and each latent variable was normalized by the inferred mean and standard deviation computed from the tested image: $$\hat{z}=\left(z-\mu\right)/\sigma$$.
 * This allows to interpret how the model ends up structuring the space to solve the given tasks.
+
+&nbsp;
+* The latent space given in the figure below was computed from a specific image, where 3 over 4 annotators provided a segmentation
+* The part of the latent space included in the $$\sigma=1$$ circle indicates the most probable generated masks. This region clearly shows that the algorithm has taken into account the occurrence of the images segmented by the experts: there is more chance to generate a segmentation mask than an empty image.
+* From this figure, one can see that the $$z_0$$ component encodes lesion size including a transition to complete lesion absence, while the $$z_1$$ component encodes shape variations.
 
 ![](/collections/images/probabilistic_unet/latent_space_lidc.jpg)
 
+&nbsp;
+
+## Some examples and needs for improvement
+
+The figure below shows some examples of segmentations generated from the proposed method. From this figure, it can be seen that:
+* (good point) the global shapes drawn by the experts are well respected in the generated segmentations.
+* (bad point) cases with absence of lesion can be generated even if all the experts have proposed a segmentation mask for the same lesion.
+
+![](/collections/images/probabilistic_unet/LIDC_result_samples.jpg)
+
+&nbsp;
 
 # Conclusions
 
-TODO
+* The authors of this paper have proposed a mixing of U-Net and conditional VAE to design a generative network that learns the variability of hand-drawn shapes by several experts.
+* Even if the fomalism provides interesting results, there is room for improvement in results.
+* The same authors have proposed an improved version of this formalism called [hierarchical probabilistic U-Net](https://github.com/deepmind/deepmind-research/tree/master/hierarchical_probabilistic_unet). This method will be studied in a future post!
 
 
