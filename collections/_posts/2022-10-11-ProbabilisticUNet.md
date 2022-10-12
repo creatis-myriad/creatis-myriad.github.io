@@ -75,6 +75,10 @@ As shown in the figure below, the probabilistic U-Net network outperforms state-
 
 ## Analysis of the latent space
 
+* The authors proposed to visualize the latent space by arranging the samples to represent their corresponding position in a 2D plane, i.e. the dimension of the latent space is set to $$2$$ and each latent variable is normalized by the inferred mean and standard deviation computed from the tested image: $$\hat{z}=\left(z-\mu\right)/\sigma$$.
+* This allows to interpret how the model ends up structuring the space to solve the given tasks.
+
+![](/collections/images/probabilistic_unet/latent_space_lidc.jpg)
 
 
 # Conclusions
