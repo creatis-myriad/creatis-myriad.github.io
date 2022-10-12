@@ -83,9 +83,9 @@ $$p(y \vert x) = \int_z{p(y \vert x,z) \cdot p(z \vert x) \,dz}$$
 
 As for the variational autoencoders, the key challenge around conditional VAE is the computation of the posterior $$p(z \vert x,y)$$. Indeed, due to intractable properties, the derivation of this distribution is complicated and requires the use of approximation techniques such as variational inference.
 
-In the conditional VAE formalism, the posterior $$p(z \vert x,y)$$ is approximated by a Gaussian distribution $$q(z \vert x,y)$$ whose mean $$\mu_{post}$$ and covariance $$\Sigma_{post}$$ are defined by two functions $$g(x,y)$$ and $$h(x,y)$$.
+In the conditional VAE formalism, the posterior $$p(z \vert x,y)$$ is modeled as an axis-aligned Gaussian distribution $$q(z \vert x,y)$$ whose mean $$\mu_{post}$$ and covariance $$\sigma_{post}$$ are defined by two functions $$g(x,y)$$ and $$h(x,y)$$.
 
-$$q(z \vert x,y) = \mathcal{N}\left(g(x,y),h(x,y)\right)$$
+$$q(z \vert x,y) = \mathcal{N}\left(\mu_{post},diag\left(\sigma_{post}\right)\right) = \mathcal{N}\left(g(x,y),diag\left(h(x,y)\right)\right)$$
 
 We thus have a family of candidates for variational inference and need to find the best approximation among this family by minimizing the KL divergence between the approximation $$q(z \vert x,y)$$ and the target $$p(z \vert x,y)$$. In other words, we are looking for the optimal $$g^∗$$ and $$h^∗$$ functions such that:
 
@@ -93,11 +93,11 @@ $$\left(g^*,h^*\right) = \underset{(g,h)}{\arg\min} \,\,\, D_{KL}\left(q(z \vert
 
 &nbsp;
 
-One particularity of the conditional VAE formalism is that the distribution $$p(z \vert x)$$ is also approximated by a Gaussian distribution $$p(z \vert x)$$ whose mean $$\mu_{prior}$$ and covariance $$\Sigma_{prior}$$ are defined by two functions $$k(x,y)$$ and $$l(x,y)$$.
+One particularity of the conditional VAE formalism is that the distribution $$p(z \vert x)$$ is also modeled as an axis-aligned Gaussian distribution $$p(z \vert x)$$ whose mean $$\mu_{prior}$$ and covariance $$\sigma_{prior}$$ are defined by two functions $$k(x,y)$$ and $$l(x,y)$$.
 
 $$p(z \vert x)$$ is thus modeled as:
 
-$$p(z \vert x) = \mathcal{N}\left(k(x,y),l(x,y)\right)$$
+$$p(z \vert x) = \mathcal{N}\left(\mu_{prior},diag\left(\sigma_{prior}\right)\right) = \mathcal{N}\left(k(x,y),diag\left(l(x,y)\right)\right)$$
 
 >As we will see later, minimizing the KL divergence between the approximation $$q(z \vert x,y)$$ and the target $$p(z \vert x,y)$$ also leads to finding the optimal $$k^*$$ and $$l^*$$ functions.
 
