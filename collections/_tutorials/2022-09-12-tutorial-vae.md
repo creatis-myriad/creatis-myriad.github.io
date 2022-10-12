@@ -68,7 +68,7 @@ These two aspects are optimized within VAEs thanks to a ***probabilistic framewo
 
 #### **Continuity**
 
-In order to introduce local regularization to structure the latent space, the encoding-decoding process is slightly modified: instead of encoding an input as a single point, we encode it as a Gaussian distribution $$q_x(z) = \mathcal{N}\left(\mu_x,\sigma_x\right)$$ over the latent space. Thus, a point $$x\in \mathbb{R}^N$$ at the input of the encoder will correspond to a Gaussian distribution $$q_x(z)$$ at the output, as shown below:
+In order to introduce local regularization to structure the latent space, the encoding-decoding process is slightly modified: instead of encoding an input as a single point, we encode it as an axis-aligned Gaussian distribution $$q_x(z) = \mathcal{N}\left(\mu_x,diag\left(\sigma_x\right)\right)$$ over the latent space. Thus, a point $$x\in \mathbb{R}^N$$ at the input of the encoder will correspond to a Gaussian distribution $$q_x(z)$$ at the output, as shown below:
 
 ![](/collections/images/vae/vae_local_regularization.jpg)
 
@@ -214,9 +214,9 @@ The key concept around VAE is that we will try to optimize the computation of th
 
 &nbsp;
 
-In the VAE formalism, $$p(z \vert x)$$ is approximated by a Gaussian distribution $$q_x(z)$$ whose mean $$\mu_x$$ and covariance $$\sigma_x$$ are defined by two functions $$g(x)$$ and $$h(x)$$. 
+In the VAE formalism, $$p(z \vert x)$$ is modeled by an axis-aligned Gaussian distribution $$q_x(z)$$ whose mean $$\mu_x$$ and covariance $$\sigma_x$$ are defined by two functions $$g(x)$$ and $$h(x)$$. 
 
-$$q_x(z) = \mathcal{N}\left(g(x),h(x)\right)$$
+$$q_x(z) = \mathcal{N}\left(\mu_x,diag\left(\sigma_x\right)\right) = \mathcal{N}\left(g(x),diag\left(h(x)\right)\right)$$
 
 
 We thus have a family of candidates for variational inference and need to find the best approximation among this family by minimising the KL divergence between the approximation $$q_x(z)$$ and the target $$p(z \vert x)$$. In other words, we are looking for the optimal $$g^*$$ and $$h^*$$ such that:
@@ -397,7 +397,7 @@ The graph below shows the final network structure used in the VAE formalism.
 
 The following equation is used as a loss term:
 
-$$\text{loss}=\alpha\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
+$$\text{loss}=\alpha\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,diag\left(\sigma_x\right)\right),\mathcal{N}\left(0,I\right)\right) $$
 
 &nbsp;
 
@@ -439,8 +439,8 @@ The graph below shows the final network used to implement VAE with the possibili
 
 We recall that the following equation is used as the loss term:
 
-$$\text{loss} = \alpha\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,\sigma_x\right),\mathcal{N}\left(0,I\right)\right) $$
+$$\text{loss} = \alpha\|x-\hat{x}\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(\mu_x,diag\left(\sigma_x\right)\right),\mathcal{N}\left(0,I\right)\right) $$
 
-$$\text{loss} = \alpha\|x-f(z)\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(g(x),h(x)\right),\mathcal{N}\left(0,I\right)\right) $$
+$$\text{loss} = \alpha\|x-f(z)\|^2 \,+\, D_{KL}\left(\mathcal{N}\left(g(x),diag\left(h(x)\right)\right),\mathcal{N}\left(0,I\right)\right) $$
 
 
