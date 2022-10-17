@@ -52,9 +52,9 @@ The following image illustrates the use of the architecture during inference.
 * The performance of the methods was evaluated by comparing distributions of segmentations.
 * This was done through the computation of ***generalized energy distance*** whose expression is given below:
 
-$$D^2_{GED}(P_{gt},P_{out}) = 2 \, \mathbb{E} \left[d\left(S,Y\right) \right] - \mathbb{E} \left[d\left(S,S'\right) \right] - \mathbb{E} \left[d\left(Y,Y'\right) \right]$$
+$$D^2_{GED}(P_{gt},P_{out}) = 2 \, \mathbb{E} \left[d\left(\hat{y},y\right) \right] - \mathbb{E} \left[d\left(\hat{y},\hat{y}'\right) \right] - \mathbb{E} \left[d\left(y,y'\right) \right]$$
 
-* $$d$$ is a distance measure, $$Y$$ and $$Y'$$ are independent samples from the ground truth distribution $$P_{gt}$$, $$S$$ and $$S'$$ are independent samples from the predicted distribution $$P_{out}$$. 
+* $$d$$ is a distance measure, $$y$$ and $$y'$$ are independent samples from the ground truth distribution $$P_{gt}$$, $$\hat{y}$$ and $$\hat{y}'$$ are independent samples from the predicted distribution $$P_{out}$$. 
 * The distance measure is based on the $$IoU$$ metric and is defined as follows: $$d(x,y)=1-IoU(x,y)$$.
 
 &nbsp;
