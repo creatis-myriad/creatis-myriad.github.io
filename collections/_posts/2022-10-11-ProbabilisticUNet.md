@@ -27,7 +27,7 @@ pdf: "https://proceedings.neurips.cc/paper/2018/file/473447ac58e1cd7e96172575f48
 
 * The architecture is based on the ***conditional VAE*** whose details are provided in the following [tutorial](https://creatis-myriad.github.io/tutorials/2022-09-12-tutorial-cvae.html).
 * The innovation comes from the use of a U-Net architecture to model the distribution $$p(y \vert x,z)$$.
-* The latent vector $$z$$ is first passed to a decoder to produce a $$N$$-channel feature map with the same spatial dimensions as the segmentation map. This feature map is then concatenated with the last activation map of a U-Net before being convolved by a last layer to produce the final segmentation map with the desired number of classes.
+* The latent vector $$z$$ is first broadcast to produce a $$N$$-channel feature map with the same spatial dimensions as the segmentation map. This feature map is then concatenated with the last activation map of a U-Net before being convolved by a last layer to produce the final segmentation map with the desired number of classes.
 
 The image below provides an overview of the architecture deployed during training. The distributions $$p(z \vert x,y)$$, $$p(z \vert x)$$ and $$p(y \vert x,z)$$ displayed in blue are modeled by three distinct neural networks.
 
