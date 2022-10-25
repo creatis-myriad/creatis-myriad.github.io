@@ -35,6 +35,21 @@ The following animation illustrates the capacity of the method in modelling fact
 * The architecture is based on the ***conditional VAE*** whose details are provided in the following [tutorial](https://creatis-myriad.github.io/tutorials/2022-09-12-tutorial-cvae.html).
 * The innovation comes from the modelling of hiearchy in the latent space
 
+
+The overall architecture is given below:
+
+![](/collections/images/hierarchical_probabilistic_unet/overall_architecture.jpg)
+
+&nbsp;
+
+This architecture can be difficult to understand at first sight. Therefore I show below the different parts of the network with reference to the formalism of the [conditional VAE](https://creatis-myriad.github.io/tutorials/2022-09-12-tutorial-cvae.html)
+
+![](/collections/images/hierarchical_probabilistic_unet/prior_network.jpg)
+
+&nbsp;
+
+![](/collections/images/hierarchical_probabilistic_unet/posterior_network.jpg)
+
 &nbsp;
 
 ## Implementation details
