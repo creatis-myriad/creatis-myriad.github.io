@@ -17,28 +17,52 @@ pdf: "https://proceedings.neurips.cc/paper/2018/file/473447ac58e1cd7e96172575f48
 # Highlights
 
 * The objective of this paper is to develop a generative model for semantic segmentation able to learn complex-structured conditional distribution.
-* The main innovation concerns the design of a generative segmentation model with a conditional VAE that uses a hierarchical latent space decomposition.
-* The proposed framework is capable of modelling distributions over segmentations including independently varying scales and locations.
-* The proposed framework is capable of modelling factors of variations across space and scale.
+* The innovation comes from the modelling of a coarse-to-fine hierarchy of latent variables to improve fidelity to fine structures in the models' samples and reconstructions.
+* The proposed framework is capable of modelling distributions over segmentations with factors of variations across space and scale.
 
 
 # Method
 
 ## Appetizer
 
-The following animation illustrates the capacity of the method in modelling factors of variations across space and scale:
+The following animation illustrates the capacity of the method in modelling complex structured distributions across scales.
 
 ![](/collections/images/hierarchical_probabilistic_unet/animation.gif)
 
 ## Architecture
 
 * The architecture is based on the ***conditional VAE*** whose details are provided in the following [tutorial](https://creatis-myriad.github.io/tutorials/2022-09-12-tutorial-cvae.html).
-* The innovation comes from the modelling of hiearchy in the latent space
+* The main innovation comes from the following hierarchical modelling of the latent space:
 
+$$p\left(\boldsymbol{z} \vert x\right) = p\left(z_0,\ldots,z_L \vert x\right) = p\left(z_L \vert z_{<L},x\right) \cdot \, \ldots \, \cdot p\left(z_0 \vert x\right)$$
+
+$$q\left(\boldsymbol{z} \vert x,y\right) = q\left(z_0,\ldots,z_L \vert x,y\right) = q\left(z_L \vert z_{<L},x,y\right) \cdot \, \ldots \, \cdot q\left(z_0 \vert x,y\right)$$
+
+In the particular case where $$L=2$$, the above equation can be put in the following form:
+
+$$p\left(\boldsymbol{z} \vert x\right) = p\left(z_2 \vert z_1,z_0,x\right) \cdot p\left(z_1 \vert z_0,x\right) \cdot p\left(z_0 \vert x\right)$$
+
+$$q\left(\boldsymbol{z} \vert x,y\right) = q\left(z_2 \vert z_1,z_0,x,y\right) \cdot q\left(z_1 \vert z_0,x,y\right) \cdot q\left(z_0 \vert x,y\right)$$
+
+* Taking into account the hierarchical modelling, a new ELBO objective with a relative weighting factor $$\beta$$ was formulated as follows:
+
+$$\mathcal{L}_{ELBO} = \mathbb{E}_{z\sim q(z \vert x,y)} [CE\left( y,\hat{y}\right)] + \beta \cdot \sum_{i=0}^{L} \mathbb{E}_{z_i\sim q(z_i \vert z_{<i},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
+
+* The authirs observed that the minimization of $$\mathcal{L}_{ELBO}$$ leads to sub-optimally results. For this reason, they used the recently proposed $$GECO$$ loss:
+
+$$\mathcal{L}_{GECO} = \lambda \cdot \left( \mathbb{E}_{z\sim q(z \vert x,y)} [CE\left( y,\hat{y}\right)] - \kappa \right) + \sum_{i=0}^{L} \mathbb{E}_{z_i\sim q(z_i \vert z_{<i},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
+
+where $$\kappa$$ is chosen as the desired reconstruction error and $$\lambda$$ is a Lagrange multiplier that is updated as a function of the exponential moving average of the reconstruction contraint.
+
+> This formulation initially puts high pressure on the reconstruction and once the desired $$\kappa$$ is reached it increasingly moves the pressure over on the KL-term.
+
+* Finally, the prior and the generator networks are based on the same U-Net architecture, which results in parameter and run-time savings.
 
 The overall architecture is given below:
 
 ![](/collections/images/hierarchical_probabilistic_unet/overall_architecture.jpg)
+
+![](/collections/images/hierarchical_probabilistic_unet/inference_phase.jpg)
 
 &nbsp;
 
@@ -46,15 +70,19 @@ This architecture can be difficult to understand at first sight. Therefore I sho
 
 ![](/collections/images/hierarchical_probabilistic_unet/prior_network.jpg)
 
-&nbsp;
-
 ![](/collections/images/hierarchical_probabilistic_unet/posterior_network.jpg)
+
+![](/collections/images/hierarchical_probabilistic_unet/generative_network.jpg)
 
 &nbsp;
 
 ## Implementation details
 
-* TODO
+* U-Nets are composed by res-blocks. 
+
+> Without the use of res-blocks, the KL-terms between distributions at the begining of the hiearchy often become $$\, 0$$ early in the training, essentially resulting in uninformative and thus unused latents. 
+
+* The number of latent scales is chosen empirically such as to allow for a sufficiently granular effect of the latent hierarchy. For the tasks and image resolutions considered, the authors found 3 to 5 latent scales to work well.
 
 ## Performance measures
 
