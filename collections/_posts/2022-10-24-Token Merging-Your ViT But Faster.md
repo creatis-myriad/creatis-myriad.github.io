@@ -19,7 +19,7 @@ pdf: "https://arxiv.org/pdf/2210.09461.pdf"
 - Minimal accuracy drop compared to the existing pruning technique.
 
 # Introduction
-Transformers are widely used in all kinds of domains, from audio processing to image recognition. However, those transformer models can be massive, making them difficult to train and run. Thus, the reproduction of results are hard. To leverage these issues, pruning has been introduced to enable a faster model.
+Transformers are widely used in all kinds of domains, from audio processing to image recognition. However, those transformer models can be massive, making them difficult to train and run. Thus, the reproduction of results are hard. To leverage these issues, pruning has been introduced to enable a faster model. Pruning removes less important tokens based on the metrics computed on the tokens.
 
 Pruning has its owns limitations:
 - information loss from pruning limits number of tokens that can be reduced
