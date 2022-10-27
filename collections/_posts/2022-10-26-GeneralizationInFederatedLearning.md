@@ -1,7 +1,7 @@
 ---
 layout: review
 title: "What Do We Mean by Generalization in Federated Learning?"
-tags: Federated learning, generalization, overfitting.
+tags: federated generalization overfitting
 author: "Matthis Manthe"
 cite:
     authors: "Honglin Yuan, Warren Morningstar, Lin Ning, Karan Singhal"
