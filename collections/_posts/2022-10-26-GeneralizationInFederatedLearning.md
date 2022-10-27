@@ -92,8 +92,9 @@ separate measurement of out-of-sample and participation gaps.
 ## Semantic partitioning
 
 The proposed partitioning protocol is the following for a classification task:
+
 * For each label, extract semantic features with a pretrained neural network. Fit a Gaussian Mixture Model to cluster pretrained embeddings into $$C$$ groups: **intra-client intra-label consistency**.
-* Then, the aim is to compute an optimal multipartite matching with cost-matrix defined by KL-divergence between the Gaussian clusters. They approximate an optimal solution by progressively solving the optimal bipartite matching sequentially for randomly-chosen label pairs: **intra-client inter-label consistency**.
+* Then, the aim is to compute an optimal multipartite matching with cost-matrix defined by KL-divergence between the Gaussian clusters. They approximate an optimal solution by sequentially solving the optimal bipartite matching for randomly-chosen label pairs: **intra-client inter-label consistency**.
 
 ![](/collections/images/generalization_federated_learning/cifar_100_synthetic.jpg)
 
