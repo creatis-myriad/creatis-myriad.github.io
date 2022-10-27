@@ -54,11 +54,12 @@ They finally define two levels of generalization gap:
 * **The partipation gap: $$ F_{unpart}(w) - F_{part\_val}(w)$$**
 
 ## Highlighted properties
-* *Participation gap is an intrinsic property of FL due to heterogeneity*: the gap will not exist if data is homogeneous,
-* *Participation gap can quantify client diversity* (comparable between tasks),
-* *Participation gap can measure overfitting on the population distribution*,
-* *Participation gap can quantify model robustness to unseen clients*,
-* *Participation gap can quantify the incentive for clients to participate*.
+The participation gap:
+* *is an intrinsic property of FL due to heterogeneity*. The gap will not exist if data is homogeneous,
+* *can quantify client diversity* (comparable between tasks),
+* *can measure overfitting on the population distribution*,
+* *can quantify model robustness to unseen clients*,
+* *can quantify the incentive for clients to participate*.
 
 # The three-way validation split
 ![](/collections/images/generalization_federated_learning/three_split.jpg)
