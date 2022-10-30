@@ -46,13 +46,13 @@ $$p\left(\boldsymbol{z} \vert x\right) = p\left(z_2 \vert z_1,z_0,x\right) \cdot
 
 $$q\left(\boldsymbol{z} \vert x,y\right) = q\left(z_2 \vert z_1,z_0,x,y\right) \cdot q\left(z_1 \vert z_0,x,y\right) \cdot q\left(z_0 \vert x,y\right)$$
 
-* Taking into account the hierarchical modelling, a new ELBO objective with a relative weighting factor $$\beta$$ was formulated as follows:
+* Taking into account the hierarchical modelling, a new ELBO objective with a relative weighting factor $$\beta$$ was formulated as follows (the corresponding demonstration is given at the end of this post):
 
-$$\mathcal{L}_{ELBO} = \mathbb{E}_{z\sim q(z \vert x,y)} [CE\left( y,\hat{y}\right)] + \beta \cdot \sum_{i=0}^{L} \mathbb{E}_{z_i\sim \prod_{j=0}^{i} q(z_j \vert z_{<j},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
+$$\mathcal{L}_{ELBO} = \mathbb{E}_{\boldsymbol{z}\sim q(\boldsymbol{z} \vert x,y)} [CE\left( y,\hat{y}\right)] + \beta \cdot \sum_{i=0}^{L} \mathbb{E}_{z_{i-1}\sim \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
 
 * The authors observed that the minimization of $$\mathcal{L}_{ELBO}$$ leads to sub-optimally results. For this reason, they used the recently proposed $$GECO$$ loss:
 
-$$\mathcal{L}_{GECO} = \lambda \cdot \left( \mathbb{E}_{z\sim q(z \vert x,y)} [CE\left( y,\hat{y}\right)] - \kappa \right) + \sum_{i=0}^{L} \mathbb{E}_{z_i\sim \prod_{j=0}^{i} q(z_j \vert z_{<j},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
+$$\mathcal{L}_{GECO} = \lambda \cdot \left( \mathbb{E}_{\boldsymbol{z}\sim q(\boldsymbol{z} \vert x,y)} [CE\left( y,\hat{y}\right)] - \kappa \right) + \sum_{i=0}^{L} \mathbb{E}_{z_{i-1}\sim \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
 
 where $$\kappa$$ is chosen as the desired reconstruction error and $$\lambda$$ is a Lagrange multiplier that is updated as a function of the ***exponential moving average*** of the reconstruction contraint.
 
@@ -160,10 +160,39 @@ The last figure below shows other examples of segmentations generated from the p
 
 ![](/collections/images/hierarchical_probabilistic_unet/many_examples.jpg)
 
+&nbsp;
+
 # Conclusions
 
 * The work proposed a significantly improved version of the probabilistic U-Net
 * It allows to model complex-structured conditional distribution thanks to a coarse-to-fine hierarchy of latent variables
 
+&nbsp;
+
+# Appendix
+
+## KL-divergence of the proposed model
+
+$$D_{KL}\left(q(\boldsymbol{z} \vert x,y)\parallel p(\boldsymbol{z} \vert x)\right) = \mathbb{E}_{\boldsymbol{z}\sim q(\boldsymbol{z} \vert x,y)}\left[ log\left(q(\boldsymbol{z} \vert x,y)\right) - log\left(p(\boldsymbol{z} \vert x)\right) \right]$$
+
+$$=\int_{z_0,\cdots,z_L} q(\boldsymbol{z} \vert x,y) \cdot \left[ log\left(q(\boldsymbol{z} \vert x,y)\right) - log\left(p(\boldsymbol{z} \vert x)\right) \right] dz_0 \ldots dz_L$$
+
+$$=\int \prod_{j=0}^{L}q(z_j \vert z_{<j},x,y) \cdot \left[ log\left(\prod_{i=0}^{L}q(z_i \vert z_{<i},x,y)\right) - log\left(\prod_{i=0}^{L}p(z_i \vert z_{<i},x)\right) \right] dz_0 \ldots dz_L$$
+
+$$=\int_{z_0,\cdots,z_L} \prod_{j=0}^{L}q(z_j \vert z_{<j},x,y) \cdot \sum_{i=0}^{L}\left[ log\left(q(z_i \vert z_{<i},x,y)\right) - log\left(p(z_i \vert z_{<i},x)\right) \right] dz_0 \ldots dz_L$$
+
+$$=\sum_{i=0}^{L} \int_{z_0,\cdots,z_L} \prod_{j=0}^{L}q(z_j \vert z_{<j},x,y) \cdot \left[ log\left(q(z_i \vert z_{<i},x,y)\right) - log\left(p(z_i \vert z_{<i},x)\right) \right] dz_0 \ldots dz_L$$
+
+Using
+
+$$\int_{z_0,\cdots,z_L} \phi(z_i) \prod_{j=0}^{L} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_L=\int_{z_0,\cdots,z_i} \phi(z_i) \prod_{j=0}^{i} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_i$$
+
+We have
+
+$$=\sum_{i=0}^{L} \int_{z_0,\cdots,z_i} \prod_{j=0}^{i}q(z_j \vert z_{<j},x,y) \cdot \left[ log\left(q(z_i \vert z_{<i},x,y)\right) - log\left(p(z_i \vert z_{<i},x)\right) \right] dz_0 \ldots dz_i$$
+
+$$=\sum_{i=0}^{L} \int \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y) \, \underbrace{q(z_i \vert z_{<i},x,y) \cdot \left[ log\left(q(z_i \vert z_{<i},x,y)\right) - log\left(p(z_i \vert z_{<i},x)\right) \right]}_{D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))} dz_0 \ldots dz_i$$
+
+$$=\sum_{i=0}^{L}\mathbb{E}_{z_{i-1}\sim \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
 
 
