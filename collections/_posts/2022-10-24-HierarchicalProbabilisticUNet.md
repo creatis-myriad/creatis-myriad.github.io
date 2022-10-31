@@ -16,8 +16,8 @@ pdf: "https://arxiv.org/pdf/1905.13077.pdf"
 
 # Highlights
 
-* The objective of this paper is to develop a generative model for semantic segmentation able to learn complex-structured conditional distribution.
-* The innovation comes from the modelling of a coarse-to-fine hierarchy of latent variables to improve fidelity to fine structures in the models' samples and reconstructions.
+* The objective of this paper is to develop a generative model for semantic segmentation able to learn complex-structured conditional distributions.
+* The innovation comes from the modelling of a coarse-to-fine hierarchy of latent variables to improve fidelity to fine structures in the model's samples and reconstructions.
 * The proposed framework is capable of modelling distributions over segmentations with factors of variations across space and scale.
 
 
@@ -46,11 +46,11 @@ $$p\left(\boldsymbol{z} \vert x\right) = p\left(z_2 \vert z_1,z_0,x\right) \cdot
 
 $$q\left(\boldsymbol{z} \vert x,y\right) = q\left(z_2 \vert z_1,z_0,x,y\right) \cdot q\left(z_1 \vert z_0,x,y\right) \cdot q\left(z_0 \vert x,y\right)$$
 
-* Taking into account the hierarchical modelling, a new ELBO objective with a relative weighting factor $$\beta$$ was formulated as follows (the corresponding demonstration is given at the end of this post):
+Taking into account the hierarchical modelling, a new ELBO objective with a relative weighting factor $$\beta$$ was formulated as follows (the corresponding demonstration is given at the end of this post):
 
 $$\mathcal{L}_{ELBO} = \mathbb{E}_{\boldsymbol{z}\sim q(\boldsymbol{z} \vert x,y)} [CE\left( y,\hat{y}\right)] + \beta \cdot \sum_{i=0}^{L} \mathbb{E}_{z_{i-1}\sim \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
 
-* The authors observed that the minimization of $$\mathcal{L}_{ELBO}$$ leads to sub-optimally results. For this reason, they used the recently proposed $$GECO$$ loss:
+The authors observed that the minimization of $$\mathcal{L}_{ELBO}$$ leads to sub-optimally results. For this reason, they used the recently proposed $$GECO$$ loss:
 
 $$\mathcal{L}_{GECO} = \lambda \cdot \left( \mathbb{E}_{\boldsymbol{z}\sim q(\boldsymbol{z} \vert x,y)} [CE\left( y,\hat{y}\right)] - \kappa \right) + \sum_{i=0}^{L} \mathbb{E}_{z_{i-1}\sim \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
 
@@ -58,7 +58,7 @@ where $$\kappa$$ is chosen as the desired reconstruction error and $$\lambda$$ i
 
 > This formulation initially puts high pressure on the reconstruction and once the desired $$\kappa$$ is reached it increasingly moves the pressure over on the KL-terms.
 
-* Finally, the prior and the generator networks are based on the same U-Net architecture, which results in parameter and run-time savings.
+Finally, the prior and the generator networks are based on the same U-Net architecture, which results in parameter and run-time savings.
 
 The overall architecture is given below:
 
@@ -82,9 +82,9 @@ This architecture can be difficult to understand at first sight. Therefore I sho
 
 * U-Nets are composed by res-blocks. 
 
-> Without the use of res-blocks, the KL-terms between distributions at the begining of the hiearchy often become $$\, 0$$ early in the training, essentially resulting in uninformative and thus unused latents. 
+> Without the use of res-blocks, the KL-terms between distributions at the begining of the hiearchy often become 0 early in the training, essentially resulting in uninformative and thus unused latents. 
 
-* The number of latent scales is chosen empirically such as to allow for a sufficiently granular effect of the latent hierarchy.
+* The number of latent scales is chosen empirically to allow for a sufficiently granular effect of the latent hierarchy.
 
 &nbsp;
 
@@ -98,7 +98,7 @@ $$D^2_{GED}(P_{gt},P_{out}) = 2 \, \mathbb{E} \left[d\left(\hat{y},y\right) \rig
 
 where $$d$$ is a distance measure, $$y$$ and $$y'$$ are independent samples from the ground truth distribution $$P_{gt}$$, $$\hat{y}$$ and $$\hat{y}'$$ are independent samples from the predicted distribution $$P_{out}$$. The distance measure is based on the $$\text{IoU}$$ metric and is defined as follows: $$d(x,y)=1-\text{IoU}(x,y)$$.
 
-> When the models’ samples only poorly match the ground truth samples, this metric rewards sample diversity regardless of the samples’ adequacy :(
+> When the model’s samples poorly match the ground truth samples, this metric rewards sample diversity regardless of the samples’ adequacy :(
 
 * Hungarian-matched $$\text{IoU}$$
 
@@ -110,7 +110,7 @@ The Hungarian algorithm finds the optimal 1:1-matching between the objects of tw
 
 ## Reconstruction fidelity: $$\text{IoU}_\text{rec}$$
 
-* The reconstruction fidelity is defined as an upper bound to the fidelity of the conditional samples.
+* The reconstruction fidelity is defined as an upper bound on the fidelity of the conditional samples.
 * It measures how well the model’s posteriors are able to reconstruct a given segmentation in terms of the IoU metric.
 
 $$\text{IoU}_\text{rec}=\text{IoU}\left( y, S\left( x,\mu_{post}(x,y) \right) \right)$$
