@@ -48,7 +48,7 @@ $$
 which can be penalized more heavily to promote a disentangled latent space, without any additional supervision.
 
 A posteriori, the authors visually inspected traversals of individual latent dimensions to manually associate
-interpretable generative factors to as many of the latent dimensions as possible.
+interpretable generative factors with as many latent dimensions as possible.
 
 ## Attribution methods
 The authors mention multiple saliency methods for measuring the contribution of each $$x_i$$ dimension of the input to a
