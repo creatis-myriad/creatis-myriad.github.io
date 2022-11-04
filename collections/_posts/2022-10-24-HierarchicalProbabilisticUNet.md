@@ -50,7 +50,7 @@ Taking into account the hierarchical modelling, a new ELBO objective with a rela
 
 $$\mathcal{L}_{ELBO} = \mathbb{E}_{\boldsymbol{z}\sim q(\boldsymbol{z} \vert x,y)} [CE\left( y,\hat{y}\right)] + \beta \cdot \sum_{i=0}^{L} \mathbb{E}_{z_{i-1}\sim \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
 
-The authors observed that the minimization of $$\mathcal{L}_{ELBO}$$ leads to sub-optimal results. For this reason, they used the recently proposed $$GECO$$ loss:
+The authors observed that the minimization of $$\mathcal{L}_{ELBO}$$ leads to sub-optimal results. For this reason, they used the recently proposed $$GECO$$ loss (GECO stands for Generalized ELBO with Constrained Optimization):
 
 $$\mathcal{L}_{GECO} = \lambda \cdot \left( \mathbb{E}_{\boldsymbol{z}\sim q(\boldsymbol{z} \vert x,y)} [CE\left( y,\hat{y}\right)] - \kappa \right) + \sum_{i=0}^{L} \mathbb{E}_{z_{i-1}\sim \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
 
