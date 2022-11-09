@@ -1,7 +1,7 @@
 ---
 layout: review
 title: "Neighborhood Attention Transformer"
-tags: deep-learning CNN transformer segmentation classification object detection
+tags: deep-learning CNN transformer segmentation classification object-detection attention
 author: "Pierre Rougé"
 cite:
     authors: "Ali Hassani, Steven Walton, Jiachen Li, Shen Li, Humphrey Shi"
@@ -11,46 +11,46 @@ pdf: "https://arxiv.org/abs/2204.07143v1"
 
 # Notes
 
-* Code is available on [github](https://github.com/Project-MONAI/research-contributions/tree/main/UNETR/BTCV) and [monai](https://docs.monai.io/en/stable/networks.html#unetr)
+* Code is available on [github](https://github.com/SHI-Labs/Neighborhood-Attention-Transformer)
 
 # Highlights
 
-* The goal is to take advantage of the transformer's capacity to learn long-range dependencies to overcome the limitations of CNNs 
-* The proposed architecture, UNETR (UNEt TRansfomers) uses a transfomer as an encoder and convolutional layer in the decoder to compute the segmentation output
-* The method is validated on the Multi Atlas Labeling Beyond The Cranial Vault (BTCV) dataset for multiorgan segmentation and the Medical Segmentation Decathlon (MSD) dataset for brain tumor and spleen segmentation tasks.
-* Method shows new state-of-the-art performance on the BTCV leaderboard.
+* Similar to Swin Transformer the idea is to reduce the computational cost of the attention mechanism 
+* Introduce the Neighborhood Attention (NA) and the Neighborhood Attention Transformer (NAT)
+* Here the attention is only compute on a neighborhood around each token
+* It also helps to introduce local inductive biases but it reduces the receptive field
+
+![](/collections/images/NeighborhoodAttentionTransformer/receptive_fields.jpg)
 
 # Methods
 
 ![](/collections/images/unetr/overview_method.jpg)
 
-## Architecture
+## Neighborhood Attention
 
-* This is transformer-based architecture, so you can refer to this [tutorial](https://creatis-myriad.github.io./tutorials/2022-06-20-tutorial_transformer.html) if you need more details. 
+![](/collections/images/NeighborhoodAttentionTransformer/NeighborhoodAttention.jpg)
 
-* 3D input volume $$\mathbf{x} \in \mathbb{R}^{H \times W \times D \times C}$$ is divided into non-overlapping patches of size $$(P, P, P)$$ which are flattened to give $$N$$ tokens arrange in a matrix $$\mathbf{x_v} \in \mathbb{R}^{N \times (P^3.C)}$$
+* Neighborhood attention on a single pixel $$(i, j)$$ is defined as follows:
 
-* A linear layer is used to project the patches into a $$K$$ dimensional embedding space, then a 1D learnable positional embedding is added giving $$\mathbf{z}_{0} \in \mathbb{R}^{N \times K}$$ :
+$$ NA(X_{i, j}) = softmax(\frac{Q_{i,j}K^T_{\rho(i,j)} + B_{i,j}}{scale})V_{\rho_{(i,j)}} $$
 
- $$ \mathbf{z}_{0} = [\mathbf{x}_{v}^{1}\mathbf{E}; \mathbf{x}_{v}^{2}\mathbf{E};...;\mathbf{x}_{v}^{N}\mathbf{E}] + \mathbf{E}_{pos}$$
+where $$Q, K, V$$ are linear projection of $$X$$
 
-with 
-	 $$\mathbf{E} \in \mathbb{R}^{(P^3.C) \times K}$$ the projection matrix to learn
+$$B_{i,j}$$ denotes the relative positional bias
 
-* Note: no class token is involved in this architecture since the targeted task is not classification but segmentation
+with ρ(i, j), which is a fixed-length set of indices of pixels nearest to (i, j), for a neighborhood of size $$ L * L $$, $$ \lVert \rho(i,j) \rVert = \lVert L² \rVert$$	
 
-* Then this embedding is used as the input of multiple transformer block like in a classical transformer architecture (see tutorial for more details).
+> However, if the function ρ maps each pixel to all pixels ($$L²$$is equal to feature map size), this will be equivalent to self attention.
 
+- The complexity of the neighborhood attention is liner with respect to resolution unlike self attention's.
+- The function $$\rho$$ which maps a pixel to a set of neighboring pixels is realized with a sliding window.
+- For corner pixels that cannot be centered, the neighborhood is expanded to maintain receptive field size
 
-* At the end of each transformer block $$l$$ we have a matrix $$\mathbf{z}_l \in \mathbb{R}^{N \times K}$$ with $$N = (H * W * D)/P^3$$
+![](/collections/images/NeighborhoodAttentionTransformer/corner_pixels.jpg)
 
-* These matrixes are extracted for different transformer block ($${3, 6, 9, 12}$$) and reshape into a feature map of shape $$ \frac{H}{P} * \frac{W}{P} * \frac{D}{P} * K$$ 
+## Neighborhood Attention Transformer
 
-* At the bottleneck, deconvolutional (transposed convolution) layer is applied to increase the resolution of the feature map. Then the resized feature map is concatenated with the feature map of the previous transformer block and processed by a convolutional layer.
-
-* This process is repeated for all the other subsequent layers up to the original input resolution where the final output is fed into a 1×1×1 convolutional layer with a softmax activation function to generate voxel-wise segmentation map.
-
-![](/collections/images/unetr/architecture.jpg)
+![](/collections/images/NeighborhoodAttentionTransformer/architecture.jpg)
 
 ## Experiments
 
