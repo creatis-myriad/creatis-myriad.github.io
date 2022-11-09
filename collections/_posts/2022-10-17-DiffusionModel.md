@@ -8,8 +8,6 @@ cite:
     venue:   "International Conference on Machine Learning"
 pdf: "http://proceedings.mlr.press/v37/sohl-dickstein15.pdf"
 ---
-<style> {text-align: justify}</style>
-
 
 # Notes
 - Code is available on GitHub: [https://github.com/Sohl-Dickstein/
@@ -86,26 +84,59 @@ During the training, the purpose is to learn the parameters of the diffusion ker
 
 >$$\mathbf{f}_\mu\left(\mathbf{x}^{(t)}, t\right)$$, $$\mathbf{f}_{\Sigma}\left(\mathbf{x}^{(t)}, t\right)$$ and $$\beta_{1...T}$$ are learned.
 
+It is an unsupervised problem : 
+
 The probability the generative model assigns to the data is 
 
 $$p\left(\mathbf{x}^{(0)}\right)=\int d \mathbf{x}^{(1 \cdots T)} p\left(\mathbf{x}^{(0 \cdots T)}\right)$$
 
+reformulation : 
 
 
+$$
+p\left(\mathbf{x}^{(0)}\right) = \int d \mathbf{x}^{(1 \cdots T)} q\left(\mathbf{x}^{(1 \cdots T)} \mid \mathbf{x}^{(0)}\right) p\left(\mathbf{x}^{(T)}\right) \prod_{t=1}^T \frac{p\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}\right)}{q\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)}\right)}
+$$
 
-### Multiple distributions
+=> apparition de $$q\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)}\right)$$ et $$p\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}\right)$$  que l'on connait
 
+du coup comme loss : 
+maximisation du model log likelihood L que l'on sous evalue : 
+$$L=\int d \mathbf{x}^{(0)} q\left(\mathbf{x}^{(0)}\right) \log p\left(\mathbf{x}^{(0)}\right)$$ 
+$$K=\int d \mathbf{x}^{(0 \cdots T)} q\left(\mathbf{x}^{(0 \cdots T)}\right) \log \left[p\left(\mathbf{x}^{(T)}\right) \prod_{t=1}^T \frac{p\left(\mathbf{x}^{(t-1)} \mathbf{x}^{(t)}\right)}{q\left(\mathbf{x}^{(t)} \mathbf{x}^{(t-1)}\right)}\right]$$
+apparition de la DK divergence : 
+
+$$K=-\sum_{t=2}^T \int d \mathbf{x}^{(0)} d \mathbf{x}^{(t)} q\left(\mathbf{x}^{(0)}, \mathbf{x}^{(t)}\right)
+ D_{K L}\left(q\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}, \mathbf{x}^{(0)}\right)|| p\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}\right)\right)
++H_q\left(\mathbf{x}^{(T)} \mid \mathbf{X}^{(0)}\right)-H_q\left(\mathbf{X}^{(1)} \mid \mathbf{X}^{(0)}\right)-H_p\left(\mathbf{x}^{(T)}\right)$$
+
+et mixe avec l'entropie 
+
+#### Multiple distributions
+
+It is possible to combine 2 distributions. 
+Let  $$r\left(\mathbf{x}^{(0)}\right)$$ be a second distribution or a bounded positive function, we have the following new distribution:
+
+ $$\tilde{p}\left(\mathbf{x}^{(0)}\right) \propto p\left(\mathbf{x}^{(0)}\right) r\left(\mathbf{x}^{(0)}\right)$$
+ 
+ The intermediate  distributions will be multiplied by the corresponding $$ r\left(\mathbf{x}^{(t)}\right)$$
+not detailed in this review
 # Data
-- swiss roll
-- binary heartbeat distribution
-- MNIST
-- CIFAR-10
-- Dead Leaf Images
-- Bark Texture Images
+- toys problems:
+	- swiss roll
+	- binary heartbeat distribution
+- Images:
+	- MNIST
+	- CIFAR-10
+	- Dead Leaf Images
+	- Bark Texture Images
 
 # Results
+![](/collections/images/DiffusionModel/MNIST_result.png)
+![](/collections/images/DiffusionModel/inpainting_result.png)
+![](/collections/images/DiffusionModel/quantitative_result.png)
 
 
+State of the art results
 # Conclusions
 
 It works well and really interesting
