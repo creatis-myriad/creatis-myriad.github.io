@@ -13,7 +13,7 @@ pdf: "https://arxiv.org/abs/2103.14030"
 # Highlights
 
 * ViT has a quadratic complexity with respect to the number of tokens ( and therefore image size). This makes ViT unsuitable for dense prediction task requiring a huge number of tokens such as segmentation.
-* In the proposed architecture the Multi-Head Self Attention block (MSA) is replace by a module based on **shifted windows** (W-MSA) which allow to obtain a **linear complexity** with respect to the number of token. 
+* In the proposed architecture the Multi-Head Self Attention block (MSA) is replaced by a module based on **shifted windows** (W-MSA) which allow to obtain a **linear complexity** with respect to the number of token. 
 * Also in the ViT architecture the dimension of feature maps is fixed and constant
 * The proposed architecture build **hierarchical feature maps** by merging tokens in deeper layers
 
@@ -28,7 +28,7 @@ pdf: "https://arxiv.org/abs/2103.14030"
 
 * Then a linear embedding layer is applied to project it to an arbitrary dimensions $$C$$ 
 
-* Two Swin Transfomer blocks (with modified self-attention) are applied giving a new matrix $$\mathbf{z} \in \mathbb{R}^{N \times C}$$
+* Two Swin Transfomer blocks (with modified self-attention) are applied, resulting in a new matrix $$\mathbf{z} \in \mathbb{R}^{N \times C}$$
 
 * To produce a hierarchical representation, the number of tokens is reduced by patch merging layers as the network gets deeper
 
@@ -45,16 +45,16 @@ pdf: "https://arxiv.org/abs/2103.14030"
 
 # Shifted Window based Self-Attention
 
-* Swin Transformer block is built by replacing the standard multi-head self attention (MSA) module in a Transformer block by a module based on  **shifted windows** with other layers kept the same.
+* Swin Transformer block is built by replacing the standard multi-head self attention (MSA) module in a Transformer block by a module based on  **shifted windows**
 
   ![](/collections/images/Swin-Transformer/transformer-block.jpg)
 
 
 
 
-* The self-attention is compute within local windows. The windows are arranged to evenly partition the image in a non-overlapping manner.
+* The self-attention is computed within local windows. The windows are arranged to evenly partition the image in a non-overlapping manner.
 
-* For windows of size M x M patches and an image of h x w patches  the computational complexity of a standard MSA module and a window based self-attention module (W-MSA) are :
+* For windows of size M x M patches and an image of h x w patches, the computational complexity of a standard MSA module and a window based self-attention module (W-MSA) are :
 
   $$ \Omega(MSA) = 4hwC^{2} + 2 (hw)^{2}C $$
 
@@ -97,13 +97,13 @@ pdf: "https://arxiv.org/abs/2103.14030"
   * Swin Transformers surpass others transformers architecture (DeiT architecture and ViT architecture)
   * And is comparable with convolution based architecture (EfficientNet and Regnet)
 * Pre-training on ImageNet-20k and fine tuning on ImageNet-1k
-  * Pre-training improve the results but it's less significant than ViT
+  * Pre-training improves the results but it's less significant than ViT
 
 ![](/collections/images/Swin-Transformer/classification-results.jpg) 
 
 ## Object Detection on COCO
 
-* Comparison to ResNet and DeiT (transformer) as a backbone for object detection framework
+* Comparison with ResNet and DeiT (transformer) as a backbone for object detection framework
 
 * Swin Transformers surpass  previous state-of-the-art
 
