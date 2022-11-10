@@ -12,21 +12,20 @@ pdf: "https://arxiv.org/abs/2204.07143v1"
 # Notes
 
 * Code is available on [github](https://github.com/SHI-Labs/Neighborhood-Attention-Transformer)
+* This work was done by the same team that did the Compact Convolutional Transformer (CCT) reviewed in this [post](https://creatis-myriad.github.io./2022/06/13/CompactConvolutionalTransformer.html)
+* So they use the same method of Convolutional Tokenization
 
 # Highlights
 
 * Similar to Swin Transformer the idea is to reduce the computational cost of the attention mechanism 
-* Introduce the Neighborhood Attention (NA) and the Neighborhood Attention Transformer (NAT)
-* Here the attention is only compute on a neighborhood around each token
-* It also helps to introduce local inductive biases but it reduces the receptive field
+* The authors introduce the Neighborhood Attention (NA) and the Neighborhood Attention Transformer (NAT)
+* With the Neighborhood Attention the attention is only compute on a neighborhood around each token
+* This method not only allow to reduce the computational cost of the attention mechanism but also helps to introduce local inductive biases
+*  The drawback is that it reduces the receptive field
 
 ![](/collections/images/NeighborhoodAttentionTransformer/receptive_fields.jpg)
 
-# Methods
-
-![](/collections/images/unetr/overview_method.jpg)
-
-## Neighborhood Attention
+# Neighborhood Attention
 
 ![](/collections/images/NeighborhoodAttentionTransformer/NeighborhoodAttention.jpg)
 
@@ -42,59 +41,39 @@ with ρ(i, j), which is a fixed-length set of indices of pixels nearest to (i, j
 
 > However, if the function ρ maps each pixel to all pixels ($$L²$$is equal to feature map size), this will be equivalent to self attention.
 
-- The complexity of the neighborhood attention is liner with respect to resolution unlike self attention's.
+- The complexity of the neighborhood attention is linear with respect to resolution unlike self attention's.
 - The function $$\rho$$ which maps a pixel to a set of neighboring pixels is realized with a sliding window.
-- For corner pixels that cannot be centered, the neighborhood is expanded to maintain receptive field size
+- For corner pixels that cannot be centered, the neighborhood is expanded to maintain receptive field size. As illustrated in the image below.
 
 ![](/collections/images/NeighborhoodAttentionTransformer/corner_pixels.jpg)
 
-## Neighborhood Attention Transformer
+# Neighborhood Attention Transformer
 
 ![](/collections/images/NeighborhoodAttentionTransformer/architecture.jpg)
 
-## Experiments
+- For the tokenization they use the overlapping convolution method introduced in the  [Compact Convolutional Transformer](https://creatis-myriad.github.io./2022/06/13/CompactConvolutionalTransformer.html)
 
-* Loss is a combination of soft dice and cross-entropy 
-* Method is evaluated on BTCV and MSD datasets
-* BTCV : 30 patients with abdominal CT scans where 13 organs are annotated (13 class segmentation problem)
-* MSD :  484 multi-modal and multi-site MRI (Flair, T1w, T1gd, T2w) for the brain tumor segmentaion task and 41 CT scan for the spleen segmentation task
-* Dice and 95% Hausdorff Distance (HD) are used as evaluation metrics
+- The rest of the architecture is a succession of blocks containing a token merging layer to reduce dimension and standard multi head attention block but with the self attention replace by the neighborhood attention
 
-* Transformer parameters used : $$L=12$$ transformer block, embedding size of $$K=768$$, patch size of $$ 16 * 16 * 16$$ 	
-* Average training time : 10 hours for 20 000 epochs
-
-* Note : the transformer backbone is not pre-trained at all
+  > Note : Similar to the Swin Transformer this architecture build hierarchical features maps by using token merging layers
 
 # Results
 
-As seen in the table below, UNETR outperforms the state-of-the-art methods on the BTCV leaderboard ( which are CNN or transformer based methods[^1][^2][^3]) 
+## Classification
 
-![](/collections/images/unetr/results_BTCV.jpg)
+![](/collections/images/NeighborhoodAttentionTransformer/results_classification.jpg)
 
-Same for the MSD dataset
+## Object Detection
 
-![](/collections/images/unetr/results_MSD.jpg)
+![](/collections/images/NeighborhoodAttentionTransformer/results_object_detection.jpg)
 
-Some visual results on the BTCV dataset::
+## Semantic Segmentation
 
-![](/collections/images/unetr/visual_results_BTCV.jpg)
+![](/collections/images/NeighborhoodAttentionTransformer/results_segmentation.jpg)
 
-# Ablation studies
+## Ablation studies
 
-Authors compare their decoder architecture with three other designs called Naive UPsampling (NUP), Progressive UPsampling (PUP) and MuLti-scale Aggregation (MLA) [^1]
 
-![](/collections/images/unetr/ablation_decoder.jpg)
 
-They also compare model complexity with other architectures:
+# Conclusion
 
-![](/collections/images/unetr/parameters.jpg)
-
-# Conclusions
-
-UNETR has taken a first step towards transformer based models for segmentation
-
-# References
-
-[^1]: [Sixiao Zheng et al, *Rethinking semantic segmentation from a sequence-to-sequence perspective with transformers*, Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (2021)](https://arxiv.org/abs/2012.15840)
-[^2]: [Jieneng Chen et al, *Transunet: Transformers make strong encoders for medical image segmentation*, arXiv preprint (2021)](https://arxiv.org/abs/2102.04306)
-[^3]: [Yutong Xie et al, *Cotr: Efficiently bridging cnn and transformer for 3d medical image segmentation*, International conference on medical image computing and computer-assisted intervention  (2021)](https://arxiv.org/abs/2103.03024)
