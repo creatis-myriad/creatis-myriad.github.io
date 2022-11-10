@@ -10,9 +10,7 @@ pdf: "http://proceedings.mlr.press/v37/sohl-dickstein15.pdf"
 ---
 
 # Notes
-- Code is available on GitHub: [https://github.com/Sohl-Dickstein/
-Diffusion-Probabilistic-Models](https://github.com/Sohl-Dickstein/
-Diffusion-Probabilistic-Models)
+- Code is available on GitHub: [https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models](https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models)
 
 # Introduction
 The authors propose a new probalistic model that aims to link a known distribution $$ \pi(.) $$ to another one $$ q(.) $$ based on diffusion. To achieve it, they iteratively added small amount of noise on the target distribution until it is converted into the known distribution. This process can be seen has a Markov chain that can be learn reversly. 
