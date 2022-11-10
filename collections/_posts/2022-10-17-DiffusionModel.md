@@ -19,15 +19,15 @@ The authors propose a new probalistic model that aims to link a known distributi
 
 
 # Highlights
-- Flexible and Tractable method
+- Flexible and tractable method
 - Possibility to multiply distributions (ex : inpainting)
 
 
 # Diffusion probalistic model
 
-> A Markov chain or Markov process is a stochastic model describing a sequence of possible events in which the probability of each event depends only on the state attained in the previous event. [^1]
+> "A Markov chain or Markov process is a stochastic model describing a sequence of possible events in which the probability of each event depends only on the state attained in the previous event." [^1]
 
-A diffusion probalistic model consists in building a markov chain which allows to switch from a simple known distribution $$ \pi(.) $$ ( ex :  a gaussian distribution ) to target distribution  $$ q(.) $$ (ex : a kind of image distribution).
+A diffusion probalistic model consists in building a markov chain which allows to switch from a simple known distribution $$ \pi(.) $$ ( ex :  a gaussian distribution ) to a target distribution  $$ q(.) $$ (ex : a kind of image distribution).
 To obtain that chain they start from the target distribution and add small perturbations a thousand of times (eq. time steps) until we obtain the known distribution. This is the **forward trajectory**. 
 
 #### Forward trajectory
@@ -55,7 +55,7 @@ $$
 
 However, the interests in the method is to be able to convert a simple distribution $$\pi(.)$$ into an element included in  the unknown  $$ q(.) $$. That is the **reverse trajectory**. 
 
-#### Reverse diffusion
+#### Reverse trajectory
 
 The Markov chain has been analytically created, therefore the forward trajectory form is known. As changes applied from a time step to another are small, diffusion kernels have the same functional form in both trajectories. Thus we can define : 
 
@@ -82,34 +82,34 @@ During the training, the purpose is to learn the parameters of the diffusion ker
 | $$p\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}\right)$$  |     $$\mathcal{N}\left(\mathbf{x}^{(t-1)} ; \mathbf{f}_\mu\left(\mathbf{x}^{(t)}, t\right), \mathbf{f}_{\Sigma}\left(\mathbf{x}^{(t)}, t\right)\right)$$     |   
 
 
->$$\mathbf{f}_\mu\left(\mathbf{x}^{(t)}, t\right)$$, $$\mathbf{f}_{\Sigma}\left(\mathbf{x}^{(t)}, t\right)$$ and $$\beta_{1...T}$$ are learned.
+>$$\mathbf{f}_\mu\left(\mathbf{x}^{(t)}, t\right)$$, $$\mathbf{f}_{\Sigma}\left(\mathbf{x}^{(t)}, t\right)$$ are learned. $$\beta_{1...T}$$ are learned implicitly.
+ 
 
-It is an unsupervised problem : 
-
-The probability the generative model assigns to the data is 
+To learn these functions, the probability the generative model assigns to the data is needed and is defined such as:
 
 $$p\left(\mathbf{x}^{(0)}\right)=\int d \mathbf{x}^{(1 \cdots T)} p\left(\mathbf{x}^{(0 \cdots T)}\right)$$
 
-reformulation : 
+However, with this definition, we cannot verify that the reverse trajectory is well defined through all the markov chain. Therefore the authors reformulated $$p\left(\mathbf{x}^{(0)}\right) $$ in order to make appears  $$q\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)}\right)$$ and  $$p\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}\right)$$:
 
-
-$$
-p\left(\mathbf{x}^{(0)}\right) = \int d \mathbf{x}^{(1 \cdots T)} q\left(\mathbf{x}^{(1 \cdots T)} \mid \mathbf{x}^{(0)}\right) p\left(\mathbf{x}^{(T)}\right) \prod_{t=1}^T \frac{p\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}\right)}{q\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)}\right)}
+$$ p\left(\mathbf{x}^{(0)}\right) = \int d \mathbf{x}^{(1 \cdots T)} q\left(\mathbf{x}^{(1 \cdots T)} \mid \mathbf{x}^{(0)}\right) p\left(\mathbf{x}^{(T)}\right) \prod_{t=1}^T \frac{p\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}\right)}{q\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)}\right)}
 $$
 
-=> apparition de $$q\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)}\right)$$ et $$p\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}\right)$$  que l'on connait
-
-du coup comme loss : 
-maximisation du model log likelihood L que l'on sous evalue : 
+Their purpose is to maximize the model log likelihood: 
 $$L=\int d \mathbf{x}^{(0)} q\left(\mathbf{x}^{(0)}\right) \log p\left(\mathbf{x}^{(0)}\right)$$ 
+
+that can be under - estimated with:
+
 $$K=\int d \mathbf{x}^{(0 \cdots T)} q\left(\mathbf{x}^{(0 \cdots T)}\right) \log \left[p\left(\mathbf{x}^{(T)}\right) \prod_{t=1}^T \frac{p\left(\mathbf{x}^{(t-1)} \mathbf{x}^{(t)}\right)}{q\left(\mathbf{x}^{(t)} \mathbf{x}^{(t-1)}\right)}\right]$$
-apparition de la DK divergence : 
+
+from which we can make appear the DK divergence : 
 
 $$K=-\sum_{t=2}^T \int d \mathbf{x}^{(0)} d \mathbf{x}^{(t)} q\left(\mathbf{x}^{(0)}, \mathbf{x}^{(t)}\right)
  D_{K L}\left(q\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}, \mathbf{x}^{(0)}\right)|| p\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}\right)\right)
-+H_q\left(\mathbf{x}^{(T)} \mid \mathbf{X}^{(0)}\right)-H_q\left(\mathbf{X}^{(1)} \mid \mathbf{X}^{(0)}\right)-H_p\left(\mathbf{x}^{(T)}\right)$$
++ C$$
 
-et mixe avec l'entropie 
+with $$ C = H_q\left(\mathbf{x}^{(T)} \mid \mathbf{X}^{(0)}\right)-H_q\left(\mathbf{X}^{(1)} \mid \mathbf{X}^{(0)}\right)-H_p\left(\mathbf{x}^{(T)}\right)$$ and $$H$$ the entropy.
+
+
 
 #### Multiple distributions
 
@@ -118,8 +118,10 @@ Let  $$r\left(\mathbf{x}^{(0)}\right)$$ be a second distribution or a bounded po
 
  $$\tilde{p}\left(\mathbf{x}^{(0)}\right) \propto p\left(\mathbf{x}^{(0)}\right) r\left(\mathbf{x}^{(0)}\right)$$
  
- The intermediate  distributions will be multiplied by the corresponding $$ r\left(\mathbf{x}^{(t)}\right)$$
-not detailed in this review
+ 
+ > "This distribution can be treated either as a small perturbation to each step in the diffusion sprocess, or ofthen exactly multiplied into each diffusion step."
+
+
 # Data
 - toys problems:
 	- swiss roll
@@ -131,15 +133,15 @@ not detailed in this review
 	- Bark Texture Images
 
 # Results
+
+
 ![](/collections/images/DiffusionModel/MNIST_result.png)
 ![](/collections/images/DiffusionModel/inpainting_result.png)
 ![](/collections/images/DiffusionModel/quantitative_result.png)
 
 
-State of the art results
-# Conclusions
+They obtain state of the art results with an elegant method.
 
-It works well and really interesting
 
 
 # References
