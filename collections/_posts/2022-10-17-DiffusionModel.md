@@ -5,7 +5,7 @@ author: "Sophie Carneiro Esteves"
 cite:
     authors: "Jascha Sohl-Dickstein, Eric A. Weiss, Niru Maheswaranathan and Surya Ganguli"
     title:   "Deep Unsupervised Learning using Nonequilibrium Thermodynamics"
-    venue:   "International Conference on Machine Learning"
+    venue:   "International Conference on Machine Learning 2015"
 pdf: "http://proceedings.mlr.press/v37/sohl-dickstein15.pdf"
 ---
 
