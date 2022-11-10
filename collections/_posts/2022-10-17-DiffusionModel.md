@@ -87,7 +87,7 @@ To learn these functions, the probability the generative model assigns to the da
 
 $$p\left(\mathbf{x}^{(0)}\right)=\int d \mathbf{x}^{(1 \cdots T)} p\left(\mathbf{x}^{(0 \cdots T)}\right)$$
 
-However, with this definition, we cannot verify that the reverse trajectory is well defined through all the markov chain. Therefore the authors reformulated $$p\left(\mathbf{x}^{(0)}\right) $$ in order to make appears  $$q\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)}\right)$$ and  $$p\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}\right)$$:
+However, with this definition, we cannot verify that the reverse trajectory is well defined through all the markov chain. Therefore the authors reformulated $$p\left(\mathbf{x}^{(0)}\right) $$ in order to make appear  $$q\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)}\right)$$ and  $$p\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}\right)$$:
 
 $$ p\left(\mathbf{x}^{(0)}\right) = \int d \mathbf{x}^{(1 \cdots T)} q\left(\mathbf{x}^{(1 \cdots T)} \mid \mathbf{x}^{(0)}\right) p\left(\mathbf{x}^{(T)}\right) \prod_{t=1}^T \frac{p\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}\right)}{q\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)}\right)}
 $$
