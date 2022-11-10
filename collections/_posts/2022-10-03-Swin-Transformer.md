@@ -10,12 +10,17 @@ cite:
 pdf: "https://arxiv.org/abs/2103.14030"
 ---
 
+# Useful links
+
+- Code on [github](https://github.com/microsoft/Swin-Transformer)
+- Tutorial on the Vision Transformer [ViT](https://creatis-myriad.github.io./tutorials/2022-06-20-tutorial_transformer.html)
+
+
 # Highlights
 
 * ViT has a quadratic complexity with respect to the number of tokens ( and therefore image size). This makes ViT unsuitable for dense prediction task requiring a huge number of tokens such as segmentation.
 * In the proposed architecture the Multi-Head Self Attention block (MSA) is replaced by a module based on **shifted windows** (W-MSA) which allow to obtain a **linear complexity** with respect to the number of token. 
-* Also in the ViT architecture the dimension of feature maps is fixed and constant
-* The proposed architecture build **hierarchical feature maps** by merging tokens in deeper layers
+* In the ViT architecture, the size of the token matrix is constant throughout the network, whereas in the proposed architecture the number of token is reduced thanks to the **patch merging layers**. This operation allows building a **hierarchical representation**.
 
 
 # Architecture
@@ -49,7 +54,7 @@ pdf: "https://arxiv.org/abs/2103.14030"
 
   ![](/collections/images/Swin-Transformer/transformer-block.jpg)
 
-
+> In this figure LN stands for Layer Normalization 
 
 
 * The self-attention is computed within local windows. The windows are arranged to evenly partition the image in a non-overlapping manner.
