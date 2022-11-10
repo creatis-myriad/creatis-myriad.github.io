@@ -95,7 +95,7 @@ $$
 Their purpose is to maximize the model log likelihood: 
 $$L=\int d \mathbf{x}^{(0)} q\left(\mathbf{x}^{(0)}\right) \log p\left(\mathbf{x}^{(0)}\right)$$ 
 
-that can be under - estimated with:
+that can be under-estimated with:
 
 $$K=\int d \mathbf{x}^{(0 \cdots T)} q\left(\mathbf{x}^{(0 \cdots T)}\right) \log \left[p\left(\mathbf{x}^{(T)}\right) \prod_{t=1}^T \frac{p\left(\mathbf{x}^{(t-1)} \mathbf{x}^{(t)}\right)}{q\left(\mathbf{x}^{(t)} \mathbf{x}^{(t-1)}\right)}\right]$$
 
