@@ -26,7 +26,7 @@ The authors propose a new probalistic model that aims to link a known distributi
 > "A Markov chain or Markov process is a stochastic model describing a sequence of possible events in which the probability of each event depends only on the state attained in the previous event." [^1]
 
 A diffusion probalistic model consists in building a markov chain which allows to switch from a simple known distribution $$ \pi(.) $$ ( ex :  a gaussian distribution ) to a target distribution  $$ q(.) $$ (ex : a kind of image distribution).
-To obtain that chain they start from the target distribution and add small perturbations a thousand of times (eq. time steps) until we obtain the known distribution. This is the **forward trajectory**. 
+To obtain that chain they start from the target distribution and add small perturbations thousands of times (eq. time steps) until they obtain the known distribution. This is the **forward trajectory**. 
 
 #### Forward trajectory
 
