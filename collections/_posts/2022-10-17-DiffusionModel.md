@@ -121,7 +121,7 @@ Let  $$r\left(\mathbf{x}^{(0)}\right)$$ be a second distribution or a bounded po
 
 
 # Data
-- toys problems:
+- Toy problems:
 	- swiss roll
 	- binary heartbeat distribution
 - Images:
