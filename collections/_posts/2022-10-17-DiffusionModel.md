@@ -69,7 +69,7 @@ $$
 
 | *Figure 1: Scheme of the method and representation of its Markov chain proposed for denoising diffusion Probalistic Model [^2]*|
 |:----------------------------------------------------------------------------:|
-|![](/collections/images/DiffusionModel/diffusion_model-markov.png)|
+|![](/collections/images/DiffusionModel/diffusion_model-markov.jpg)|
 
 
 #### Training
@@ -135,9 +135,9 @@ Let  $$r\left(\mathbf{x}^{(0)}\right)$$ be a second distribution or a bounded po
 # Results
 
 
-![](/collections/images/DiffusionModel/MNIST_result.png)
-![](/collections/images/DiffusionModel/inpainting_result.png)
-![](/collections/images/DiffusionModel/quantitative_result.png)
+![](/collections/images/DiffusionModel/MNIST_result.jpg)
+![](/collections/images/DiffusionModel/inpainting_result.jpg)
+![](/collections/images/DiffusionModel/quantitative_result.jpg)
 
 
 They obtain state of the art results with an elegant method.
