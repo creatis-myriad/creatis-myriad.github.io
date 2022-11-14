@@ -53,7 +53,7 @@ q\left(\mathbf{x}^{(0 \cdots T)}\right)=q\left(\mathbf{x}^{(0)}\right) \prod_{t=
 $$
 
 
-However, the interests in the method is to be able to convert a simple distribution $$\pi(.)$$ into an element included in  the unknown  $$ q(.) $$. That is the **reverse trajectory**. 
+However, what is interesting about the method is to be able to convert a simple distribution $$\pi(.)$$ into an element included in  the unknown  $$ q(.) $$. That is the **reverse trajectory**. 
 
 #### Reverse trajectory
 
