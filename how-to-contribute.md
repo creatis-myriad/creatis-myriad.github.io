@@ -171,7 +171,10 @@ also add anyone you think would be interested in your review;
 
 ## Preview your posts locally
 It is possible to launch a Jekyll webserver locally to inspect how your local version of the repository would look like
-once published. To do so, simply follow the commands below from within the directory where you cloned the repository:
+once published. To do so, simply follow the commands below from within the cloned **repository's root directory**:
+
+> **Warning**: If you run the command from a folder _inside_ the repository, Jekyll will fail to load correctly and the preview will be broken.
+
 ```shell
 # Run a local Jekyll webserver
 bundle exec jekyll serve
