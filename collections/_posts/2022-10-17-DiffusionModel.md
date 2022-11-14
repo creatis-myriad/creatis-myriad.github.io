@@ -85,7 +85,7 @@ During the training, the purpose is to learn the parameters of the diffusion ker
 >$$\mathbf{f}_\mu\left(\mathbf{x}^{(t)}, t\right)$$, $$\mathbf{f}_{\Sigma}\left(\mathbf{x}^{(t)}, t\right)$$ are learned. $$\beta_{1...T}$$ are learned implicitly.
  
 
-To learn these functions, the probability the generative model assigns to the data is needed and is defined such as:
+To learn these functions, the probability that the generative model assigns to the data is needed and is defined such as:
 
 $$p\left(\mathbf{x}^{(0)}\right)=\int d \mathbf{x}^{(1 \cdots T)} p\left(\mathbf{x}^{(0 \cdots T)}\right)$$
 
