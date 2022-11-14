@@ -46,7 +46,7 @@ q\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)}\right)=T_\pi\left(\mathbf{x}^{(t
 $$
 
 Let's assume that at $$T$$ steps, $$q(\mathbf{x}^{(0...T)})$$ is converted into the simple distribution $$ \pi(.) $$.
-We can define anatycally $$q(\mathbf{x}^{(0...T)})$$ such as: 
+We can define analytically $$q(\mathbf{x}^{(0...T)})$$ such as: 
 
 $$
 q\left(\mathbf{x}^{(0 \cdots T)}\right)=q\left(\mathbf{x}^{(0)}\right) \prod_{t=1}^T q\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)}\right) = \pi (\mathbf{x}^T) 
