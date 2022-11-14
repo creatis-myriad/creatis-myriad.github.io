@@ -17,10 +17,10 @@ The authors propose a new probalistic model that aims to link a known distributi
 
 
 # Highlights
-They proposed a new framework based on physics that allows: 
-- To generate data from a known distribution by defining thousands of steps that have simple functional form.
-- To tract changes through data generation with these steps.
-- To combine different distributions (with a conditional distribution, you can do inpainting)
+They proposed a new iterative framework that allows: 
+- To generate data from a known distribution by defining thousands of steps that have a simple functional form.
+- To tract changes through data generation using these simple, incremental steps.
+- To combine different distributions (e.g. with a conditional distribution, you can do inpainting)
 
 
 # Diffusion probalistic model
