@@ -17,8 +17,10 @@ The authors propose a new probalistic model that aims to link a known distributi
 
 
 # Highlights
-- Flexible and tractable method
-- Possibility to multiply distributions (ex : inpainting)
+They proposed a new framework based on physics that allows: 
+- To generate data from a known distribution by defining thousands of steps that have simple functional form.
+- To tract changes through data generation with these steps.
+- To combine different distributions (with a conditional distribution, you can do inpainting)
 
 
 # Diffusion probalistic model
@@ -99,7 +101,7 @@ that can be under-estimated with:
 
 $$K=\int d \mathbf{x}^{(0 \cdots T)} q\left(\mathbf{x}^{(0 \cdots T)}\right) \log \left[p\left(\mathbf{x}^{(T)}\right) \prod_{t=1}^T \frac{p\left(\mathbf{x}^{(t-1)} \mathbf{x}^{(t)}\right)}{q\left(\mathbf{x}^{(t)} \mathbf{x}^{(t-1)}\right)}\right]$$
 
-from which we can make the DK divergence appear: 
+from which we can make the KL divergence appear: 
 
 $$K=-\sum_{t=2}^T \int d \mathbf{x}^{(0)} d \mathbf{x}^{(t)} q\left(\mathbf{x}^{(0)}, \mathbf{x}^{(t)}\right)
  D_{K L}\left(q\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}, \mathbf{x}^{(0)}\right)|| p\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)}\right)\right)
@@ -117,7 +119,7 @@ Let  $$r\left(\mathbf{x}^{(0)}\right)$$ be a second distribution or a bounded po
  $$\tilde{p}\left(\mathbf{x}^{(0)}\right) \propto p\left(\mathbf{x}^{(0)}\right) r\left(\mathbf{x}^{(0)}\right)$$
  
  
- > "This distribution can be treated either as a small perturbation to each step in the diffusion sprocess, or ofthen exactly multiplied into each diffusion step."
+ > "This distribution can be treated either as a small perturbation to each step in the diffusion process, or often exactly multiplied into each diffusion step."
 
 
 # Data
