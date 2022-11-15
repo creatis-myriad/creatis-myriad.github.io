@@ -21,7 +21,7 @@ pdf: "https://arxiv.org/abs/2204.07143v1"
 * The authors introduce the Neighborhood Attention (NA) and the Neighborhood Attention Transformer (NAT)
 * **With the Neighborhood Attention the attention is only computed on a neighborhood around each token**
 * This method not only allows to reduce the computational cost of the attention mechanism but also helps to introduce local inductive biases
-*  The drawback is that it reduces the receptive field
+* The drawback is that it reduces the receptive field
 
 ![](/collections/images/NeighborhoodAttentionTransformer/receptive_fields.jpg)
 
@@ -29,7 +29,7 @@ pdf: "https://arxiv.org/abs/2204.07143v1"
 
 ![](/collections/images/NeighborhoodAttentionTransformer/NeighborhoodAttention.jpg)
 
-* Neighborhood attention on a single pixel $$(i, j)$$ is defined as follows:
+Neighborhood attention on a single pixel $$(i, j)$$ is defined as follows:
 
 $$ NA(X_{i, j}) = softmax(\frac{Q_{i,j}K^T_{\rho(i,j)} + B_{i,j}}{scale})V_{\rho_{(i,j)}} $$
 
@@ -41,7 +41,7 @@ with ρ(i, j), which is a fixed-length set of indices of pixels nearest to (i, j
 
 for a neighborhood of size $$ L * L $$, $$ \lVert \rho(i,j) \rVert = \lVert L² \rVert$$	
 
-> However, if the function ρ maps each pixel to all pixels ($$L²$$is equal to feature map size), this will be equivalent to self attention.
+> However, if the function ρ maps each pixel to all pixels ($$L²$$ is equal to feature map size), this will be equivalent to self attention.
 
 - The complexity of the neighborhood attention is linear with respect to resolution unlike self attention's.
 - The function $$\rho$$ which maps a pixel to a set of neighboring pixels is realized with a sliding window.
@@ -59,7 +59,7 @@ for a neighborhood of size $$ L * L $$, $$ \lVert \rho(i,j) \rVert = \lVert L² 
 
 - The token merging layer is also different from the patch merging layer in the Swin Transformer
 
-- Here the overlapping downsampler consists in a convolution 3 x 3 with strides 2 x 2 on the patches
+- Here the overlapping downsampler consists in a convolution 3x3 with strides 2x2 on the patches
 
 # Results
 
