@@ -6,7 +6,8 @@ author: "Pierre Rougé"
 cite:
     authors: "Ali Hassani, Steven Walton, Jiachen Li, Shen Li, Humphrey Shi"
     title:   "Neighborhood Attention Transformer"
-pdf: "https://arxiv.org/abs/2204.07143v1"
+    venue: arXiv
+pdf: "https://arxiv.org/abs/2204.07143"
 ---
 
 # Notes
@@ -33,13 +34,13 @@ Neighborhood attention on a single pixel $$(i, j)$$ is defined as follows:
 
 $$ NA(X_{i, j}) = softmax(\frac{Q_{i,j}K^T_{\rho(i,j)} + B_{i,j}}{scale})V_{\rho_{(i,j)}} $$
 
-where $$Q, K, V$$ are linear projections of $$X$$
+where:
 
-$$B_{i,j}$$ denotes the relative positional bias
+-  $$Q, K, V$$ are linear projections of $$X$$
 
-with ρ(i, j), which is a fixed-length set of indices of pixels nearest to (i, j)
+- $$B_{i,j}$$ denotes the relative positional bias
 
-for a neighborhood of size $$ L * L $$, $$ \lVert \rho(i,j) \rVert = \lVert L² \rVert$$	
+- ρ(i, j) is a fixed-length set of indices of pixels nearest to (i, j), for a neighborhood of size $$ L * L $$, $$ \lVert \rho(i,j) \rVert = \lVert L² \rVert$$	
 
 > However, if the function ρ maps each pixel to all pixels ($$L²$$ is equal to feature map size), this will be equivalent to self attention.
 
@@ -69,7 +70,7 @@ for a neighborhood of size $$ L * L $$, $$ \lVert \rho(i,j) \rVert = \lVert L² 
 
 ![](/collections/images/NeighborhoodAttentionTransformer/results_classification.jpg)
 
-- NAT outperforms significantly Swin Transformers and ConvNeXt
+- NAT outperforms Swin Transformers and ConvNeXt
 
 ## Object Detection
 
