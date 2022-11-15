@@ -40,7 +40,7 @@ where:
 
 - $$B_{i,j}$$ denotes the relative positional bias
 
-- ρ(i, j) is a fixed-length set of indices of pixels nearest to (i, j), for a neighborhood of size $$ L * L $$, $$ \lVert \rho(i,j) \rVert = \lVert L² \rVert$$	
+- ρ(i, j) is a fixed-length set of indices of pixels nearest to (i, j). For a neighborhood of size $$ L * L $$, $$ \vert \rho(i,j) \vert = L^2$$
 
 > However, if the function ρ maps each pixel to all pixels ($$L²$$ is equal to feature map size), this will be equivalent to self attention.
 
