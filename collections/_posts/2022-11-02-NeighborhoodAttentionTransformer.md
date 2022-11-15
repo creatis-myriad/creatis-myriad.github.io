@@ -19,7 +19,7 @@ pdf: "https://arxiv.org/abs/2204.07143v1"
 
 * Similar to Swin Transformer the idea is to reduce the computational cost of the attention mechanism 
 * The authors introduce the Neighborhood Attention (NA) and the Neighborhood Attention Transformer (NAT)
-* With the Neighborhood Attention the attention is only compute on a neighborhood around each token
+* **With the Neighborhood Attention the attention is only compute on a neighborhood around each token**
 * This method not only allow to reduce the computational cost of the attention mechanism but also helps to introduce local inductive biases
 *  The drawback is that it reduces the receptive field
 
@@ -53,27 +53,50 @@ with ρ(i, j), which is a fixed-length set of indices of pixels nearest to (i, j
 
 - For the tokenization they use the overlapping convolution method introduced in the  [Compact Convolutional Transformer](https://creatis-myriad.github.io./2022/06/13/CompactConvolutionalTransformer.html)
 
-- The rest of the architecture is a succession of blocks containing a token merging layer to reduce dimension and standard multi head attention block but with the self attention replace by the neighborhood attention
+- The rest of the architecture is a succession of blocks containing a token merging layer to reduce dimension and a standard multi head attention block but with the self attention replace by the neighborhood attention
 
-  > Note : Similar to the Swin Transformer this architecture build hierarchical features maps by using token merging layers
+- The token merging layer is also different from the patch merging layer in the Swin Transformer
+
+- **Here the overlapping downsampler consists in a convolution 3 x 3 with strides 2 x 2 on the patches**
 
 # Results
 
 ## Classification
 
+- Trained on ImageNet-1k (1.2 millions images for training, 1000 classes)
+
 ![](/collections/images/NeighborhoodAttentionTransformer/results_classification.jpg)
+
+- NAT outperforms significantly Swin Transformers and ConvNeXt
 
 ## Object Detection
 
-![](/collections/images/NeighborhoodAttentionTransformer/results_object_detection.jpg)
+- Mask R-CNN and Cascade Mask R-CNN with different backbones trained on MS-COCO
+
+  
+
+  ![](/collections/images/NeighborhoodAttentionTransformer/results_object_detection.jpg)
 
 ## Semantic Segmentation
 
-![](/collections/images/NeighborhoodAttentionTransformer/results_segmentation.jpg)
+- UPerNet with different backbones trained on ADE20K (20 000 training images)
+
+![](/collections/images/NeighborhoodAttentionTransformer/results_semantic_segmentation.jpg)
+
+- NAT performs better than Swin Transformer for the segmentation task
+- But NAT fails to beat ConvNeXt, a recent and very efficient convolutional network 
 
 ## Ablation studies
 
+- To attests the efficiency of the Neighborhood Attention they test their architecture on ImageNet-1k with different kind of attention
 
+![](/collections/images/NeighborhoodAttentionTransformer/ablation_attention.jpg)
+
+- They also study different merging methods with a Swin Transformer to attests the efficiency of the Overlapping Downsampler
+
+![](/collections/images/NeighborhoodAttentionTransformer/ablation_overlaping.jpg)
 
 # Conclusion
+
+This paper introduces a new and interesting attention mechanism based on the neighborhood of a token. It builds a transformer architecture based on this mechanism that achieves competitive results on different computer visions tasks. 
 
