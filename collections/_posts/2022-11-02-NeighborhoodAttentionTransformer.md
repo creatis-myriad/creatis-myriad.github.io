@@ -19,8 +19,8 @@ pdf: "https://arxiv.org/abs/2204.07143v1"
 
 * Similar to Swin Transformer the idea is to reduce the computational cost of the attention mechanism 
 * The authors introduce the Neighborhood Attention (NA) and the Neighborhood Attention Transformer (NAT)
-* **With the Neighborhood Attention the attention is only compute on a neighborhood around each token**
-* This method not only allow to reduce the computational cost of the attention mechanism but also helps to introduce local inductive biases
+* **With the Neighborhood Attention the attention is only computed on a neighborhood around each token**
+* This method not only allows to reduce the computational cost of the attention mechanism but also helps to introduce local inductive biases
 *  The drawback is that it reduces the receptive field
 
 ![](/collections/images/NeighborhoodAttentionTransformer/receptive_fields.jpg)
@@ -33,11 +33,13 @@ pdf: "https://arxiv.org/abs/2204.07143v1"
 
 $$ NA(X_{i, j}) = softmax(\frac{Q_{i,j}K^T_{\rho(i,j)} + B_{i,j}}{scale})V_{\rho_{(i,j)}} $$
 
-where $$Q, K, V$$ are linear projection of $$X$$
+where $$Q, K, V$$ are linear projections of $$X$$
 
 $$B_{i,j}$$ denotes the relative positional bias
 
-with ρ(i, j), which is a fixed-length set of indices of pixels nearest to (i, j), for a neighborhood of size $$ L * L $$, $$ \lVert \rho(i,j) \rVert = \lVert L² \rVert$$	
+with ρ(i, j), which is a fixed-length set of indices of pixels nearest to (i, j)
+
+for a neighborhood of size $$ L * L $$, $$ \lVert \rho(i,j) \rVert = \lVert L² \rVert$$	
 
 > However, if the function ρ maps each pixel to all pixels ($$L²$$is equal to feature map size), this will be equivalent to self attention.
 
@@ -53,11 +55,11 @@ with ρ(i, j), which is a fixed-length set of indices of pixels nearest to (i, j
 
 - For the tokenization they use the overlapping convolution method introduced in the  [Compact Convolutional Transformer](https://creatis-myriad.github.io./2022/06/13/CompactConvolutionalTransformer.html)
 
-- The rest of the architecture is a succession of blocks containing a token merging layer to reduce dimension and a standard multi head attention block but with the self attention replace by the neighborhood attention
+- The rest of the architecture is a succession of blocks containing a token merging layer to reduce dimension and a standard multi head attention block but with the self attention replaced by the neighborhood attention
 
 - The token merging layer is also different from the patch merging layer in the Swin Transformer
 
-- **Here the overlapping downsampler consists in a convolution 3 x 3 with strides 2 x 2 on the patches**
+- Here the overlapping downsampler consists in a convolution 3 x 3 with strides 2 x 2 on the patches
 
 # Results
 
@@ -73,8 +75,6 @@ with ρ(i, j), which is a fixed-length set of indices of pixels nearest to (i, j
 
 - Mask R-CNN and Cascade Mask R-CNN with different backbones trained on MS-COCO
 
-  
-
   ![](/collections/images/NeighborhoodAttentionTransformer/results_object_detection.jpg)
 
 ## Semantic Segmentation
@@ -88,7 +88,7 @@ with ρ(i, j), which is a fixed-length set of indices of pixels nearest to (i, j
 
 ## Ablation studies
 
-- To attests the efficiency of the Neighborhood Attention they test their architecture on ImageNet-1k with different kind of attention
+- To attests the efficiency of the Neighborhood Attention they test their architecture on ImageNet-1k with different kinds of attention
 
 ![](/collections/images/NeighborhoodAttentionTransformer/ablation_attention.jpg)
 
