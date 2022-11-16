@@ -7,7 +7,7 @@ cite:
     authors: "Jifeng Dai, Haozhi Qi, Yuwen Xiong, Yi Li, Guodong Zhang, Han Hu, Yichen Wei"
     title:   "Deformable Convolutional Networks"
     venue:   "ICCV 2017"
-pdf: "https://arxiv.org/pdf/1703.06211v3.pdf"
+pdf: "https://arxiv.org/pdf/1703.06211.pdf"
 ---
 
 # Notes
@@ -25,7 +25,7 @@ pdf: "https://arxiv.org/pdf/1703.06211v3.pdf"
 # Introduction 
 
 For a neural network, geometric transformations, viewpoints and partial deformations are difficult to learn. Most of the time, to generalise an architecture during learning, known geometric deformations such as scaling, rotation or shearing are applied. 
-However, there is no mechanism to help the model learn the geometric variations.This paper presents a new method capable of adapting receptive field to understand more complex transformations. The proposed mechanism is end-to-end, adaptable to each architecture containing CNNs. 
+However, there is no mechanism to help the model learn the geometric variations. This paper presents a new method capable of adapting receptive fields to understand more complex transformations. The proposed mechanism is trainable end-to-end and adaptable to any CNN-based architecture. 
 
 &nbsp; 
 # Method
