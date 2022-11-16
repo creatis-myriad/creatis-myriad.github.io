@@ -77,7 +77,7 @@ The same principle can be applied to the pooling operation. Basic RoI average po
 
 $$ y(i,j) = \sum_{p \in bin(i, j)} \frac{ x(p_0 + p_n)}{n_{ij}} $$ 
 
-With $$ bin(i,j) $$ the grid surrounding the pixel at coordonate $$ (i,j) $$, and $$ n_{ij} $$ the size of the grid surrounding the pixel at coordonate $$ (i, j) $$. An additional layer is added to learn the offset as for deformable convolution:
+With $$ bin(i,j) $$ the grid surrounding the pixel at coordonate $$ (i,j) $$, and $$ n_{ij} $$ the size of that grid. Just like for deformable convolution, an additional layer is added to learn the offset:
  
  $$ y(i,j) = \sum_{p \in bin(i, j)} \frac{ x(p_0 + p_n + \Delta p_{ij})}{n_{ij}} $$
 
@@ -87,7 +87,7 @@ Illustration below shows the mechanism:
 
 **Position-Sensitive (PS) RoI Pooling**
 
-Instead of applying pooling on the input feature maps, they are converted in $$k^2\cdot (C+1)$$, 
+Instead of applying pooling on the input feature maps, they are converted to $$k^2\cdot (C+1)$$ new feature maps, 
 with $$k$$ the size of the output, C the number of classes and +1 for the background.
 
 ![](/collections/images/DeformableConvolutionalNetworks/PS_roi_pooling.jpg)
