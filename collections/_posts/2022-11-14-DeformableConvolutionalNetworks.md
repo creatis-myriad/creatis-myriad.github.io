@@ -1,7 +1,7 @@
 ---
 layout: review
 title: "Deformable Convolutional Networks"
-tags:  Convolution, recepteive field, atrou
+tags:  Convolution, receptive field, atrou
 author: "Nolann Lainé"
 cite:
     authors: "Jifeng Dai, Haozhi Qi, Yuwen Xiong, Yi Li, Guodong Zhang, Han Hu, Yichen Wei"
@@ -25,7 +25,7 @@ pdf: "https://arxiv.org/pdf/1703.06211v3.pdf"
 # Introduction 
 
 For a neural network, geometric transformations, viewpoints and partial deformations are difficult to learn. Most of the time, to generalise an architecture during learning, known geometric deformations such as scaling, rotation or shearing are applied. 
-However, there is no mechanism to help the model learn the geometric variations. The data augmentation is therefore limited by the user's knowledge. The proposed mechanism is end-to-end, adaptable to each architecture containing CNNs and allows CNNs to learn more complex deformations.
+However, there is no mechanism to help the model learn the geometric variations.This paper presents a new method capable of adapting receptive field to understand more complex transformations. The proposed mechanism is end-to-end, adaptable to each architecture containing CNNs. 
 
 &nbsp; 
 # Method
@@ -52,7 +52,7 @@ $$ y(p_0) = \sum_{p_n \in R}w(p_n) \cdot x(p_0 + p_n + \Delta p_n) $$
 
 $$ \Delta p_n $$ correspond to the learnable grid. For $$ 3 \times 3$$ convolution, we have:
 
-$$ R = \{ (\Delta {x^1}, \Delta {y^1}), (\Delta {x^2}, \Delta {y^2})), ..., (\Delta {x^9}, \Delta {y^9}) \} $$
+$$ \Delta _R = \{ (\Delta {x^1}, \Delta {y^1}), (\Delta {x^2}, \Delta {y^2})), ..., (\Delta {x^9}, \Delta {y^9}) \} $$
 
 In practice, additional layers are added to learn these components. For a $$ 3 \times 3 $$ convolution, 18 additional parameters are learned. The illustration below shows the mechanism:
 
@@ -73,11 +73,11 @@ With $$ p = p_0 + p_n + \Delta p_n$$.
 
 **RoI pooling**
 
-The same principle can be applied to the pooling operation. Basic average RoI pooling is given by the following equation:
+The same principle can be applied to the pooling operation. Basic RoI average pooling is given by the following equation:
 
 $$ y(i,j) = \sum_{p \in bin(i, j)} \frac{ x(p_0 + p_n)}{n_{ij}} $$ 
 
-With $$bin(i,j)$$ the size of the grid surrounding the pixel at coordonate $$ (i, j) $$. Such as for deformable convolution, we add an extra learnable parameters:
+With $$ bin(i,j) $$ the grid surrounding the pixel at coordonate $$ (i,j) $$, and $$ n_{ij} $$ the size of the grid surrounding the pixel at coordonate $$ (i, j) $$. An additional layer is added to learn the offset as for deformable convolution:
  
  $$ y(i,j) = \sum_{p \in bin(i, j)} \frac{ x(p_0 + p_n + \Delta p_{ij})}{n_{ij}} $$
 
