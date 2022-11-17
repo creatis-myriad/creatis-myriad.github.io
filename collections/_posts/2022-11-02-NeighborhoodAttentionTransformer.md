@@ -60,7 +60,7 @@ where:
 
 - The token merging layer is also different from the patch merging layer in the Swin Transformer
 
-- Here the overlapping downsampler consists in a convolution 3x3 with strides 2x2 on the patches
+- Here the overlapping downsampler consists of a 3x3 convolution with 2x2 strides on the patches
 
 # Results
 
@@ -89,7 +89,7 @@ where:
 
 ## Ablation studies
 
-- To attests the efficiency of the Neighborhood Attention they test their architecture on ImageNet-1k with different kinds of attention
+- To attest the efficiency of the Neighborhood Attention, they test their architecture on ImageNet-1k with different kinds of attention
 
 ![](/collections/images/NeighborhoodAttentionTransformer/ablation_attention.jpg)
 
