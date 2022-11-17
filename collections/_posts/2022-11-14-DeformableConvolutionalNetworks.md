@@ -125,6 +125,6 @@ image content.
 
 # Conclusions
 
-* The proposed method significantly improves the accuracy for image classficiation and object detection tasks.
+* The proposed method significantly improves the accuracy for image segmentation and object detection tasks.
 * Any kind of architecture using convolution and pooling can explore the benefits of Deformable ConvNets.
 
