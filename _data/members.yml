@@ -203,7 +203,50 @@ medical_doctors:
     picture: 'tJackesson.jpg'
     speciality: "neurosurgeon"
     
-phd_first:
+phd_first: 
+   
+  - firstname: 'Yuhan'
+    lastname: 'Jing'
+    institution: 'INSA, University of Lyon'
+    picture: 'yJing.jpg'
+    subject: 'What are the relationships between the cardiac wall multiscale-architecture and the ability of the water molecules to diffuse through the tissue?'
+    interests: "Cardiac imaging, image simulation"
+    supervisors: C. Frindel   
+    
+  - firstname: 'Hugo'
+    lastname: 'Lacombe'
+    institution: 'University Lyon 1'
+    picture: 'hLacombe.jpg'
+    subject: 'Image quality assessment and optimization of photon counting spectral imaging for ultra-high resolution and ultra-low dose imaging in thoracic and cardiovascular applications'
+    interests: "Cardiac imaging, spectral imaging"
+    supervisors: P. Douek & M Villien
+    
+  - firstname: 'Zinan'
+    lastname: 'Liu'
+    institution: 'INSA, University of Lyon'
+    picture: 'zLiu.jpg'
+    subject: 'Improved cardiac strains quantification from multiviews DENSE MRI'
+    interests: "Cardiac imaging, MRI imaging"
+    supervisors: P. Clarysse
+    
+  - firstname: 'Emile'
+    lastname: 'Saillard'
+    institution: 'University Lyon 1'
+    picture: 'eSaillard.jpg'
+    subject: 'Estimation of fracture strength in a cohort of patients with bone metastases using customized finite element modeling with automatic and continuous segmentation of bone metastases'
+    interests: "Bone imaging, deep learning"
+    supervisors: T. Grenier, H. Follet    
+    
+  - firstname: 'Pierre-Elliott'
+    lastname: 'Thiboud'
+    institution: 'INSA, University of Lyon'
+    picture: 'peThiboud.jpg'
+    subject: 'Structure and explicability of neural networks for Health: application to sepsis prevention.'
+    interests: "sepsis prevention, deep learning"
+    supervisors: M. Sdika, M. Lefort, N. Duchateau     
+   
+    
+phd_second:
 
   - firstname: 'Julia'
     lastname: 'Puig'
@@ -269,7 +312,7 @@ phd_first:
     interests: "Neuroimaging, vascular imaging, deep learning"      
     supervisors: N. Passat, O. Merveille   
    
-phd_second:
+phd_third:
 
   - firstname: 'Mehdi'
     lastname: 'Shekarnabi'
@@ -309,8 +352,40 @@ phd_second:
     picture: 'icon_phd.jpg'
     interests: "MR imaging, deep learning"        
     supervisors: P. Clarysse, E. Roux
+       
+  - firstname: 'Daria'
+    lastname: 'Zotova'
+    institution: 'INSA, University of Lyon'
+    picture: 'dZotova.jpg'
+    subject: 'Artificial intelligence for medical image analysis'
+    interests: "Neuroimaging, deep learning"         
+    supervisors: C. Lartizien          
         
-phd_third:
+  - firstname: 'Benoit'
+    lastname: 'Freiche'
+    institution: 'University Lyon 1'
+    picture: 'icon_phd.jpg'
+    subject: 'Hierarchical integration of cardiac imaging data with machine learning'
+    interests: "Cardiac imaging, machine learning"        
+    supervisors: P. Clarysse, N. Duchateau        
+        
+  - firstname: 'Ludmilla'
+    lastname: 'Penarrubia'
+    institution: 'University Lyon 1'
+    picture: 'icon_phd.jpg'
+    subject: 'Quantification of pulmonary ventilation in patients with ARDS'
+    interests: "Pulmonary imaging, deep learning"    
+    supervisors: M. Orkisz, J.C. Richard, E. Roux
+     
+  - firstname: 'Méghane'
+    lastname: 'Decroocq'
+    institution: 'INSA, University of Lyon'
+    picture: 'mDecroocq.jpg'
+    subject: 'Fluid dynamics-based perfusion imaging simulation for stroke lesion progression prediction'
+    interests: "Neuroimaging, deep learning, image simulation"     
+    supervisors: C. Frindel        
+        
+alumni:
 
   - firstname: 'Alexandre'
     lastname: 'Bani-Sadr'
@@ -319,31 +394,7 @@ phd_third:
     subject: 'Impact of multimodal MRI in the acute management of stroke'
     interests: "Neural imaging, MR imaging"    
     supervisors: Y. Berthezene, C. Frindel
-    
-  - firstname: 'Benoit'
-    lastname: 'Freiche'
-    institution: 'University Lyon 1'
-    picture: 'icon_phd.jpg'
-    subject: 'Hierarchical integration of cardiac imaging data with machine learning'
-    interests: "Cardiac imaging, machine learning"        
-    supervisors: P. Clarysse, N. Duchateau
-    
-  - firstname: 'Ludmilla'
-    lastname: 'Penarrubia'
-    institution: 'University Lyon 1'
-    picture: 'icon_phd.jpg'
-    subject: 'Quantification of pulmonary ventilation in patients with ARDS'
-    interests: "Pulmonary imaging, deep learning"    
-    supervisors: M. Orkisz, J.C. Richard, E. Roux
-    
-  - firstname: 'Méghane'
-    lastname: 'Decroocq'
-    institution: 'INSA, University of Lyon'
-    picture: 'mDecroocq.jpg'
-    subject: 'Fluid dynamics-based perfusion imaging simulation for stroke lesion progression prediction'
-    interests: "Neuroimaging, deep learning, image simulation"     
-    supervisors: C. Frindel
-    
+        
   - firstname: 'Pierre-Jean'
     lastname: 'Lartaud'
     institution: 'University Lyon 1'
@@ -352,11 +403,5 @@ phd_third:
     interests: "Cardiac imaging, deep learning"  
     supervisors: L. Boussel
     
-  - firstname: 'Daria'
-    lastname: 'Zotova'
-    institution: 'INSA, University of Lyon'
-    picture: 'dZotova.jpg'
-    subject: 'Artificial intelligence for medical image analysis'
-    interests: "Neuroimaging, deep learning"         
-    supervisors: C. Lartizien   
+
     
