@@ -21,11 +21,12 @@ pdf: "https://arxiv.org/pdf/2007.03797.pdf"
 
 ## Problem definition
 Consider a federated learning problem with $$M$$ institutions, each with $$n_m$$ samples.
-* Let's note the overall personalized objective function, with $$W:= [w_i]_{i<M}$$ the matrix of personalized model's parameters $$w_i\in\mathbb{R}^d$$
+
+Given $$W:= [w_i]_{i<M}$$ the matrix of personalized model's parameters $$w_i\in\mathbb{R}^d$$, let's define the overall personalized objective function:
 
 $$ \mathcal{F}(W) := \sum_{i=1}^MF_i(w_i)$$
 
-* The message passing regularizer 
+and the message passing regularizer:
 
 $$ \mathcal{A}(W):= \sum_{i<j}^MA(||w_i-w_j||^2)$$
 
