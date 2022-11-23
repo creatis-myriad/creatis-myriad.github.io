@@ -2,7 +2,7 @@
 layout: review
 title: "FedAMP: Personalized Cross-Silo Federated Learning on Non-IID Data"
 tags:  federated personalization cross-silo
-author: "Manthe Matthis"
+author: "Matthis Manthe"
 cite:
     authors: "Yutao Huang, Lingyang Chu, Zirui Zhou, Lanjun Wang, Jiangchuan Liu, Jian Pei, Yong Zhang"
     title:   "Personalized Cross-Silo Federated Learning on Non-IID Data"
