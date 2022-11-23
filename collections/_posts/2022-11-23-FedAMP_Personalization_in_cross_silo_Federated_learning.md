@@ -38,13 +38,13 @@ $$ \underset{W}{min\ }\{\mathcal{G}(W) := \mathcal{F}(W) + \lambda\mathcal{A}(W)
 
 ## Algorithm
 The authors propose FedAMP, an optimization scheme alternating between optimization of $$\mathcal{A}(W)$$ and $$\mathcal{F}(W)$$ (Algorithm 1). At global iteration $$k$$
-* Apply a gradient step on $$\mathcal{A}(W^k)$$ to compute the cloud models
+1. Apply a gradient step on $$\mathcal{A}(W^k)$$ to compute the cloud models:
 
-$$ U^k = W^k - \alpha_k\nabla\mathcal{A}(W^{k-1})$$
+    $$ U^k = W^k - \alpha_k\nabla\mathcal{A}(W^{k-1})$$
 
-* Then, apply a proximal point step to optimize $$\mathcal{F}(W)$$, e.g. train personalized models $$w_i, i\leq M$$ for some epochs regularized by $$U^k$$
+2. Apply a proximal point step to optimize $$\mathcal{F}(W)$$, e.g. train personalized models $$w_i, i\leq M$$ for some epochs regularized by $$U^k$$:
 
-$$ W^k = \underset{W}{arg min\ }\mathcal{F}(W) + \frac{\lambda}{2\alpha_k}||W-U^k||^2 $$
+    $$ W^k = \underset{W}{arg min\ }\mathcal{F}(W) + \frac{\lambda}{2\alpha_k}||W-U^k||^2 $$
 
 ![](/collections/images/fedamp/fedamp_scheme.jpg)
 
