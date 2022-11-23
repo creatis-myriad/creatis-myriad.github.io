@@ -61,7 +61,7 @@ The authors propose FedAMP, an optimization scheme alternating between optimizat
 
 ## Heuristic improvement for deep neural networks
 
-* Using euclidian distance between personalized models can be ineffective when dealing with neural networks with a large number of parameters $$d$$.
+* Using Euclidean distance between personalized models can be ineffective when dealing with neural networks with a large number of parameters $$d$$.
 * The authors propose to use the following convex combinations of models for the cloud models instead, with $$\xi_{i,i}$$ a self-attention hyper-parameter
 
 $$ \xi_{i,j} = \frac{e^{\sigma cos(w_i^{k-1}, w_j^{k-1})}}{\sum_{h\neq i}^Me^{\sigma cos(w_i^{k-1}, w_h^{k-1})}}*(1 - \xi_{i,i}) $$
