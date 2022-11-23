@@ -30,7 +30,7 @@ and the message passing regularizer:
 
 $$ \mathcal{A}(W):= \sum_{i<j}^MA(||w_i-w_j||^2)$$
 
-The function $$A:[0, \infty) \rightarrow \mathbb{R}$$ is increasing, concave, $$A(0)=0$$, continuously differentiable and $$lim_{t\rightarrow 0^+}A'(t)$$ is finite (they use $$A(||w_i-w_j||^2) = 1 - e^{-||w_i-w_j||^2/\sigma}$$). **It measures
+The function $$A:[0, \infty) \rightarrow \mathbb{R}$$, with $$A(0)=0$$, is increasing, concave, continuously differentiable and $$lim_{t\rightarrow 0^+}A'(t)$$ is finite (they use $$A(||w_i-w_j||^2) = 1 - e^{-||w_i-w_j||^2/\sigma}$$). **It measures
 the difference between $$w_i$$ and $$w_j$$ in a non-linear manner.**
 * The proposed optimization problem becomes 
 
