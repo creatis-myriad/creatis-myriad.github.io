@@ -57,7 +57,7 @@ The authors propose FedAMP, an optimization scheme alternating between optimizat
 
     with $$\forall i\leq M, \sum_{j=1}^M\xi_{i,j} = 1$$
 
-* **Regularizing local training with such $$u_i^k$$ can be viewed as a form of message passing between institutions. The closer personalized models of two institutions are, the larger is their contribution to each other.**
+* **Regularizing local training with such $$u_i^k$$ can be viewed as a form of message passing between institutions. The closer two personalized models from different institutions are, the larger their contribution to each other is.**
 
 ## Heuristic improvement for deep neural networks
 
