@@ -53,9 +53,9 @@ The authors propose FedAMP, an optimization scheme alternating between optimizat
 ## Interpretation
 * The authors show that the proposed scheme induces that the cloud models $$u_i^k$$ for each institution $$i\leq M$$ at global iteration $$k$$ is a convex combination of personalized models $$w_i^k$$ through
 
-$$ \begin{split}u^k_i & = (1 - \alpha_k\sum_{i\neq j}^MA'(||w_i^{k-1} - w_j^{k-1}||^2))*w_i^{k-1} + \alpha_k\sum_{i\neq j}^MA'(||w_i^{k-1}-w_j^{k-1}||^2)*w_j^{k-1} \\& = \sum_{j=1}^M\xi_{i,j}w_j^{k-1}\end{split}$$ 
+    $$ \begin{split}u^k_i & = (1 - \alpha_k\sum_{i\neq j}^MA'(||w_i^{k-1} - w_j^{k-1}||^2))*w_i^{k-1} + \alpha_k\sum_{i\neq j}^MA'(||w_i^{k-1}-w_j^{k-1}||^2)*w_j^{k-1} \\& = \sum_{j=1}^M\xi_{i,j}w_j^{k-1}\end{split}$$ 
 
-with $$\forall i\leq M, \sum_{j=1}^M\xi_{i,j} = 1$$
+    with $$\forall i\leq M, \sum_{j=1}^M\xi_{i,j} = 1$$
 
 * **Regularizing local training with such $$u_i^k$$ can be viewed as a form of message passing between institutions. The closer personalized models of two institutions are, the larger is their contribution to each other.**
 
