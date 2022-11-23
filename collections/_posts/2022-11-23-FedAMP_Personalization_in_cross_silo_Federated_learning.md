@@ -15,7 +15,7 @@ pdf: "https://arxiv.org/pdf/2007.03797.pdf"
 * The authors propose a new federated personalization method,
 * The goal is to facilitate pairwise collaborations between institutions with similar data,
 * The method is based on an alternation between optimization of local losses and of a message passing regularizer,
-* The method can be applied to any supervised learning task (classification, segmentation, ...).
+* The method can be applied to any supervised learning task (classification, segmentation, etc.).
 
 # Method
 
