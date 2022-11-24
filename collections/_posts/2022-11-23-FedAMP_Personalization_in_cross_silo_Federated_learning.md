@@ -70,7 +70,7 @@ $$ \xi_{i,j} = \frac{e^{\sigma cos(w_i^{k-1}, w_j^{k-1})}}{\sum_{h\neq i}^Me^{\s
 # Experiments
 * Synthetically partitioned classical datasets are leveraged (MNIST, FashionMNIST, ExtendedMNIST, CIFAR100).
 * The authors propose three types of partitioning:
-	* Iid partitioning,
+	* IID partitioning,
 	* A "pathological" partitioning with two classes per institution,
 	* A "practical" partitioning with groups of institutions owning the same data distribution, each containing a set of dominant classes different from other groups.
 
