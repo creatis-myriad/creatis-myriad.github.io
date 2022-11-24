@@ -6,7 +6,7 @@ author: "Romain Deleat-besson"
 cite:
     authors: "Luigi Antelmi, Nicholas Ayache, Philippe Robert and Marco Lorenzi"
     title:   "Multi-Channel Stochastic Variational Inference for the Joint Analysis of Heterogeneous Biomedical Data in Alzheimer's Disease"
-    venue:   "arXiv 2018"
+    venue:   "Machine Learning in Clinical Neuroimaging (MLCN), MICCAI Workshop 2018"
 pdf: "https://arxiv.org/pdf/1808.03662.pdf"
 ---
 
