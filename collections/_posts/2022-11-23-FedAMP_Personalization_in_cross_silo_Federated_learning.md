@@ -37,7 +37,8 @@ Given the defintions above, the proposed optimization problem becomes:
 $$ \underset{W}{min\ }\{\mathcal{G}(W) := \mathcal{F}(W) + \lambda\mathcal{A}(W)\}$$
 
 ## Algorithm
-The authors propose FedAMP, an optimization scheme alternating between optimization of $$\mathcal{A}(W)$$ and $$\mathcal{F}(W)$$ (Algorithm 1). At global iteration $$k$$
+The authors propose _Federated Attentive Message
+Passing_ (FedAMP), an optimization scheme alternating between optimization of $$\mathcal{A}(W)$$ and $$\mathcal{F}(W)$$. Following their algorithm, at each global iteration $$k$$:
 1. Apply a gradient step on $$\mathcal{A}(W^k)$$ to compute the cloud models:
 
     $$ U^k = W^k - \alpha_k\nabla\mathcal{A}(W^{k-1})$$
