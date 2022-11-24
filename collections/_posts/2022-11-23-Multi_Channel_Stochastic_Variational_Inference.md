@@ -56,7 +56,7 @@ $$ \mathscr{L}(\textbf{θ}, \pmb{\phi}, \textbf{x}) = \mathbb{E}_c \left[ \mathb
 
 A figure used in the [Github repository](https://gitlab.inria.fr/epione_ML/mcvae) to understand the global idea :
 
-![](/collections/images/MCSVI/Multi Latent Space.jpg)
+![](/collections/images/MCSVI/Multi_Latent_Space.jpg)
 
 
 # Results
@@ -73,20 +73,20 @@ $$ \textbf{x}_c = \textbf{G}_c \textbf{z} + snr{^{−1/2}}.\textbf{ϵ} $$
 
 * Here are the results with synthetic data :
 
-![](/collections/images/MCSVI/results part 1.jpg)
+![](/collections/images/MCSVI/results_part_1.jpg)
 It shows that their model perform well compared to single-channel model.
 
 
 * They have tried it on real data as well :
 
-![](/collections/images/MCSVI/results part 2.jpg)
+![](/collections/images/MCSVI/results_part_2.jpg)
 
 > Fig. 3: Pairwise representations of one latent dimension (out of 16) inferred from each of the four data channel. Although the optimization is not supervised to enforce clustering, subjects appear stratified by disease classes.
 
 
 * An example of generated data :
 
-![](/collections/images/MCSVI/results part 3.jpg)
+![](/collections/images/MCSVI/results_part_3.jpg)
 Having a generative model allows them to validate the latent space they obtained.
 Moreover, according to typical results in the litterature for Alzheimer's Disease, the result they have is coherent.
 
