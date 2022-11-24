@@ -1,6 +1,6 @@
 ---
 layout: review
-title: "Multi-Channel Stochastic Variationnal Inference"
+title: "Multi-Channel Stochastic Variational Inference for the Joint Analysis of Heterogeneous Biomedical Data in Alzheimer's Disease"
 tags: "Fusion, Multimodality, Machine Learning"
 author: "Romain Deleat-besson"
 cite:
