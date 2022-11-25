@@ -31,7 +31,7 @@ pdf: "https://arxiv.org/pdf/1808.03662.pdf"
 
 # Introduction
 
-When a patient suffer from Alzheimer’s disease, physicians use lots of various sources of informations. However, simple univariate correlation analyses are limited in modeling power. To overcome the limitations of mass-univariate analysis, methods such as PLS, RRR or CCA and their variants (non-linearity, multi-channels) were used in biomedical research. The main issue is that those methods are not generative.
+When a patient suffers from Alzheimer’s disease, physicians use lots of sources of informations. However, simple univariate correlation analysis are limited in modeling power. To overcome the limitations of mass-univariate analysis, methods such as PLS, RRR, CCA, and their variants (non-linearity, multi-channels) were used in biomedical research. The main issue is that those methods are not generative.
 The authors proposed a novel multi-channel stochastic generative model for the joint analysis of multi-channel heterogeneous data.
 
 
