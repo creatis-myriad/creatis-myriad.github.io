@@ -16,7 +16,7 @@ pdf: "https://arxiv.org/pdf/1808.03662.pdf"
 
 * Unsupervised method.
 * **Gaussian linear case** (for validation purposes)
-* An other paper based on deep learning methods was done in 2019 by the same authors : [Sparse Multi Channal Variationnal Auto Encoder](http://proceedings.mlr.press/v97/antelmi19a/antelmi19a.pdf).
+* Another paper based on deep learning methods was done in 2019 by the same authors: [Sparse Multi-Channel Variational Autoencoder](http://proceedings.mlr.press/v97/antelmi19a/antelmi19a.pdf).
 * A [Github repository](https://gitlab.inria.fr/epione_ML/mcvae) is available for the 2019 paper.
 
 * Link to the [VAE tutorial](https://creatis-myriad.github.io/tutorials/2022-09-12-tutorial-vae.html) 
