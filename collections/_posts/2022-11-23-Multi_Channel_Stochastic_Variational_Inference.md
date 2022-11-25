@@ -2,7 +2,7 @@
 layout: review
 title: "Multi-Channel Stochastic Variational Inference for the Joint Analysis of Heterogeneous Biomedical Data in Alzheimer's Disease"
 tags: fusion multimodality machine-Learning
-author: "Romain Deleat-besson"
+author: "Romain Deleat-Besson"
 cite:
     authors: "Luigi Antelmi, Nicholas Ayache, Philippe Robert and Marco Lorenzi"
     title:   "Multi-Channel Stochastic Variational Inference for the Joint Analysis of Heterogeneous Biomedical Data in Alzheimer's Disease"
