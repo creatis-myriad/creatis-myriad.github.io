@@ -26,7 +26,7 @@ pdf: "https://arxiv.org/pdf/1808.03662.pdf"
 
 * The aim of this paper is to take into account several types of inputs (which are referred to as _channels_ in the paper) for a better joint analysis.
 * They proposed a novel multi-channel stochastic generative model.
-* Their proposed method can have applications for a generic data fusion technique.
+* Their proposed method can have applications for generic data fusion techniques.
 
 
 # Introduction
