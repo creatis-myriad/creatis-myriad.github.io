@@ -45,7 +45,7 @@ Let $$ \textbf{x}  = \{\textbf{x}_c\}_{c=1}^{C} $$ be a single observation of a 
 
 The aim is to minimize:
 
-$$ \underset{q∈Q}{argmin} \: \mathbb{E}_c[D_{KL} (q (\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) \parallel p (\textbf{z} \vert \textbf{x}_1, . . . , \textbf{x}_C , \pmb{θ}_1, . . . , \pmb{θ}_C ) )] $$
+$$ \underset{q∈Q}{argmin} \: \mathbb{E}_c[D_{KL} (q (\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) \parallel p (\textbf{z} \vert \textbf{x}_1, \dots , \textbf{x}_C , \pmb{θ}_1, \dots , \pmb{θ}_C ) )] $$
 
 **Hypothesis :** Every channel is conditionally independent from all the others given z (it will allow to factorize the data likelihood, see supplementary material in the paper for more details). 
 
