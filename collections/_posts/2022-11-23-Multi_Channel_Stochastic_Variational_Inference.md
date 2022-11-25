@@ -98,10 +98,3 @@ Moreover, the results they obtain are coherent with typical results from the lit
 * Linear method (that can be easily changed with deep learning methods)
 
 
-# References
-
-The paper from 2019 with a deep learning and a more complex method :
-
-[1] Antelmi, Luigi and Ayache, Nicholas and Robert, Philippe and Lorenzi, Marco. Sparse Multi-Channel Variational Autoencoder for the Joint Analysis of Heterogeneous Data (2019). PMLR. 
-
-
