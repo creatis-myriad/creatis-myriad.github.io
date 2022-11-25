@@ -81,7 +81,7 @@ It shows that their model perform well compared to single-channel model.
 
 ![](/collections/images/MCSVI/results_part_2.jpg)
 
-> Fig. 3: Pairwise representations of one latent dimension (out of 16) inferred from each of the four data channel. Although the optimization is not supervised to enforce clustering, subjects appear stratified by disease classes.
+> Fig. 3: Pairwise representations of one latent dimension (out of 16) inferred from each of the four data channels. Although the optimization is not supervised to enforce clustering, subjects appear stratified by disease classes.
 
 
 * An example of generated data :
