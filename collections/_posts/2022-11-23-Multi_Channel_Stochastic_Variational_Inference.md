@@ -93,7 +93,7 @@ Moreover, the results they obtain are coherent with typical results from the lit
 
 # Conclusion
 
-* Multi-channel model that jointly analyzes multimodality data.
+* Multi-channel model that jointly analyzes multi-modality data.
 * Model that can generate the data from the latent space
 * Linear method (that can be easily changed with deep learning methods)
 
