@@ -61,7 +61,7 @@ A figure used in the [Github repository](https://gitlab.inria.fr/epione_ML/mcvae
 
 # Results
 
-* They have created synthetic data (according to the equations shown below) and tested them with different parameters to prove the viability of their model.
+* They created synthetic data (according to the equations shown below) and tested them with different parameters to prove the viability of their model.
 
 $$ \textbf{z} ∼ N (\textbf{0}; \textbf{I}_l) $$
 
