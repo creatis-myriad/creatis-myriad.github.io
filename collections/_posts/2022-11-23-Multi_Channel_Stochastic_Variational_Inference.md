@@ -54,7 +54,7 @@ After developping the equation from above they get:
 $$ \mathscr{L}(\textbf{θ}, \pmb{\phi}, \textbf{x}) = \mathbb{E}_c \left[ \mathbb{E}_{q(\textbf{z} \vert \textbf{x}_c )} \left[  \sum_{i=1}^{C} ln \: p(\textbf{x}_i \vert \textbf{z}, \textbf{θ}_c) \right] − D_{KL} (q (\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) \parallel p (\textbf{z}) ) \right] $$
 
 
-A figure used in the [Github repository](https://gitlab.inria.fr/epione_ML/mcvae) to understand the global idea :
+A figure used in the [Github repository](https://gitlab.inria.fr/epione_ML/mcvae) to understand the general idea:
 
 ![](/collections/images/MCSVI/Multi_Latent_Space.jpg)
 
