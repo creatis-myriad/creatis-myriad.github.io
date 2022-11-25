@@ -43,7 +43,7 @@ Let $$ \textbf{x}  = \{\textbf{x}_c\}_{c=1}^{C} $$ be a single observation of a 
 * $$ p(\textbf{x}_c \vert \textbf{z}, \pmb{θ}_c) $$ : likelihood distribution
 * $$ q(\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) $$ : probability density function
 
-They aim at minimiing :
+The aim is to minimize:
 
 $$ \underset{q∈Q}{argmin} \: \mathbb{E}_c[D_{KL} (q (\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) \parallel p (\textbf{z} \vert \textbf{x}_1, . . . , \textbf{x}_C , \pmb{θ}_1, . . . , \pmb{θ}_C ) )] $$
 
