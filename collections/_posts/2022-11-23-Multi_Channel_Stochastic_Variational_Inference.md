@@ -47,7 +47,7 @@ The aim is to minimize:
 
 $$ \underset{q∈Q}{argmin} \: \mathbb{E}_c[D_{KL} (q (\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) \parallel p (\textbf{z} \vert \textbf{x}_1, \dots , \textbf{x}_C , \pmb{θ}_1, \dots , \pmb{θ}_C ) )] $$
 
-**Hypothesis :** Every channel is conditionally independent from all the others given z (it will allow to factorize the data likelihood, see supplementary material in the paper for more details). 
+**Hypothesis**: Every channel is conditionally independent from all the others given z (it will allow to factorize the data likelihood, see supplementary material in the paper for more details). 
 
 After developping the equation from above they have :
 
