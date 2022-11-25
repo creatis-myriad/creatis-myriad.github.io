@@ -49,7 +49,7 @@ $$ \underset{q∈Q}{argmin} \: \mathbb{E}_c[D_{KL} (q (\textbf{z} \vert \textbf{
 
 **Hypothesis**: Every channel is conditionally independent from all the others given z (it will allow to factorize the data likelihood, see supplementary material in the paper for more details). 
 
-After developping the equation from above they have :
+After developping the equation from above they get:
 
 $$ \mathscr{L}(\textbf{θ}, \pmb{\phi}, \textbf{x}) = \mathbb{E}_c \left[ \mathbb{E}_{q(\textbf{z} \vert \textbf{x}_c )} \left[  \sum_{i=1}^{C} ln \: p(\textbf{x}_i \vert \textbf{z}, \textbf{θ}_c) \right] − D_{KL} (q (\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) \parallel p (\textbf{z}) ) \right] $$
 
