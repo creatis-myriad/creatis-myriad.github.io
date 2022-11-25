@@ -74,7 +74,7 @@ $$ \textbf{x}_c = \textbf{G}_c \textbf{z} + snr{^{−1/2}}.\textbf{ϵ} $$
 * Here are the results with synthetic data :
 
 ![](/collections/images/MCSVI/results_part_1.jpg)
-It shows that their model perform well compared to single-channel model.
+It shows that their model performs well compared to a single-channel model.
 
 
 * They have tried it on real data as well :
