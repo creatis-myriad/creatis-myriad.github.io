@@ -88,7 +88,7 @@ It shows that their model performs well compared to a single-channel model.
 
 ![](/collections/images/MCSVI/results_part_3.jpg)
 Having a generative model allows them to validate the latent space they obtained.
-Moreover, the results they obtain are coherent with typical results from the litterature on Alzheimer's Disease.
+Moreover, the results they obtain are coherent with typical results from the literature on Alzheimer's Disease.
 
 
 # Conclusion
