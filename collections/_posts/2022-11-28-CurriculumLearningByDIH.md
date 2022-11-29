@@ -1,6 +1,6 @@
 ---
 layout: review
-title: "Curriculum learning by Dynamic Instantaneous Hardness"
+title: "Curriculum Learning by Dynamic Instantaneous Hardness"
 tags: deep-learning classification curriculum-learning
 author: "Juliette Moreau"
 cite:
