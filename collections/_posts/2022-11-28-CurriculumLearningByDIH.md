@@ -1,7 +1,7 @@
 ---
 layout: review
 title: "Curriculum learning by Dynamic Instantaneous Hardness"
-tags: deep learning, classification, curriculum learning
+tags: deep-learning classification curriculum-learning
 author: "Juliette Moreau"
 cite:
     authors: "Tianyi Zhou, Shengjie Wang, Jeff A. Bilmes"
