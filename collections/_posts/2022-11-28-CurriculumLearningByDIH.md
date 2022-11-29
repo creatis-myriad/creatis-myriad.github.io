@@ -29,7 +29,7 @@ Curriculum learning[^1] consists in presenting the right examples in the right o
 
 ## Dynamic Instantaneous Hardness
 
-The goal of the measure is to get the utility of each sample in the future in order to select them wisely. The Dynamic Instantaneous Hardness (DIH) is defined as the exponential moving average of an instantaneous hardness measure of a sample over time, the instantaneous hardness $$a_t(i)$$ being a measure retrieved from the epoch that have just being computed.
+The goal of the measure is to get the utility of each sample in the future in order to select them wisely. The Dynamic Instantaneous Hardness (DIH) is defined as the exponential moving average of instantaneous hardness measures of a sample over time, the instantaneous hardness $$a_t(i)$$ being a measure retrieved from the epoch that has just been computed.
 
 $$
 r_{t+1}(i) = \left\{
