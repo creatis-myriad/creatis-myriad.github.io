@@ -6,7 +6,7 @@ author: "Juliette Moreau"
 cite:
     authors: "Tianyi Zhou, Shengjie Wang, Jeff A. Bilmes"
     title:   "Curriculum learning by Dynamic Instantaneous Hardness"
-    venue:   "Proceedings of the 34th International Conference on Neural Information Processing Systems, December 2020"
+    venue:   "NeurIPS 2020"
 pdf: "https://dl.acm.org/doi/pdf/10.5555/3495724.3496445"
 ---
 
