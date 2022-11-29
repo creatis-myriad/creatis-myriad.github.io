@@ -87,7 +87,7 @@ Better accuracy with DIHCL.
 
 ![](/collections/images/CL_DIH/accuracy_curves.jpg)
 
-DIHCL is more stable and reach its best performance sooner than SPL and MCL.
+DIHCL is more stable and reaches its best performance sooner than SPL and MCL.
 
 ![](/collections/images/CL_DIH/training_time.jpg)
 
