@@ -43,6 +43,8 @@ $$=\underbrace{\mathbb{E}_{c}\left[\int_{z}{q(z \vert x_c)\cdot log\left(p(x)\ri
 
 &nbsp;
 
+$$Eq_1 = \mathbb{E}_{c}\left[\int_{z}{q(z \vert x_c)\cdot log\left(p(x)\right)\,dz}\right]$$
+
 $$Eq_1 = \mathbb{E}_{c}[log\left(p(x)\right)\cdot \underbrace{\int_{z}{q(z \vert x_c)\,dz}}_{=1}]$$
 
 $$Eq_1 = \mathbb{E}_{c}[log\left(p(x)\right)] = log\left(p(x)\right)$$
@@ -67,13 +69,23 @@ $$\mathbb{E}_{c}[D_{KL}( q(z \vert x_c) \parallel p(z \vert x))] = $$
 
 $$log\left(p(x)\right) + \mathbb{E}_{c}\left[D_{KL}\left( q(z \vert x_c) \parallel p(z)\right) - \mathbb{E}_{z \sim q(z \vert x_c)}[log\left(p(x \vert z)\right)] \right]$$
 
+&nbsp;
+
+Finally, this last equation can be rewritten as:
+
 $$\mathbb{E}_{c}[D_{KL}( q(z \vert x_c) \parallel p(z \vert x))] + \mathcal{L}= log\left(p(x)\right)$$
 
 where $$\mathcal{L}$$ is the ***Evidence Lower BOund (ELBO)***, whose expression is given by:
 
 $$\mathcal{L} = \mathbb{E}_{c}\left[\mathbb{E}_{z \sim q(z \vert x_c)}[log\left(p(x \vert z)\right)] - D_{KL}\left( q(z \vert x_c) \parallel p(z)\right) \right]$$
 
+&nbsp;
 
+Since $$D_{KL}$$ is a measure of distance between two distributions, its value is $$\geq 0$$, which leads to the following relation:
+
+$$\underbrace{\mathbb{E}_{c}[D_{KL}( q(z \vert x_c) \parallel p(z \vert x))]}_{\geq 0} + \underbrace{\mathcal{L}}_{\leq 0} = \underbrace{log\left(p(x)\right)}_{\leq 0\text{ and fixed}}$$
+
+> Thus, by tweaking $$\{q(z \vert x_c)\}_{c=1:C}$$, we can seek to maximize the ELBO $$\mathcal{L}$$, which will imply the minimization of the KL divergence 
 
 
 
