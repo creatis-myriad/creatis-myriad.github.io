@@ -97,7 +97,7 @@ Training time reduced with DIHCL.
 
 ![](/collections/images/CL_DIH/ablation_study.jpg)
 
-More experiments are presented in the appendix of the article to explain the decisions on the parameters. The more important settings concerns the discount factor $$\gamma$$ to calculate the DIH, the number of warm starting epochs and the cosine for the cyclic learning rate.
+More experiments are presented in the appendix of the article to explain the choice of parameters. The most important settings concern i) the discount factor $$\gamma$$ to calculate the DIH, ii) the number of warm starting epochs and iii) the cosine for the cyclic learning rate.
 
 # Conclusions
 
