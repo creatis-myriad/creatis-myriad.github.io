@@ -23,7 +23,7 @@ pdf: "https://dl.acm.org/doi/pdf/10.5555/3495724.3496445"
 
 # Introduction
 
-Curriculum learning[^1] consists in presenting the right examples in the right order at the right time during training to enhance the learning process as teachers would do with their students. For that some hardness is defined, it can be related to the different classes -considering classification- or inherant to the examples like particular cases of shapes. One way is to use intantaneous feedback and at each epoch exemples are selected given this feedback, this is called self-paced learning[^2]. However it does not take into account the training history of each sample. It is why DIH is introduced.
+Curriculum learning[^1] consists in presenting the right examples in the right order at the right time during training to enhance the learning process, just as teachers would do with their students. To that end, it is necessary to define a concept of _hardness_. It can be related to the different classes -in the case of classification- or inherent to the examples, such as specific shapes. One approach, called self-paced learning[^2], selects some examples at each epoch based on instantaneous feedback from the model. However, it does not take into account the training history of each sample, motivating the introduction of DIH.
 
 # Methods
 
