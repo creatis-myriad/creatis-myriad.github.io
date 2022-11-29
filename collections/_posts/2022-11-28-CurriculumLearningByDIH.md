@@ -17,7 +17,7 @@ pdf: "https://dl.acm.org/doi/pdf/10.5555/3495724.3496445"
 # Highlights
 
 * This paper proposes a new difficulty metric for curriculum learning called Dynamic Instantaneous Hardness (DIH).
-* Its purpose is to learn faster and improve the results.
+* Its purpose is to speed-up learning and to improve the results.
 * It is only tested on classification but might be extended to other applications.
 &nbsp;
 
