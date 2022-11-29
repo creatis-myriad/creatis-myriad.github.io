@@ -69,7 +69,7 @@ DIH metrics decrease during training for both easy and hard samples, indicating 
 ## Curriculum learning
 
 Since the DIH represents the hardness of samples ,it seems natural to base some curriculum learning on it (DIHCL). The authors keep training the model on samples whith large DIH that have historically been hard, since the model does not perform well on them, and revisit easy samples less frequently, because the model is more likely to stay at those samples’ minima. 
-At each training step a subset of samples is selected according to their DIH values, given the probability $$p_{t,i} \propto h(r_{t-1}(i))$$ where $$h(·)$$ is a monotone non-decreasing function. 
+At each training step, a subset of samples is selected according to their DIH values, given the probability $$p_{t,i} \propto h(r_{t-1}(i))$$, where $$h(·)$$ is a monotone non-decreasing function. 
 * DIHCL-Rand: data is sample proportionnaly to DIH $$h(r_t(i)) = r_t(i)$$
 * DIHCL-Exp: trade-off exploration/exploitation based on softmax value $$h(r_t(i)) = exp [\sqrt{2*log(n/n)}*r_t(i)], a_t(i) \leftarrow a_t(i)/p_{t,i} \forall i \in S_t$$
 * DIHCL-Beta: Beta prior distribution to balance exploration and exploitation $$h(r_t(i)) \leftarrow Beta(r_t(i),c-r_t(i))$$ with $$c > r_t(i)$$
