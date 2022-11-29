@@ -42,7 +42,7 @@ $$
 
 $$ \gamma \in [0,1] $$ is a discount factor and $$S_t$$ is the set of samples used for training at time $$t$$.
 
-The three instantaneous hardness used to calculate DIH and compared are:
+Three definitions of instantaneous hardness are compared:
 * the loss : $$l(y_i,F(x_i; w_t))$$, where $$l(·, ·)$$ is a standard loss function and $$F(·; w)$$ is the model where $$w$$ are the model parameters
 * the loss change between two consecutive time steps : $$ \|l(y_i,F(x_i; w_t))-l(y_i,F(x_i; w_{t-1}))\| $$
 * the prediction flip (the 0-1 indicator of whether the prediction correctness changes) between two consecutive time steps : $$ \| 𝟙[\hat{y}^t_i = y_i]- 𝟙[\hat{y}^{t-1}_i = y_i]\| $$, where $$\hat{y}^t_i$$ is the prediction of sample $$i$$ in step $$t$$, e.g., $$ \arg\max_j F(x_i; w_t)[j]$$ for classification.
