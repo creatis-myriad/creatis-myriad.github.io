@@ -74,7 +74,7 @@ At each training step a subset of samples is selected according to their DIH val
 * DIHCL-Exp: trade-off exploration/exploitation based on softmax value $$h(r_t(i)) = exp [\sqrt{2*log(n/n)}*r_t(i)], a_t(i) \leftarrow a_t(i)/p_{t,i} \forall i \in S_t$$
 * DIHCL-Beta: Beta prior distribution to balance exploration and exploitation $$h(r_t(i)) \leftarrow Beta(r_t(i),c-r_t(i))$$ with $$c > r_t(i)$$
 
-The DIH of selected samples is updated with their instantaneous hardness normalized by the learning rate as it varies during training. During the first few epochs the whole dataset is used to set a correct DIH to each samples and then starts to select training samples, the subset size gradually deacrease during training (empirical study made to have optimal parameters).
+The DIH of selected samples is updated with their instantaneous hardness normalized by the learning rate as it varies during training. During the first few epochs, the whole dataset is used to set a correct DIH for each samples. Once the training starts to select samples, the subset size is gradually decreased during training (empirical study made to find optimal parameters).
 
 Comparison is made with random baseline, SPL (based on instantaneous hardness) and MCL (Minmax curriculum learning[^3]).
 
