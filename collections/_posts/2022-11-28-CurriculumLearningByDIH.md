@@ -29,7 +29,7 @@ Curriculum learning[^1] consists in presenting the right examples in the right o
 
 ## Dynamic Instantaneous Hardness
 
-The goal of the measure is to get the utility of each sample in the future in order to select them wisely. The Dynamic Instantaneous Hardness (DIH) is defined as the exponential moving average of instantaneous hardness measures of a sample over time, the instantaneous hardness $$a_t(i)$$ being a measure retrieved from the epoch that has just been computed.
+The goal of the measure is to get the usefulness of each sample in the future in order to select them wisely. The Dynamic Instantaneous Hardness (DIH) is defined as the exponential moving average of instantaneous hardness measures of a sample over time, the instantaneous hardness $$a_t(i)$$ being a measure retrieved from the epoch that has just been computed.
 
 $$
 r_{t+1}(i) = \left\{
@@ -42,22 +42,22 @@ $$
 
 $$ \gamma \in [0,1] $$ is a discount factor and $$S_t$$ is the set of samples used for training at time $$t$$.
 
- Three instantaneous hardness are used :
+The three instantaneous hardness used to calculate DIH and compared are:
 * the loss : $$l(y_i,F(x_i; w_t))$$, where $$l(·, ·)$$ is a standard loss function and $$F(·; w)$$ is the model where $$w$$ are the model parameters
 * the loss change between two consecutive time steps : $$ \|l(y_i,F(x_i; w_t))-l(y_i,F(x_i; w_{t-1}))\| $$
 * the prediction flip (the 0-1 indicator of whether the prediction correctness changes) between two consecutive time steps : $$ \| 𝟙[\hat{y}^t_i = y_i]- 𝟙[\hat{y}^{t-1}_i = y_i]\| $$, where $$\hat{y}^t_i$$ is the prediction of sample $$i$$ in step $$t$$, e.g., $$ \arg\max_j F(x_i; w_t)[j]$$ for classification.
 
 ![](/collections/images/CL_DIH/DIH_vs_SPL.jpg)
 
-Compared to DIH instantaneous hardness is very less stable so as the training and it requires extra inference steps of a model over all the samples.
+Compared to DIH, instantaneous hardness is i) much less stable during training and ii) requires extra training and inference steps by a model over all the samples.
 
 
 ## Properties
 
-DIH can vary a lot between different samples allowing their selection. When it is smaller, the samples are more memorable, i.e. easy to learn, while a larger DIH means that the samples are harder to retain.
+DIH can vary a lot between different samples facilitating their discrimination, and so helping to select the most informative samples. When it is smaller, the samples are more memorable, i.e. easy to learn, while a larger DIH means that the samples are harder to retain.
 
 ![](/collections/images/CL_DIH/sample_separation.jpg)
-The curve shape is explained by a cyclic learning rate. We clearly see the gap between the training dynamics of red samples that are harder and blue samples that have smaller DIH. Moreover, the variance of sample with larger DIH is bigger showing that a local minima is not found for them and it is necessary to revisit them often, same conclusion regarding the prediction flip that is higher.
+The the large steps in the curves are explained by a cyclic learning rate. We clearly see the gap between the training dynamics of red samples that are harder and blue samples that have smaller DIH. Moreover, the variance of samples with larger DIH is bigger showing that a local minima is not found for them. It is thus necessary to revisit them often, and the same conclusion can be made regarding the prediction flip that is higher for the same samples.
 
 ![](/collections/images/CL_DIH/early_information.jpg)
 
@@ -105,6 +105,13 @@ The article introduces a new metric to implement curriculum learning that is dou
 
 # References
 
-[^1]: Y. Bengio et al. Curriculum learning. Journal of the American Podiatry Association 60(1):6. January 2009. DOI:10.1145/1553374.1553380
-[^2]: M. Kumar et al. Self-Paced Learning for Latent Variable Models. Procedings of the 23rd conference on Neural Information Processing Systems. 2010. DOI:10.5555/2997189.2997322
-[^3]: T. Zhou and J. Bilmes. Minimax curriculum learning: Machine teaching with desirable difficulties and scheduled diversity. In ICLR. February 2018.
+[^1]: Y. Bengio et al. [Curriculum learning](https://ronan.collobert.com/pub/matos/2009_curriculum_icml.pdf). Journal of the American Podiatry Association 60(1):6. January 2009.
+[^2]: M. Kumar et al. [Self-Paced Learning for Latent Variable Models](https://papers.nips.cc/paper/2010/file/e57c6b956a6521b28495f2886ca0977a-Paper.pdf). Procedings of the 23rd conference on Neural Information Processing Systems. 2010.
+[^3]: T. Zhou and J. Bilmes. [Minimax curriculum learning: Machine teaching with desirable difficulties and scheduled diversity](https://openreview.net/pdf?id=BywyFQlAW). In ICLR. February 2018.
+
+
+
+
+
+
+
