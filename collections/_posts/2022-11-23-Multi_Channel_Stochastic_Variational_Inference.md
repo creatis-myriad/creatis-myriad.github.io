@@ -43,18 +43,27 @@ Let $$ \textbf{x}  = \{\textbf{x}_c\}_{c=1}^{C} $$ be a single observation of a 
 * $$ p(\textbf{x}_c \vert \textbf{z}, \pmb{\theta}_c) $$ : likelihood distribution
 * $$ q(\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) $$ : probability density function
 
-The aim is to minimize:
+The objective can be formulated as:
 
-$$ \underset{q∈Q}{argmin} \: \mathbb{E}_c[D_{KL} (q (\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) \parallel p (\textbf{z} \vert \textbf{x}_1, \dots , \textbf{x}_C , \pmb{θ}_1, \dots , \pmb{θ}_C ) )] $$
+$$ \underset{q \in Q}{\operatorname{arg min}} \: \mathbb{E}_c[D_{KL} (q (\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) \parallel p (\textbf{z} \vert \textbf{x}_1, \dots , \textbf{x}_C , \pmb{\theta}) )] $$
 
-**Hypothesis**: Every channel is conditionally independent from all the others given z (it will allow to factorize the data likelihood, see supplementary material in the paper for more details). 
+By rearranging the objective, the authors obtain a lower-bound:
 
-After developping the equation from above they get:
+$$
+\mathbb{E}_c \left[ \mathbb{E}_{q(\textbf{z} \vert \textbf{x}_c )} \left[  ln \: p(\textbf{x} \vert \textbf{z}, \textbf{\theta}_c) \right] − D_{KL} (q (\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) \parallel p (\textbf{z}) ) \right]
+$$
 
-$$ \mathscr{L}(\textbf{θ}, \pmb{\phi}, \textbf{x}) = \mathbb{E}_c \left[ \mathbb{E}_{q(\textbf{z} \vert \textbf{x}_c )} \left[  \sum_{i=1}^{C} ln \: p(\textbf{x}_i \vert \textbf{z}, \textbf{θ}_c) \right] − D_{KL} (q (\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) \parallel p (\textbf{z}) ) \right] $$
+A few interesting points to note about this new formulation are:
+- The **data matching term naturally emerges from reformulating the posterior constraint**, independently from the data matching term commonly imposed by autoencoders;
+- The inner expectation enforces the decoders from each channel to accurately reconstruct their respective channels.
 
+Finally, under the hypothesis that channels are conditionally independent from each other given $$\textbf{z}$$, the authors factorize the data likelihood as $$ p(\textbf{x} \vert \textbf{z}, \textbf{\theta}_c) = \sum_{i=1}^{C} p(\textbf{x}_i \vert \textbf{z}, \textbf{\theta}_c)$$ to reformulate the lower bound like below:
 
-A figure used in the [Github repository](https://gitlab.inria.fr/epione_ML/mcvae) to understand the general idea:
+$$ \mathscr{L}(\textbf{\theta}, \pmb{\phi}, \textbf{x}) = \mathbb{E}_c \left[ \mathbb{E}_{q(\textbf{z} \vert \textbf{x}_c )} \left[  \sum_{i=1}^{C} ln \: p(\textbf{x}_i \vert \textbf{z}, \textbf{\theta}_c) \right] − D_{KL} (q (\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) \parallel p (\textbf{z}) ) \right] $$
+
+This **factorization of the data likelihood enforces that the posterior from each channel should be similar**, since they are used to reconstruct the input from other channels.
+
+A figure from the [Github repository](https://gitlab.inria.fr/epione_ML/mcvae) explains schematically the general idea:
 
 ![](/collections/images/MCSVI/Multi_Latent_Space.jpg)
 
