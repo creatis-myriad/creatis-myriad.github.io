@@ -54,7 +54,7 @@ Compared to DIH instantaneous hardness is very less stable so as the training an
 
 ## Properties
 
-DIH can vary a lot between different samples allowing their selection. When it is smaller, the samples are more memorable i.e. easy to learn while larger DIH means that it is harder to retain.
+DIH can vary a lot between different samples allowing their selection. When it is smaller, the samples are more memorable, i.e. easy to learn, while a larger DIH means that the samples are harder to retain.
 
 ![](/collections/images/CL_DIH/sample_separation.jpg)
 The curve shape is explained by a cyclic learning rate. We clearly see the gap between the training dynamics of red samples that are harder and blue samples that have smaller DIH. Moreover, the variance of sample with larger DIH is bigger showing that a local minima is not found for them and it is necessary to revisit them often, same conclusion regarding the prediction flip that is higher.
