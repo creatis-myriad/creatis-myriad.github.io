@@ -62,7 +62,7 @@ The curve shape is explained by a cyclic learning rate. We clearly see the gap b
 ![](/collections/images/CL_DIH/early_information.jpg)
 
 DIH in early epochs (40) suffices to differentiate between easy and hard samples. It doesn't require a full training to classify the samples. 
-DIH metrics decrease during training for both easy and hard samples indicating that as learning continues, samples become less informative, so that fewer samples can be selected for training.
+DIH metrics decrease during training for both easy and hard samples, indicating that as learning progresses samples become less informative, and resulting in fewer samples being needed to continue training the model.
 
 # Experiments
 
