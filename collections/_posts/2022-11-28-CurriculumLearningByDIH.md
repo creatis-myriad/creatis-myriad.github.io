@@ -101,7 +101,7 @@ More experiments are presented in the appendix of the article to explain the cho
 
 # Conclusions
 
-The article introduces a new metric to implement curriculum learning that is doubly effective as it reduces the training time and does not weed a previous training to be set. It wound be intersting to compare the performances to other types of CL and not only SPL and MCL like teacher-student CL that is another great CL technique.
+The article introduces a new metric to implement curriculum learning that is doubly benefic as it reduces the training time and does not need a previous training to be set. It would be interesting to compare the performance of DIH to other SOTA CL methods, such as teacher-student CL, aside from SPL and MCL.
 
 # References
 
