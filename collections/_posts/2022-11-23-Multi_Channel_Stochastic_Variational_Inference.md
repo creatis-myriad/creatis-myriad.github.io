@@ -40,7 +40,7 @@ The authors proposed a novel multi-channel stochastic generative model for the j
 Let $$ \textbf{x}  = \{\textbf{x}_c\}_{c=1}^{C} $$ be a single observation of a set of C channels, where each $$ \textbf{x}_c \in \mathbb{R}^{d_c} $$ is a $$ d_c $$-dimensional vector.
 
 * $$ p(\textbf{z}) $$ : prior
-* $$ p(\textbf{x}_c \vert \textbf{z}, \pmb{θ}_c) $$ : likelihood distribution
+* $$ p(\textbf{x}_c \vert \textbf{z}, \pmb{\theta}_c) $$ : likelihood distribution
 * $$ q(\textbf{z} \vert \textbf{x}_c, \pmb{\phi}_c) $$ : probability density function
 
 The aim is to minimize:
