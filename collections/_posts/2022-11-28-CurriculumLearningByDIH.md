@@ -109,9 +109,3 @@ The article introduces a new metric to implement curriculum learning that is dou
 [^2]: M. Kumar et al. [Self-Paced Learning for Latent Variable Models](https://papers.nips.cc/paper/2010/file/e57c6b956a6521b28495f2886ca0977a-Paper.pdf). Procedings of the 23rd conference on Neural Information Processing Systems. 2010.
 [^3]: T. Zhou and J. Bilmes. [Minimax curriculum learning: Machine teaching with desirable difficulties and scheduled diversity](https://openreview.net/pdf?id=BywyFQlAW). In ICLR. February 2018.
 
-
-
-
-
-
-
