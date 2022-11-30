@@ -23,6 +23,8 @@ pdf: "http://proceedings.mlr.press/v97/antelmi19a/antelmi19a.pdf"
 
 # Method
 
+![](/collections/images/smcvae/modeling_encoder_side.jpg)
+
 &nbsp;
 
 # Appendix
