@@ -187,7 +187,7 @@ Using
 
 $$\int_{z_0,\cdots,z_L} \phi(z_i) \prod_{j=0}^{L} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_L=\int_{z_0,\cdots,z_i} \phi(z_i) \prod_{j=0}^{i} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_i$$
 
-(this relationship is demonstrated at the end of this post, a big thanks to Lucas Braz for his help !)
+(this relationship is demonstrated at the end of this post, a big thank to Lucas Braz for his help !)
 
 We have
 
