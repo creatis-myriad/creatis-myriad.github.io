@@ -67,6 +67,18 @@ $$\mathcal{L}$$ can thus be rewritten as:
 
 $$\mathcal{L} = \mathbb{E}_{c}\left[\mathbb{E}_{\textbf{z} \sim q(\textbf{z} \vert \textbf{x}_c)}\left[\sum_{i=1}^{C}log\left(p(\textbf{x}_i \vert \textbf{z})\right)\right] - D_{KL}\left( q(\textbf{z} \vert \textbf{x}_c) \parallel p(\textbf{z})\right) \right]$$
 
+&nbsp;
+
+The minimization of $$\mathbb{E}_{c}[D_{KL}( q(\textbf{z} \vert \textbf{x}_c) \parallel p(\textbf{z} \vert \textbf{x}))]$$ is thus equivalent to the minimization of 
+
+$$\mathcal{L^{*}} = \mathbb{E}_{c}\left[D_{KL}\left( q(\textbf{z} \vert \textbf{x}_c) \parallel p(\textbf{z})\right) - \mathbb{E}_{\textbf{z} \sim q(\textbf{z} \vert \textbf{x}_c)}\left[\sum_{i=1}^{C}log\left(p(\textbf{x}_i \vert \textbf{z})\right)\right]\right]$$
+
+
+The following figure illustrates the minimization of $$\mathcal{L^{*}}$$:
+
+![](/collections/images/smcvae/core_minimization.jpg)
+
+&nbsp;
 
 # Appendix
 
@@ -129,6 +141,14 @@ Since $$D_{KL}$$ is a measure of distance between two distributions, its value i
 $$\underbrace{\mathbb{E}_{c}[D_{KL}( q(\textbf{z} \vert \textbf{x}_c) \parallel p(\textbf{z} \vert \textbf{x}))]}_{\geq 0} + \underbrace{\mathcal{L}}_{\leq 0} = \underbrace{log\left(p(\textbf{x})\right)}_{\leq 0\text{ and fixed}}$$
 
 > Thus, by tweaking $$\{q(\textbf{z} \vert \textbf{x}_c)\}_{c=1:C}$$, we can seek to maximize the ELBO $$\mathcal{L}$$, which will imply the minimization of the KL divergence 
+
+&nbsp;
+
+So the minimization of $$\mathbb{E}_{c}[D_{KL}( q(\textbf{z} \vert \textbf{x}_c) \parallel p(\textbf{z} \vert \textbf{x}))]$$ is equivalent to the maximization of $$\mathcal{L}$$, or the minimization of 
+
+$$\mathcal{L^{*}} = \mathbb{E}_{c}\left[D_{KL}\left( q(\textbf{z} \vert \textbf{x}_c) \parallel p(\textbf{z})\right) - \mathbb{E}_{\textbf{z} \sim q(\textbf{z} \vert \textbf{x}_c)}[log\left(p(\textbf{x} \vert \textbf{z})\right)]\right]$$
+
+
 
 
 
