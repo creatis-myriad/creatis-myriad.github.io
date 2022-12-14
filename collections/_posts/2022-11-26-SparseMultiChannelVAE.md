@@ -19,10 +19,10 @@ pdf: "http://proceedings.mlr.press/v97/antelmi19a/antelmi19a.pdf"
 
 # Highlights
 
-* The objective of this paper is to develop a formalism called sMSVAE (sparse multi-channel VAE) to handle with heterogenous data through VAE formulation.
+* The objective of this paper is to develop a formalism called sMCVAE (sparse multi-channel VAE) to handle with heterogenous data through VAE formulation.
 * This is achieved through two major innovations: 
 
-1) Variational distributions of each channel (type of data) are constrained to a common target prior in the latent space to bring interpretability;
+1) Variational distributions of each channel (type of data) are constrained to a common target prior in the latent space to bring interpretability.
 > this can be seen as a process of alignment 
 
 2) Parsimonious latent representations are enforced by ***variational dropout*** to make the method computationally advantageous and more easily interpretable.
