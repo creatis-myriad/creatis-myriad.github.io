@@ -164,9 +164,27 @@ The encoding of the test set in the latent space given by the sMCVAE model is de
 
 This subspace appears stratified by age and disease status, across roughly orthogonal directions. 
 
+&nbsp;
 
+The last figure below illustrates the capacity of the method in reconstructing missing channels by sampling points from two trajectories in the latent space to predict the imaging data channels
 
+![](/collections/images/smcvae/medical_results_3.jpg)
 
+Trajectory 1 ($$T_{r1}$$) follows an aging path centered on the healthy subject group. 
+
+Trajectory 2 ($$T_{r2}$$), starts from the same origin of $$T_{r1}$$ and follows a path were aging is entangled with the pathological variability.
+
+All the trajectories show a plausible evolution across disease and healthy conditions
+
+&nbsp;
+
+# Conclusions
+
+* The authors proposed two innovations in this paper: i) a VAE formalism to deal with heterogeneous data structured as multi-channels; ii) the use of variational dropout to impose sparsity constraints in the latent space
+
+* Results are encouraging and show interesting properties of the latent space learned from a neurological application 
+
+&nbsp;
 
 # Appendix
 
