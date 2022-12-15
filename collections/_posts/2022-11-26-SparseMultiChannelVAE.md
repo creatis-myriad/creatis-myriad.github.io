@@ -125,7 +125,7 @@ $$\hat{\textbf{x}}_i = \mathbb{E}_j\left[\mathbb{E}_{\textbf{z} \sim q(\textbf{z
 
 ## Regularization via dropout
 
-In the case of a basic neural network with a fully connected layer, we have a linear transformation between an input vector $$\textbf{z}$$ and an output vector $$\textbf{x}$$ and a non-linearity is applied to the vector $$\textbf{x}$$. 
+In the case of a basic neural network with a fully connected layer, we have a linear transformation between an input vector $$\textbf{z}$$ and an output vector $$\textbf{x}$$ (non-linearity is applied to the vector $$\textbf{x}$$ after the linear transformation). 
 
 With a generic linear transformation, we have $$\textbf{x} = \textbf{Gz}$$. 
 Regularization techniques are based on the multiplication (element-wise) of either $$\textbf{z}$$ (*dropout*) or $$\textbf{G}$$ (*dropconnect*) by a random variable (usually Bernoulli).
@@ -135,7 +135,7 @@ $$x_i = \sum_{k}^{} g_{ik}(\xi_{k} z_k) \; (dropout), $$
 with $$\xi_{k} \sim  \mathcal{B}(1 − p)$$ 
 
 
-Gaussian Dropout with continuous noise $$\xi \sim  \mathcal{N} (1; \; \alpha = \frac{p}{1-p})$$ works as well and is similar to Binary Dropout with dropout rate $$p$$ ([Molchanov et al., 2017](http://proceedings.mlr.press/v70/molchanov17a/molchanov17a.pdf) ; [Srivastava et al., 2014](https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf?utm_content=buffer79b43&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer,)). 
+It is possible to use continuous noise with the distribution $$\xi \sim  \mathcal{N} (1; \; \alpha = \frac{p}{1-p})$$. It is similar to Binary Dropout with dropout rate $$p$$ and is called *Gaussian Dropout*. ([Molchanov et al., 2017](http://proceedings.mlr.press/v70/molchanov17a/molchanov17a.pdf) ; [Srivastava et al., 2014](https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf?utm_content=buffer79b43&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer,)). 
 
 It is beneficial to use continuous noise instead of discrete one because **multiplying the inputs by a Gaussian noise is equivalent to putting Gaussian noise on the weights**.
 This procedure can be used to obtain a posterior distribution over the model’s weights ([Wang & Manning. 2013](http://proceedings.mlr.press/v28/wang13a.pdf) ; [Kingma et al., 2015](https://proceedings.neurips.cc/paper/2015/file/bc7316929fe1545bf0b98d114ee3ecb8-Paper.pdf)).
@@ -166,7 +166,7 @@ $$D_{KL} (\mathcal{N} (w; \alpha w^2) || p (w) ) ≈ −k_1\sigma(k_2 + k_3 ln \
 
 $$k_1 = 0.63576$$, $$k_2 = 1.87320$$, $$k_3 = 1.48695$$, $$\sigma$$(·) Sigmoid function.
 
-The optimization of $$D_{KL}$$ promotes $$\alpha \to \infty $$ ($$\alpha = p/1−p$$), the implicit drop rate p tends to 1. The associated weight $$w$$ can be discarded. 
+The optimization of $$D_{KL}$$ promotes $$\alpha \to \infty $$ ($$\alpha = p/1−p$$), the implicit drop rate $$p$$ tends to 1. The associated weight $$w$$ can be discarded. 
 
 Unless that weight is beneficial for the optimization objective, that is to maximize the data log-likelihood, it will be set to zero.
 **Sparsity arises naturally**.
