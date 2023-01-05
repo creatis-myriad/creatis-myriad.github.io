@@ -176,7 +176,13 @@ tuning both step size and momentum in this real-world setting and match the resu
 
 ## Higher order hyperoptimization
 
-TODO
+We can observe the test error of the hyperoptimizer depending of the order of the hyperoptimization. It appears that the method become more stable as order increase.
+
+![curves2](/collections/images/GradientDescent-TheUltimateOptimizer/img-008.jpg)
+
+We can also observe the runtime cost of higher order hyperoptimization. The method is efficient and scale linearly.
+
+![curves3](/collections/images/GradientDescent-TheUltimateOptimizer/img-011.jpg)
 
 # Conclusions
 
