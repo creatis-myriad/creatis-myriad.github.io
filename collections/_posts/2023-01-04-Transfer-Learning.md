@@ -14,9 +14,9 @@ pdf: "https://arxiv.org/abs/2008.11687"
 
 # Context
 
-In cases where we lack of a large amount of data or we want a fast training, we are interested in pre-trained networks that can generalize well from a source domain to a target domain.
+In cases where we lack a large amount of data or we want a fast training, we are interested in pre-trained networks that can generalize well from a source domain to a target domain.
 
-**Transfer learning** consists in training a model on source data and then fine-tune it in target data, and has encountered a big success in several applications. Still, it is not clear:
+**Transfer learning** consists in training a model on source data and then fine-tune it on the target data, and has encountered a big success in several applications. Still, it is not clear:
 
 * What is needed for a successful transfer leaning?
 * Which parts of the network make transfer learning work?
@@ -26,6 +26,8 @@ In this paper, the authors try to answer to these questions. Their code is avail
 <br/>
 
 # Experimental Setup
+Pre-trained and randomly initialized models are invesitgated in the **image classification** setting.
+
 * Data:
 	* Source data for pre-training: ImageNet.
 	* Target data for downstream tasks: CheXpert (X-ray) and DomainNet (real, clipart and quickdraw).
@@ -44,7 +46,7 @@ In this paper, the authors try to answer to these questions. Their code is avail
 
 ![](/collections/images/transfer/transfer_learning_fig2.jpg)
 
-**However**, even distant target domains present enhanced performances with transfer learning. Are some other factors other than feature reuse being useful for the target domain?
+**However**, even distant target domains present enhanced performances with transfer learning. Are some other factors other than feature reuse being useful for the target domain? To check this, they progressively destroy high level visual features on target images and evaluate the performance loss.
 
 ![](/collections/images/transfer/transfer_learning_fig1.jpg)
 
@@ -83,9 +85,19 @@ What is the distance of the models in the parameter space?
 <br/>
 
 #### 3. Generalization performance of P-T and RI-T models
-A criterion for good generalization of a model is whether the basin of the loss landscape near the final solution is flat (Garipov et al (2018) [[2]](https://arxiv.org/abs/1802.10026)). When a basin is narrow, a **performance barrier** occurs in points near the minimizer. 
 
-![](/collections/images/transfer/transfer_learning_fig4.jpg)
+> "A commonly used criterion for better generalization performance is the flatness of the basin of the loss landscape near the final solution. In a flat basin, the weights could be locally perturbed without hurting the performance, while in a narrow basin, moving away from the minimizer would quickly hit a barrier, indicated by a sudden increase in the loss."
+
+Let
+$$\Theta_1$$
+and
+$$\Theta_2$$
+be the weights corresponding to 2 different solutions. We can create a low-loss path between them by defining a set of models from the interpolation of the two set of weights:
+$$ \{\Theta_{\lambda} = (1-\lambda)\Theta_1 + \lambda\Theta_2\}. $$
+
+Garipov et al (2018) [[2]](https://arxiv.org/abs/1802.10026) saw that two solutions can be connected via a non-linear low-loss path. **Performance barriers** occur in this path unless the two solutions are in the same flat basin of the loss landscape.
+
+![](/collections/images/transfer/transfer_learning_fig16.jpg)
 
 **Conclusion**:
 
@@ -97,27 +109,26 @@ A criterion for good generalization of a model is whether the basin of the loss 
 
 #### 4. Where is feature reuse happening?
 
-Zhang et al (2019) [[3]](https://arxiv.org/abs/1902.01996) have seen experimentally that some layers of a network are less robust to perturbation than others, and are therefore more **critical**. Module criticality can be measured by rewinding the module values back to their initial value while keeping the other trained values fixed, and test the model performance.
+Zhang et al (2019) [[3]](https://arxiv.org/abs/1902.01996) saw experimentally that some layers of a network are less robust to perturbation than others, and are therefore more **critical**. Module criticality can be measured by rewinding the module values back to their initial value while keeping the other trained values fixed, and test the model performance. 
 
 ![](/collections/images/transfer/transfer_learning_fig5.jpg)
 
-![](/collections/images/transfer/transfer_learning_fig6.jpg)
-
 **Conclusion**:
 
-* Deeper layers are more critical than lower layers.
-* Lower layers are responsible for general features.
-* Deeper layers are responsible for more target task-specific features.
+* Pre-trained models are more robust to parameter perturbation.
+* Deeper layers are more critical than lower layers. This means that lower layers are responsible for general features and deeper layers are responsible for more target task-specific features.
 
 <br/>
 
 #### 5. Which pre-trained checkpoint model to use? 
 
+The standard practice is to take the checkpoint giving the best performance on the source data, or the last one. But the performance on source data may not be directly linked to the performance in target data.
+
 ![](/collections/images/transfer/transfer_learning_fig7.jpg)
 
 **Conclusion**:
 
-* We can use earlier checkpoints corresponding to the end of a plateau in the source data instead of the last checkpoint. 
+* We can use earlier checkpoints corresponding to the end of a plateau in the source task instead of the last checkpoint. 
 * In Abnar et al (2022) [[4]](https://arxiv.org/abs/2110.02095), the same authors see experimentally that: "as we increase the upstream accuracy, performance of downstream tasks saturate".
 
 <br/>
@@ -125,27 +136,9 @@ Zhang et al (2019) [[3]](https://arxiv.org/abs/1902.01996) have seen experimenta
 # Conclusions
 - The authors use a wide range of tools for the analysis and understanding of models.
 - Both image features and low-level statistics play a role in the good performance of transfer learning on target tasks.
-- Pre-trained models are close to each other and have better robustness and generalization capacities than randomly initiliazed models.
+- Pre-trained models are close to each other in the parameter space.
+- Pre-trained models have better robustness and generalization capacities than randomly initiliazed models.
 - The checkpoint model with best performance on source data may not give the best performance on target data.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
