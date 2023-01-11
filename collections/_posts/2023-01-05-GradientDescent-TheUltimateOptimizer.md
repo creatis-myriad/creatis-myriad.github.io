@@ -16,8 +16,9 @@ pdf: "https://arxiv.org/pdf/1909.13371.pdf"
 
 # Highlights
 
-- Key idea: A method to automatically tune the *hyperparameters* of gradient-based optimization algorithms used in machine learning.
+- Key idea: A method to efficiently and automatically tune the *hyperparameters* of gradient-based optimization algorithms used in machine learning using *automatic differentiation* (AD).
 - The method involves using backpropagation to compute *hypergradients*, which are the gradients of the optimization algorithm's hyperparameters with respect to the loss function being optimized.
+- The method is efficient and can be applied to a wide range of optimization algorithms, including SGD, Adam, RMSProp, and others.
 - The article also describes how this method can be applied recursively, allowing for the optimization of higher-level *hyper-hyper parameters* (even *hyper-...-hyper-hyperparameters*).
 
 # Introduction
@@ -34,7 +35,7 @@ Until now, to use this approach, it requires to manually do the calculus. There 
 - It only tunes the learning rate hyperparameter, not for example the momentum coefficient.
 - By doing a hypergradient descent, you introduced a hyper-learning rate which must also be tuned.
 
-This paper introduce an *automatic differentiation* (AD) method which:
+This paper introduce an *automatic differentiation* method which:
 
 - automatically compute the derivative
 - naturally generalizes to other hyper-parameters
@@ -71,11 +72,11 @@ Using the chain rule:
 
 $$\frac{\partial f(w_i)}{\partial \alpha_i}=\frac{\partial f(w_i)}{\partial w_i}\cdot\frac{\partial w_i}{\partial \alpha_i}=\frac{\partial f(w_i)}{\partial w_i}\cdot\frac{\partial (w_{i-1}-\alpha_i\frac{\partial f(w_{i-1})}{\partial w_{i-1}})}{\partial \alpha_i}=\frac{\partial f(w_i)}{\partial w_i}\cdot(-\frac{\partial f(w_{i-1})}{\partial w_{i-1}})$$
 
-The last equality is possible because $$w_{i-1}$$ and $$f(w_{i-1})$$ (and so $$\frac{\partial f(w_{i-1})}{\partial w_{i-1}}$$) do not depend on $$\alpha_i$$.
+The last equality is possible because $$w_{i-1}$$ and $$f(w_{i-1})$$ (and so $$\frac{\partial f(w_{i-1})}{\partial w_{i-1}}$$) do not depend on $$\alpha_i$$ (detached).
 
 In the case of the Adam Optimizer, I will not write the expression here but it is significantly more complex for the hypergradients of $$\alpha$$,$$\beta_1$$,$$\beta_2$$ and $$\epsilon$$.
 
-The method does not scale.
+This manual method does not scale.
 
 ## Reverse-mode Automatic Differentiation
 
@@ -105,21 +106,15 @@ def HyperSGD.step(w):
     # update w using equation (2)
     d_w = w.grad.detach()
     w = w.detach() - self.alpha * d_w # not -self.alpha.detach()*d_w
-    # as it is already detached
+    # as it is already detached and will stay attached for next iteration
 ```
-
-The next figure shows the computation graph for the SGD with fixed $$\alpha$$ on the left and the HyperSGD on the right:
-
-![graph-cut](/collections/images/GradientDescent-TheUltimateOptimizer/img-000.jpg)
-
-Since the computation graph is extended with not so many nodes, the method is not really slower.
 
 This can be rewritten as:
 
 ```py
-def HyperSGD.__init__(self, alpha, opt=SGD(kappa)):
+def HyperSGD.__init__(self, alpha, opt):
     self.alpha = alpha
-    self.optimizer = opt
+    self.optimizer = opt # for example SGD(kappa)
 
 def HyperSGD.step(w):
     self.optimizer.step(self.alpha)
@@ -127,6 +122,12 @@ def HyperSGD.step(w):
     d_w = w.grad.detach()
     w = w.detach() - self.alpha * d_w
 ```
+
+The next figure shows the computation graph for the SGD with fixed $$\alpha$$ on the left and the HyperSGD on the right:
+
+![graph-cut](/collections/images/GradientDescent-TheUltimateOptimizer/figure1.jpg)
+
+Since the computation graph is extended with not so many nodes, the method is not really slower.
 
 ## Generalization to other hyperparameters
 
@@ -147,29 +148,17 @@ HyperSGD(0.01, HyperSGD(0.01, SGD(0.01)))
 
 # Results
 
-During their experimentations, they first tried to verify the following hypothesis:
+They firstly conducted their experiments on MNIST using a fully connected network with one hidden layer of size 128, tanh activations and a batch size of 256 train for 30 epochs. They report statistics over 3 runs.
 
-- SGD Hyperoptimizer is more efficient than regular SGD.
-- The learned learning rate is better than the initial human-chosen one.
+**Hyperoptimizer SGD outperforms the baseline SGD by a significant margin.** It holds even with another hyperoptimizer to optimize the learning rate of the SGD. Use the learned learning rate is also better than the initial one. Same with Adam.
 
-They conducted their experiments on MNIST using a fully connected network with one hidden layer of size 128, tanh activations and a batch size of 256 train for 30 epochs. They report statistics over 3 runs.
+![table1](/collections/images/GradientDescent-TheUltimateOptimizer/table1.png)
 
-As a baseline they use a SGD with $$ \alpha = 0.01 $$.
-
-**Hyperoptimizer SGD outperforms the baseline by a significant margin.** It holds even with another hyperoptimizer to optimize the learning rate of the SGD. Use the learned learning rate is also better than the initial one.
-
-Then, they compared different hyperoptimizer for different optimizer and notably compare hyperoptimized Adam vs Adam, optimized Optimizer (using learned value) vs Optimizer, Adam with all hyperparameters hyperoptimized vs Adam with only learning rate hyperoptimized.
-They run experiments for 5 epochs to avoid overfitting (notably for Adam compared to SGD). The Adam baseline use the default hyperparameters in PyTorch.
-
-The hyperoptimized Adam outperforms the regular Adam with default settings. Learned hyperparameters are better than inital ones too. The hyperoptimized Adam outperforms the regular Adam with learned hyperparameters.
-
-![table1](/collections/images/GradientDescent-TheUltimateOptimizer/screen.png)
-
-## Hyperoptimization at scale
+## Hyperoptimization at scale for Object Recognition
 
 Using their method for a Computer vision task (ResNet-20 on the CIFAR-10 dataset). They vary the momentum $$ \mu $$ and the learning rate $$ \alpha $$ from too small to too large values. They compare results between the baseline, their hyperoptimizer to tune both $$ \mu $$ and $$ \alpha $$ and an hand-engineered learning rate decay schedule from He et al. (2015).
 
-![curves1](/collections/images/GradientDescent-TheUltimateOptimizer/img-002.jpg)
+![curves1](/collections/images/GradientDescent-TheUltimateOptimizer/figure2.jpg)
 
 They conclude that hyperoptimizers are indeed beneficial for
 tuning both step size and momentum in this real-world setting and match the results of the hand-engineered learning rate decay schedule.
@@ -177,12 +166,9 @@ tuning both step size and momentum in this real-world setting and match the resu
 ## Higher order hyperoptimization
 
 We can observe the test error of the hyperoptimizer depending of the order of the hyperoptimization. It appears that the method become more stable as order increase.
+We can also observe the runtime cost of higher order hyperoptimization. **The method is efficient and scale linearly**.
 
-![curves2](/collections/images/GradientDescent-TheUltimateOptimizer/img-008.jpg)
-
-We can also observe the runtime cost of higher order hyperoptimization. The method is efficient and scale linearly.
-
-![curves3](/collections/images/GradientDescent-TheUltimateOptimizer/img-011.jpg)
+![curves2](/collections/images/GradientDescent-TheUltimateOptimizer/figure3.jpg)
 
 # Conclusions
 
