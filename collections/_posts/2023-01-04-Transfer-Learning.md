@@ -26,7 +26,7 @@ In this paper, the authors try to answer to these questions. Their code is avail
 <br/>
 
 # Experimental Setup
-Pre-trained and randomly initialized models are invesitgated in the **image classification** setting.
+Pre-trained and randomly initialized models are investigated in the **image classification** setting.
 
 * Data:
 	* Source data for pre-training: ImageNet.
@@ -63,8 +63,8 @@ Pre-trained and randomly initialized models are invesitgated in the **image clas
 #### 2. What are the differences between P-T and RI-T models?
 By looking at the mistakes made by each model:
  
-* Samples for which P-T is incorrect and RI-T is correct are mostly hard samples.
-* Samples for which P-T is correct and RI-T is incorrect are mostly easy samples.
+* Samples for which P-T is incorrect and RI-T is correct are mostly ambiguous samples.
+* Samples for which P-T is correct and RI-T is incorrect are mostly non-ambiguous samples.
 * 2 P-T models make very similar mistakes, whereas 2 RI-T models make more diverse mistakes.
 
 How similar are two P-T models in the feature space?
