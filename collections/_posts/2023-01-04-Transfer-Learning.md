@@ -7,7 +7,7 @@ cite:
     authors: "Behnam Neyshabur, Hanie Sedghi and Chiyuan Zhang"
     title:   "What is being transferred in transfer learning?"
     venue:   "NeurIPS 2020"
-pdf: "https://arxiv.org/abs/2008.11687"
+pdf: "https://proceedings.neurips.cc/paper/2020/file/0607f4c705595b911a4f3e7a127b44e0-Paper.pdf"
 ---
 
 <br/>
