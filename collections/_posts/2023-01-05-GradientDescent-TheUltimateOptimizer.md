@@ -18,16 +18,14 @@ pdf: "https://arxiv.org/pdf/1909.13371.pdf"
 
 - Key idea: A method to efficiently and automatically tune the *hyperparameters* of gradient-based optimization algorithms used in machine learning using *automatic differentiation* (AD).
 - The method involves using backpropagation to compute *hypergradients*, which are the gradients of the optimization algorithm's hyperparameters with respect to the loss function being optimized.
-- The method is efficient and can be applied to a wide range of optimization algorithms, including SGD, Adam, RMSProp, and others.
+- The method is efficient and can be applied to a wide range of optimizers, including SGD, Adam or RMSProp.
 - The article also describes how this method can be applied recursively, allowing for the optimization of higher-level *hyper-hyper parameters* (even *hyper-...-hyper-hyperparameters*).
 
 # Introduction
 
-When we train a Machine Learning model by Gradient Descent, we have to select a learning rate $$\alpha$$ (and often some other hyperparameters) for the optimizer. If $$\alpha$$ is too low, the optimizer will runs too slowly but if $$\alpha$$ is too high the algorithm will never converge.    
+When we train a Machine Learning model by Gradient Descent, we have to select a learning rate $$\alpha$$ (and often some other hyperparameters) for the optimizer.  
 
-A first approach to optimize $$\alpha$$ would be a basic grid search to find the best value. It's a common approach but actually a bit strange to use this basic approach while being optimizing some complex neural networks by Gradient Descent.
-
-That's why the idea to compute the derivative of the loss function with respect to $$\alpha$$ in order to optimize it came, which is called a *hypergradient*.
+How to optimize it intelligently ? The idea of the paper is to compute the derivative of the loss function with respect to $$\alpha$$ (named a *hypergradient*) in order to optimize it.
 
 Until now, to use this approach, it requires to manually do the calculus. There is three limitations:
 
@@ -35,11 +33,7 @@ Until now, to use this approach, it requires to manually do the calculus. There 
 - It only tunes the learning rate hyperparameter, not for example the momentum coefficient.
 - By doing a hypergradient descent, you introduced a hyper-learning rate which must also be tuned.
 
-This paper introduce an *automatic differentiation* method which:
-
-- automatically compute the derivative
-- naturally generalizes to other hyper-parameters
-- Can be applied recursively to hyper-hyperparameters and hyper-...-hyper-hyperparameters.
+This paper introduce an *automatic differentiation* method which as the good properties written in the Highlights section.
 
 By using it recursively, the model become way more robust to the choice of the initial hyperparameter.
 
@@ -128,15 +122,6 @@ The next figure shows the computation graph for the SGD with fixed $$\alpha$$ on
 ![graph-cut](/collections/images/GradientDescent-TheUltimateOptimizer/figure1.jpg)
 
 Since the computation graph is extended with not so many nodes, the method is not really slower.
-
-## Generalization to other hyperparameters
-
-This method generalize quite easily to tune hyperparameters of other optimizers as Adam. We only need to change the last line with the new update rule. In case of Adam which have 4 hyperparameters, we treat each of them simultaneously with the same method as for $$\alpha$$.
-
-There is just two things to note for Adam:
-
-- for $$\beta_1$$ and $$\beta_2$$, we need to clamp them to be in the range $$[0,1]$$ using a sigmoid function.
-- Adam involves a square root which is not differentiable at 0 for a term $$v̂_i$$ wich is normally initialized to 0. We can fix this by initializing it to a small value $$\epsilon$$.
 
 ## Stacking hyperoptimizers recursively
 
