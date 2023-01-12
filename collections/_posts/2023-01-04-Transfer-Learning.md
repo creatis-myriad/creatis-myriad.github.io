@@ -7,7 +7,7 @@ cite:
     authors: "Behnam Neyshabur, Hanie Sedghi and Chiyuan Zhang"
     title:   "What is being transferred in transfer learning?"
     venue:   "NeurIPS 2020"
-pdf: "https://arxiv.org/abs/2008.11687"
+pdf: "https://proceedings.neurips.cc/paper/2020/hash/0607f4c705595b911a4f3e7a127b44e0-Abstract.html"
 ---
 
 <br/>
@@ -139,7 +139,4 @@ The standard practice is to take the checkpoint giving the best performance on t
 - Pre-trained models are close to each other in the parameter space.
 - Pre-trained models have better robustness and generalization capacities than randomly initiliazed models.
 - The checkpoint model with best performance on source data may not give the best performance on target data.
-
-
-
 
