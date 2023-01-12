@@ -141,7 +141,3 @@ The standard practice is to take the checkpoint giving the best performance on t
 - Fine-tuned models are close to each other in the parameter and feature space.
 - Fine-tuned models have better generalization capacities than randomly initiliazed models.
 - We can use earlier checkpoint models of the pre-trained model and this will not decrease the fine-tuning performance.
-
-
-
-
