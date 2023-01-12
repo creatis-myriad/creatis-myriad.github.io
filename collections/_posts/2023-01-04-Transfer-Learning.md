@@ -56,7 +56,6 @@ Pre-trained and randomly initialized models are investigated in the **image clas
 
 * Feature reuse is paramount in transfer learning.
 * Low-level statistics also boost the performance of transfer learning and in particular training speed.
-* P-T models converge much faster than RI-T ones.
 
 <br/>
 
@@ -79,7 +78,7 @@ What is the distance of the models in the parameter space?
 
 **Conclusion**:
 
-* The model initialization has a big impact in feature similarity.
+* Model initialization has a big impact in feature similarity.
 * P-T models are reusing the same features and are close to each other compared to RI-T models.
 
 <br/>
@@ -101,7 +100,7 @@ Garipov et al (2018) [[2]](https://arxiv.org/abs/1802.10026) saw that two soluti
 
 **Conclusion**:
 
-* There is no performance barrier between P-T models: they are in the same basin of the loss landscape.
+* There is no performance barrier between P-T models: "pre-trained weights guide the optimization to a flat basin of the loss landscape".
 * RI-T models present a performance barrier, even with equal random initializations: they are in different basins of the loss landscape.
 * P-T models have better generalization capacities.
 
@@ -113,10 +112,13 @@ Zhang et al (2019) [[3]](https://arxiv.org/abs/1902.01996) saw experimentally th
 
 ![](/collections/images/transfer/transfer_learning_fig5.jpg)
 
+Criticality of a module can also be measured by looking at the model performance in the path connecting the first and final value of a module weights during training while keeping the other modules at their final values, and then measuring the width of the valley formed by this path.
+
+![](/collections/images/transfer/transfer_learning_fig6.jpg)
+
 **Conclusion**:
 
-* Pre-trained models are more robust to parameter perturbation.
-* Deeper layers are more critical than lower layers. This means that lower layers are responsible for general features and deeper layers are responsible for more target task-specific features.
+* For fine-tuned models, deeper layers are more critical than lower layers. This means that lower layers are responsible for more common features and deeper layers are responsible for more task-specific features.
 
 <br/>
 
@@ -128,17 +130,17 @@ The standard practice is to take the checkpoint giving the best performance on t
 
 **Conclusion**:
 
-* We can use earlier checkpoints corresponding to the end of a plateau in the source task instead of the last checkpoint. 
-* In Abnar et al (2022) [[4]](https://arxiv.org/abs/2110.02095), the same authors see experimentally that: "as we increase the upstream accuracy, performance of downstream tasks saturate".
+* We can use earlier checkpoints corresponding to the beggining of the last plateau in the source task instead of the last checkpoint. This corresponds to the time when the pre-trained model is entering its final basin.
+* In Abnar et al (2022) [[4]](https://arxiv.org/abs/2110.02095), the same authors see across many experiments that: "as we increase the upstream accuracy, performance of downstream tasks saturate".
 
 <br/>
 
 # Conclusions
 - The authors use a wide range of tools for the analysis and understanding of models.
 - Both image features and low-level statistics play a role in the good performance of transfer learning on target tasks.
-- Pre-trained models are close to each other in the parameter space.
-- Pre-trained models have better robustness and generalization capacities than randomly initiliazed models.
-- The checkpoint model with best performance on source data may not give the best performance on target data.
+- Fine-tuned models are close to each other in the parameter and feature space.
+- Fine-tuned models have better generalization capacities than randomly initiliazed models.
+- We can use earlier checkpoint models of the pre-trained model and this will not decrease the fine-tuning performance.
 
 
 
