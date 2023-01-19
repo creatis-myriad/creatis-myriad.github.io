@@ -58,7 +58,7 @@ sequence of tokens $$z_i \in \mathbb{R}^d$$ using a linear projection $$\mathbf{
 learned positional embedding $$\mathbf{p} \in \mathbb{R}^{(N + 1) \times d}$$ as follows:
 
 $$
-\mathbf{z} = [z_{\text{cls}}, \mathbf{E}x_1,\mathbf{E}x_2,\dots,\mathbf{E}x_N] + \mathbf{p}
+\mathbf{z} = [z_{\text{cls}}, \mathbf{E}x_1,\mathbf{E}x_2,\dots,\mathbf{E}x_N] + \mathbf{p} \tag{1}
 $$
 
 where $$z_{\text{cls}}$$ denotes the class token.
@@ -67,24 +67,54 @@ The transformer layer itself, $$\text{Transformer}(\mathbf{z}^l)$$, can then be 
 following equations:
 
 $$
-\mathbf{y}^l = \text{MSA}(\text{LN}(\mathbf{z}^l)) + \mathbf{z}^l \\
-\mathbf{z}^{l+1} = \text{MLP}(\text{LN}(\mathbf{y}^l)) + \mathbf{y}^l.
+\mathbf{y}^l = \text{MSA}(\text{LN}(\mathbf{z}^l)) + \mathbf{z}^l \tag{2}
 $$
+
+$$
+\mathbf{z}^{l+1} = \text{MLP}(\text{LN}(\mathbf{y}^l)) + \mathbf{y}^l \tag{3}
+$$
+
+where Multi-headed Self-Attention (MSA) can be defined as a function of an input $$\mathbf{X}$$ as follows:
+
+$$
+\text{MSA}(\mathbf{X}) = \text{Attention}(\mathbf{W}^Q\mathbf{X}, \mathbf{W}^K\mathbf{X}, \mathbf{W}^V\mathbf{X}). \tag{4}
+$$
+
+## Modality-specific parameters + cross-attention
+The authors propose a baseline multi-modal transformer which lets each modality have its own set of parameters, and
+mixes information between modalities using **cross attention** rather than self-attention.
+
+Given the definition of attention from the [previous section](#vit-and-ast-attention), this method follows the same
+attention pipeline, but with one transformer model per modality and with Eq. 2 replaced by:
+
+$$
+\mathbf{y}^l_{\text{mod}_i} = \text{MCA}(\text{LN}(\mathbf{z}^l_{\text{mod}_i}), \text{LN}(\mathbf{z}^l)) + \mathbf{z}^l_{\text{mod}_i} \tag{5}
+$$
+
+where the $$\text{mod}_i$$ subscript denote tokens, parameters, etc. that are specific to one modality.
+
+Given the earlier definition of MSA, the MCA operation from Eq. 5 can be defined as:
+
+$$
+\text{MCA}(\mathbf{X},\mathbf{Y}) = \text{Attention}(\mathbf{W}^Q\mathbf{X}, \mathbf{W}^K\mathbf{Y}, \mathbf{W}^V\mathbf{Y}). \tag{6}
+$$
+
 
 ## Attention bottlenecks
 As described earlier, the bottleneck comes in the form of a small set of $$B$$ fusion tokens $$\mathbf{z}_{\text{fsn}} = [z_{\text{fsn}}^1,z_{\text{fsn}}^2,\dots,z_{\text{fsn}}^B]$$ that are inserted in the input sequence so that it becomes like this:
 
 $$
-\mathbf{z} = [\mathbf{z}_{\text{mod}_1} || \mathbf{z}_{\text{fsn}} || \mathbf{z}_{\text{mod}_2}]
+\mathbf{z} = [\mathbf{z}_{\text{mod}_1} || \mathbf{z}_{\text{fsn}} || \mathbf{z}_{\text{mod}_2}]. \tag{7}
 $$
-
-where the $$\text{mod}_i$$ subscript denote tokens, parameters, etc. that are specific to one modality.
 
 In this case, computing the next layer's tokens becomes:
 
 $$
-[ \mathbf{z}_i^{l+1} || \mathbf{\hat{z}}_{\text{fsn}_i}^{l+1} ] = \text{Transformer}([ \mathbf{z}_i^l || \mathbf{\hat{z}}_{\text{fsn}_i}^l ]; \theta_{\text{mod}_i}) \\
-\mathbf{z}_{\text{fsn}}^{l+1} = \text{Avg}_i(\mathbf{\hat{z}}_{\text{fsn}_i}^{l+1})
+[ \mathbf{z}_i^{l+1} || \mathbf{\hat{z}}_{\text{fsn}_i}^{l+1} ] = \text{Transformer}([ \mathbf{z}_i^l || \mathbf{\hat{z}}_{\text{fsn}_i}^l ]; \theta_{\text{mod}_i}) \tag{8}
+$$
+
+$$
+\mathbf{z}_{\text{fsn}}^{l+1} = \text{Avg}_i(\mathbf{\hat{z}}_{\text{fsn}_i}^{l+1}) \tag{9}
 $$
 
 where $$\mathbf{\hat{z}}_{\text{fsn}_i}$$ are temporary fusion tokens that are discarded after they're reduced across
