@@ -27,7 +27,7 @@ and the outputs are then merged together in some way, e.g. averaging logits of t
 audio/video and concatenating the tokens from both modalities as input to a single transformer model).
 
 With the advent of deep learning, more sophisticated fusion strategies were proposed, such as projection to joint 
-(intermediate) latent spaces. The recent transformer architecture then came along, which assumes very little about the
+(intermediate) latent spaces. The recent transformer architecture [^1] [^2] then came along, which assumes very little about the
 structure of its inputs and can thus be used with minimal tweaking on vastly different types of data. Because of this,
 transformers seem like a prime candidate for a general multimodal architecture.
 
@@ -153,3 +153,7 @@ For brevity, we only include here the scores for the better-known AudioSet datas
 
 # References
 - Code is available on GitHub (as part of the Scenic library): [https://github.com/google-research/scenic/tree/main/scenic/projects/mbt](https://github.com/google-research/scenic/tree/main/scenic/projects/mbt)
+
+[^1]: [Vaswani et al., "Attention is All you Need", *NeurIPS*, 2017](https://proceedings.neurips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html)
+
+[^2]: [Jaegle et al. "Perceiver: General Perception with Iterative Attention", *ICML*, 2021](http://proceedings.mlr.press/v139/jaegle21a.html) + [a short review of the paper](https://vitalab.github.io/article/2021/07/22/Perceiver.html)
