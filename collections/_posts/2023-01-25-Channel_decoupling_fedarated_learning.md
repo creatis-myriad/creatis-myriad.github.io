@@ -70,3 +70,7 @@ FLICKR-AES, a personal photo ranking dataset partitioned by album (implying a co
 HISTO-FED, consisting of both public and private hematoxylin and eosin stained histological whole-slide images of human colorectal cancer and normal tissue (implying a strong feature shift).
 
 ![](/collections/images/channel_decoupling_federated_learning/CD2_pfed_table4.jpg)
+
+# Conclusion
+
+The authors proposed a new type of parameter splitting in personalized federated learning, accompanied by several training tricks improving the performance. They tested their method on several relevant heterogeneous federated datasets for classification, showing the interest of the method.
