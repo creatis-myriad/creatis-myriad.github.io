@@ -17,7 +17,7 @@ Federated learning suffers from the statistical heterogeneity between participat
 
 # Channel decoupling
 
-Contrarily to known methods choosing which layers of a convolutional networks to federate and which to keep local, the authors propose **a vertical split**, with federated and private weights in each layer.
+Contrarily to known methods choosing which layers of a convolutional network to federate and which to keep local, the authors propose **a vertical split**, with federated and private weights in each layer.
 
 ![](/collections/images/channel_decoupling_federated_learning/CD2_pfed_scheme1.jpg)
 
