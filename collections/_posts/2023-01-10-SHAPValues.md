@@ -37,11 +37,11 @@ Let's assume we trained a model to predict apartment prices based on few feature
 
 ![](/collections/images/shap/prediction_example.jpg)
 
-For linear regression models, the answer is simple. The coefficients represent directly the impact of each feature and if it's a positive or negative effect.
+For linear regression models, the answer is simple. The coefficients represent directly the impact of each feature value and if it's a positive or negative effect.
 
 For more complex scenarios, Shapley values[^1] come to the rescue. They are a concept coming from game theory, describing how to fairly distribute a **payout** between **players** participating in a cooperative **game**. But how does it apply to explainability in machine learning? If we have a predictive model, then we can define:
 
-- A **game**: reproduce the prediction of the model
+- A **game**: reproducing the prediction of the model
 - The **players**: the features of the input
 - The **payout**: the individual impact of each feature to the prediction
 
@@ -53,23 +53,25 @@ But, as a cooperative game, multiple features are involved in the prediction, wi
 
 ![](/collections/images/shap/coalitions_example.jpg)
 
+The main interrogation that may arise from this setting is how a coalition can be represented. For example, how do we represent the empty coalition? With Shapley values, we need a model by possible coalition of features. Each of these models is trained exactly as the original but it only "looks at" its own coalition of features. This can be viewed as a way to estimate how a feature impact the prediction of a model and not how a model is resilient to feature perturbations.
+
 ## Properties
 
 The formula to compute the Shapley value $$\phi_i$$ for feature $$i$$ is:
 
-$$\phi_i(f, x) = \sum_{S \subseteq \{1,\dots,P\} \setminus \{i\}} \frac{|S|! (P - |S| - 1)!}{P!} (f(S \cup \{i\}) - f(S)) \tag{1}$$
+$$\phi_i(f, x) = \sum_{S \subseteq F \setminus \{i\}} \frac{|S|! (|F| - |S| - 1)!}{|F|!} (f(S \cup \{i\}) - f(S)) \tag{1}$$
 
-Where $$f(x)$$ is the prediction of a model $$f$$ for the input $$x$$ with $$P$$ features, and $$S$$ being a subset of the features used by the model. We can find the "marginal contribution" of the feature $$i$$ weighted by a coefficient dependant on the number of features in the coalition, summed over possible coalitions. This formula can also be expressed as:
+Where $$f(x)$$ is the prediction of a model $$f$$ for the input $$x$$ with $$\vert F \vert$$ features, and $$S$$ being a subset of the features used by the model. The $$F \setminus \{i\}$$ and $$S \cup \{i\}$$ notations are respectively the set of all features excluding $$i$$ and a selected coalition in which we include feature $$i$$. We can find the "marginal contribution" of the feature $$i$$ weighted by a coefficient dependant on the number of features in the coalition, summed over possible coalitions. This formula can also be expressed as:
 
-$$\phi_i(f, x) = \frac{1}{P} \sum_{S \subseteq \{1,\dots,P\} \setminus \{i\}} \binom{P - 1}{|S|}^{-1} (f(S \cup \{i\}) - f(S)) \tag{2}$$
+$$\phi_i(f, x) = \frac{1}{|F|} \sum_{S \subseteq F \setminus \{i\}} \binom{|F| - 1}{|S|}^{-1} (f(S \cup \{i\}) - f(S)) \tag{2}$$
 
 Which can be interpreted as:
 
 $$\phi_i(f, x) = \frac{1}{\text{number of players}} \sum_\text{coalitions excluding $i$} \frac{\text{marginal contribution of $i$ to coalition}}{\text{number of coalitions (excluding $i$) of same size}}$$
 
-The role of these Shapley values being to fairly distribute a reward, they need to exhibit certain properties:
+The role of these Shapley values being to fairly distribute a reward, they exhibit certain properties:
 
-**Efficiency** Feature contributions sum equals the difference between prediction for $$x$$ and the average prediction:
+**Efficiency** Feature contributions sum equals the difference between prediction for $$x$$ and the average prediction over the training dataset $$X$$:
 
 $$\sum_{i=1}^p \phi_i = f(x) - E_X(f(X)) \tag{3}$$
 
@@ -92,11 +94,11 @@ Be careful when interpreting Shapley values: they do NOT represent the differenc
 
 ## Defining explanations
 
-Explanation models often use _simplified inputs_ $$x'$$ that map to the original inputs through a mapping function $$x = h_x(x')$$. And local methods' goal is to ensure $$g(z') \approx f(h_x(z'))$$ whenever $$z' \approx x'$$. Those _simplified inputs_ usually represent the presence or absence of each features in the input, as a binary vector with $$z_i' \in \{0, 1\}$$.
-
-So, to summarize, our goal is to create a model $$g$$ which associates an explanation $$\phi$$ to a model's output $$f(x)$$:
+To summarize, our goal is to create a model $$g$$ which associates an explanation $$\phi$$ to a model's output $$f(x)$$:
 
 $$g(f(x)) = \phi(f,x) \tag{7}$$
+
+Explanation models often use _simplified inputs_ $$x'$$ that map to the original inputs through a mapping function $$x = h_x(x')$$. And local methods' goal is to ensure $$g(z') \approx f(h_x(z'))$$ whenever $$z' \approx x'$$. Those _simplified inputs_ usually represent the presence or absence of each features in the input, as a binary vector with $$z_i' \in \{0, 1\}$$.
 
 With the **Efficiency** property of Shapley values in mind, we can define an _additive feature attribution_ model as a linear function of binary variables:
 
@@ -125,21 +127,15 @@ where $$f(x_{+i}^m)$$ is the prediction for $$x$$ but with a random number of fe
 This results in the following algorithm to compute the Shapley value for the feature $$i$$:
 
 1. For all $$m=1,\dots,M$$:
-   1. Choose a random permutation $$o$$ of the feature values
-   2. Draw a random instance $$z$$ from our dataset $$X$$
-   3. Order instances with permutation $$o$$:
+   1. Draw a random instance $$z$$ from our dataset $$X$$
 
-        $$x_o = (x_{(1)},\dots,x_{(i)},\dots,x_{(p)})$$
+   2. Construct two new instances (features are ordered randomly here as a trick to select a random coalition, but they are presented as usual to the model):
 
-        $$z_o = (z_{(1)},\dots,z_{(i)},\dots,z_{(p)})$$
+        $$x_{+i} = (x_{(1)},\dots,x_{(i-1)},x_{(i)},z_{(i+1)},\dots,z_{(p)})$$
 
-   4. Construct two new instances:
+        $$x_{-i} = (x_{(1)},\dots,x_{(i-1)},z_{(i)},z_{(i+1)},\dots,z_{(p)})$$
 
-        $$x_{+i} = (x_{o(1)},\dots,x_{o(i-1)},x_{o(i)},z_{o(i+1)},\dots,z_{o(p)})$$
-
-        $$x_{-i} = (x_{o(1)},\dots,x_{o(i-1)},z_{o(i)},z_{o(i+1)},\dots,z_{o(p)})$$
-
-   5. Compute the marginal contribution:
+   3. Compute the marginal contribution:
    
         $$\hat{\phi}_i^m = f(x_{+i}) - f(x_{-i})$$
 
