@@ -15,7 +15,7 @@ pdf: "https://arxiv.org/pdf/1905.10710.pdf"
 
 * **Anomaly detection**, also called *outlier detection* or *one-class classification*, is the process of detecting events/items that deviate significantly from the normality. A distribution of the *normal class* is estimated and the event/item is said to be anomalous if it does not belong to this distribution.
 * Here we tackle the problem of anomaly detection in images in the context of machine learning, meaning we will train a network (or another kind of algorithm) on *normal* images only, and then, at inference, we will try to classify images as normal VS anomalous.
-![](/collections//images/VT-ADL/mvtec_ad.jpg)  
+![](/collections/images/VT-ADL/mvtec_ad.jpg)  
 *Example of normal (green) VS anomalous (red) image on the MVTecAD dataset*
 * The objective of this paper is to propose an anomaly detection method which make use of a **transformer**, a **decoder** and a Gaussian Mixture Model (**GMM**) **estimation network**.
 * The authors also introduce a database similar to MVTecAD, containing 3 objects named BTAD.
