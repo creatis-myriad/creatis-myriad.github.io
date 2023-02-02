@@ -58,7 +58,7 @@ They also show superiority of their method when combined to a Convolutional Auto
 
 ![](/collections/images/lipschitz_anomaly/fig_results.jpg) 
 
-An impressive result is that the corruption process ($$P_n$$ to $$\hat{P_a}$$) used here on MNIST is patch shuffling (with 4x4 patches), which is very very far from the true anomaly distribution $$P_a$$. (e.g. an image of a "3" shuffled will look very different from an image of a "4").
+An impressive result is that the corruption process ($$P_n$$ to $$\hat{P_a}$$) used here on MNIST is patch shuffling (with 4x4 patches), which is very far from the true anomaly distribution $$P_a$$. (e.g. an image of a "3" shuffled will look very different from an image of a "4").
 While $$\hat{P_a}$$ is very different from $$P_a$$, the results are competitive.
 
 ### 2) Bias towards interpolated points
