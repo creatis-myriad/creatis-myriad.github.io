@@ -49,7 +49,7 @@ The authors propose two experiments that I will describe bellow.
 
 ### 1) Training set contamination
 
-The authors propose to evaluate their model performance's with a classic easy anomaly detection task on MNIST : assuming one digit is the normal class and the others are anomaly (e.g. $$P_n$$ is a set of "3" and $$P_a$$ are "1" "4", etc.).
+The authors propose to evaluate their model performance's with a classic easy anomaly detection task on MNIST : assuming one digit is the normal class and the others are anomaly (e.g. $$P_n$$ is a set of "3" and $$P_a$$ are "1", "4", etc.).
 
 They then add training set contamination (e.g. "5" in the training set when the normal class is "3") from 0% to 10%, compare to other SOTA methods and demonstrate the superiority of their method LAD (Table 1 with contamination fraction on top).
 
