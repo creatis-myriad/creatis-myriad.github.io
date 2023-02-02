@@ -1,11 +1,11 @@
 ---
 layout: review
-title: "FIXING BIAS IN RECONSTRUCTION-BASED ANOMALY DETECTION WITH LIPSCHITZ DISCRIMATORS"
+title: "Fixing bias in reconstruction-based anomaly detection with Lipschitz discriminators"
 tags: Anomaly detection, Lipschitz, Discriminator
 author: "Nicolas Pinon"
 cite:
     authors: "Alexander Tong, Guy Wolf and Smita Krishnaswamy"
-    title:   "FIXING BIAS IN RECONSTRUCTION-BASED ANOMALY DETECTION WITH LIPSCHITZ DISCRIMATORS"
+    title:   "Fixing bias in reconstruction-based anomaly detection with Lipschitz discriminators"
     venue:   "2020 IEEE INTERNATIONAL WORKSHOP ON MACHINE LEARNING FOR SIGNAL PROCESSING"
 pdf: "https://arxiv.org/pdf/1905.10710.pdf"
 ---
