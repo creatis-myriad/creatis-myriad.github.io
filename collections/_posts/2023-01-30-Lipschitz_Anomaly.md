@@ -71,10 +71,14 @@ Reconstructions based methods are CAE, DCAE, RCAE, AND, ALOCC and AnoGAN, SVM ba
 
 #### Mean image in CIFAR-10
 	
-When training on CIFAR-10 (normal class is one of the class and anomalies are other classes, like in MNIST), they find out that the performances vary greatly among classes (table	2).  
+When training on CIFAR-10 (normal class is one of the class and anomalies are other classes, like in MNIST), they find out that the performances vary greatly among classes (table 2).  
 They explain this by looking at the mean image for each class : in class such as birds, the samples are usually close to the mean image, whereas in cars for instance, images can be very far from the mean image (when with white background for example). This is also shown in table 2 where they give the rank of the mean image.
 
 To showcase this even more, they display the top 100 "most normal" images in the test set when trained on cars in figure 4. We see that the LAD has images that are far from the mean (i.e. with clear background), and that it mistakes trucks for cars, but not animals for cars as the reconstruction based method.
 
 ![](/collections/images/lipschitz_anomaly/fig_bias.jpg) 
+
+# Conclusion
+
+The authors present a new method based on Lipschitz discriminators (LAD). It has the advantages of being mathematically based on "nice" properties, and make use of the well known Wasserstein-1 distance and discriminator from GANs. They present two experiments which showcase the competitivity of their method and the bias toward mean points in reconstruction-based methods.
 
