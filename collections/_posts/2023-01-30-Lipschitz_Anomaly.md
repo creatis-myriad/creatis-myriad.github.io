@@ -42,7 +42,7 @@ $$P_x$$ is obtained as a linear interpolation between $$P_n$$ and $$\hat{P_a}$$.
 **Drawback**: need for an arbitrary corruption process, as the autors said "The choice of the anomaly distribution to train against is important and useful in building inductive bias into the model".  
 ![](/collections/images/lipschitz_anomaly/fig_methode.jpg) 
 
-The authors, as a response to this obvious drawback say that "Existing models implicitly build in an assumption on the anomaly distribution. For example, overparameterized autoencoders assume points are far from the span of the data"
+The authors, as a response to this obvious drawback, say that "Existing models implicitly build in an assumption on the anomaly distribution. For example, overparameterized autoencoders assume points are far from the span of the data"
 
 # Experimental evaluation
 The authors propose two experiments that I will describe bellow.
