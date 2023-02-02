@@ -13,7 +13,7 @@ pdf: "https://arxiv.org/pdf/1905.10710.pdf"
 
 # Context
 (For more context, see the post about VT-ADL)
-* **Anomaly detection**, also called *outlier detection* or *one-class classification* or ..., is the process of detecting events/items that deviate significantly from the normality. A distribution of the *normal class* is estimated and the event/item is said to be anomalous if it does not belong to this distribution.
+* **Anomaly detection**, also called *outlier detection*, *one-class classification* and many other terms, is the process of detecting events/items that deviate significantly from the normality. A distribution of the *normal class* is estimated and the event/item is said to be anomalous if it does not belong to this distribution.
 * Here we tackle the problem of anomaly detection in images in the context of machine learning, meaning we will train a network (or another kind of algorithm) on *normal* images only, and then, at inference, we will try to classify images as normal VS anomalous.
 ![](/collections/images/VT-ADL/mvtec_ad.jpg)  
 *Example of normal (green) VS anomalous (red) image on the well known MVTecAD dataset*
