@@ -1,6 +1,6 @@
 ---
 layout: review
-title: "Gaussian distributions are boring : pimp them with Normalizing Flows"
+title: "Introduction to Normalizing Flows"
 tags: deep-learning normalizing-flow
 author: "Robin Trombetta"
 cite:
