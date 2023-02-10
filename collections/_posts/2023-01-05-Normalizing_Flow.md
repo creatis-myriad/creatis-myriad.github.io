@@ -31,41 +31,45 @@ Main generative models include Generative Adversarial Network and Variational Au
 
 ## Change of variable
 
-Let $$z \in Z$$  be a random variable with a known density function $$p_{Z}$$ and denote $$f : Z \to X$$ a diffeomorphism. The change of variable operated by $$f$$ can be used to transform $$z \sim p_{Z}(z)$$ into a random variable $$x = f(z)$$ that has the following probability distribution :
+Let $$x \in X$$  be a random variable with a density function $$p_{X}$$ and denote $$f : X \to Z$$ a diffeomorphism. The change of variable operated by $$f$$ can be used to transform $$z \sim p_{Z}(z)$$ into a simpler random variable $$z = f(x)$$. One probability density can be retrieved from the other with the following formula :  
 
-$$ p_{X}(x) = p_{Z}(z) |det \frac{\partial f^{-1}(x)}{\partial x}| = p_{Z}(z) |det \frac{\partial f(z)}{\partial z}|^{-1} $$
+$$ p_{X}(x) = p_{Z}(f(x)) |\text{det}( \frac{\partial f(x)}{\partial x})|$$ 
 
-where $$\frac{\partial f}{\partial z}$$ is the Jacobian matrix of the application $$f$$.
+
+where $$\frac{\partial f}{\partial z}$$ is the Jacobian matrix of the application $$f$$ and $$\text{det}(\cdot)$$ designates the determinant of a matrix.
 
 &nbsp;
 
 # Normalizing flow
 
-Normalizing flow is a type of generative models created for better and more powerful distribution approximation. It allows to transform a simple distribution (typically a multivariate normal distribution) into a more complex one though a serie of invertible mappings.
-As the choice of transformation functions is restricted, the final transformation is often constructed with a serie of simple functions $$f_1, ..., f_K$$ :
+Normalizing flow is a type of generative models made for powerful distribution approximation. It allows to transform a complex distribution into a simpler one (typically a multivariate normal distribution) though a serie of invertible mappings.
+As need to have a diffeomorphism restricts the choice of transformation functions, the final transformation is often constructed with a serie of simple applications $$f_1, ..., f_K$$ :
 
-$$ f_\theta = f_K \circ f_{K-1} \circ ... \circ f_1 $$
+$$ f = f_K \circ f_{K-1} \circ \, ... \circ f_1 $$
 
-The following figure illustrates principle of a normalizing flow model.
+During the successive modifications, a sample $$x$$ from real data ***flows*** though a sequence of transformations and is progressively ***normalized***. The following figure illustrates principle of this type of model :
 
 ![](/collections/images/noflow/flow.jpg)
 <p style="text-align: center;font-style:italic;">Figure 1. Illustration of a normalizing flow model.</p>
 
 &nbsp;
 
-During the successive modifications, a sample $$z$$ ***flows*** though a sequence of transformations and always kept as a valid distrubution function because it is ***normalized*** at each step.
 
-Given such type of transformation, it is possible to compute directly the likelihood of some data observed $$x = \{x^{(i)}\}_{i=1,...,N}$$ :
+Given such transformation, it is possible to compute directly the likelihood of some data observed $$x = \{x^{(i)}\}_{i=1,...,N}$$ :
 
-$$ \log p(x|\theta) = \sum_{i=1}^{N} \log p_{Z}(f^{-1}(x^{(i)})|\theta) + \log |\text{det} \frac{\partial f^{-1}(x^{(i)})}{\partial x^{(i)}} | $$
+$$ \log p(x;\theta, \psi) = \sum_{i=1}^{N} \log p_{Z}(f(x^{(i)};\theta) ; \psi) + \log |\text{det} \frac{\partial f(x^{(i)};\theta)}{\partial x^{(i)}} | \\
+ = \sum_{i=1}^{N} \log p_{Z}(f(x^{(i)};\theta);\psi) + \sum_{k=1}^{K} \log |\text{det} \frac{\partial f_{k}(x_{k-1}^{(i)};\theta_k)}{\partial x_{k-1}^{(i)}} | $$
 
-$$ \log p(x|\theta) = \sum_{i=1}^{N} \log p_{Z}(f^{-1}(x^{(i)})|\theta) + \sum_{k=1}^{K} \log |\text{det} \frac{\partial f_{k}^{-1}(x_{k}^{(i)})}{\partial x_{k}^{(i)}} | $$
 
-where $$\theta$$ denotes the parameters of the transformation $$f$$.
+where $$\theta=(\theta_1,...,\theta_K)$$ and $$\psi$$ respectiveley denotes the parameters of the transformation $$f$$ and the target distribution $$p_{Z}$$. 
 
-Compared to other generative models such as GANs or VAEs, the optimization problem is much more straightforward as it does not require an adversarial network or the introduction of a lower bound of the likelihood.
+Compared to other generative models such as GANs or VAEs, the optimization problem is much more straightforward as it can be done directly via the maximization of the likelihood and does not require an adversarial network or the introduction of a lower bound of the likelihood.
 
-**_NOTE:_**  Since all the functions involved in the transormation of densities are bijective and differentiable, the normalizing flow process can be equivalently seen the other way around. Another common manner to introduce normalizing flow is to present the startings distribution as a complex one ($$x$$ in the figure above, *e.g.* samples from real world data) that is step by step normalized to a simple one. In that case, the optimization problem is generally introduced by saying that we aim to minimize the KL-divergence between the transformed distribution $$f_X(x)$$ and the simpler density function (typically $$\mathcal{N}(0,I)$$).
+
+Density estimation is done with the direct path of the transformation flow chain and allows to evaluate the probability of any new sample. To create new data, a sample $$z \sim p_{Z}(z)$$ is generated from the simple distribution and flows though the backwards pass of the chain $$ g = f_1^{-1} \circ \, ... \circ f_K^{-1}$$.
+
+
+**_NOTE:_**  Since all the functions involved in the transormation of densities are bijective and differentiable, the normalizing flow process can be equivalently introduced the other way around. The version that is shown here is more oriented towards density estimation, while presenting the reverse path first (from simple distribution to complex data) may be more suitable if the final purpose is data generation.
 
 &nbsp;
 
@@ -75,7 +79,7 @@ Theoretically, any diffeomorphism could be used to build a normalizing flow mode
 * Be invertible with an easy-to-compute inverse function (depending on the application)
 * Computing the determinant of its Jacobian needs to be efficient. Typically, we want the Jacobian be a triangular matrix.
 
-Therefore, designing flows is the core problem adressed by research on this topic. The objective is to find functions such as described above that can still be complex enough to build models that yield good expressive power.
+Therefore, designing flows is one of the core problem adressed by research on this topic. The objective is to find functions such as described above that can still be complex enough to build models that yield good expressive power.
 
 &nbsp;
 
@@ -157,7 +161,7 @@ $$
 
 The key of this flow is that there is no need to invert the mapping $$m(\cdot)$$ to compute the determinant of the Jacobian, thus it can be anything, such as a dense neural network, a CNN, a Transformer, etc. Only the function $$g(\cdot)$$ needs to remain relatively simple, for instance affine with non-linear scaling factors.
 
-Sine only a fraction of the input vector goes though a complex transformation, coupling layers are stacked and alternated with permutations [^3] to improve the expressivity of the flow model.
+Since only a fraction of the input vector goes though a complex transformation, coupling layers are stacked and alternated with permutations [^3] to improve the expressivity of the flow model.
 
 # Examples of results
 
@@ -183,7 +187,7 @@ For several years now, flow models are used to performed diverse tasks such as u
 
 # Conclusion
 
-Flow models are a type a generative models designed to transform distributions in fully tractable way though a series a invertible mappings. They can be used for any application related to data generation and density estimation. 
+Flow models are a type a generative models designed to transform distributions in fully tractable way though a series a invertible mappings. They can be used for many application related to data generation and density estimation.
 
 # References
 
