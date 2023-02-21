@@ -187,6 +187,8 @@ Using
 
 $$\int_{z_0,\cdots,z_L} \phi(z_i) \prod_{j=0}^{L} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_L=\int_{z_0,\cdots,z_i} \phi(z_i) \prod_{j=0}^{i} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_i$$
 
+(this relationship is demonstrated at the end of this post, a big thank to Lucas Braz for his help !)
+
 We have
 
 $$=\sum_{i=0}^{L} \int_{z_0,\cdots,z_i} \prod_{j=0}^{i}q(z_j \vert z_{<j},x,y) \cdot \left[ log\left(q(z_i \vert z_{<i},x,y)\right) - log\left(p(z_i \vert z_{<i},x)\right) \right] dz_0 \ldots dz_i$$
@@ -194,5 +196,18 @@ $$=\sum_{i=0}^{L} \int_{z_0,\cdots,z_i} \prod_{j=0}^{i}q(z_j \vert z_{<j},x,y) \
 $$=\sum_{i=0}^{L} \int \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y) \, \underbrace{q(z_i \vert z_{<i},x,y) \cdot \left[ log\left(q(z_i \vert z_{<i},x,y)\right) - log\left(p(z_i \vert z_{<i},x)\right) \right]}_{D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))} dz_0 \ldots dz_i$$
 
 $$=\sum_{i=0}^{L}\mathbb{E}_{z_{i-1}\sim \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
+
+&nbsp;
+
+## Intermediate demonstration
+
+$$\int_{z_0,\cdots,z_L} \phi(z_i) \prod_{j=0}^{L} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_L$$
+
+$$=\int_{z_0,\cdots,z_i} \phi(z_i) \prod_{j=0}^{i} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_i \cdot \int_{z_{i+1},\cdots,z_L} \prod_{j=i+1}^{L} q(z_j \vert z_{<j},x,y) dz_{i+1},\ldots,dz_L$$
+
+$$=\int_{z_0,\cdots,z_i} \phi(z_i) \prod_{j=0}^{i} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_i \cdot \prod_{j=i+1}^{L} \underbrace{\int_{z_{j}}  q(z_j \vert z_{<j},x,y) dz_{j}}_{=1}$$
+
+$$=\int_{z_0,\cdots,z_i} \phi(z_i) \prod_{j=0}^{i} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_i$$
+
 
 
