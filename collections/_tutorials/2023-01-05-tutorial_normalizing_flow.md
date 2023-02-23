@@ -1,19 +1,20 @@
 ---
-layout: review
+layout: post
 title: "Introduction to Normalizing Flows"
-tags: deep-learning normalizing-flow
 author: "Robin Trombetta"
-cite:
-    authors: "George Papamakarios, Eric Nalisnick, Danilo Jimenez Rezende, Shakir Mohamed, Balaji Lakshminarayanan"
-    title:   "Normalizing Flows for Probabilistic Modeling and Inference"
-    venue:   "Journal of Machine Learning Research 2022"
-pdf: "https://arxiv.org/pdf/1912.02762.pdf"
+date:   2023-01-05
+tags: deep-learning normalizing-flow
 ---
 
 # Note
 The review is not focused on a single article; the idea is to introduce a type of models, Normalizing Flows, by presenting some articles that have proposed the main advances on this field. The references of all these articles are reported at the end of the page.
 
 [This video](https://www.youtube.com/watch?v=i7LjDvsLWCg) may help understanding better this topic.
+
+[This paper](https://arxiv.org/pdf/1912.02762.pdf) is at the basis of this review:
+* George Papamakarios, Eric Nalisnick, Danilo Jimenez Rezende, Shakir Mohamed, Balaji Lakshminarayanan, "Normalizing Flows for Probabilistic Modeling and Inference", Journal of Machine Learning Research 2022. 
+
+&nbsp;
 
 # Highlights
 
@@ -23,13 +24,13 @@ The review is not focused on a single article; the idea is to introduce a type o
 
 &nbsp;
 
-# Introduction
+## **Introduction**
 
-## Motivation
+### Motivation
 
 Main generative models include Generative Adversarial Network and Variational Auto-Encoder, that have both demonstrated impressive performance results on many tasks. However, these models have several issues limiting their application, one of them being that they do not allow for exact evaluation of the density of new points. Normalizing flow are a family of generative model with tractable distributions where both sampling and density evaluation can be efficient and exact.
 
-## Change of variable
+### Change of variable
 
 Let $$x \in X$$  be a random variable with a density function $$p_{X}$$ and denote $$f : X \to Z$$ a diffeomorphism. The change of variable operated by $$f$$ can be used to transform $$z \sim p_{Z}(z)$$ into a simpler random variable $$z = f(x)$$. One probability density can be retrieved from the other with the following formula :  
 
@@ -40,7 +41,7 @@ where $$\frac{\partial f}{\partial z}$$ is the Jacobian matrix of the applicatio
 
 &nbsp;
 
-# Normalizing flow
+## **Normalizing flow**
 
 Normalizing flow is a type of generative models made for powerful distribution approximation. It allows to transform a complex distribution into a simpler one (typically a multivariate normal distribution) though a serie of invertible mappings.
 As need to have a diffeomorphism restricts the choice of transformation functions, the final transformation is often constructed with a serie of simple applications $$f_1, ..., f_K$$ :
@@ -73,7 +74,7 @@ Density estimation is done with the direct path of the transformation flow chain
 
 &nbsp;
 
-# Types of flow
+## **Types of flow**
 
 Theoretically, any diffeomorphism could be used to build a normalizing flow model, but in practice it should satisfy two properties to be applicable:
 * Be invertible with an easy-to-compute inverse function (depending on the application)
@@ -83,7 +84,7 @@ Therefore, designing flows is one of the core problem adressed by research on th
 
 &nbsp;
 
-## Illustration with planar and radial flows
+### Illustration with planar and radial flows
 
 In the change of variable formula, the absolute value of the determinant of the jacobian of $$f$$ is a dilation/retractation factor of the space. In low dimension and with simple transformation function, it is possible to observe how an initial density function can be distorted during the flow process.
 
@@ -117,7 +118,7 @@ The effect of these types of transformations can be seen in Fig. 2 for two examp
 
 &nbsp;
 
-## Coupling layers
+### Coupling layers
 
 A core family of transformation has been introduced by Dinh et al.[^2] in 2015 and is called coupling layers.
 
@@ -163,7 +164,9 @@ The key of this flow is that there is no need to invert the mapping $$m(\cdot)$$
 
 Since only a fraction of the input vector goes though a complex transformation, coupling layers are stacked and alternated with permutations [^3] to improve the expressivity of the flow model.
 
-# Examples of results
+&nbsp;
+
+## **Examples of results**
 
 In 2016, Dinh et al. [^3] introduced Real NVP, a flow model using real-valued non-volume preserving transformations. It was one of the first deep learning model using normalizing flow to perform density estimation and image generation. The results with this model, shown in Fig. 4, are far from the standards we have now but is similar to the best generative models at that time. 
 
@@ -184,12 +187,15 @@ For several years now, flow models are used to performed diverse tasks such as u
 ![](/collections/images/noflow/fastflow_results.jpg)
 <p style="text-align: center;font-style:italic;">Figure 6. Examples of unsupervised anomaly detection on an industrial dataset using normalizing flow.</p>
 
+&nbsp;
 
-# Conclusion
+## **Conclusion**
 
 Flow models are a type a generative models designed to transform distributions in fully tractable way though a series a invertible mappings. They can be used for many application related to data generation and density estimation.
 
-# References
+&nbsp;
+
+## **References**
 
 [^1]: D. Jimenez Rezende, S. Mohamed. [Variational Inference with Normalizing Flows](https://openreview.net/pdf?id=BywyFQlAW). June 2016.
 [^2]: L. Dinh, D. Krueger, Y. Bengio. [NICE: Non-linear Independent Components Estimation](https://arxiv.org/pdf/1410.8516.pdf). In ICLR. April 2015.
