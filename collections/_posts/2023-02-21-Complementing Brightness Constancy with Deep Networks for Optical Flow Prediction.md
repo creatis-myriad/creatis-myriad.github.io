@@ -6,7 +6,7 @@ author: "Hang Jung Ling"
 cite:
     authors: "Vincent Le Guen, Clément Rambour, and Nicolas Thome"
     title:   "Complementing Brightness Constancy with Deep Networks for Optical Flow Prediction"
-    venue:   "arxiv"
+    venue:   "ECCV 2022"
 pdf: "http://arxiv.org/abs/2207.03790"
 ---
 
@@ -22,7 +22,7 @@ pdf: "http://arxiv.org/abs/2207.03790"
 What is optical flow estimation?
 - Computation of the per-pixel motion between video frames.
 
-Where can the optical flow estimation be applied?
+Where can optical flow estimation be applied?
 - Video compression, image registration, object tracking, etc.
 
 Traditional methods use the brightness constancy (BC) model, which assumes the intensity of pixels is conserved during the motion. Given a random pixel $$x$$, $$I_{t-1}(x) = I_{t}(x+w)$$, where $$w$$ is the motion of the pixel. If only small motions are considered, this constraint can be linearized to a partial differential equation and solved by variational methods:
@@ -35,7 +35,7 @@ Downsides of the BC model:
 - violated in many situations: presence of occlusions, local illumination changes, complex situations such as fog
 - need to inject some prior knowledge of the flow, e.g. spatial smoothness
 
-Deep-learning-based methods can potentially solve these problems, especially the supervised models, which have become SOTA methods. However, flow labeling on real images is expensive. Therefore, the training of these models has often relied on complex curriculum training on synthetic datasets and then fine-tuning to real world datasets. Recently, unsupervised approaches have been proposed that come close to the traditional methods with the additional regularization losses.
+Deep-learning-based methods can potentially solve these problems, especially considering SOTA flow estimation methods are supervised models. However, flow labeling on real images is expensive. Therefore, the training of these models has often relied on complex curriculum training on synthetic datasets and then fine-tuning to real world datasets. Recently, unsupervised approaches have been proposed that come close to the traditional methods with the additional regularization losses.
 
 The authors propose a hybrid model that decomposes the flow estimation process into a physical flow based on the simplified BC hypothesis and a data-driven augmentation to compensate the limitations of the BC model.
 
@@ -76,9 +76,9 @@ To extract the features and to estimate the physical flow, $$ \hat{w}_p $$, augm
   - Upsample the predicted flow since the output flow is computed at 1/8 resolution.
 
 ## Innovations
-Instead of predicting only the physical flow, $$ \hat{w}_p $$ using GRUs, the authors use another GRU block to predict the augmentation flow and uncertainty map. 
+Instead of predicting only the physical flow $$ \hat{w}_p $$ using GRUs, the authors use another GRU block to predict the augmentation flow and uncertainty map. 
 
-The final flow is given as: $$ \hat{w}(x) = (1- \hat{\alpha}(x))\hat{w}_p(x) + \hat{\alpha}\hat{w}_a(x) $$. Similarly, the ground truth flow is decomposed as: $$ w^*(x) = (1- \alpha^*(x))w_p^*(x) + \alpha^*w_a^*(x) $$. However, this decomposition is not necessary unique. Hence, the following constraints are used during the optimization:
+The final flow is given as: $$ \hat{w}(x) = (1- \hat{\alpha}(x))\hat{w}_p(x) + \hat{\alpha}\hat{w}_a(x) $$. Similarly, the ground truth flow is decomposed as: $$ w^*(x) = (1- \alpha^*(x))w_p^*(x) + \alpha^*w_a^*(x) $$. However, this decomposition is not necessarily unique. Hence, the following constraints are used during the optimization:
 
 $$ 
 \begin{equation} 
@@ -92,21 +92,21 @@ $$
 $$
 
 - (1): Flow decomposition
-- (2): BC flow constraint = $$\vert I_{t-1}(x)-I_{t}(x+w_p(x))\vert$$, weighted by $$(1-\alpha^*(x))$$ as this is a unsupervised loss and is not always verified.
+- (2): BC flow constraint = $$\vert I_{t-1}(x)-I_{t}(x+w_p(x))\vert$$, weighted by $$(1-\alpha^*(x))$$ as this is an unsupervised loss and is not always verified.
 - (3): Compensation in case of violation of the BC. $$ \sigma(\cdot) $$ nonlinear function $$ \rightarrow [0,1] $$. If $$ \alpha^*(x) = 0$$, the BC assumption is verified. If not, compensation via $$\hat{w}_a$$ 
 
 **Training loss:**
 
 $$ \mathcal{L}(D, \theta) =  \underbrace{\lambda_p \|\hat{w}_p-w^*_p\|^2_2 + \lambda_a\|\hat{w}_a-w^*_a\|^2_2 + \lambda_{total}\|\hat{w}-w^*\|^2_2}_{\text{supervised loss}} +  \underbrace{\lambda_{photo}\mathcal{L}_{photo}(D,\theta) + \lambda_w\|(\hat{w}_a, \hat{w}_p)\|^2_2 + \lambda_\alpha\mathcal{L}_\alpha(D,\theta)}_{\text{unsupervised loss}}$$,  
 
-- $$D:$$ a supervised or unsupervised image pairs  
+- $$D:$$ supervised or unsupervised image pairs  
 - $$\mathcal{L}_{photo}(D,\theta): $$ $$(1-\alpha^*(x))\vert I_{t-1}(x)-I_{t}(x+w_p(x))\vert_1$$
 - $$\|(\hat{w}_a, \hat{w}_p)\|^2_2: $$ minimization of the norm of the concatenation of $$(\hat{w}_a, \hat{w}_p)$$ vector. (Prevent degenerate cases and allow compensation with minimal correction $$\|\hat{w}_a\|$$)
 - $$\mathcal{L}_\alpha(D,\theta): $$ uncertainty loss, $$ \| \alpha^*(x) - \sigma(\vert I_{t-1}(x)-I_{t}(x+w_p(x))\vert_1) \|^2_2$$
 
 **Training strategy:**
-1. **Curriculum learning:** Use of the ground truth $$ \alpha^* $$ with high probaility at the beginning and decrease progessively this probability towards 0 to rely more and more on the prediction $$\hat{\alpha}$$.
-2. **Supervised learning:** Only use labelled image pairs.
+1. **Curriculum learning:** Use of the ground truth $$ \alpha^* $$ with high probability at the beginning and decrease progessively this probability towards 0 to rely more and more on the prediction $$\hat{\alpha}$$.
+2. **Supervised learning:** Only use labeled image pairs.
 3. **Semi-supervised learning:** Mix labeled and unlabeled image pairs in a mini-batch. For labeled data, minimize the full training loss. For unlabeled data, only minimize unsupervised loss and block the gradient flow in the uncertainty branch $$\alpha$$ since $$\alpha$$ can only be estimated in supervised mode. In the unsupervised mode, the curriculum learning is not applied.
 
 
