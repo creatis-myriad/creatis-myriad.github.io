@@ -35,7 +35,7 @@ Downsides of the BC model:
 - violated in many situations: presence of occlusions, local illumination changes, complex situations such as fog
 - need to inject some prior knowledge of the flow, e.g. spatial smoothness
 
-Deep-learning-based methods can potentially solve these problems, especially considering SOTA flow estimation methods are supervised models. However, flow labeling on real images is expensive. Therefore, the training of these models has often relied on complex curriculum training on synthetic datasets and then fine-tuning to real world datasets. Recently, unsupervised approaches have been proposed that come close to the traditional methods with the additional regularization losses.
+Deep-learning-based methods can potentially solve these problems, especially considering SOTA flow estimation methods are supervised models. However, flow labeling on real images is expensive. Therefore, the training of these models has often relied on complex curriculum training on synthetic datasets and then fine-tuning to real world datasets. Recently, unsupervised approaches have been proposed that adapt the main idea of the traditional methods by adding regularization losses.
 
 The authors propose a hybrid model that decomposes the flow estimation process into a physical flow based on the simplified BC hypothesis and a data-driven augmentation to compensate the limitations of the BC model.
 
