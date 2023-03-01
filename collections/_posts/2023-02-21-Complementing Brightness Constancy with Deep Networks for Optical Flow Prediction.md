@@ -107,7 +107,7 @@ $$ \mathcal{L}(D, \theta) =  \underbrace{\lambda_p \|\hat{w}_p-w^*_p\|^2_2 + \la
 **Training strategy:**
 1. **Curriculum learning:** Use of the ground truth $$ \alpha^* $$ with high probability at the beginning and decrease progessively this probability towards 0 to rely more and more on the prediction $$\hat{\alpha}$$.
 2. **Supervised learning:** Only use labeled image pairs.
-3. **Semi-supervised learning:** Mix labeled and unlabeled image pairs in a mini-batch. For labeled data, minimize the full training loss. For unlabeled data, only minimize unsupervised loss and block the gradient flow in the uncertainty branch $$\alpha$$ since $$\alpha$$ can only be estimated in supervised mode. This means setting $$\lambda_{photo}=1$$ and $$\lambda_p=\lambda_a=\lambda_{total}=\lambda_w=\lambda_\alpha=0$$ In the unsupervised mode, the curriculum learning is not applied.
+3. **Semi-supervised learning:** Mix labeled and unlabeled image pairs in a mini-batch. For labeled data, minimize the full training loss. For unlabeled data, only minimize unsupervised loss and block the gradient flow in the uncertainty branch $$\alpha$$ since $$\alpha$$ can only be estimated in supervised mode. This means setting $$\lambda_{photo}=1$$ and $$\lambda_p=\lambda_a=\lambda_{total}=\lambda_w=\lambda_\alpha=0$$. In the unsupervised mode, the curriculum learning is not applied.
 
 
 ## Benchmarking datasets
