@@ -16,7 +16,7 @@ pdf: "http://arxiv.org/abs/2207.03790"
 # Highlights
 - Introduce a novel deep-learning-based optical flow estimation that can be trained in both supervised and semi-supervised manner;
 - Exploit the brightness constancy (BC) model used in traditional methods;
-- Decompose the flow decomposition into the physical prior and the data-driven component + uncertainty quantification of the BC model.
+- Decompose the flow into the physical prior and the data-driven component + uncertainty quantification of the BC model.
 
 # Introduction
 What is optical flow estimation?
