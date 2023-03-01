@@ -86,7 +86,7 @@ $$
     \begin{cases}
       (1-\alpha^*(x))w_p(x) + \alpha^*(x)w_a(x) = w^*(x) & (1)\\
       (1-\alpha^*(x))|I_{t-1}(x)-I_{t}(x+w_p(x))| = 0 & (2)\\
-      \alpha^*(x) = \sigma(|I_{t-1} = I_{t}(x+w^*(x))|) & (3)\\
+      \alpha^*(x) = \sigma(|I_{t-1}(x)-I_{t}(x+w^*(x))|) & (3)\\
     \end{cases}       
 \end{equation}
 $$
@@ -97,17 +97,17 @@ $$
 
 **Training loss:**
 
-$$ \mathcal{L}(D, \theta) =  \underbrace{\lambda_p \|\hat{w}_p-w^*_p\|^2_2 + \lambda_a\|\hat{w}_a-w^*_a\|^2_2 + \lambda_{total}\|\hat{w}-w^*\|^2_2}_{\text{supervised loss}} +  \underbrace{\lambda_{photo}\mathcal{L}_{photo}(D,\theta) + \lambda_w\|(\hat{w}_a, \hat{w}_p)\|^2_2 + \lambda_\alpha\mathcal{L}_\alpha(D,\theta)}_{\text{unsupervised loss}}$$,  
+$$ \mathcal{L}(D, \theta) =  \underbrace{\lambda_p \|\hat{w}_p-w^*_p\|^2_2 + \lambda_a\|\hat{w}_a-w^*_a\|^2_2 + \lambda_{total}\|\hat{w}-w^*\|^2_2}_{\text{supervised loss}} +  \underbrace{\lambda_{photo}\mathcal{L}_{photo}(D,\theta)}_{\text{unsupervised loss}} +  \underbrace{\lambda_w\|(\hat{w}_a, \hat{w}_p)\|^2_2}_{\text{regularization}} + \underbrace{\lambda_\alpha\mathcal{L}_\alpha(D,\theta)}_{\text{uncertainty loss}}$$,  
 
 - $$D:$$ supervised or unsupervised image pairs  
 - $$\mathcal{L}_{photo}(D,\theta): $$ $$(1-\alpha^*(x))\vert I_{t-1}(x)-I_{t}(x+w_p(x))\vert_1$$
 - $$\|(\hat{w}_a, \hat{w}_p)\|^2_2: $$ minimization of the norm of the concatenation of $$(\hat{w}_a, \hat{w}_p)$$ vector. (Prevent degenerate cases and allow compensation with minimal correction $$\|\hat{w}_a\|$$)
-- $$\mathcal{L}_\alpha(D,\theta): $$ uncertainty loss, $$ \| \alpha^*(x) - \sigma(\vert I_{t-1}(x)-I_{t}(x+w_p(x))\vert_1) \|^2_2$$
+- $$\mathcal{L}_\alpha(D,\theta): $$ $$ \| \alpha^*(x) - \sigma(\vert I_{t-1}(x)-I_{t}(x+w_p(x))\vert_1) \|^2_2$$
 
 **Training strategy:**
 1. **Curriculum learning:** Use of the ground truth $$ \alpha^* $$ with high probability at the beginning and decrease progessively this probability towards 0 to rely more and more on the prediction $$\hat{\alpha}$$.
 2. **Supervised learning:** Only use labeled image pairs.
-3. **Semi-supervised learning:** Mix labeled and unlabeled image pairs in a mini-batch. For labeled data, minimize the full training loss. For unlabeled data, only minimize unsupervised loss and block the gradient flow in the uncertainty branch $$\alpha$$ since $$\alpha$$ can only be estimated in supervised mode. In the unsupervised mode, the curriculum learning is not applied.
+3. **Semi-supervised learning:** Mix labeled and unlabeled image pairs in a mini-batch. For labeled data, minimize the full training loss. For unlabeled data, only minimize unsupervised loss and block the gradient flow in the uncertainty branch $$\alpha$$ since $$\alpha$$ can only be estimated in supervised mode. This means setting $$\lambda_{photo}=1$$ and $$\lambda_p=\lambda_a=\lambda_{total}=\lambda_w=\lambda_\alpha=0$$ In the unsupervised mode, the curriculum learning is not applied.
 
 
 ## Benchmarking datasets
