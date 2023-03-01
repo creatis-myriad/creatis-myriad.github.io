@@ -135,7 +135,7 @@ When reducing the number of labeled frames on KITTI-resplit, they observe a slow
 ![](/collections/images/COMBO/pred_1.jpg)
 ![](/collections/images/COMBO/pred_2.jpg)
 
-## Ablation studiy
+## Ablation study
 ![](/collections/images/COMBO/ablation_study.jpg)
 
 # Conclusions
