@@ -87,7 +87,7 @@ They show that the variance of $$L_{\mathcal{D}}^{SGVB}(\phi)$$  can be dominate
 
 $$Var \left[ L_{\mathcal{D}}^{SGVB}(\phi) \right]  = N^2 \left( \frac{1}{M} Var \left[ L_i \right] + \frac{M-1}{M} Cov \left[ L_i, L_j \right] \right)$$
 
-$$L_i = log( p(\textbf{y}^i \vert \textbf{x}^i, \textbf{w} = f (\epsilon^i, \phi)))$$ (contribution to the likelihood for the i-th datapoint in the minibatch)
+$$L_i = log( p(\textbf{y}^i \vert \textbf{x}^i, \textbf{w} = f (\epsilon^i, \phi)))$$ (contribution to the likelihood for the $$i$$-th datapoint in the minibatch)
 
 
 Therefore they introduce the *Local Reparameterization Trick* to solve this issue. 
@@ -102,7 +102,8 @@ $$w_{i,j} = \mu_{i,j} + \sigma_{i,j} \epsilon_{i,j}$$, with $$\epsilon_{i,j} \si
 In this case we could make sure that $$Cov [L_i,L_j]=0 $$ by sampling a separate weight matrix $$\textbf{W}$$.
 
 This approach is not computationally efficient. To make it so they applied another trick based on 
-> For a factorized Gaussian posterior on the weights, the posterior for the activations (conditional on the input $$\textbf{A}$$) is also factorized Gaussian
+> Fortunately, the weights (and therefore $$\epsilon$$) only influence the expected log likelihood through the neuron activations $$\textbf{B}$$, which are of much lower dimension. If we can therefore sample the random activations $$\textbf{B}$$ directly, without sampling $$\textbf{W}$$ or $$\epsilon$$, we may obtain an efficient Monte Carlo estimator at a much lower cost.
+For a factorized Gaussian posterior on the weights, the posterior for the activations (conditional on the input $$\textbf{A}$$) is also factorized Gaussian
 
 
 $$q_\phi(w_{i,j}) =N (\mu_{i,j}, \sigma_{i,j}^2) \forall w_{i,j} \in \textbf{W} \Rightarrow q_\phi(b_{m,j}) =N (\gamma_{m,j}, \delta_{m,j}) $$
@@ -195,8 +196,8 @@ Now that there is a derived dropout's variational objective,
 they show that maximizing the variational lower bound with respect to $$\alpha$$ will make the hyperparameters $$\alpha$$ and $$\theta$$ adaptative.
 Furthermore, it will be possible to learn a separate dropout rate per layer, per neuron, of even per separate weight.
 
-Despite this new approach, thay found that large values of $$\alpha$$ will imply large-variance gradients. 
-That's why they apply a constraint on $$\alpha$$ ($$\alpha \le 1$$ i.e $$p \le 0.5$$) during training.
+Despite this new approach, they have found that large values of $$\alpha$$ will imply large-variance gradients. 
+That's why they apply a constraint on $$\alpha$$ ($$\alpha \le 1$$ i.e.* $$p \le 0.5$$) during training.
 
 We will show in future post on sparse variational dropout that this constraint can be removed and induce sparse representation of a neural network.
 
