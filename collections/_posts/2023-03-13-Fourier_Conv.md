@@ -101,7 +101,7 @@ Additional results presented in the article include more performances assessment
 Fast Fourier Convolution is an alternative to standard spatial convolution that combines information at a local and global scale by taking advantage of Fourier transform to have a global receptive field. Replacing usual convolution with this hydrib one seems to be able to improve performances of CNNs at a small computational cost. It has been recently used in applications that benefit from global receptive fields, such as large mask inpainting[^4].
 
 # References
-[^1]: See post on : [Deformable Convolutional Networks](http://127.0.0.1:4000/2022/11/14/DeformableConvolutionalNetworks.html)
+[^1]: See post on : [Deformable Convolutional Networks](https://creatis-myriad.github.io/2022/11/14/DeformableConvolutionalNetworks.html)
 [^2]: [X. Wang et al., Non-local Neural Networks](https://arxiv.org/pdf/1711.07971.pdf)
 [^3]: [G. D. Bergland, A guided tour of the fast Fourier transform](https://ieeexplore.ieee.org/document/5213896)
 [^4]: [R. Suvorov et al., Resolution-robust Large Mask Inpainting with Fourier Convolutions](https://arxiv.org/pdf/2109.07161v2.pdf)
