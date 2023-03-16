@@ -26,7 +26,7 @@ To tackle this challenge, the authors introduce a novel convolution operator tha
 
 # Fast Fourier Convolution
 
-Let's consider an input of a convolution layer $$X \in \mathbb{R}^{H \times W \times C}$$ and split it along the features' dimension : $$X = \left\{X^{l}, X^{g} \right\}$$, with $$X^{l} \in \mathbb{R}^{H \times W \times (1-\alpha_{in})C}$$ and $$X^{g} \in \mathbb{R}^{H \times W \times \alpha_{in}C}$$. The ratio $$1-\alpha_{in}$$ defines how many of the features will be dedicated to local operations via classic convolutions.
+Let's consider an input of a convolution layer $$X \in \mathbb{R}^{H \times W \times C}$$ and split it along the features' dimension : $$X = \left \{X^{l}, X^{g} \right \}$$, with $$X^{l} \in \mathbb{R}^{H \times W \times (1-\alpha_{in})C}$$ and $$X^{g} \in \mathbb{R}^{H \times W \times \alpha_{in}C}$$. The ratio $$1-\alpha_{in}$$ defines how many of the features will be dedicated to local operations via classic convolutions.
 
 The output of the forward pass of a Fast Fourier Convolution is defined as follows (see Figure 1 for illustration) :
 
@@ -53,9 +53,9 @@ $$f_{l}(\cdot)$$ is aimed to capture small scale information and $$f_{g \rightar
 
 The goal of the global path in the FFC is to enlarge the receptive field of the convolution to the full resolution of the input feature map. To do so, the input channels are passed to the spectral domain with a discrete Fourier transform. When aplying 2-D Fourier Transform on some real signals, it returns a Hermitian matrix, and convertly, applying inverse 2-D Fourier Transform on an Hermitian Matrix results in a matrix with only real elements. These two principles are used to ensure compatibily with other real neural layers, as well as allowing to retain only half on the information of the spectral signal.
 
-In the spectral domain, the real and imaginary parts of the signal are concatenated and standard convolutions layers can be used on the new feature tensor. Since a change in any region of the image in the original space has an influence on the whole spectral domain, unsing 1x1 convolution after a Fourier transform is sufficient to have a global receptive field. 
+In the spectral domain, the real and imaginary parts of the signal are concatenated and standard convolutions layers can be used on the new feature tensor. Since a change in any region of the image in the original space has an influence on the whole spectral domain, using 1x1 convolution after a Fourier transform is sufficient to have a global receptive field. 
 
-The figure 2 shows the pseudocode of the Fourier Unit implemanted in this paper :
+The figure 2 shows the pseudocode of the Fourier Unit implemented in this paper :
 
 <div style="text-align:center">
 <img src="/collections/images/fourier_conv/pseudo_code.jpg" height=200></div>
