@@ -41,7 +41,7 @@ where $$Y^{l} \in \mathbb{R}^{H \times W \times (1-\alpha_{out})C}$$ and $$Y^{l}
 $$f_{l}(\cdot)$$ is aimed to capture small scale information and $$f_{g \rightarrow l}(\cdot)$$ and $$f_{}(\cdot)$$ serve to exchange information between local and global levels. These three components can be any regular convolutional blocks, for instance 3x3 Conv + BN + ReLU. The term $$f_{g}(\cdot)$$, called *spectral transformer*, is operating at a global scale though Fourier transform, and needs to be further explained. 
 
 <div style="text-align:center">
-<img src="/collections/images/fourier_conv/ffc.jpg" height=400></div>
+<img src="/collections/images/fourier_conv/ffc.jpg" height=500></div>
 <p style="text-align: center;font-style:italic">Figure 1. Architecture of a Fast Fourier Convolution.</p>
 
 
@@ -55,10 +55,12 @@ The goal of the global path in the FFC is to enlarge the receptive field of the 
 
 In the spectral domain, the real and imaginary parts of the signal are concatenated and standard convolutions layers can be used on the new feature tensor. Since a change in any region of the image in the original space has an influence on the whole spectral domain, using 1x1 convolution after a Fourier transform is sufficient to have a global receptive field. 
 
+When all the desired operations are been carried out in the frequency domain, an inverse Fourier transformed is applied to return to the image space.
+
 The figure 2 shows the pseudocode of the Fourier Unit implemented in this paper :
 
 <div style="text-align:center">
-<img src="/collections/images/fourier_conv/pseudo_code.jpg" height=200></div>
+<img src="/collections/images/fourier_conv/pseudo_code.jpg" height=250></div>
 <p style="text-align: center;font-style:italic">Figure 2. Pseudocode of a Fourier Unit.</p>
 
 **Local Fourier Unit**
@@ -85,11 +87,11 @@ The efficiency of their convolution is assessed on some classic computer vision 
 The two figures below show the performances that they achieved on the ImageNet classification task and the Human Keypoint Detection on COCO.
 
 <div style="text-align:center">
-<img src="/collections/images/fourier_conv/results_imagenet.jpg" height=400></div>
-<p style="text-align: center;font-style:italic">Figure 4. Experiments results of plugging FCC into some networks on ImageNet.</p>
+<img src="/collections/images/fourier_conv/results_imagenet.jpg" height=500></div>
+<p style="text-align: center;font-style:italic">Figure 4. Experiments results when plugging FCC into some networks on ImageNet.</p>
 
 <div style="text-align:center">
-<img src="/collections/images/fourier_conv/results_coco.jpg" height=400></div>
+<img src="/collections/images/fourier_conv/results_coco.jpg" height=500></div>
 <p style="text-align: center;font-style:italic">Figure 5. Performances achieved on the COCO val2017 dataset for human keypoint detection.</p>
 
 Additional results presented in the article include more performances assessment and an ablation study to demonstrate the relevance of the Local Fourier Unit and the cross-scale information fusion, and to choose the hyperparameters of the FFC (feature split ratio). 
