@@ -96,7 +96,7 @@ The two figures below show the performances that they achieved on the ImageNet c
 
 &nbsp;
 
-The authors have carried out an ablation on the main hyperparameter of their convolution module, the split ratio between the features to the global et (semi-)global scale. The largest increse in performance appears when the new cross-scale mechanism is introduced (+1.0 point in accuracy), even at a low proportion. The study is conducted for a classification task and reveals that in that case the best split ratio is 0.5, although the conclusion could differ for another task, like segmentation.
+The authors have carried out an ablation on the main hyperparameter of their convolution module, the split ratio between the features to the global et (semi-)global scale. The largest increase in performance appears when the new cross-scale mechanism is introduced (+1.0 point in accuracy), even at a low proportion. The study is conducted for a classification task and reveals that in that case the best split ratio is 0.5, although the conclusion could differ for another task, like segmentation.
 
 <div style="text-align:center">
 <img src="/collections/images/fourier_conv/ablation_split_ratio.jpg" height=150></div>
