@@ -102,7 +102,9 @@ The authors have carried out an ablation on the main hyperparameter of their con
 <img src="/collections/images/fourier_conv/ablation_split_ratio.jpg" height=150></div>
 <p style="text-align: center;font-style:italic">Figure 6. The top-1 accuracy of FFC under different ratios on ImageNet. All models use ResNet-50 as their backbones. Note that α = 0 is equal to using vanilla convolutions.</p>
 
-Additional results presented in the article include more performances assessment and an ablation study to demonstrate the relevance of the Local Fourier Unit and the cross-scale information fusion, and to choose the hyperparameters of the FFC (feature split ratio). 
+&nbsp;
+
+Additional results presented in the paper include further performances evaluation and an ablation study to demonstrate the relevance of the Local Fourier Unit, as well as the choice of this new module's hyperparameter. 
 
 &nbsp;
 
