@@ -26,7 +26,7 @@ To tackle this challenge, the authors introduce a novel convolution operator tha
 
 # Fast Fourier Convolution
 
-Let's consider an input of a convolution layer $$X \in \mathbb{R}^{H \times W \times C}$$ and split it along the features' dimension : $$X = \left \{X^{l}, X^{g} \right \}$$, with $$X^{l} \in \mathbb{R}^{H \times W \times (1-\alpha_{in})C}$$ and $$X^{g} \in \mathbb{R}^{H \times W \times \alpha_{in}C}$$. The ratio $$1-\alpha_{in}$$ defines how many of the features will be dedicated to local operations via classic convolutions.
+Let's consider an input of a convolution layer $$X \in \mathbb{R}^{H \times W \times C}$$ and split it along the features' dimension : $$X = \left \lbrace X^{l}, X^{g} \right \rbrace $$, with $$X^{l} \in \mathbb{R}^{H \times W \times (1-\alpha_{in})C}$$ and $$X^{g} \in \mathbb{R}^{H \times W \times \alpha_{in}C}$$. The ratio $$1-\alpha_{in}$$ defines how many of the features will be dedicated to local operations via classic convolutions.
 
 The output of the forward pass of a Fast Fourier Convolution is defined as follows (see Figure 1 for illustration) :
 
