@@ -20,14 +20,14 @@ pdf: "https://arxiv.org/abs/2201.00520"
 
 * The succes of [Transformers](https://creatis-myriad.github.io./tutorials/2022-06-20-tutorial_transformer.html) is attributed to the large receptive field. However it comes with a high computational cost.
 
-* Some approaches try to limit the attention mechanism such as [Swin Transformer](https://creatis-myriad.github.io./2022/10/03/Swin-Transformer.html)[¹] or [Neighborhood Attention Transformer](https://creatis-myriad.github.io./2022/11/02/NeighborhoodAttentionTransformer.html)[²], **but they are data agnostic**.
+* Some approaches try to limit the attention mechanism such as [Swin Transformer](https://creatis-myriad.github.io./2022/10/03/Swin-Transformer.html)[^1] or [Neighborhood Attention Transformer](https://creatis-myriad.github.io./2022/11/02/NeighborhoodAttentionTransformer.html)[^2], **but they are data agnostic**.
 
 * **This article proposes a novel deformable self-attention module where the selection of tokens is learned**.
 
-* The idea come from the [deformables convolutions](https://creatis-myriad.github.io./2022/11/14/DeformableConvolutionalNetworks.html)[³] as Deformable DETR[⁵], a concurent work.
+* The idea come from the [deformables convolutions](https://creatis-myriad.github.io./2022/11/14/DeformableConvolutionalNetworks.html)[^3] as Deformable DETR[^5], a concurent work.
 
 
-* In my opinion the method is more a **selective** attention than a **deformable** attention.
+* In my opinion, the method is more a **selective** attention than a **deformable** attention.
 
 <div style="text-align:center">
 <img src="/collections/images/DeformableAttention/receptive_fields.jpg" style="zoom:50%;"></div>
@@ -59,7 +59,7 @@ pdf: "https://arxiv.org/abs/2201.00520"
 
   Given the input feature map $$x\in\mathbb{R}^{H \times W \times C}$$ a uniform grid of points $$p \in \mathbb{R}^{H_G \times W_G \times 2}$$ is generated.
 
-  Precisely we downsample the feature map by a factor $$r$$, $$H_G = H / r, W_G=W/r$$.
+ More precisely, we downsample the feature map by a factor $$r$$, $$H_G = H / r, W_G=W/r$$.
 
   The values of reference points are linearly spaced 2D coordinates $${(0, 0),...,(H_G -1,W_G-1)}$$ then normalized to the range $$[-1,1]$$.
 
@@ -79,7 +79,7 @@ pdf: "https://arxiv.org/abs/2201.00520"
 
   where $$g(a,b)=max(0,1- \vert a-b \vert )$$.
 
-  > Note that this sampling simply sum the four nearest location of the sampled point 
+  > Note that this sampling simply sums the four nearest neighbours of the sampled point 
 
 Finally, the output of one attention head is:
 
@@ -102,7 +102,7 @@ $$z_{(m)}=\sigma(q_{(m)}\tilde{k}_{(m)T}/\sqrt{d} + \phi(\hat{B};R))\tilde{v}_{(
 
 * **Computational complexity**
 
-  Similarly to the newest transformers architecture the complexity is reduced (because we have less tokens) and the additional computational cost bring by the offset network is negligible (6% of the FLOPs for a module). 
+  Similarly to the newest transformer architectures, the complexity is reduced (because we have less tokens) and the additional computational cost brought by the offset network is negligible (6% of the FLOPs for a module). 
 
 * **Model architecture**
 
@@ -125,7 +125,7 @@ $$z_{(m)}=\sigma(q_{(m)}\tilde{k}_{(m)T}/\sqrt{d} + \phi(\hat{B};R))\tilde{v}_{(
   <div style="text-align:center">
   <img src="/collections/images/DeformableAttention/classification.jpg" style="zoom:100%;"></div>
 
-DAT outperforms existing baselines by a small margin and is competitive with ConvNeXt[⁴] ($$82.1$$, $$83.1$$, $$83.8$$ and $$85.1$$ respectively for model $$T, S, B$$ and $$B$$ with image size $$384 \times 384$$)
+DAT outperforms existing baselines by a small margin and is competitive with ConvNeXt[^4] ($$82.1$$, $$83.1$$, $$83.8$$ and $$85.1$$ respectively for model $$T, S, B$$ and $$B$$ with image size $$384 \times 384$$)
 
 * **COCO Object Detection**
 <div style="text-align:center">
