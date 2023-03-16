@@ -173,9 +173,9 @@ They test different range factors $$s$$ showing that the model is pretty robust 
 
 This article introduces a new deformable attention mechanism where a selection of usefull tokens is learned . It builds a transformer architecture based on this mechanism that achieves competitive results on different computer visions tasks. 
 # References
-[¹] : [Z.Liu et al, Swin Transformer: Hierarchical Vision Transformer using Shifted Windows](https://arxiv.org/abs/2103.14030)  
-[²] : [A.Hassani et al, Neighborhood Attention Transformer](https://arxiv.org/abs/2204.07143)  
-[³] : [J.Dai et al, Deformable Convolutional Networks](https://arxiv.org/abs/1703.06211)  
-[⁴] : [Z. Liu et al, A ConvNet for the 2020s](https://arxiv.org/abs/2201.03545) and see [post](https://creatis-myriad.github.io./2023/02/23/Conv-Next.html).  
-[⁵] : [X. Zhu et al , Deformable DETR: Deformable Transformers for End-to-End Object Detection](https://arxiv.org/abs/2010.04159)
+[^1]: [Z.Liu et al, Swin Transformer: Hierarchical Vision Transformer using Shifted Windows](https://arxiv.org/abs/2103.14030)  
+[^2]: [A.Hassani et al, Neighborhood Attention Transformer](https://arxiv.org/abs/2204.07143)  
+[^3]: [J.Dai et al, Deformable Convolutional Networks](https://arxiv.org/abs/1703.06211)  
+[^4]: [Z. Liu et al, A ConvNet for the 2020s](https://arxiv.org/abs/2201.03545) and see [post](https://creatis-myriad.github.io./2023/02/23/Conv-Next.html).  
+[^5]: [X. Zhu et al , Deformable DETR: Deformable Transformers for End-to-End Object Detection](https://arxiv.org/abs/2010.04159)
 
