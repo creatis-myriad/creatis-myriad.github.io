@@ -18,7 +18,7 @@ pdf: "https://papers.nips.cc/paper/2020/file/2fd5d41ec6cfab47e32164d5624269b1-Pa
 
 # Introduction
 
-A majority of modern networks have adopted the architecture of deeply stacking many convolutions with small receptive field, commonly of size 3x3. The receptive field of such model grows as the information goes deeper into the network. However, it has been showed that increasing the receptive field, for instance though deformable[^1] convolution or non-local neural networks[^2], could enhance the performances of convolutional models. Moreover, gathering and exploiting information at different scales has also proven to be effective in refining local spatial detection by integrating information from shallower layers.
+A majority of modern networks have adopted the architecture of deeply stacking many convolutions with small receptive field, commonly of size 3x3. The receptive field of such model grows as the information goes deeper into the network. However, it has been showed that increasing the receptive field, for instance though deformable convolution[^1] or non-local neural networks[^2], could enhance the performances of convolutional models. Moreover, gathering and exploiting information at different scales has also proven to be effective in refining local spatial detection by integrating information from shallower layers.
 
 To tackle this challenge, the authors introduce a novel convolution operator that has a non-local receptive field and fuses multi-scale representations. It is based on spectral transform theory, and especially Fourier Transform[^3]. The key point is that any change in a value of the original data has an influence on the spectral domain. Hence, convolutional operations performed in the spectral domain have a global receptive field. Standard convolution have already been employed for processing images directly in the spectral domain with deep learning, but here the main idea is to couple information both from local and global context via an hybrid convolution.
 
@@ -94,7 +94,17 @@ The two figures below show the performances that they achieved on the ImageNet c
 <img src="/collections/images/fourier_conv/results_coco.jpg" height=500></div>
 <p style="text-align: center;font-style:italic">Figure 5. Performances achieved on the COCO val2017 dataset for human keypoint detection.</p>
 
-Additional results presented in the article include more performances assessment and an ablation study to demonstrate the relevance of the Local Fourier Unit and the cross-scale information fusion, and to choose the hyperparameters of the FFC (feature split ratio). 
+&nbsp;
+
+The authors have carried out an ablation on the main hyperparameter of their convolution module, the split ratio between the features to the global et (semi-)global scale. The largest increase in performance appears when the new cross-scale mechanism is introduced (+1.0 point in accuracy), even at a low proportion. The study is conducted for a classification task and reveals that in that case the best split ratio is 0.5, although the conclusion could differ for another task, like segmentation.
+
+<div style="text-align:center">
+<img src="/collections/images/fourier_conv/ablation_split_ratio.jpg" height=150></div>
+<p style="text-align: center;font-style:italic">Figure 6. The top-1 accuracy of FFC under different ratios on ImageNet. All models use ResNet-50 as their backbones. Note that α = 0 is equal to using vanilla convolutions.</p>
+
+&nbsp;
+
+Additional results presented in the paper include further performances evaluation and an ablation study to demonstrate the relevance of the Local Fourier Unit, as well as the choice of this new module's hyperparameter. 
 
 &nbsp;
 
