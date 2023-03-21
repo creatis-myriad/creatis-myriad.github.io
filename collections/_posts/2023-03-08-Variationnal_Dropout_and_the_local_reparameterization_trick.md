@@ -135,7 +135,7 @@ $$ \textbf{B} = (\textbf{A} \circ \xi)\theta $$ with $$\xi \sim p(\xi_{i,j})$$
 - $$\theta$$ is a $$K$$ x $$L$$ weight matrix
 - $$\textbf{B}$$ is the $$M$$ x $$L$$ output matrix
 
-It was shown on previous paper that using a continuous distribution such as a Gaussian $$\mathcal{N}(1,\alpha)$$ with $$\alpha = p(1-p)$$ 
+It was shown in a previous paper that using a continuous distribution such as a Gaussian $$\mathcal{N}(1,\alpha)$$ with $$\alpha = \frac{p}{(1-p)}$$ 
 works as well or batter than a Bernoulli distribution with a probability $$1-p$$ (with $$p$$ the dropout rate).
 
 &nbsp;
