@@ -199,7 +199,7 @@ Furthermore, it will be possible to learn a separate dropout rate per layer, per
 Despite this new approach, they have found that large values of $$\alpha$$ will imply large-variance gradients. 
 That's why they apply a constraint on $$\alpha$$ ($$\alpha \le 1$$ i.e.* $$p \le 0.5$$) during training.
 
-We will show in future post on sparse variational dropout that this constraint can be removed and induce sparse representation of a neural network.
+We will show in future post on sparse variational dropout that this constraint can be removed, leading to sparse representation of neural networks.
 
 &nbsp;
 
