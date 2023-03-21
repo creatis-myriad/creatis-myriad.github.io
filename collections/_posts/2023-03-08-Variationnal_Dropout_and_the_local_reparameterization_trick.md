@@ -32,7 +32,7 @@ pdf: "http://www.pachecoj.com/courses/csc665-1/papers/kingma15.pdf"
 
 # Introduction
 
-Has it is well known nowadays, deep neural networks can scale to millions of parameters. 
+As is well known nowadays, deep neural networks can scale to millions of parameters. 
 However, this flexbility may leads to overfitting therefore not being robust for new data.
 Various regularization techniques are used in practice such as dropout for instance.
 
