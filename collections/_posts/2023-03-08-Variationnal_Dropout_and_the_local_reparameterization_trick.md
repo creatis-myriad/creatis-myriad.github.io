@@ -127,7 +127,7 @@ The local reparameterization trick leads to an estimator that has lower variance
 
 ## Variational Dropout
 
-Dropout consists to add multiplicative noise to the imput of each layer. For a fully connected layer we have :
+Dropout consists of adding multiplicative noise to the input of each layer. For a fully connected layer we have :
 
 $$ \textbf{B} = (\textbf{A} \circ \xi)\theta $$ with $$\xi \sim p(\xi_{i,j})$$
 
