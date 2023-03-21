@@ -7,7 +7,7 @@ cite:
     authors: "Kingma, D. P., Salimans, T., & Welling, M. "
     title:   "Variational Dropout and the Local Reparameterization Trick"
     venue:   "Advances in neural information processing systems (NeurIPS), 2015"
-pdf: "http://www.pachecoj.com/courses/csc665-1/papers/kingma15.pdf"
+pdf: "https://proceedings.neurips.cc/paper/2015/file/bc7316929fe1545bf0b98d114ee3ecb8-Paper.pdf"
 ---
 
 
