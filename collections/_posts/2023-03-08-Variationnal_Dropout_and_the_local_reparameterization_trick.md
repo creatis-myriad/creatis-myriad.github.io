@@ -43,7 +43,7 @@ The problem they underline is that :
 > Bayesian methods for inferring a posterior distribution over neural network weights have not yet been shown to outperform simpler methods such as dropout.
 
 
-That's why they proposed a new trick called the *Local reparameterization trick* that will improve the stochastic gradientbased variational inference with minibatches of data. 
+That's why they proposed a new trick called the *Local reparameterization trick* that will improve the stochastic gradient based variational inference with minibatches of data. 
 Leading to an optimization speed on the same level as fast dropout.
 One big advantage of their method is it allows a full Bayesian analysis of the model.
 
