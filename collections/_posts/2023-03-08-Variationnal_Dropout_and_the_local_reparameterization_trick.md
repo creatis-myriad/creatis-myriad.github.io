@@ -157,7 +157,7 @@ This Gaussian dropout noise can be seen as a Bayesian treatment of a neural netw
 $$q_\phi(w_{i,j}) = \mathcal{N}(\theta_{i,j}, \alpha\theta_{i,j}^2)$$
 
 
-Another section is about variational dropout with correlated weight noise but not developped in this post.
+The paper includes another section on variational dropout with correlated weight noise, but we do not developp it in this post.
 
 &nbsp;
 
