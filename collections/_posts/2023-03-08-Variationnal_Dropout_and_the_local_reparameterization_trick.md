@@ -4,7 +4,7 @@ title: "Variational Dropout and the Local Reparameterization Trick"
 tags: bayesian-inference distribution dropout
 author: "Romain Deleat-besson"
 cite:
-    authors: "Kingma, D. P., Salimans, T., & Welling, M. "
+    authors: "Diederik P. Kingma, Tim Salimans, Max Welling"
     title:   "Variational Dropout and the Local Reparameterization Trick"
     venue:   "Advances in neural information processing systems (NeurIPS), 2015"
 pdf: "https://proceedings.neurips.cc/paper/2015/file/bc7316929fe1545bf0b98d114ee3ecb8-Paper.pdf"
@@ -215,7 +215,7 @@ Two types of variational dropout as well :
 - Variational dropout B : independant weight noise (equivalent of Gaussian dropout B)
 
 Tests were done on MNIST dataset for a classification task. 
-They choose the same architecture from a publication as well as the same drop rate which correspond to $$p \le 0.5$$ for the hidden layers and $$p \le 0.2$$ for the input layer.
+They used the same architecture and drop rate as in the original dropout paper[^1], with the drop rate corresponding to $$p \le 0.5$$ for the hidden layers and $$p \le 0.2$$ for the input layer.
 
 ![](/collections/images/variational_dropout/img1.jpg)
 
