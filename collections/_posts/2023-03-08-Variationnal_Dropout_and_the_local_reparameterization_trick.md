@@ -194,7 +194,7 @@ $$ c_1 = 1.16145124, c_2 = -1.50204118 , c_3 = 0.58629921$$
 
 Now that there is a derived dropout's variational objective, 
 they show that maximizing the variational lower bound with respect to $$\alpha$$ will make the hyperparameters $$\alpha$$ and $$\theta$$ adaptative.
-Furthermore, it will be possible to learn a separate dropout rate per layer, per neuron, of even per separate weight.
+Furthermore, it will be possible to learn a separate dropout rate per layer, per neuron, or even per separate weight.
 
 Despite this new approach, they have found that large values of $$\alpha$$ will imply large-variance gradients. 
 That's why they apply a constraint on $$\alpha$$ ($$\alpha \le 1$$ i.e.* $$p \le 0.5$$) during training.
