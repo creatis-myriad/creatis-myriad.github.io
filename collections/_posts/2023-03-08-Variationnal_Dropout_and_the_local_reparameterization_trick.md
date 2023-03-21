@@ -184,7 +184,7 @@ $$\mathbb{E}_{q_{\alpha}} \left[ L_{\mathcal{D}}(\theta) \right] - D_{KL}(q_\alp
 
 - $$\theta$$ and $$\alpha$$ are treated as hyperparameters that are fixed during training.
 
-However, $$- D_{KL}(q_\alpha(\textbf{w}) \vert \vert p(\textbf{w}))$$ is anatycally intractable but can be approximated by :
+However, $$- D_{KL}(q_\alpha(\textbf{w}) \vert \vert p(\textbf{w}))$$ is analytically intractable but can be approximated by :
 
 $$- D_{KL} \left[ q_\phi(w_i) \vert \vert p(w_i) \right] \approx constant + 0.5log(\alpha) + c_1\alpha + c_2\alpha^2 + c_3\alpha^3$$
 
