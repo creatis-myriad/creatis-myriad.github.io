@@ -82,7 +82,7 @@ $$L_{\mathcal{D}}(\phi) = \sum_{(\textbf{x},\textbf{y}) \in \mathcal{D}} \mathbb
 What they explain in section 2.1 and 2.2 in the paper is that they can estimate the gradient of the log-likelyhood with Monte-Carlo based method. 
 It is also possible to do it to approximate the KL divergence. 
 But in practice the performance of stochastic gradient ascent crucially depends on the variance of the gradients. 
-They show that the variance of $$L_{\mathcal{D}}^{SGVB}(\phi)$$ (SGVB stands for Stochastic Gradient Variational Bayes define in their previous paper [here](https://arxiv.org/pdf/1312.6114.pdf?source=post_page---------------------------)) can be dominated by the covariances for even moderately large $$M$$ (size of the minibatch).
+They show that the variance of $$L_{\mathcal{D}}^{SGVB}(\phi)$$ (where SGVB stands for _Stochastic Gradient Variational Bayes_, defined in their previous paper [here](https://arxiv.org/pdf/1312.6114.pdf)) can be dominated by the covariances for even moderately large $$M$$ (size of the minibatch).
 
 $$Var \left[ L_{\mathcal{D}}^{SGVB}(\phi) \right]  = N^2 \left( \frac{1}{M} Var \left[ L_i \right] + \frac{M-1}{M} Cov \left[ L_i, L_j \right] \right)$$
 
