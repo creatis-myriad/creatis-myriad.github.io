@@ -55,7 +55,7 @@ Their method leads to an optimization speed on the same level as fast dropout an
 
 Let's have a dataset $$\mathcal{D}$$ containing *$$N$$* observations of tuples $$(\textbf{x},\textbf{y})$$.
 
-The goal in the paper is to learn a model with weights $$\textbf{w}$$ of the conditional probability $$p(\textbf{y} \vert \textbf{x}, \textbf{w})$$. This is a generic exemple, the method they propose can be applied to standard classification or regression or other types of model (like unsupervised model).
+The goal in the paper is to learn a model with weights $$\textbf{w}$$ of the conditional probability $$p(\textbf{y} \vert \textbf{x}, \textbf{w})$$. This is a generic example, the method they propose can be applied to standard classification or regression or other types of models (like unsupervised models).
 
 Basically, they try to learn $$p(\textbf{w} \vert \mathcal{D}) = p(\textbf{w}) p(\mathcal{D} \vert \textbf{w}) / p(\mathcal{D})$$.
 However, this true posterior is intractable that's why they will try to have the best approximation by minimizing :
