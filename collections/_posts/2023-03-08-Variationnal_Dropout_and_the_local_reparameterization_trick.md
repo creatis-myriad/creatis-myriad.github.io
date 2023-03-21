@@ -43,9 +43,8 @@ The problem they underline is that :
 > Bayesian methods for inferring a posterior distribution over neural network weights have not yet been shown to outperform simpler methods such as dropout.
 
 
-That's why they proposed a new trick called the *Local reparameterization trick* that will improve the stochastic gradient based variational inference with minibatches of data. 
-Leading to an optimization speed on the same level as fast dropout.
-One big advantage of their method is it allows a full Bayesian analysis of the model.
+That's why they proposed a new trick called the *Local reparameterization trick* that will improve the stochastic gradient based variational inference with minibatches of data thanks to the translation of global uncertainty into a local noise. 
+Their method leads to an optimization speed on the same level as fast dropout and allows a full Bayesian analysis of the model.
 
 &nbsp;
 
@@ -54,9 +53,9 @@ One big advantage of their method is it allows a full Bayesian analysis of the m
 
 ## Bayesian inference on model parameters
 
-Let's have a dataset $$\mathcal{D}$$ with $$(\textbf{x},\textbf{y})$$ *$$N$$* observations.
+Let's have a dataset $$\mathcal{D}$$ containing *$$N$$* observations of tuples $$(\textbf{x},\textbf{y})$$.
 
-The goal in the paper is to learn a model with weights $$\textbf{w}$$ of the conditional probability $$p(\textbf{y} \vert \textbf{x}, \textbf{w})$$
+The goal in the paper is to learn a model with weights $$\textbf{w}$$ of the conditional probability $$p(\textbf{y} \vert \textbf{x}, \textbf{w})$$. This is a generic exemple, the method they propose can be applied to standard classification or regression or other types of model (like unsupervised model).
 
 Basically, they try to learn $$p(\textbf{w} \vert \mathcal{D}) = p(\textbf{w}) p(\mathcal{D} \vert \textbf{w}) / p(\mathcal{D})$$.
 However, this true posterior is intractable that's why they will try to have the best approximation by minimizing :
@@ -83,7 +82,7 @@ $$L_{\mathcal{D}}(\phi) = \sum_{(\textbf{x},\textbf{y}) \in \mathcal{D}} \mathbb
 What they explain in section 2.1 and 2.2 in the paper is that they can estimate the gradient of the log-likelyhood with Monte-Carlo based method. 
 It is also possible to do it to approximate the KL divergence. 
 But in practice the performance of stochastic gradient ascent crucially depends on the variance of the gradients. 
-They show that the variance of $$L_{\mathcal{D}}^{SGVB}(\phi)$$  can be dominated by the covariances for even moderately large $$M$$ (size of the minibatch).
+They show that the variance of $$L_{\mathcal{D}}^{SGVB}(\phi)$$ (SGVB stands for Stochastic Gradient Variational Bayes define in their previous paper [here](https://arxiv.org/pdf/1312.6114.pdf?source=post_page---------------------------)) can be dominated by the covariances for even moderately large $$M$$ (size of the minibatch).
 
 $$Var \left[ L_{\mathcal{D}}^{SGVB}(\phi) \right]  = N^2 \left( \frac{1}{M} Var \left[ L_i \right] + \frac{M-1}{M} Cov \left[ L_i, L_j \right] \right)$$
 
@@ -207,8 +206,8 @@ We will show in future post on sparse variational dropout that this constraint c
 # Results
 
 Comparison of their method to standard binary dropout and two versions of Gaussian dropout.
-- Gaussian dropout A : pre-linear Gaussian dropout (based on a paper)
-- Gaussian dropout B : post-linear Gaussian dropout (based on another paper)
+- Gaussian dropout A : pre-linear Gaussian dropout (based on [[1]](https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf?utm_content=buffer79b43&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer,))
+- Gaussian dropout B : post-linear Gaussian dropout (based on [[2]](http://proceedings.mlr.press/v28/wang13a.pdf))
 
 Two types of variational dropout as well :
 - Variational dropout A : correlated weight noise (equivalent of an adaptative Gaussian dropout type A)
@@ -233,3 +232,11 @@ where optimal dropout rates are inferred from the data, rather than fixed in adv
 
 &nbsp;
 
+
+# References
+
+\[1\] [Srivastava, N., Hinton, G., Krizhevsky, A., Sutskever, I., and Salakhutdinov, R. (2014). Dropout: A simple way to prevent neural networks from overfitting](https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf?utm_content=buffer79b43&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer,)
+
+\[2\] [Wang, S. and Manning, C. (2013). Fast dropout training](http://proceedings.mlr.press/v28/wang13a.pdf)
+
+&nbsp;
