@@ -101,7 +101,7 @@ We then specify the posterior approximation on the weights to be a fully factori
 $$w_{i,j} = \mu_{i,j} + \sigma_{i,j} \epsilon_{i,j}$$, with $$\epsilon_{i,j} \sim  \mathcal{N}(0, 1)$$.
 In this case we could make sure that $$Cov [L_i,L_j]=0 $$ by sampling a separate weight matrix $$\textbf{W}$$.
 
-This approach is not computationally efficient. To make it so they applied another trick based on 
+This approach is not computationally efficient. To make it so they applied another trick:
 > Fortunately, the weights (and therefore $$\epsilon$$) only influence the expected log likelihood through the neuron activations $$\textbf{B}$$, which are of much lower dimension. If we can therefore sample the random activations $$\textbf{B}$$ directly, without sampling $$\textbf{W}$$ or $$\epsilon$$, we may obtain an efficient Monte Carlo estimator at a much lower cost.
 For a factorized Gaussian posterior on the weights, the posterior for the activations (conditional on the input $$\textbf{A}$$) is also factorized Gaussian
 
