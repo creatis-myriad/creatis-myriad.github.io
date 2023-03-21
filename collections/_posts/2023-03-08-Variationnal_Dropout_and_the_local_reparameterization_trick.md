@@ -215,7 +215,7 @@ Two types of variational dropout as well :
 - Variational dropout B : independant weight noise (equivalent of Gaussian dropout B)
 
 Tests were done on MNIST dataset for a classification task. 
-They choosed the same architecture from a publication as well as the same drop rate which correspond to $$p \le 0.5$$ for the hidden layers and $$p \le 0.2$$ for the input layer.
+They choose the same architecture from a publication as well as the same drop rate which correspond to $$p \le 0.5$$ for the hidden layers and $$p \le 0.2$$ for the input layer.
 
 ![](/collections/images/variational_dropout/img1.jpg)
 
