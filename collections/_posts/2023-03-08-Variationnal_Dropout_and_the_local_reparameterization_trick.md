@@ -226,7 +226,7 @@ They choosed the same architecture from a publication as well as the same drop r
 
 # Conclusion
 
-- They have obtain an efficient estimator with a low computational complexity and a low variance by injecting noise locally instead of globally.
+- They obtained an efficient estimator with a low computational complexity and a low variance by injecting noise locally instead of globally.
 
 - They show that dropout is a special case of SGVB with local reparameterization leading to variational dropout, 
 where optimal dropout rates are inferred from the data, rather than fixed in advance.
