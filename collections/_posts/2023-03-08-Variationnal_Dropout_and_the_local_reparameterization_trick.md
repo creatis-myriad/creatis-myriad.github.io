@@ -1,7 +1,7 @@
 ---
 layout: review
 title: "Variational Dropout and the Local Reparameterization Trick"
-tags: Bayesian Inference, Distribution, Dropout, 
+tags: bayesian-inference distribution dropout
 author: "Romain Deleat-besson"
 cite:
     authors: "Kingma, D. P., Salimans, T., & Welling, M. "
