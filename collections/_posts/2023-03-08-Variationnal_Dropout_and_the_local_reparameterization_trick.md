@@ -235,8 +235,8 @@ where optimal dropout rates are inferred from the data, rather than fixed in adv
 
 # References
 
-\[1\] [Srivastava, N., Hinton, G., Krizhevsky, A., Sutskever, I., and Salakhutdinov, R. (2014). Dropout: A simple way to prevent neural networks from overfitting](https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf?utm_content=buffer79b43&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer,)
+[^1]: [Srivastava, N., Hinton, G., Krizhevsky, A., Sutskever, I., and Salakhutdinov, R. (2014). Dropout: A simple way to prevent neural networks from overfitting](https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf)
 
-\[2\] [Wang, S. and Manning, C. (2013). Fast dropout training](http://proceedings.mlr.press/v28/wang13a.pdf)
+[^2]: [Wang, S. and Manning, C. (2013). Fast dropout training](http://proceedings.mlr.press/v28/wang13a.pdf)
 
 &nbsp;
