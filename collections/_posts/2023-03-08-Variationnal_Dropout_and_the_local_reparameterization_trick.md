@@ -206,8 +206,8 @@ We will show in future post on sparse variational dropout that this constraint c
 # Results
 
 Comparison of their method to standard binary dropout and two versions of Gaussian dropout.
-- Gaussian dropout A : pre-linear Gaussian dropout (based on [[1]](https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf?utm_content=buffer79b43&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer,))
-- Gaussian dropout B : post-linear Gaussian dropout (based on [[2]](http://proceedings.mlr.press/v28/wang13a.pdf))
+- Gaussian dropout A : pre-linear Gaussian dropout[^1]
+- Gaussian dropout B : post-linear Gaussian dropout[^2]
 
 Two types of variational dropout as well :
 - Variational dropout A : correlated weight noise (equivalent of an adaptative Gaussian dropout type A)
