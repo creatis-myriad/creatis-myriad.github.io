@@ -151,7 +151,7 @@ $$\gamma_{m,j} = \sum_{i=1}^{K} a_{m,i}\theta_{i,j}$$ and $$\delta_{m,j} = \alph
 
 With this equation, the activations are directly drawn from their (approximate or exact) marginal distributions.
 
-This Gaussian dropout noise can be see as a Bayesian treatment of a neural network with $$\textbf{B = AW}$$ where the **posterior distribution of the weights** is given by a factorized Gaussian with :
+This Gaussian dropout noise can be seen as a Bayesian treatment of a neural network with $$\textbf{B = AW}$$ where the **posterior distribution of the weights** is given by a factorized Gaussian with :
 
 
 $$q_\phi(w_{i,j}) = \mathcal{N}(\theta_{i,j}, \alpha\theta_{i,j}^2)$$
