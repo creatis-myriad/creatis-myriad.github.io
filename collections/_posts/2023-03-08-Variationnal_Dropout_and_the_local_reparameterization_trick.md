@@ -117,7 +117,7 @@ $$\gamma_{m,j} = \sum_{i=1}^{1000} a_{m,i}\mu_{i,j}$$ and $$\delta_{m,j} = \sum_
 we may thus sample the activations from their implied Gaussian distribution directly, 
 using $$b_{m,j} = \gamma_{m,j} + \sqrt{\delta_{m,j}}\zeta_{m,j}$$, with $$\zeta_{m,j} \sim  \mathcal{N}(0, 1)$$. 
 
-Here, $$\zeta$$ is an $$M$$ x $$1000$$ matrix, so only $$M$$ thousand random variables are needed to be sample instead of $$M$$ million.
+Here, $$\zeta$$ is an $$M \times 1000$$ matrix, so only $$M \times 1000$$ random variables have to be sampled instead of $$M \times 1\,000\,000$$.
 
 
 The local reparameterization trick leads to an estimator that has lower variance and is more computationally efficient.
