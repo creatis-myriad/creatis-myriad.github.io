@@ -22,7 +22,7 @@ Pb: labelled/ unabbeled ...
 
 # Method
 
-![](/collections/images/pseudo_labels_DG/pipeline.jpg)
+[comment]: <> (![](/collections/images/pseudo_labels_DG/pipeline.jpg))
 
 *Figure 1: pipeline proposed by the authors*
 
