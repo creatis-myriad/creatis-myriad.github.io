@@ -34,7 +34,7 @@ pdf: "http://www.pachecoj.com/courses/csc665-1/papers/kingma15.pdf"
 
 As is well known nowadays, deep neural networks can scale to millions of parameters. 
 However, this flexbility may lead to overfitting, and therefore decrease robustness on new data.
-Various regularization techniques are used in practice such as dropout for instance.
+Various regularization techniques are used in practice, such as dropout.
 
 
 In a previous paper that they cite, it was shown that binary dropout has a Gaussian approximation called Gaussian dropout.
