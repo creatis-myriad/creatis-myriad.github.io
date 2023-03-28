@@ -16,7 +16,7 @@ pdf: "https://arxiv.org/pdf/2201.08657.pdf"
 * Code is available on [github](https://github.com/XMed-Lab/EPL_SemiDG)
 
 # Highlights
-* The goal of the paper is to obtain better quality pseudo labels when working with unlabelled images from an unknown image domain
+* The goal of the paper is to obtain better quality pseudo labels when working with unlabeled images from an unknown image domain
 * The contributions of the paper include a data augmentation scheme based on the Fourier Transform and a Confidence-Aware Cross Pseudo Supervision network 
 
 # Introduction
@@ -54,7 +54,7 @@ With:
 - $$\lambda$$: parameter to adjust the ratio between amplitude information from $$\mathcal{A}$$ and $$\mathcal{A}'$$  
 - M: binary mask to adjust spatial range of amplitude spectrum to be exchanged. Set around low frequencies.
 
-The new FT image, with magnitude $$\mathcal{A}_{new}$$ ans phase $$\mathcal{P}$$  is transformed back into the spatial domain to give a new augmented image Z.
+The new FT image, with magnitude $$\mathcal{A}_{new}$$ and phase $$\mathcal{P}$$  is transformed back into the spatial domain to give a new augmented image Z.
 
 ## Confidence-Aware Cross Pseudo Supervision 
 
@@ -94,7 +94,7 @@ The datasets tested are:
 
 Using n% of the dataset means:
 - fully supervised setting: only n % of labeled data is used
-- semi-supervised setting: training data = n% of labeled data from source domains + the rest of the dataset remains unlabeld
+- semi-supervised setting: training data = n% of labeled data from source domains + the rest of the dataset remains unlabeled
 
 They test each combination of the domains A,B,C and D with 3 domains used for training.
 
