@@ -63,7 +63,7 @@ Figure 2 : Architecture of the weighted voting network
 * Once the weight maps are acquired, the candidate segmentations $$S_i$$ are fused into initial consensus segmentation $$S^{init}$$ in 3 steps :
   - Candidate segmentations are converted to one-hot encoding segmentations $$S^i=\left\{p^i_l,l=1,2,...,N_{label} \right\} $$
   - Vote maps $$V^i=\left\{V^i_l,l=1,2,...,N_{label} \right\} $$ are computed by elementwise multiplying $$W^i$$ and $$S^i$$ for each labels and spatial location n
-  - For each label, the vote maps of all the atlases are average to generate the initial segmentation
+  - For each label, the vote maps of all the atlases are averaged to generate the initial segmentation
 
 ## Fine-tuning subnet
 
