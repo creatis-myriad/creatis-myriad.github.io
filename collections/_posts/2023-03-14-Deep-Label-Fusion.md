@@ -12,7 +12,7 @@ pdf: "https://reader.elsevier.com/reader/sd/pii/S1361841522003115?token=CD4B7AB2
 # Notes
 
 * The model was implemented in PyTorch using functionalities from the MONAI project
-* The code for Deep Label Fusion is available on github : github.com/LongXie/DeepLabelFusion
+* The code for Deep Label Fusion is available on [github](github.com/LongXie/DeepLabelFusion)
 
 # Reminder: Multi-Atlas Segmentation
 
