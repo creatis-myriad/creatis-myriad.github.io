@@ -25,7 +25,7 @@ pdf: "https://reader.elsevier.com/reader/sd/pii/S1361841522003115?token=CD4B7AB2
 
 *  Multiple Atlas Segmentation (MAS), while showing sub-optimal performance for segmentation, can offer a greater generalizability to new datasets
 
-* **This article proposes a hybrid end-to-end MAS & DCNN segmentation pipeline, called Deep Label Fusion (DLF), as well as dedicated data augmentation for multi-modal datasets in order to combine the strengths of MAS and DCNN** 
+* **This article proposes a hybrid end-to-end MAS & DCNN segmentation pipeline, called Deep Label Fusion (DLF), as well as a dedicated data augmentation scheme for multi-modal datasets in order to combine the strengths of MAS and DCNN** 
 
 
 # Deep Label Fusion Pipeline
