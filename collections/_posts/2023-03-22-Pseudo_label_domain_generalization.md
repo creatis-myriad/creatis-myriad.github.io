@@ -33,7 +33,7 @@ The authors of this paper try to do this in a **semi-supervised setting**, where
 
 *Figure 1: pipeline proposed by the authors*
 
-Here, the authors take advantage of 3 source domains B,C and D, for which they have some annotations. They want to enable the generalization on a fourth domain A, for which no annotations would be available.
+Here, the authors take advantage of 3 source domains B, C and D, for which they have some annotations. They want to enable the generalization on a fourth domain A, for which no annotations would be available.
 
 ## Data Augmentation by Fourier Transformation
 
