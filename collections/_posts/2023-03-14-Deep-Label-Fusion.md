@@ -49,7 +49,7 @@ Figure 1 : Complete pipeline of DLF
 
 ![](/collections/images/DeepLabelFusion/subnets.jpg) 
 ![](/collections/images/DeepLabelFusion/subnet_legende.jpg) 
-Figure 2 : Architecture of the weighted voting network
+Figure 2 : Architecture of the weighted voting network & fine-tuning network
 
 * Input : Pair of target/atlas image with coordinate maps (x,y,z) for spatial context
 * Output : Label-specific weight maps $$W^i=\left\{W^i_l,l=1,2,...,N_{label} \right\} $$ for atlas i with value $$w_{ln}$$ at voxel n
@@ -72,7 +72,7 @@ Figure 2 : Architecture of the weighted voting network
 * Input : $$S^{init}$$ and associated coordinate maps
 * Output : Set of feature maps of the same size as $$S^{init}$$
 
-* A label-specific mask is then generated taking the union of all candidate segmentations and multiplying it by the corresponding channel of the output to get the final segmentation.
+* A label-specific mask is then generated taking the union of all candidate segmentations and multiplying it by the corresponding channel of the output of the fine-tuning network to get the final segmentation.
 
 > Note : This label-masking operation assumes that the truth label is contained inside the region that has atlas votes of that label
 
@@ -97,13 +97,13 @@ Figure 3 : Different datasets used for the experiments
 
 ## Cross-validation experiments
 
-* Comparison with other MAS algorithms with various label fusion methods (Majority Voting (MV), Spatially Varying Weighted Voting (SVWV), Joint Label Fusion (JLF))
-
-* Comparison with a 3D U-Net with a similar architecture as the fine-tuning model of DLF, as well as with nnUNet
-
 * Oracle(10%) results consider that a pixel is rightly segmented after registration if at least 10% of atlases have the correct segmentation. Those results are used to evaluate the upper bound of label fusion performance
 
 >Note : The oracle results are especially useful to characterize the registration difficulty for a specific task
+
+* Comparison with other MAS algorithms with various label fusion methods (Majority Voting (MV), Spatially Varying Weighted Voting (SVWV), Joint Label Fusion (JLF))
+
+* Comparison with a 3D U-Net with a similar architecture as the fine-tuning model of DLF, as well as with nnUNet
 
 ![](/collections/images/DeepLabelFusion/cross-val.jpg) 
 Figure 4 : Cross-validation results
