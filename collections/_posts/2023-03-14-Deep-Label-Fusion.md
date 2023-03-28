@@ -51,7 +51,7 @@ Figure 1 : Complete pipeline of DLF
 ![](/collections/images/DeepLabelFusion/subnet_legende.jpg) 
 Figure 2 : Architecture of the weighted voting network
 
-* Input : Pair of target/atlas image w/ coordinate maps (x,y,z) for spatial context
+* Input : Pair of target/atlas image with coordinate maps (x,y,z) for spatial context
 * Output : Label-specific weight maps $$W^i=\left\{W^i_l,l=1,2,...,N_{label} \right\} $$ for atlas i with value $$w_{ln}$$ at voxel n
 
 * This network replaces conventional similarity metrics used in MAS 
