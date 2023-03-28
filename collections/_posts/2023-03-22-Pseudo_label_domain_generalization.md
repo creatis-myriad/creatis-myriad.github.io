@@ -25,7 +25,7 @@ Domain shifts are very common in the medical imaging field. Indeed, when working
 
 The field of **domain generalization** in particular tackles this issue: from a known source domain on which we can train a model, we want to obtain a generalization on a target domain for which we have no information during training.
 
-The authors of this paper try to do this in an **semi-supervised setting**, where part of their training data does not have ground truth labels.
+The authors of this paper try to do this in a **semi-supervised setting**, where part of their training data does not have ground truth labels.
 
 # Method
 
