@@ -124,7 +124,7 @@ The results are better or comparable to SOTA, in terms of metric and consistent 
 # Conclusion
 
 - Another ablation study in the same paper showed that using both Fourier DA and CACPS gives the best results.
-- The two schemes introduced by this paper help getting better qualty labels which means better generalization to unknown domains, without the need to have annotations of unkown domains for which generalization can be necessary.
+- The two schemes introduced by this paper help getting better quality labels which means better generalization to unknown domains, without the need to have annotations of unknown domains for which generalization can be necessary.
 
 # References
 [^1]: [X. Chen et al., SemiSupervised Semantic Segmentation with Cross Pseudo Supervision](https://arxiv.org/abs/2106.01226)  
