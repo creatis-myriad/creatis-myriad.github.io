@@ -74,7 +74,7 @@ They also use a supervision loss, based on the Dice loss: $$L_s=E[L_{Dice}(P_O^1
         
 The training objective: $$L=L_s+\beta*L_{cacps}$$
 
-During infrerence, predictions from the two networks are averaged to give the final results.
+During inference, predictions from the two networks are averaged to give the final results.
 
 ## Implementation
 
