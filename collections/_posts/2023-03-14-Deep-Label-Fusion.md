@@ -83,7 +83,7 @@ Figure 2 : Architecture of the weighted voting network
 
   - A random selection of $$N_{Atlas}$$ is made for each target image. $$N_{Atlas}$$ can be superior to the total number of available datasets. This random selection allows for duplicate atlases to help handle similar votes, as well as making the network more robust to atlas variability
 
-  - An extended Random Histogram Shift (RHS) is applied to atlas & target independantly, which corresponds to a change in contrast between the atlas image and the target image. This helps the weighted voting subnet to be more sensitive to image structure rather than intensity distribution
+  - An extended Random Histogram Shift (RHS) is applied to atlas & target independently, which corresponds to a change in contrast between the atlas image and the target image. This helps the weighted voting subnet to be more sensitive to image structure rather than intensity distribution
   
   - In case of multi-modality (T1 & T2 here), **Modality Augmentation (ModAug)** is implemented. The idea is to randomly replace a modality during training with white noise to force the model to base its prediction on individual modalities
 
