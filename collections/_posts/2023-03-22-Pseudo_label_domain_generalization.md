@@ -80,7 +80,7 @@ During inference, predictions from the two networks are averaged to give the fin
 
 
 - Segmentation networks: DeepLabv3+ with ResNet50  
-- Optimizer : Adamw 
+- Optimizer : AdamW 
 - Other data augmentation schemes: random rotation, scaling, crop, flip
 
 
