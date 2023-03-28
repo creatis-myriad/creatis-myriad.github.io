@@ -106,7 +106,7 @@ They test each combination of the domains A,B,C and D with 3 domains used for tr
 
 *Table 1: quantitative comparaison with SOTA method on M&Ms dataset using 2% labeled data ($$\lambda=1, \beta=3$$)*
 
-The methodsbrings better results visually and quantitatively than the baselines, even compared with Meta[^2], which is SOTA for semi-supervised learning and domain adaptation. 
+The method brings better results visually and quantitatively than the baselines, even compared with Meta[^2], which is SOTA for semi-supervised learning and domain adaptation. 
 
 The larger improvement on domain A are explained by the fact that A is more different than the other domains.
 
