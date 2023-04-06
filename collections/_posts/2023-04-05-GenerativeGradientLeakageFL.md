@@ -70,7 +70,7 @@ $$ z^* = \underset{z\in\mathbb{R}^{k}}{argmin\ } \underbrace{\mathcal{D}(y, \mat
 For networks with a fully connected classification head using sigmoid or ReLu activation functions trained with cross-entropy loss on one-hot labels, the label can be inferred through the index of the negative entry of the gradient with respect to this layer.
  
 ## Gradient Transformation Estimations
-_Gradient Clipping_: Given perturbation $$\mathcal{T}(w, S) = w/\text{max}(1,\frac{||w||_2}{S})$$, estimate the clipping bound $$S$$ as the l2 norm at each layer,
+_Gradient Clipping_: Given a perturbation $$\mathcal{T}(w, S) = w/\text{max}(1,\frac{||w||_2}{S})$$, estimate the clipping bound $$S$$ as the $$l_2$$ norm at each layer,
 
 _Gradient Sparsification_: Given perturbation $$\mathcal{T}(w,p) = y \odot \mathcal{M}$$ with $$\mathcal{M}$$ a mask with pruning rate $$p$$, simply estimate $$\mathcal{M}$$ using the zero entries of the gradient.
 
