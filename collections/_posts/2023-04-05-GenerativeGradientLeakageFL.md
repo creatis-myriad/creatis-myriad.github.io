@@ -20,7 +20,7 @@ pdf: "https://arxiv.org/pdf/2203.15696.pdf"
 
 # Introduction
 
-* Federated learning was **initially presented as a fully privacy-preserving decentralized learning paradigm**, never sharing raw data between participants and the server,
+* Federated learning was **initially presented as a fully privacy-preserving decentralized learning paradigm**, never sharing raw data between participants and the server.
 
 <div style="text-align:center">
 <img src="/collections/images/generative_gradient_leakage_fl/Federated_setup.jpg" width="60%" height="30%"></div>
