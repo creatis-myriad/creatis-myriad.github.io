@@ -25,7 +25,7 @@ pdf: "https://arxiv.org/pdf/2203.15696.pdf"
 <div style="text-align:center">
 <img src="/collections/images/generative_gradient_leakage_fl/Federated_setup.jpg" width="60%" height="30%"></div>
 &nbsp;
-* Soon after its proposal, attacks designed _to extract information from the transmitted local updates_ were developed, the most notable being **Deep Leakage from Gradients[^1]**, only on small-sized inputs,
+* Soon after its proposal, attacks designed _to extract information from the transmitted local updates_ were developed, the most notable being **Deep Leakage from Gradients[^1]**, but working efficiently on small-sized inputs only.
 
 * The authors propose a new type of attack, **Generative Gradient Leakage**, _leveraging external data server-side to train a generative model used to regularize a gradient inversion attack._
 
