@@ -53,7 +53,7 @@ pdf: "https://arxiv.org/pdf/2203.15696.pdf"
 * $$y=\mathcal{T}(F(x))$$ a gradient degraded by the defence transformation $$\mathcal{T}$$,
 * $$w: \mathbb{R}^{h\times w}\rightarrow \mathbb{R}$$ an image prior defining the likelihood of an image,
 * $$\mathcal{D}: \mathbb{R}^p\times\mathbb{R}^p\rightarrow \mathbb{R}$$ a distance metric between gradients,
-* $$\mathcal{G}: \mathbb{R}^k\rightarrow \mathbb{R}^{h\times w}$$ a generative network trained on external data server-side, 
+* $$G: \mathbb{R}^k\rightarrow \mathbb{R}^{h\times w}$$ a generative network trained on external data server-side, 
 * $$\mathcal{R}(G;z)$$ a regularization term, penalizing latent vector $$z$$ when deviating from the prior distribution.
 
 ## Previous formulation[^1]
