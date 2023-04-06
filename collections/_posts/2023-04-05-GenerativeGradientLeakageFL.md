@@ -165,7 +165,7 @@ _**Evaluation metrics**_
 
 * The authors show promising results attacking federated frameworks training on ImageNet and CelebA, reconstructing a large image from a gradient.
 
-* _This work must be seen as a valuable proof of concept_: the assumptions are extremely strong limiting its applicability in real contexts, but the idea is quite appealing, opening a whole new spectrum of gradient inversion techniques.
+* _This work must be seen as a valuable proof of concept_: the assumptions are extremely strong, limiting its applicability in real contexts, but the idea is quite appealing, opening a whole new spectrum of gradient inversion techniques.
 
 # References
 [^1]: [Ligeng Zhu et al, Deep Leakage from Gradients](https://arxiv.org/abs/1906.08935)
