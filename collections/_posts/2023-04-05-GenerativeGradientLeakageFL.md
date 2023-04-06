@@ -124,7 +124,7 @@ _**Evaluation metrics**_
 ## Defence schemes
 * _Additive Noise_: inject a Gaussian noise $$\epsilon \sim \mathcal{N}(0,\sigma^2I)$$ to the gradients with $$\sigma = 0.1$$,
 * _Gradient Clipping_: clip the values of the gradients with a bound of $$S = 4$$,
-* _Gradient Spasification_: perform magnitude-based pruning on the gradients to achieve 90% sparsity,
+* _Gradient Sparsification_: perform magnitude-based pruning on the gradients to achieve 90% sparsity,
 * _Soteria_: gradients are generated on the perturbed representation with a pruning rate of 80%.
 
 # Results
