@@ -6,7 +6,7 @@ author: "Emile Saillard"
 cite:
     authors: "Long Xie, Laura E.M. Wisse, Jiancong Wang, Sadhana Ravikumar, Pulkit Khandelwal, Trevor Glenn, Anica Luther, Sydney Lim, David A. Wolk, Paul A. Yushkevich"
     title:   "Deep label fusion: A generalizable hybrid multi-atlas and deep convolutional neural network for medical image segmentation"
-    venue: Elsevier
+    venue: Medical Image Analysis (2023)
 pdf: "https://reader.elsevier.com/reader/sd/pii/S1361841522003115?token=CD4B7AB27E42E9CE6A6FAD29EF34D9ED4C7E505ECA20F6B363AAA2C43B59D9085D8BD62754D8DCC825DCB8F9A95594CC&originRegion=eu-west-1&originCreation=20230314135712"
 ---
 # Notes
