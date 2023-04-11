@@ -7,7 +7,7 @@ cite:
     authors: "Long Xie, Laura E.M. Wisse, Jiancong Wang, Sadhana Ravikumar, Pulkit Khandelwal, Trevor Glenn, Anica Luther, Sydney Lim, David A. Wolk, Paul A. Yushkevich"
     title:   "Deep label fusion: A generalizable hybrid multi-atlas and deep convolutional neural network for medical image segmentation"
     venue: Medical Image Analysis (2023)
-pdf: "https://reader.elsevier.com/reader/sd/pii/S1361841522003115?token=CD4B7AB27E42E9CE6A6FAD29EF34D9ED4C7E505ECA20F6B363AAA2C43B59D9085D8BD62754D8DCC825DCB8F9A95594CC&originRegion=eu-west-1&originCreation=20230314135712"
+pdf: "https://doi.org/10.1016/j.media.2022.102683"
 ---
 # Notes
 
@@ -81,7 +81,7 @@ Figure 2 : Architecture of the weighted voting network & fine-tuning network
 
 * In addition to usual data augmentation (Random flips, rotations, patching, elastic deformation and additive gaussian noise), DLF has 3 dedicated data augmentation methods :
 
-  - A random selection of $$N_{Atlas}$$ is made for each target image. $$N_{Atlas}$$ can be superior to the total number of available datasets. This random selection allows for duplicate atlases to help handle similar votes, as well as making the network more robust to atlas variability
+  - A random selection of $$N_{Atlas}$$ is made for each target image. $$N_{Atlas}$$ can be superior to the total number of available atlases. This random selection allows for duplicate atlases to help handle similar votes, as well as making the network more robust to atlas variability
 
   - An extended Random Histogram Shift (RHS) is applied to atlas & target independently, which corresponds to a change in contrast between the atlas image and the target image. This helps the weighted voting subnet to be more sensitive to image structure rather than intensity distribution
   
