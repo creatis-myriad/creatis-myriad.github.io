@@ -19,8 +19,8 @@ extends the previous Layer-wise Relevance Propagation (LRP) method to work with 
 Current techniques to interpret transformers' predictions suffer from various issues:
 - Limited to specific subsets of operations/layers allowed (e.g. no negative values);
 - Simplistic assumptions (e.g. linear combination of attention across network) regarding attention computation;
-- Methods are class-agnostic in practice, meaning their output won't really depending on the class, even for methods
-which in theory take into account class information.
+- Methods are class-agnostic in practice, meaning their output won't really change depending on the class, even for
+methods which in theory take into account class information.
 
 # Methods
 The method proposed by the authors falls under the umbrella of *attribution propagation* methods, which are justified
@@ -61,8 +61,9 @@ R^{(n)}_j & = \mathcal{G}_q(x,w,q,R^{(n-1)}) \\
 \end{align} \tag{3}
 $$
 
-To initialize the relevance propagation, the relevance of $$R^{(0)}$$, i.e. the output layer, is set to a one-hot
-encoding of the class for which of the class w.r.t. which the relevance should be computed.
+To initialize the relevance propagation, the relevance in the output layer, i.e $$R^{(0)}$$, is set to a one-hot
+encoding of the class w.r.t. which the relevance should be computed. Starting from there, the relevance can be
+backpropagated (along with the gradient) through the network.
 
 ![](/collections/images/TransformerInterpretability/figure1.jpg)
 
@@ -72,7 +73,8 @@ property is implicitly derived from the conservation rule, which dictates that t
 equal to the sum of the relevance in the previous layer.
 
 However, in some layers, this rule either doesn't hold up (i.e. matrix multiplications) or is not sufficient in itself
-to because of numerical instabilities which lead to highly positive/negative relevance (i.e. skip connections).
+to constrain values to remain interpretable because of numerical instabilities which lead to highly positive/negative
+relevance (i.e. skip connections).
 
 Therefore, the authors propose to normalize the relevance of the 2 tensors such that:
 1. It maintains the conservation rule, i.e. $$ \sum_j \bar{R}^{u^{(n)}}_j + \sum_k \bar{R}^{v^{(n)}}_k = \sum_i R^{(n-1)}_i $$
