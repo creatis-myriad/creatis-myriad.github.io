@@ -56,7 +56,7 @@ We would like to maximize the log-likelihood
 $$\max_{\theta} \sum_{i=1}^{N} \log{p_{\theta}(x_i)}$$
 
 
-However, it require $$p_{\theta}$$ to be a normalized probability density function, which is in practice impossible for any general $$f_\theta$$ as it means we have to evaluate $$Z_{\theta}$$. The maximiziation of the log-likelihood is thus usually done by restricting the form of $$f_{\theta}$$ (normalizing flow) or via a the expression of a lower bound (VAEs).
+However, it requires $$p_{\theta}$$ to be a normalized probability density function, which is in practice impossible for any general $$f_\theta$$ as it means we have to evaluate $$Z_{\theta}$$. The maximiziation of the log-likelihood is thus usually done by restricting the form of $$f_{\theta}$$ (normalizing flow) or via a the expression of a lower bound (VAEs).
 
 The idea behind the score-based models is to learn the *gradients of the logarithm density function* instead of the density function instead [^3]. This means that we are interested in approximating the quantity $$\nabla_x \log{p_{\theta}(x)}$$, also called the **score function**. Indeed, we have :
 
@@ -82,7 +82,7 @@ $$
 
 #### Sampling with Langevin Dynamics
 
-This paradigm of trying to approximate the score function of a density is motivated by the existence of a method that allow to sample data from a distribution if we know its gradients. Suppose we have a score-based model $$s_{\theta}(x) \approx \nabla_x \log{p(x)}$$, we can use **Langevin dynamics** to draw samples from it. The principle is to follow a Monte Carlo Markov Chain, initialized at an arbitrary prior distribution $$x_0 \approx \pi(x)$$ (usually a standard Gaussian distribution) and iterates as follows : 
+This paradigm of trying to approximate the score function of a density is motivated by the existence of a method that allows to sample data from a distribution if we know its gradients. Suppose we have a score-based model $$s_{\theta}(x) \approx \nabla_x \log{p(x)}$$, we can use **Langevin dynamics** to draw samples from it. The principle is to follow a Monte Carlo Markov Chain, initialized at an arbitrary prior distribution $$x_0 \approx \pi(x)$$ (usually a standard Gaussian distribution) and iterates as follows : 
 
 $$x_{i+1} = x_i + \epsilon \nabla_x \log{p(x)} + \sqrt{2 \epsilon} z_i , \qquad i=0,1, ..., K$$
 
@@ -116,7 +116,7 @@ However, even if this method works theoretically, in practice, a score-based mod
 $$ \mathbb{E}_{p(x)} [\frac{1}{2} \lVert \nabla_x \log{p(x)} \rVert^2_2 + \textrm{trace}(\nabla_x s_{\theta}(x))]$$ -->
 
 
-This is due to the fact that the model is only able to predict a good approximation of the score function in the regions where there are data. The estimated score functions are inaccurate in low density regions, where few data points are available to compute and optimize the score function. 
+This is due to the fact that the model is only able to predict a good approximation of the score function in the regions where there is data. The estimated score functions are inaccurate in low density regions, where few data points are available to compute and optimize the score function. 
 
 $$ \mathbb{E}_{p(x)} [\lVert \nabla_x \log{p(x)} - s_{\theta}(x) \rVert^2_2] = \int \textbf{p(x)} \lVert \nabla_x \log{p(x)} - s_\theta(x) \rVert_2^2dx$$
 
@@ -128,7 +128,7 @@ $$ \mathbb{E}_{p(x)} [\lVert \nabla_x \log{p(x)} - s_{\theta}(x) \rVert^2_2] = \
 
 &nbsp;
 
-A method called **denoising score matching** introduced in (Vincent, 2011) [^5] allow both to bypassthe formulation of the equation (1) and to get around the problem of the bad approximiation in low data density regions.
+A method called **denoising score matching** introduced in (Vincent, 2011) [^5] allow both to bypass the formulation of the equation (1) and to get around the problem of the bad approximiation in low data density regions.
 
 &nbsp;
 
@@ -146,9 +146,9 @@ Crucially, it has been shown that matching the scores of $$p_\sigma (x)$$ as in 
 
 $$\mathbb{E}_{x \sim p(x)} \mathbb{E}_{\tilde{x}\sim p_\sigma(\tilde{x} \vert x)} \left[ \lVert s_\theta(\tilde{x}) - \nabla_{\tilde{x}}\log(p_\sigma (\tilde{x} \vert x)) \rVert _2^2 \right]$$ 
 
-What is good with the formula is that the conditional probability density function is analitically known so we can easily compute $$\nabla_{\tilde{x}}\log(p_\sigma (\tilde{x} \vert x)) \propto - \frac{\tilde{x} - x}{\sigma^2}$$, which allow for direct optimization of the objective function.
+What is good with the formula is that the conditional probability density function is analytically known so we can easily compute $$\nabla_{\tilde{x}}\log(p_\sigma (\tilde{x} \vert x)) \propto - \frac{\tilde{x} - x}{\sigma^2}$$, which allow for direct optimization of the objective function.
 
-The noisy distribution introduces a trade-off between matching with the data and exploration of the space. Indeeed, high noise provides useful information for Langevin dynamics (exploration of low data density regions), but a density that is too disturbed no longer approximate the true data repartition. The solution is to consider a family of increasing noise levels $$\sigma_1 < \sigma_2 < ... < \sigma_L $$ such that $$p_{\sigma_1}(x) \approx p(x)$$ and $$p_{\sigma_L}(x) \approx \mathcal{N}(0,1)$$ and to train a noise conditional score-based model $$s_{\theta}(x, \sigma_i)$$ with score matching such that $$s_{\theta}(x,\sigma_i) \approx \nabla_x p_{\sigma_i}(x)$$ for all $$i=1,2,...,L$$.
+The noisy distribution introduces a trade-off between matching with the data and exploration of the space. Indeed, high noise provides useful information for Langevin dynamics (exploration of low data density regions), but a density that is too disturbed no longer approximate the true data repartition. The solution is to consider a family of increasing noise levels $$\sigma_1 < \sigma_2 < ... < \sigma_L $$ such that $$p_{\sigma_1}(x) \approx p(x)$$ and $$p_{\sigma_L}(x) \approx \mathcal{N}(0,1)$$ and to train a noise conditional score-based model $$s_{\theta}(x, \sigma_i)$$ with score matching such that $$s_{\theta}(x,\sigma_i) \approx \nabla_x p_{\sigma_i}(x)$$ for all $$i=1,2,...,L$$.
 
 The new training objective is a weighted sum of Fisher divergences for all noise scales :
 
@@ -183,7 +183,7 @@ In 2021, a score-based model established new state-of-the-art performances for i
 
 ### **Quick reminder on diffusion models**
 
-A diffusion model [^6] [^7] [^8] consists in converting form a known, simple and tractable distribution $$ \pi(x)$$ (typically a standard Gaussian) to a target distribution $$p_{data}(x)$$ using a Markov chain.
+A diffusion model [^6] [^7] [^8] consists in converting from a known, simple and tractable distribution $$ \pi(x)$$ (typically a standard Gaussian) to a target distribution $$p_{data}(x)$$ using a Markov chain.
 
 The forward process consists in corrupting an input image $$x_0$$ via a T-step Markov chain where at each step, a small amount of noise is added to the image. Given an image $$x_t$$ at time step $$t$$, we produce the next image with a Gaussiance noise with variance $$\beta_t$$ :
 
@@ -195,7 +195,7 @@ $$ x_{t+1} = \sqrt{1-\beta_t}x_t + \sqrt{\beta_t}\epsilon$$
 
 with $$\epsilon \sim \mathcal{N}(0,1)$$
 
-> The total number a diffusion steps T, as well as the noising schedule $$\beta_t$$ must be specified. T is typically of several thousands and $$\beta_t$$ variates linearly from $$\beta_1 = 10^{-4}$$ to $$\beta_T = 0.02$$ in CITER DDPM, even though other schedule have proven to be more efficient since then.
+> The total number of diffusion steps T, as well as the noising schedule $$\beta_t$$ must be specified. T is typically of several thousands and $$\beta_t$$ variates linearly from $$\beta_1 = 10^{-4}$$ to $$\beta_T = 0.02$$ in CITER DDPM, even though other schedule have proven to be more efficient since then.
 
 &nbsp;
 
@@ -207,7 +207,7 @@ $$
 x_t &= \sqrt{1-\beta_t}x_{t-1} + \sqrt{\beta_t}\epsilon_{t-1} \\
 & = \sqrt{\alpha_t} x_{t-2} + \sqrt{1-\alpha_t}\epsilon_{t-2} \\
 & = \; ... \\
-& = \sqrt{\overline{\alpha_t}} + \sqrt{1 - \overline{\alpha_t}}\epsilon_0
+& = \sqrt{\overline{\alpha_t}}x_0 + \sqrt{1 - \overline{\alpha_t}}\epsilon_0
 \end{aligned}
 $$
 
@@ -227,7 +227,7 @@ With the diffusion process that we have just described, when $$T \to \infty$$, t
 
 $$ p_{\theta}(x_{t-1}|x_t) := \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \tilde{\beta}_t\textbf{I}) \approx q(x_{t-1}|x_t)$$
 
-For training, the negative log-likelihood is limited by an upper bound wich allow to train the model thanks to :
+For training, the negative log-likelihood is limited by an upper bound wich allows to train the model thanks to :
 
 $$ \mathbb{E}_{t\sim [0,...,T], x_0 \sim p(x), x_t \sim q(x_t \vert x_0) } \left[ \left\Vert \tilde{\mu}_t(x_t, x_0) - \mu_\theta (x_t,t) \right\Vert_2^2 \right] $$
 
@@ -285,7 +285,7 @@ where $$d\overline{w}$$ is the Brownian process when time flow backwards from 0 
 
 &nbsp;
 
-In an analogue manner to the discrete case seen before, such a model is optimized though the objective function : 
+In a similar manner to the discrete case seen before, such a model is optimized though the objective function : 
 
 $$ \mathbb{E}_{t \sim Uniform[0,T], x_0, x(t)} \left[ \lambda (t)  \lVert \nabla_{x(t)} \log{p(x(t) \vert x(0)} - s_{\theta}(x(t),t) \rVert_2^2 \right] $$
 
@@ -319,7 +319,7 @@ Score-based models and DDPM are thus almost equivalent as they are a discretizat
 
 #### Probability flow ODE and density estimation
 
-A Stochastic Differential Equation have an associtaed non-stochastic ordinary differential equation, called **probability flow ODE**, such that their trajectories have the same marginal probability density $$p_t(x)$$ :
+A Stochastic Differential Equation have an associated non-stochastic ordinary differential equation, called **probability flow ODE**, such that their trajectories have the same marginal probability density $$p_t(x)$$ :
 
 $$ d\text{x} = \left[ f(\text{x},t) - \frac{1}{2}\sigma(t)^2 \nabla_x \log{p_t(\text{x})}  \right]dt$$
 
@@ -331,7 +331,7 @@ $$ d\text{x} = \left[ f(\text{x},t) - \frac{1}{2}\sigma(t)^2 \nabla_x \log{p_t(\
 
 &nbsp;
 
-An usefull application of such transform is to allow exact log-likelihood computaion, levaring change-of-variable for ODEs (here written to simplify in the case where $$f(x,t)=0$$):
+A useful application of such a transform is to allow exact log-likelihood computaion, levaring change-of-variable for ODEs (here written to simplify in the case where $$f(x,t)=0$$):
 
 $$ \log{p_\theta} = \log{\pi(\text{x}_T}) - \frac{1}{2} \int_0^T \sigma(t) \text{trace}(\nabla_x s_\theta (\text{x}, t))dt$$
 
@@ -401,7 +401,7 @@ Many problems can be formulated as conditional generation such as image inpainti
 
 <div style="text-align:center">
 <img src="/collections/images/score_based/medsegdiff.jpg" width=750></div>
-<p style="text-align: center;font-style:italic">Figure 20. Image-conditioed diffusion model medical image segmentation.</p>
+<p style="text-align: center;font-style:italic">Figure 20. Image-conditioned diffusion model medical image segmentation.</p>
 
 &nbsp;
 
