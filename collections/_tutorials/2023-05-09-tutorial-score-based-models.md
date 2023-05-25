@@ -265,7 +265,7 @@ In the previous sections, we introduced two discrete stochastic processes where 
 
 &nbsp;
 
-A stochastic process $$\{ \text{x} \}_{t \in [0,T]}$$ is an ensemble infinite number of random variable associated with their probability densities $$\{ p_t(\text{x}) \} _{t \in [0,T]}$$. Many stochastic processes, incuding diffusion can be described by a **stochastic differential equation (SDE)** :
+A stochastic process $$\{ \text{x} \}_{t \in [0,T]}$$ is an infinite ensemble of random variable associated with their probability densities $$\{ p_t(\text{x}) \} _{t \in [0,T]}$$. Many stochastic processes, incuding diffusion can be described by a **stochastic differential equation (SDE)** :
 
 $$ d\text{x}_t = f(\text{x}_t, t)dt + \sigma(t)dw_t$$
 
@@ -287,7 +287,7 @@ where $$d\overline{w}$$ is the Brownian process when time flow backwards from 0 
 
 In a similar manner to the discrete case seen before, such a model is optimized though the objective function : 
 
-$$ \mathbb{E}_{t \sim Uniform[0,T], x_0, x(t)} \left[ \lambda (t)  \lVert \nabla_{x(t)} \log{p(x(t) \vert x(0)} - s_{\theta}(x(t),t) \rVert_2^2 \right] $$
+$$ \mathbb{E}_{t \sim Uniform[0,T], x_0, x(t)} \left[ \lambda (t)  \lVert \nabla_{x(t)} \log{p(x(t) \vert x(0))} - s_{\theta}(x(t),t) \rVert_2^2 \right] $$
 
 &nbsp;
 
