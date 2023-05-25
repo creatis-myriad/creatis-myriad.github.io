@@ -265,7 +265,7 @@ In the previous sections, we introduced two discrete stochastic processes where 
 
 &nbsp;
 
-A stochastic process $$\{ \text{x} \}_{t \in [0,T]}$$ is an infinite ensemble of random variable associated with their probability densities $$\{ p_t(\text{x}) \} _{t \in [0,T]}$$. Many stochastic processes, incuding diffusion can be described by a **stochastic differential equation (SDE)** :
+A stochastic process $$\{ \text{x} \}_{t \in [0,T]}$$ is an infinite ensemble of random variables associated with their probability densities $$\{ p_t(\text{x}) \} _{t \in [0,T]}$$. Many stochastic processes, incuding diffusion can be described by a **stochastic differential equation (SDE)** :
 
 $$ d\text{x}_t = f(\text{x}_t, t)dt + \sigma(t)dw_t$$
 
