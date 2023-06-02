@@ -17,7 +17,7 @@ cite:
 * **Accumulation** of several frames is performed to produce each image. 
 * The skull attenuates the ultrasound signal, resulting in **poor contrast**.
 * Classic enhancement techniques are i) Gaussian filter (GF) and ii) block matching and 3D filtering (BM3D). But they are slow and they tend to over-smooth the images.
-* The authors build **PerceptFlow**, a **self-supervised CNN** that improves the contrast of transcranial Doppler images of mice.
+* The authors introduce **PerceptFlow**, a **self-supervised CNN** that improves the contrast of transcranial Doppler images of mice.
 * They use a **perceptual loss function**, introduced originally by Johnson *et al* (2016) [[1]](https://arxiv.org/abs/1603.08155) for the purpose of **style transfer**.
 
 Johnson *et al* were interested in a loss function that imposed the style and the content of some given images to the output image. **VGG16** trained on ImageNet is known for extracting high-level content features in the deep layers. Hence, they used VGG16 as a pre-trained **loss network** to define the loss function of the main network. The perceptual loss function minimizes the difference between VGG16 content features of a given reference image and the output image.
