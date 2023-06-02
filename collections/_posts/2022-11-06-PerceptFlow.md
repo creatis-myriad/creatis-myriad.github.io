@@ -16,7 +16,7 @@ cite:
 * **Ultrafast Doppler imaging** allows the acquisition of **functional vascular transcranial images**. The procedure needs to be real-time and have a high contrast between the vessels and the background.
 * **Accumulation** of several frames is performed to produce each image. 
 * The skull attenuates the ultrasound signal, resulting in **poor contrast**.
-* Classic enhancement techniques are: Gaussian filter (GF), block matching and 3D filtering (BM3D). But they are slow and they tend to over-smooth the images.
+* Classic enhancement techniques are i) Gaussian filter (GF) and ii) block matching and 3D filtering (BM3D). But they are slow and they tend to over-smooth the images.
 * The authors build **PerceptFlow**, a **self-supervised CNN** that improves the contrast of transcranial Doppler images of mice.
 * They use a **perceptual loss function**, introduced originally by Johnson *et al* (2016) [[1]](https://arxiv.org/abs/1603.08155) for the purpose of **style transfer**.
 
