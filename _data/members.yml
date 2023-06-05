@@ -368,15 +368,7 @@ phd_third:
     subject: 'Hierarchical integration of cardiac imaging data with machine learning'
     interests: "Cardiac imaging, machine learning"        
     supervisors: P. Clarysse, N. Duchateau        
-        
-  - firstname: 'Ludmilla'
-    lastname: 'Penarrubia'
-    institution: 'University Lyon 1'
-    picture: 'icon_phd.jpg'
-    subject: 'Quantification of pulmonary ventilation in patients with ARDS'
-    interests: "Pulmonary imaging, deep learning"    
-    supervisors: M. Orkisz, J.C. Richard, E. Roux
-     
+    
   - firstname: 'Méghane'
     lastname: 'Decroocq'
     institution: 'INSA, University of Lyon'
@@ -386,6 +378,14 @@ phd_third:
     supervisors: C. Frindel        
         
 alumni:
+
+  - firstname: 'Ludmilla'
+    lastname: 'Penarrubia'
+    institution: 'University Lyon 1'
+    picture: 'icon_phd.jpg'
+    subject: 'Quantification of pulmonary ventilation in patients with ARDS'
+    interests: "Pulmonary imaging, deep learning"    
+    supervisors: M. Orkisz, J.C. Richard, E. Roux
 
   - firstname: 'Alexandre'
     lastname: 'Bani-Sadr'

@@ -175,7 +175,7 @@ This article introduces a new deformable attention mechanism where a selection o
 # References
 [^1]: [Z.Liu et al, Swin Transformer: Hierarchical Vision Transformer using Shifted Windows](https://arxiv.org/abs/2103.14030)  
 [^2]: [A.Hassani et al, Neighborhood Attention Transformer](https://arxiv.org/abs/2204.07143)  
-[^3]: [J.Dai et al, Deformable Convolutional Networks](https://arxiv.org/abs/1703.06211)  
+[^3]: [J.Dai et al, Deformable Convolutional Networks](https://arxiv.org/abs/1703.06211) and see [post](https://creatis-myriad.github.io/2022/11/14/DeformableConvolutionalNetworks.html)
 [^4]: [Z. Liu et al, A ConvNet for the 2020s](https://arxiv.org/abs/2201.03545) and see [post](https://creatis-myriad.github.io./2023/02/23/Conv-Next.html).  
 [^5]: [X. Zhu et al , Deformable DETR: Deformable Transformers for End-to-End Object Detection](https://arxiv.org/abs/2010.04159)
 
