@@ -19,7 +19,7 @@ pdf: "https://arxiv.org/pdf/1905.03677.pdf"
 
 # Introduction
 
-Despite progress, deep networks still require more and more data, and their performance is still not saturated with respect to the size of the training data. But labelling data is expensive -even more so in medical imaging, where experts are needed-. Active learning is considered to optimize training in the context of a limited budget for annotation. It consists of selecting specific samples from an unlabelled dataset that are more likely to improve the model than a random sample selection. Selection is usually based on uncertainty, diversity, or expected model change. However, these methods are often task-specific and not always applicable to complex deep learning algorithms.
+Despite progress, deep networks still require more and more data, and their performance is still not saturated with respect to the size of the training data. But labelling data is expensive -even more so in medical imaging, where experts are needed-. Active learning is considered to optimize training in the context of a limited budget for annotation. It consists in selecting specific samples from an unlabelled dataset that are more likely to improve the model than a random sample selection. Selection is usually based on uncertainty, diversity, or expected model change. However, these methods are often task-specific and not always applicable to complex deep learning algorithms.
 
 Proposed solution: a loss prediction module that predicts the loss of unlabelled samples to select those that may not be well predicted.
 
