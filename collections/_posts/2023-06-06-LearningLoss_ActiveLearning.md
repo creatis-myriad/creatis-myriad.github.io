@@ -13,7 +13,7 @@ pdf: "https://arxiv.org/pdf/1905.03677.pdf"
 
 # Highlights
 
-* This paper proposes a simple active learning method with a loss prediction module added to the tareget module.
+* This paper proposes a simple active learning method with a loss prediction module added to the target module.
 * It is not task-specific and can be applied to any sort of task.
 * The method is tested on three computer vision tasks that are image classification, object detection and human pose estimation.
 
