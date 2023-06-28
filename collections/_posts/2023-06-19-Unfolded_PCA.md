@@ -230,7 +230,7 @@ patches,
 - The authors proposed an RPCA decomposition of the tissue/blood separation problem in contrast-enhanced ultrasound imaging to exploit both spatial and temporal patterns.
 - They first used an iterative resolution of the problem that outperformed classic methods such as SVD.
 - They then proposed to unfold the iterative resolution into a deep neural network, that achieved better and faster results.
-- They found that the unfolded method ouperformed a ResNet but was slower to execute. They attributed this to the SVD computation time.
+- They found that the unfolded method outperformed a ResNet but was slower to execute. They attributed this to the SVD computation time.
 
 
 
