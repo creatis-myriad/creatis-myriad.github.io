@@ -26,7 +26,7 @@ pdf: "https://arxiv.org/abs/1811.08252"
 <p style="text-align: center;font-style:italic;">Spectral scheme of blood and tissue signal.</p>
 
 - Traditionally, clutter was removed with *high-pass filters*, making use of the temporal information of the signal.
-- In order to make use of spatial information as well, a filter based on the *SVD signal decomposition* was introduced, making use of the high spatial coherence of tissue signal and the low spatial coherence of blood signal. However, this method requires to set a parameter manually.
+- In order to make use of spatial information as well, a filter based on the *Singular Value Decomposition* (SVD) of the signal was introduced, making use of the high spatial coherence of tissue signal and the low spatial coherence of blood signal. However, this method requires to set a parameter manually.
 
 <br/>
 
@@ -71,7 +71,7 @@ where
 $$H_1$$
 and
 $$H_2$$
-are measurement matrices. Then, to recover *L* and *S* the authors propose the following minimization problem:
+are measurement matrices. Then, to recover *L* and *S* the authors propose the following minimization problem that promotes low-rank solutions for *L* and sparse solutions for *S*:
 
 $$ \min_{L,S} ||D-(H_1L+H_2S)||^2_F + \lambda_1 ||L||_* + \lambda_2||S||_{1,2}, $$
 
@@ -92,7 +92,7 @@ norm (sum of the L2 norms of each row)
 <br/>
 
 ## Iterative algorithm
-This minimization problem can be solved using the *Fast Iterative Shrinkage/Thresholding Algorithm* (FISTA) [[3]](https://www.ceremade.dauphine.fr/~carlier/FISTA). The iterative steps of ISTA are given by:
+This minimization problem can be solved using the *Iterative Shrinkage/Thresholding Algorithm* (ISTA) [[3]](https://arxiv.org/abs/math/0307152). The iterative steps of ISTA are given by:
 
 $$ L^{k+1}=\text{SVT}_{\lambda_1/L_f}( (I-\frac{1}{L_f} H_1^T H_1)L^k - H_1^T H_2 S^k + H_1^T D ) $$
 
@@ -176,15 +176,6 @@ $$ \mathcal{L}(\theta) = \frac{1}{2n} \sum_{i=1}^n{||f_S(D_i,\theta)-\hat{S}_i||
 
 The unfolded deep neural network has a total of 1,796 parameters.
 
-The training data consists in:
-
-- $$ 32 \times 32 \times 20 $$
-patches that are reshaped into 
-$$ 1024 \times 20 $$
-patches,
-- both simulated and *in vivo* (rat brain) data,
-- 4,800 training pairs.
-
 <br/>
 
 # Supervised method
@@ -195,6 +186,18 @@ As a comparison, they implemented a ResNet consisting of:
 - Complex-valued convolutions.
 - Total of 25,378 parameters.
 
+<br/>
+
+# Data
+
+The training data consists in:
+
+- both simulated and *in vivo* (rat brain) data,
+- $$ 32 \times 32 \times 20 $$
+patches that are reshaped into 
+$$ 1024 \times 20 $$
+patches,
+- 4,800 training pairs.
 
 <br/>
 
@@ -225,9 +228,9 @@ As a comparison, they implemented a ResNet consisting of:
 
 # Conclusions
 - The authors proposed an RPCA decomposition of the tissue/blood separation problem in contrast-enhanced ultrasound imaging to exploit both spatial and temporal patterns.
-- They first used an iterative resolution of the problem that outperformed classic methods such as SVD decomposition.
+- They first used an iterative resolution of the problem that outperformed classic methods such as SVD.
 - They then proposed to unfold the iterative resolution into a deep neural network, that achieved better and faster results.
-- They found that the unfolded method ouperformed a ResNet but was slower to execute. They attributed this to the SVD decomposition computation time.
+- They found that the unfolded method ouperformed a ResNet but was slower to execute. They attributed this to the SVD computation time.
 
 
 
