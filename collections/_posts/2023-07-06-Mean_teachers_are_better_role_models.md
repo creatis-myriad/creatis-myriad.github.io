@@ -27,7 +27,7 @@ Interest in semi-supervised learning to use the unlabeled data effectively.
 
 # Method 
 
-## Apllying noise and Esembling method
+## Apllying noise and Ensembling method
 
 ### **Noise regularization** : 
 - Add noise to the input or intermediate representations of a model
@@ -37,7 +37,7 @@ Interest in semi-supervised learning to use the unlabeled data effectively.
 Limitations of noise regularization :
 - classification cost is **undefined for unlabeled examples** &rarr; not helpful in semi-supervised learning.
 
-&rarr; *The $\Gamma$ model to overcome this*
+&rarr; The $\Gamma$ model to overcome this
 
 ### **The $\Gamma$ model [1]**
 - Evaluates each data point with and without noise, and then applies a consistency cost between the two predictions. 
@@ -48,7 +48,7 @@ Limitations of $\Gamma$ model :
 - the cost of inconsistency outweighs that of misclassification, preventing the learning of new information
 - can lead to a **confirmation bias**
 
-&rarr; *Confirmation biais can be mitigated by improving the targets. One way is illustrated with the $\Pi$ model, selecting a different teacher model than the student model*
+&rarr; Confirmation biais can be mitigated by improving the targets. One way is illustrated with the $\Pi$ model, selecting a different teacher model than the student model
 
 > **NOTE :** The authors mention another way : "to choose the perturbation
 of the representations carefully instead of barely applying additive or multiplicative noise" wich is the subject of another paper of [Miyato et al. 2017](https://doi.org/10.48550/arXiv.1704.03976)[2] that will be refered as VAT+EntMin latter. 
@@ -57,7 +57,7 @@ of the representations carefully instead of barely applying additive or multipli
 - **noise** is added to the model **during inference**
 - result in a "noisy teacher" that can provide **more accurate targets**. 
 
-&rarr; *The Π model can be further improved by Temporal Ensembling (TE)*
+&rarr; The $\Pi$ model can be further improved by Temporal Ensembling (TE)
 
 ### **Temporal Ensembling (TE)**
 - **exponential moving average (EMA)** prediction for each training example is formed by combining the **current version of the model's predictions** with the **predictions made by earlier versions of the model** that evaluated the same example. 
@@ -69,7 +69,7 @@ Limitation of Temporal ensembling :
 - The learned information is **incorporated** into the training process at a relatively **slow pace**.
 - The **larger the dataset**, the **longer it takes** for the updates to span the entire dataset.
 
-&rarr; *The authors propose the Mean Teacher model that **averages model weights**, instead of predictions like TE, to improve performances of semi-supervised model.*
+&rarr; The authors propose the Mean Teacher model that **averages model weights**, instead of predictions like TE, to improve performances of semi-supervised model.
 
 ![](/collections/images/mean_teachers/binary_classification_2.jpg)
 
@@ -110,7 +110,7 @@ $$ J(θ) = \underset{x,η',η}{E} [ \| f (x, θ', η') - f (x, θ, η) \|^2 ] $$
     - TE : approximates $f (x, θ', η')$ with a **weighted average of successive predictions**
     - Mean Teacher defines $θ'$<sub>t</sub> at training step as the **EMA of successive $\theta$ weights**, where $\alpha$ is a smoothing coefficient hyperparameter : 
 
-$$ θ'_t = αθ'_{t-1} + (1 - α)θ_t $$
+$$ \underset{t}{θ'} = α \underset{t-1}{θ'} + (1 - α)\underset{t}{θ} $$
 
 - Weights $\theta'$ :
     - $\Pi$ model : applies training to it
