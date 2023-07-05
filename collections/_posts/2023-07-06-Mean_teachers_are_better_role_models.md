@@ -71,7 +71,7 @@ Limitation of Temporal ensembling :
 
 &rarr; *The authors propose the Mean Teacher model that **averages model weights**, instead of predictions like TE, to improve performances of semi-supervised model.*
 
-![](/collections/images/mean_teachers/binary_classification_2.png)
+![](/collections/images/mean_teachers/binary_classification_2.jpg)
 
 A sketch of a binary classification task with two labeled examples (large black dots) and one unlabeled example, demonstrating how the choice of the unlabeled target (blue circle) affects the fitted function (gray curve).
 
@@ -86,8 +86,7 @@ A sketch of a binary classification task with two labeled examples (large black 
 
 The Mean Teacher is an average of consecutive student models.
 
-![](/collections/images/mean_teachers/mean_teacher_method.png)
-
+![](/collections/images/mean_teachers/mean_teacher_method.jpg)
 
 - Both the student and the teacher model **evaluate the input applying noise (η, η')**
 - The sotmax output is compared with one-hot label using **classification cost** for the student model and **consistency cost** for the teacher 
@@ -132,7 +131,7 @@ $$ θ'_t = αθ'_{t-1} + (1 - α)θ_t $$
 - close-up of a house number, and the class represents the identity of the digit at the center. 
 - 73257 training samples and 26032 test samples.
 
-![](/collections/images/mean_teachers/SVHN.png)
+![](/collections/images/mean_teachers/SVHN.jpg)
 
 **CIFAR-10** : 
 - 32x32 pixel RGB images belonging to ten different classes :
@@ -140,17 +139,17 @@ $$ θ'_t = αθ'_{t-1} + (1 - α)θ_t $$
 cars and airplanes etc
 - 50000 training samples and 10000 test samples.
 
-![](/collections/images/mean_teachers/CIFAR-10.png)
+![](/collections/images/mean_teachers/CIFAR-10.jpg)
 
 # Results
 
 ## Comparisons of the state-of-the-art methods : 
 
-![](/collections/images/mean_teachers/table_1.png)
+![](/collections/images/mean_teachers/table_1.jpg)
 
 **Mean Teacher improves test accuracy** over the $\Pi$ model and Temporal Ensembling on semi-supervised SVHN tasks. 
 
-![](/collections/images/mean_teachers/table_2.png)
+![](/collections/images/mean_teachers/table_2.jpg)
 
 Mean Teacher also improves results on CIFAR-10 over our baseline $\Pi$ model.
 
@@ -159,11 +158,11 @@ Mean Teacher also improves results on CIFAR-10 over our baseline $\Pi$ model.
 
 ## Error percentage over 10 runs on SVHN with extra unlabeled training data :
 
-![](/collections/images/mean_teachers/table_3.png)
+![](/collections/images/mean_teachers/table_3.jpg)
 
 ## Effect of using mean teacher : 
 
-![](/collections/images/mean_teachers/figure_3.png)
+![](/collections/images/mean_teachers/figure_3.jpg)
 
 - the **EMA-weighted models** (blue and dark gray curves in the bottom row) give **more accurate predictions** than the bare student models (orange and light gray) after an initial period. 
  
@@ -181,7 +180,7 @@ Mean Teacher also improves results on CIFAR-10 over our baseline $\Pi$ model.
 
 Checking if the methods scales to more natural images on ImageNet with 10% of the labels : 
 
-![](/collections/images/mean_teachers/table_4.png)
+![](/collections/images/mean_teachers/table_4.jpg)
 
 # Conclusions
 
