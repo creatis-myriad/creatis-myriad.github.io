@@ -98,7 +98,7 @@ The Mean Teacher is an average of consecutive student models.
 
 With $J$ the consistency cost, as the expected distance between the prediction of the student model (with weights $θ$ and noise $η$) and the prediction of the teacher model (with weights $θ'$ and noise $η'$) :
 
-$$ J(θ) = \underset{x,η',η}{E} [ \| f (x, θ', η') - f (x, θ, η) \|^2 ] $$
+$$ J(θ) = \underset{x,η',η}{E} [ || f (x, θ', η') - f (x, θ, η) ||^2 ] $$
 
 - Mean squared error as the consistency cost and ramp up its weight from 0 to its final value during the first 80 epochs.
  &rarr; Initially ignoring it and then gradually introducing more and more consistency. 
