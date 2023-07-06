@@ -70,7 +70,7 @@ where the larger k, the closer the approximation. They use $$k = 1500$$.
 
 During inference, they use the Heaviside not approximated.
 
-**Note**: the authors also tried with two output branches but had better results with only one output
+> **Note**: the authors also tried with two output branches but had better results with only one output
 
 
 They also propose a regression loss based on the product, which penalizes the output SDM for having the wrong sign:
@@ -127,7 +127,7 @@ with $$\lambda=10$$.
 
 *Table 3: comparison of proposed methods on the MICCAI 2015 testing set*
 
-**Note**: Average Symmetric Surface Distance (ASD or ASSD) is the average distance between boundary points from the predicted mask and from the ground truth mask.
+> **Note**: Average Symmetric Surface Distance (ASD or ASSD) is the average distance between boundary points from the predicted mask and from the ground truth mask.
 
 * For the proposed backbone (Dice only), HD95 and Dice are improved for all organs but especially for small organs (chiasm, optic nerves)
 * For the supervision with SDM only, the output is smoother but small organs are lost
