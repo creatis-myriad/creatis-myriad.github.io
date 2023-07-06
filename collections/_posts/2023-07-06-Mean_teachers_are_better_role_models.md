@@ -1,24 +1,24 @@
 ---
 layout: review
-title: Mean teachers are better role models: Weight-averaged consistency targets improve semi-supervised deep learning results
-tags: machine-learning, neural and evolutionary computing
-author: Tarvainen Antti, Valpola Harri
+title: "Mean teachers are better role models: Weight-averaged consistency targets improve semi-supervised deep learning results"
+tags: machine-learning neural evolutionary-computing
+author: "Morgane des Ligneris"
 cite:
-    authors: "Tarvainen et Valpola"
+    authors: "Tarvainen Antti, Valpola Harri"
     title:   "Mean teachers are better role models: Weight-averaged consistency targets improve semi-supervised deep learning results"
-    venue:   "Neural Information Processing Systems 30 (NIPS 2017) pre-proceedings"
+    venue:   "NeurIPS 2017"
 pdf: https://arxiv.org/pdf/1703.01780.pdf
 ---
 
 # Highlights
 
-- Method : The mean teachers model **averages model weigths**, instead of label predictions like the Temporal Ensembling method. Allows for more accurate targets and faster feedback between the student and teacher models.
+- Method : The mean teacher model **averages model weigths**, instead of label predictions like the Temporal Ensembling method. Allows for more accurate targets and faster feedback between the student and teacher models.
 - Performances : demonstrates **enhanced performance on various datasets** (SVHN, CIFAR-10, and ImageNet) when combined with residual networks. Achieves lower error rates and higher accuracy compared to Temporal Ensembling, even when trained with fewer labeled examples.
-- Scalability and applicability : Enables working on **larger dataset**, and training with **fewer labeled examples**.
+- Scalability and applicability : Enables working on **larger datasets**, and training with **fewer labeled examples**.
 
 # Introduction
 Limitations of deep learning models :
-- requires large number of parameters and is prone to overfitting. 
+- require large number of parameters and are prone to overfitting. 
 - manual high quality labels for training data is expensive and time consuming.
 
 Interest in semi-supervised learning to use the unlabeled data effectively. 
@@ -27,9 +27,9 @@ Interest in semi-supervised learning to use the unlabeled data effectively.
 
 # Method 
 
-## Apllying noise and Ensembling method
+## Applying noise and Ensembling method
 
-### **Noise regularization** : 
+### **Noise regularization**
 - Add noise to the input or intermediate representations of a model
 - Helps learning abstract invariances
 - **Pushes decision boundaries away from labeled data points**  
@@ -39,25 +39,25 @@ Limitations of noise regularization :
 
 &rarr; The $\Gamma$ model to overcome this
 
-### **The $\Gamma$ model [1]**
+### **The $$\Gamma$$ model[^1]**
 - Evaluates each data point with and without noise, and then applies a consistency cost between the two predictions. 
 - Student teacher models where the **teacher generates targets**, which are then **used by itself as a student for learning**
 
-Limitations of $\Gamma$ model :
+Limitations of $$\Gamma$$ model :
 - the model itself generates targets, which may be incorrect
 - the cost of inconsistency outweighs that of misclassification, preventing the learning of new information
 - can lead to a **confirmation bias**
 
-&rarr; Confirmation biais can be mitigated by improving the targets. One way is illustrated with the $\Pi$ model, selecting a different teacher model than the student model
+&rarr; Confirmation bias can be mitigated by improving the targets. One way is illustrated with the $$\Pi$$ model, selecting a different teacher model than the student model
 
-> **NOTE :** The authors mention another way : "to choose the perturbation
-of the representations carefully instead of barely applying additive or multiplicative noise" wich is the subject of another paper of [Miyato et al. 2017](https://doi.org/10.48550/arXiv.1704.03976)[2] that will be refered as VAT+EntMin latter. 
+> **NOTE :** The authors mention another way "to choose the perturbation
+of the representations carefully instead of barely applying additive or multiplicative noise" wich is the subject of another paper by Miyato _et al._ (2017)[^2] that will be refered as VAT+EntMin latter. 
 
-### **The $\Pi$ model [3]**
+### **The $$\Pi$$ model[^3]**
 - **noise** is added to the model **during inference**
-- result in a "noisy teacher" that can provide **more accurate targets**. 
+- results in a "noisy teacher" that can provide **more accurate targets**. 
 
-&rarr; The $\Pi$ model can be further improved by Temporal Ensembling (TE)
+&rarr; The $$\Pi$$ model can be further improved by Temporal Ensembling (TE)
 
 ### **Temporal Ensembling (TE)**
 - **exponential moving average (EMA)** prediction for each training example is formed by combining the **current version of the model's predictions** with the **predictions made by earlier versions of the model** that evaluated the same example. 
@@ -75,11 +75,11 @@ Limitation of Temporal ensembling :
 
 A sketch of a binary classification task with two labeled examples (large black dots) and one unlabeled example, demonstrating how the choice of the unlabeled target (blue circle) affects the fitted function (gray curve).
 
-(a) A model with no regularization &rarr; free to fit any function that predicts the labeled training examples well  
-(b) A model trained with noisy labeled data (small dots) &rarr; consistent predictions around labeled data points  
-(c) The teacher model (gray curve) is first fitted to the labeled examples, and then left unchanged during the training of the student model. &rarr; Consistency to noise around unlabeled examples provides additional smoothing  
-(d) Noise on the teacher model reduces the bias of the targets without additional training. &rarr; The expected direction of stochastic gradient descent is towards the mean (large blue circle) of individual noisy targets (small blue circles)  
-(e) Ensemble model &rarr; gives an even better expected target
+- (a) A model with no regularization &rarr; free to fit any function that predicts the labeled training examples well  
+- (b) A model trained with noisy labeled data (small dots) &rarr; consistent predictions around labeled data points  
+- (c) The teacher model (gray curve) is first fitted to the labeled examples, and then left unchanged during the training of the student model. &rarr; Consistency to noise around unlabeled examples provides additional smoothing  
+- (d) Noise on the teacher model reduces the bias of the targets without additional training. &rarr; The expected direction of stochastic gradient descent is towards the mean (large blue circle) of individual noisy targets (small blue circles)  
+- (e) Ensemble model &rarr; gives an even better expected target
 
 ---
 ## Mean Teacher 
@@ -90,11 +90,11 @@ The Mean Teacher is an average of consecutive student models.
 
 - Both the student and the teacher model **evaluate the input applying noise (η, η')**
 - The sotmax output is compared with one-hot label using **classification cost** for the student model and **consistency cost** for the teacher 
-- The teacher model weight are upadted using the **EMA weights of the student model**.
-- Both prediction can be used but the **teacher prediction if more likely to be correct**
-- No classification cost is applied when it is a training step with unlabeled exemple. 
+- The teacher model weights are updated using the **EMA weights of the student model**.
+- Both predictions can be used but the **teacher prediction if more likely to be correct**
+- No classification cost is applied when it is a training step with unlabeled example. 
 
-### Concistency cost 
+### Consistency cost 
 
 With $J$ the consistency cost, as the expected distance between the prediction of the student model (with weights $θ$ and noise $η$) and the prediction of the teacher model (with weights $θ'$ and noise $η'$) :
 
@@ -196,8 +196,8 @@ two ways of exploiting this principle.
     &rarr; Their combination may yield even better targets. 
 
 # References
-[1]: Rasmus, Antti, Berglund, Mathias, Honkala, Mikko, Valpola, Harri, and Raiko, Tapani. Semi-supervised Learning with Ladder Networks. In Cortes, C., Lawrence, N. D., Lee, D. D., Sugiyama, M., and Garnett, R. (eds.), Advances in Neural Information Processing Systems 28, pp. 3546–3554. Curran Associates, Inc., 2015  
+[^1]: Rasmus, Antti, Berglund, Mathias, Honkala, Mikko, Valpola, Harri, and Raiko, Tapani. Semi-supervised Learning with Ladder Networks. In Cortes, C., Lawrence, N. D., Lee, D. D., Sugiyama, M., and Garnett, R. (eds.), Advances in Neural Information Processing Systems 28, pp. 3546–3554. Curran Associates, Inc., 2015  
 
-[2]: Miyato, Takeru, Maeda, Shin-ichi, Koyama, Masanori, and Ishii, Shin. Virtual Adversarial Training: a Regularization Method for Supervised and Semi-supervised Learning. arXiv:1704.03976 [cs, stat], April 2017. arXiv: 1704.03976.
+[^2]: Miyato, Takeru, Maeda, Shin-ichi, Koyama, Masanori, and Ishii, Shin. Virtual Adversarial Training: a Regularization Method for Supervised and Semi-supervised Learning. arXiv:1704.03976 [cs, stat], April 2017. arXiv: 1704.03976.
 
-[3] Laine, Samuli and Aila, Timo. Temporal Ensembling for Semi-Supervised Learning. arXiv:1610.02242 [cs], October 2016. arXiv: 1610.02242.
+[^3] Laine, Samuli and Aila, Timo. Temporal Ensembling for Semi-Supervised Learning. arXiv:1610.02242 [cs], October 2016. arXiv: 1610.02242.
