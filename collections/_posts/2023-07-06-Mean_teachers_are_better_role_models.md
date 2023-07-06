@@ -203,8 +203,8 @@ two ways of exploiting this principle.
     &rarr; Their combination may yield even better targets. 
 
 # References
-[^1]: Antti  Rasmus et al., Semi-supervised Learning with Ladder Networks. In Proceedings of the 28th International Conference on Neural Information Processing Systems - Volume 2 (NIPS'15). MIT Press, Cambridge, MA, USA, 3546–3554., 2015  
+[^1]: [Antti  Rasmus et al., Semi-supervised Learning with Ladder Networks. NeurIPS 2015](https://arxiv.org/abs/1507.02672)
 
-[^2]: Miyato et al., Virtual Adversarial Training: a Regularization Method for Supervised and Semi-supervised Learning. IEEE Transactions on Pattern Analysis and Machine Intelligence,  arXiv: 1704.03976. April 2017.
+[^2]: [Miyato et al., Virtual Adversarial Training: a Regularization Method for Supervised and Semi-supervised Learning. IEEE Transactions on Pattern Analysis and Machine Intelligence, 2017.](https://arxiv.org/abs/1704.03976)
 
-[^3]: Laine Samuli et al., Temporal Ensembling for Semi-Supervised Learning. arXiv: 1610.02242. October 2016.
+[^3]: [Laine Samuli et al., Temporal Ensembling for Semi-Supervised Learning. ICLR, 2017.](https://arxiv.org/abs/1610.02242)
