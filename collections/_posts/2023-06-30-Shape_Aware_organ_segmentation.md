@@ -17,7 +17,7 @@ pdf: "https://arxiv.org/pdf/1912.03849.pdf"
 
 # Introduction
 
-The authors study the case of organ segmentation. Methods using CNNs (2D and 3D) output segmentation map for which **anatomical shape of organ not preserved**. As illustrated in Figure 1, the maps also show a **lack of smoothness**, which requires a post-processing. 
+The authors study the case of organ segmentation. Methods using CNNs (2D and 3D) output segmentation maps for which **the anatomical shapes of the organs are not preserved**. As illustrated in Figure 1, the maps also show a **lack of smoothness**, which requires a post-processing. 
 
 ![](/collections/images/shape_aware_organ_seg/example_sdm.jpg)
 
@@ -42,16 +42,16 @@ Small changes in the shape of an organ will have effect on a large part of the S
 
 The authors propose a backbone model based on 3D-UNet:
 
-* 6 downsampling layers (more than a regular 3D UNet) with their largest receptive field being $$64^3$$ 
+* 6 downsampling layers (more than a regular 3D UNet) with the largest receptive field being $$64^3$$ 
 * Leaky-ReLU instead of ReLU
 * Trilinear sampling instead of deconvolution
-* group normalization instead of batch normalization
-* DICE loss
+* Group normalization instead of batch normalization
+* Dice loss
 
 
 ## SDM learning
 
-The ground truth SDMs are approximated from the segmentation maps using Danielsson Algorithm[^1], and normalized between $$[-1;1]$$
+The ground truth SDMs are approximated from the segmentation maps using Danielsson Algorithm[^1], and normalized between $$[-1;1]$$.
 
 
 The authors train a model which outputs a SDM. From this SDM, the segmentation map is computed with a Heaviside function. This function is the unit step function, defined as:
@@ -81,7 +81,7 @@ They use this loss, coupled with the L1-norm to get their SDM loss.
 
 The total loss is then:
 
-$$\mathcal{L}=\mathcal{L}_{Seg} + \lambda \mathcal{L}_{SDM} = \mathcal{L}_{DICE} + \lambda ( \mathcal{L}_{product} + \mathcal{L}_{1}) $$
+$$\mathcal{L}=\mathcal{L}_{Seg} + \lambda \mathcal{L}_{SDM} = \mathcal{L}_{Dice} + \lambda ( \mathcal{L}_{product} + \mathcal{L}_{1}) $$
 
 with $$\lambda=10$$.
 
@@ -89,7 +89,7 @@ with $$\lambda=10$$.
 
 
 - Optimizer : Adam
-- $$l_r=  5 \times 10^{− 4} $$ initallly and then decayed by factor of 0.8 for every 25 epochs.
+- $$l_r=  5 \times 10^{− 4} $$ initially and then decayed by factor of 0.8 for every 25 epochs
 - 200 epochs for single-organ segmentation and 600 epochs for multi-organ segmentation
 
 
@@ -108,7 +108,7 @@ with $$\lambda=10$$.
 *Table 1: Quantitative comparison of segmentation models on the hippocampus dataset (the methods' names correspond to the loss chosen)*
 
 
-* Compared to using only the segmentation map, the results have less false positives, and reduce the Hausorff Distance (HD)
+* Compared to using only the segmentation map, the results have less false positives, and reduce the Hausdorff Distance (HD)
 * Using only the SDM during training gives the smoothest contours
 * Using the segmentation map and the SDM jointly gives more accurate results
 
@@ -117,7 +117,7 @@ with $$\lambda=10$$.
 
 ![](/collections/images/shape_aware_organ_seg/multi_org_results.jpg)
 
-*Figure 4: Qualitative results on the MICCAI 2015 Head and Neck segmentation testing set. Rows 1 and 2: both results from Dice only training and the joint training align well with the groundtruth. Row 3: Dice result contains many isolated false positives marked by black circles and red arrows. The proposed joint training model has smoother and better result in this case.*
+*Figure 4: Qualitative results on the MICCAI 2015 Head and Neck segmentation testing set. Rows 1 and 2: results from Dice only training and from the joint training match with the groundtruth. Row 3: Dice result contains many isolated false positives. The proposed joint training model has smoother and better result in this case.*
 
 ![](/collections/images/shape_aware_organ_seg/multi_org_metrics.jpg)
 
@@ -129,7 +129,7 @@ with $$\lambda=10$$.
 
 **Note**: Average Symmetric Surface Distance (ASD or ASSD) is the average distance between boundary points from the predicted mask and from the ground truth mask.
 
-* For the proposed backbone (Dice only), HD95 and DICE are improved for all organs but especially for small organs (chiasm, optic nerves)
+* For the proposed backbone (Dice only), HD95 and Dice are improved for all organs but especially for small organs (chiasm, optic nerves)
 * For the supervision with SDM only, the output is smoother but small organs are lost
 * For the joint training, the model gives a more continuous shape compared to the segmentation only model. It also does not not lose organs contrary to the "SDM only" model. It has also the best averaged HD and ASD metrics.
 
@@ -139,7 +139,7 @@ The authors conclude that their regression loss based on the SDM stabilizes trai
 
 
 # Conclusion
-* The authors encourage the use of this method by adapting it to existing network
+* The authors encourage the use of this method by adapting it to an existing network.
 
 
 # References
