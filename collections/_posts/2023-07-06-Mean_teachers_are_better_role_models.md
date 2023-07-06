@@ -160,7 +160,7 @@ $$ \underset{t}{θ'} = α \underset{t-1}{θ'} + (1 - α)\underset{t}{θ} $$
 
 Mean Teacher also improves results on CIFAR-10 over our baseline $$\Pi$$ model.
 
-> **NOTE :** The Virtual Adversarial Training (VAT) by [Miyato et al. 2017](https://doi.org/10.48550/arXiv.1704.03976)[2] performs even better than Mean Teacher on the **1000-label SVHN** and the **4000-label CIFAR-10**. VAT and Mean Teacher are complimentary approaches.  
+> **NOTE :** The Virtual Adversarial Training (VAT) by Miyato et al. 2017[^2] performs even better than Mean Teacher on the **1000-label SVHN** and the **4000-label CIFAR-10**. VAT and Mean Teacher are complimentary approaches.  
 &rarr; Their combination may yield better accuracy than either of them alone.
 
 ## Error percentage over 10 runs on SVHN with extra unlabeled training data:
