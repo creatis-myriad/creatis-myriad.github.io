@@ -10,6 +10,9 @@ cite:
 pdf: https://arxiv.org/pdf/1703.01780.pdf
 ---
 
+Github available [here](https://github.com/CuriousAI/mean-teacher)  
+Video of the presentation of the article by the author Antti Tarvainen [here](https://www.youtube.com/watch?v=0SzTGY132oU).
+
 # Highlights
 
 - Method : The mean teacher model **averages model weigths**, instead of label predictions like the Temporal Ensembling method. Allows for more accurate targets and faster feedback between the student and teacher models.
