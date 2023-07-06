@@ -37,7 +37,7 @@ Interest in semi-supervised learning to use the unlabeled data effectively.
 Limitations of noise regularization :
 - classification cost is **undefined for unlabeled examples** &rarr; not helpful in semi-supervised learning.
 
-&rarr; The $\Gamma$ model to overcome this
+&rarr; The $$\Gamma$$ model to overcome this
 
 ### **The $$\Gamma$$ model[^1]**
 - Evaluates each data point with and without noise, and then applies a consistency cost between the two predictions. 
@@ -96,7 +96,7 @@ The Mean Teacher is an average of consecutive student models.
 
 ### Consistency cost 
 
-With $J$ the consistency cost, as the expected distance between the prediction of the student model (with weights $θ$ and noise $η$) and the prediction of the teacher model (with weights $θ'$ and noise $η'$) :
+With $$J$$ the consistency cost, as the expected distance between the prediction of the student model (with weights $$θ$$ and noise $$η$$) and the prediction of the teacher model (with weights $$θ'$$ and noise $$η'$$) :
 
 $$ J(θ) = \underset{x,η',η}{E} [ || f (x, θ', η') - f (x, θ, η) ||^2 ] $$
 
@@ -106,14 +106,14 @@ $$ J(θ) = \underset{x,η',η}{E} [ || f (x, θ', η') - f (x, θ, η) ||^2 ] $$
 ### Difference between the $\Pi$ model, Temporal Ensembling, and Mean teacher 
 
 - How the teacher predictions are generated :
-    - $\Pi$ model : $θ' = θ$  
-    - TE : approximates $f (x, θ', η')$ with a **weighted average of successive predictions**
-    - Mean Teacher defines $θ'$<sub>t</sub> at training step as the **EMA of successive $\theta$ weights**, where $\alpha$ is a smoothing coefficient hyperparameter : 
+    - $$\Pi$$ model : $$θ' = θ$$  
+    - TE : approximates $$f (x, θ', η')$$ with a **weighted average of successive predictions**
+    - Mean Teacher defines $$\underset{t}{θ'}$$ at training step as the **EMA of successive $$\theta$$ weights**, where $$\alpha$$ is a smoothing coefficient hyperparameter : 
 
 $$ \underset{t}{θ'} = α \underset{t-1}{θ'} + (1 - α)\underset{t}{θ} $$
 
-- Weights $\theta'$ :
-    - $\Pi$ model : applies training to it
+- Weights $$\theta'$$ :
+    - $$\Pi$$ model : applies training to it
     - TE and Mean teacher : treat it as a constant with regards to **optimization**
 
 ### Type of noise 
@@ -123,20 +123,19 @@ $$ \underset{t}{θ'} = α \underset{t-1}{θ'} + (1 - α)\underset{t}{θ} $$
 
 ### Loss
 - Student : cross-entropy loss 
-- Teacher : consitency loss multiply by an importance weight 
+- Teacher : consitency loss multiplied by an importance weight 
 
 ## Data
 **Street View House Numbers (SVHN)** : 
-- 32x32 pixel RGB images belonging to ten different classes :
+- 32x32 pixel RGB images belonging to ten different classes
 - close-up of a house number, and the class represents the identity of the digit at the center. 
 - 73257 training samples and 26032 test samples.
 
 ![](/collections/images/mean_teachers/SVHN.jpg)
 
 **CIFAR-10** : 
-- 32x32 pixel RGB images belonging to ten different classes :
-- natural image belonging to a class such as horses, cats,
-cars and airplanes etc
+- 32x32 pixel RGB images belonging to ten different classes
+- natural image belonging to a class such as horses, cats, cars and airplanes etc
 - 50000 training samples and 10000 test samples.
 
 ![](/collections/images/mean_teachers/CIFAR-10.jpg)
@@ -147,11 +146,11 @@ cars and airplanes etc
 
 ![](/collections/images/mean_teachers/table_1.jpg)
 
-**Mean Teacher improves test accuracy** over the $\Pi$ model and Temporal Ensembling on semi-supervised SVHN tasks. 
+**Mean Teacher improves test accuracy** over the $$\Pi$$ model and Temporal Ensembling on semi-supervised SVHN tasks. 
 
 ![](/collections/images/mean_teachers/table_2.jpg)
 
-Mean Teacher also improves results on CIFAR-10 over our baseline $\Pi$ model.
+Mean Teacher also improves results on CIFAR-10 over our baseline $$\Pi$$ model.
 
 > **NOTE :** The Virtual Adversarial Training (VAT) by [Miyato et al. 2017](https://doi.org/10.48550/arXiv.1704.03976)[2] performs even better than Mean Teacher on the **1000-label SVHN** and the **4000-label CIFAR-10**. VAT and Mean Teacher are complimentary approaches.  
 &rarr; Their combination may yield better accuracy than either of them alone.
@@ -164,17 +163,17 @@ Mean Teacher also improves results on CIFAR-10 over our baseline $\Pi$ model.
 
 ![](/collections/images/mean_teachers/figure_3.jpg)
 
-- the **EMA-weighted models** (blue and dark gray curves in the bottom row) give **more accurate predictions** than the bare student models (orange and light gray) after an initial period. 
+- The **EMA-weighted models** (blue and dark gray curves in the bottom row) give **more accurate predictions** than the bare student models (orange and light gray) after an initial period. 
  
     &rarr; EMA-weighted model as the teacher **improves results** in the semi-supervised settings
 
-- When using **500 labels** **Mean Teacher** **learns faster**, and continues training after the $\Pi$ model stops improving. 
+- When using **500 labels** **Mean Teacher** **learns faster**, and continues training after the $$\Pi$$ model stops improving. 
 
-    &rarr; **Mean Teacher uses unlabeled training data more efficiently than the $\Pi$ model**
+    &rarr; **Mean Teacher uses unlabeled training data more efficiently than the $$\Pi$$ model**
 
-- In the **all-labeled case**, Mean Teacher and the $\Pi$ model **behave identically**. With 500k extra unlabeled examples $\Pi$ model keeps improving for longer.
+- In the **all-labeled case**, Mean Teacher and the $$\Pi$$ model **behave identically**. With 500k extra unlabeled examples $$\Pi$$ model keeps improving for longer.
 
-     &rarr; **Mean Teacher learns faster**, and eventually **converges to a better result**, but the sheer amount of data appears to offset $\Pi$ model’s worse predictions.
+     &rarr; **Mean Teacher learns faster**, and eventually **converges to a better result**, but the sheer amount of data appears to offset $$\Pi$$ model’s worse predictions.
 
 ## Mean Teacher with residual networks on CIFAR-10 and ImageNet 
 
@@ -196,8 +195,8 @@ two ways of exploiting this principle.
     &rarr; Their combination may yield even better targets. 
 
 # References
-[^1]: Rasmus, Antti, Berglund, Mathias, Honkala, Mikko, Valpola, Harri, and Raiko, Tapani. Semi-supervised Learning with Ladder Networks. In Cortes, C., Lawrence, N. D., Lee, D. D., Sugiyama, M., and Garnett, R. (eds.), Advances in Neural Information Processing Systems 28, pp. 3546–3554. Curran Associates, Inc., 2015  
+[^1]: Antti  Rasmus et al., Semi-supervised Learning with Ladder Networks. In Proceedings of the 28th International Conference on Neural Information Processing Systems - Volume 2 (NIPS'15). MIT Press, Cambridge, MA, USA, 3546–3554., 2015  
 
-[^2]: Miyato, Takeru, Maeda, Shin-ichi, Koyama, Masanori, and Ishii, Shin. Virtual Adversarial Training: a Regularization Method for Supervised and Semi-supervised Learning. arXiv:1704.03976 [cs, stat], April 2017. arXiv: 1704.03976.
+[^2]: Miyato et al., Virtual Adversarial Training: a Regularization Method for Supervised and Semi-supervised Learning. IEEE Transactions on Pattern Analysis and Machine Intelligence,  arXiv: 1704.03976. April 2017.
 
-[^3] Laine, Samuli and Aila, Timo. Temporal Ensembling for Semi-Supervised Learning. arXiv:1610.02242 [cs], October 2016. arXiv: 1610.02242.
+[^3]: Laine Samuli et al., Temporal Ensembling for Semi-Supervised Learning. arXiv: 1610.02242. October 2016.
