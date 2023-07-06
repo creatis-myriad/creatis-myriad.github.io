@@ -75,11 +75,16 @@ Limitation of Temporal Ensembling :
 
 A sketch of a binary classification task with two labeled examples (large black dots) and one unlabeled example, demonstrating how the choice of the unlabeled target (blue circle) affects the fitted function (gray curve).
 
-- (a) A model with no regularization &rarr; free to fit any function that predicts the labeled training examples well  
-- (b) A model trained with noisy labeled data (small dots) &rarr; consistent predictions around labeled data points  
-- (c) The teacher model (gray curve) is first fitted to the labeled examples, and then left unchanged during the training of the student model. &rarr; Consistency to noise around unlabeled examples provides additional smoothing  
-- (d) Noise on the teacher model reduces the bias of the targets without additional training. &rarr; The expected direction of stochastic gradient descent is towards the mean (large blue circle) of individual noisy targets (small blue circles)  
-- (e) Ensemble model &rarr; gives an even better expected target
+- (a) A model with **no regularization**   
+    &rarr; free to fit any function that predicts the labeled training examples well  
+- (b) A model trained with noisy labeled data (small dots)  
+    &rarr; consistent predictions around labeled data points  
+- (c) The teacher model (gray curve) is first fitted to the labeled examples, and then left unchanged during the training of the student model. The student model has noise, the teacher doesn't.  
+    &rarr; Consistency to noise around unlabeled examples provides additional smoothing. **Used by the $$\Gamma$$ model**.
+- (d) Noise on the teacher model reduces the bias of the targets without additional training. Average of multiple predictions by the teacher.  
+    &rarr; The expected direction of stochastic gradient descent is towards the mean (large blue circle) of individual noisy targets (small blue circles). **Used by the  $$\Pi$$ model**.
+- (e) Ensemble model  
+    &rarr; gives an even better expected target. **Both Temporal Ensembling and the Mean Teacher method use this approach**
 
 ---
 ## Mean Teacher 
