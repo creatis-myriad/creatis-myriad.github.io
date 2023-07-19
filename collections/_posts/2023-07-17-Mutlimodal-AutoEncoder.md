@@ -14,199 +14,220 @@ pdf: "https://arxiv.org/pdf/2209.07098.pdf"
 
 * Here are some useful links: [repo](https://github.com/zhjohnchan/M3AE), [submission process](https://conferences.miccai.org/2022/papers/336-Paper1841.html)
 
+&nbsp;
+
 # Highlights
 
 * The objective of this paper is to develop a self-supervised learning paradigm which learn cross-modal domain knowledge (vision and language) from medical data.
 * The self-supervised strategy is based on the reconstruction of missing pixels (vision) and token (language) from randomly masked images and texts.
 * The evaluation is based on an medical vision-and-language benchmark including three tasks.
 
-# Method
+&nbsp;
 
-## Appetizer
+# Motivations
 
-The following animation illustrates the capacity of the method in modelling complex structured distributions across scales.
+* Medical vision-and language pre-training (Med-VLP) aims to learn generic representations from large-scale medical image-text data
 
-![](/collections/images/hierarchical_probabilistic_unet/animation.gif)
+* This representation can be transferred to various medical vision-and-language tasks such as medical visual question answering, medical image-text classification, medical image-text retrieval (the corresponding definitions are given below)
+
+
+<!--
+* There are still few articles on this subject in the field of medical imaging, and the proposed work breaks new ground in four respects:
+	* data (pre-trainining corpus)
+	* models (purely transformer-based models)
+	* objectives (pre-traning objectives)
+	* evaluation (design of downstream benchmark)
+-->
 
 &nbsp;
+
+# Method
+
 
 ## Architecture
 
-* The architecture is based on the ***conditional VAE*** whose details are provided in the following [tutorial](https://creatis-myriad.github.io/tutorials/2022-09-12-tutorial-cvae.html).
-* The main innovation comes from the following hierarchical modelling of the latent space:
-
-$$p\left(\boldsymbol{z} \vert x\right) = p\left(z_0,\ldots,z_L \vert x\right) = p\left(z_L \vert z_{<L},x\right) \cdot \, \ldots \, \cdot p\left(z_0 \vert x\right)$$
-
-$$q\left(\boldsymbol{z} \vert x,y\right) = q\left(z_0,\ldots,z_L \vert x,y\right) = q\left(z_L \vert z_{<L},x,y\right) \cdot \, \ldots \, \cdot q\left(z_0 \vert x,y\right)$$
-
-In the particular case where $$L=2$$, the above equation can be put in the following form:
-
-$$p\left(\boldsymbol{z} \vert x\right) = p\left(z_2 \vert z_1,z_0,x\right) \cdot p\left(z_1 \vert z_0,x\right) \cdot p\left(z_0 \vert x\right)$$
-
-$$q\left(\boldsymbol{z} \vert x,y\right) = q\left(z_2 \vert z_1,z_0,x,y\right) \cdot q\left(z_1 \vert z_0,x,y\right) \cdot q\left(z_0 \vert x,y\right)$$
-
-Taking into account the hierarchical modelling, a new ELBO objective with a relative weighting factor $$\beta$$ was formulated as follows (the corresponding demonstration is given at the end of this post):
-
-$$\mathcal{L}_{ELBO} = \mathbb{E}_{\boldsymbol{z}\sim q(\boldsymbol{z} \vert x,y)} [CE\left( y,\hat{y}\right)] + \beta \cdot \sum_{i=0}^{L} \mathbb{E}_{z_{i-1}\sim \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
-
-The authors observed that the minimization of $$\mathcal{L}_{ELBO}$$ leads to sub-optimal results. For this reason, they used the recently proposed $$GECO$$ loss (GECO stands for Generalized ELBO with Constrained Optimization):
-
-$$\mathcal{L}_{GECO} = \lambda \cdot \left( \mathbb{E}_{\boldsymbol{z}\sim q(\boldsymbol{z} \vert x,y)} [CE\left( y,\hat{y}\right)] - \kappa \right) + \sum_{i=0}^{L} \mathbb{E}_{z_{i-1}\sim \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
-
-where $$\kappa$$ is chosen as the desired reconstruction error and $$\lambda$$ is a Lagrange multiplier that is updated as a function of the ***exponential moving average*** of the reconstruction contraint.
-
-> This formulation initially puts high pressure on the reconstruction and once the desired $$\kappa$$ is reached it increasingly moves the pressure over on the KL-terms.
-
-Finally, the prior and the generator networks are based on the same U-Net architecture, which results in parameter and run-time savings.
-
-The overall architecture is given below:
-
-![](/collections/images/hierarchical_probabilistic_unet/overall_architecture.jpg)
-
-![](/collections/images/hierarchical_probabilistic_unet/inference_phase.jpg)
+![](/collections/images/multimodal_autoencoder/overall_architecture.jpg)
 
 &nbsp;
 
-This architecture can be difficult to understand at first sight. Therefore I show below the different parts of the network with reference to the formalism of the [conditional VAE](https://creatis-myriad.github.io/tutorials/2022-09-12-tutorial-cvae.html)
+## Key aspects
 
-![](/collections/images/hierarchical_probabilistic_unet/posterior_network.jpg)
+* Use of transformers to encode image and language features
 
-![](/collections/images/hierarchical_probabilistic_unet/prior_network.jpg)
+* Use of transformers to perform multi-modal fusion
 
-![](/collections/images/hierarchical_probabilistic_unet/generative_network.jpg)
+* Use of a transformer to decode the image and a simple MLP to decode the text
 
-&nbsp;
+* pre-training is performed using medical image-text pairs
 
-## Implementation details
+* Masks random patches of the input image and random tokens of the input text and reconstructs the missing pixels and tokens
+> this makes pre-training a self-supervised process 
 
-* U-Nets are composed by res-blocks. 
-
-> Without the use of res-blocks, the KL-terms between distributions at the begining of the hierarchy often become 0 early in the training, essentially resulting in uninformative and thus unused latents. 
-
-* The number of latent scales is chosen empirically to allow for a sufficiently granular effect of the latent hierarchy.
+* Uses different masking rates for input images and text due to the different information densities of vision and language
 
 &nbsp;
 
-## Distribution agreement
+## Formalism
 
-To assess the quality of the generative network, it is necessary to measure the agreement between two distributions based on samples only. The following two metrics have been used:
+##### Loss function
 
-* Generalized Energy Distance
+$$\theta^{*},\theta_1^{*},\theta_2^{*}=\arg \min_{\theta,\theta_1,\theta_2} \sum_{s=1}^{2} L_s\left( Y_s,D_{\theta_s} \left( M_{\theta}(I,T) \right) \right)$$
+	
+- $$L_s$$ are the loss functions of pretext tasks, i.e MSE between the reconstructed and original images and the negative log-likelihood for the masked tokens
 
-$$D^2_{GED}(P_{gt},P_{out}) = 2 \, \mathbb{E} \left[d\left(\hat{y},y\right) \right] - \mathbb{E} \left[d\left(\hat{y},\hat{y}'\right) \right] - \mathbb{E} \left[d\left(y,y'\right) \right]$$
+- $$D_{\theta_s}$$ are the decoders with their parameters $$\theta_1$$, $$\theta_2$$
 
-where $$d$$ is a distance measure, $$y$$ and $$y'$$ are independent samples from the ground truth distribution $$P_{gt}$$, $$\hat{y}$$ and $$\hat{y}'$$ are independent samples from the predicted distribution $$P_{out}$$. The distance measure is based on the $$\text{IoU}$$ metric and is defined as follows: $$d(x,y)=1-\text{IoU}(x,y)$$.
-
-> When the model’s samples poorly match the ground truth samples, this metric rewards sample diversity regardless of the samples’ adequacy :(
-
-* Hungarian-matched $$\text{IoU}$$
-
-The Hungarian algorithm finds the optimal 1:1-matching between the objects of two sets. $$\text{IoU}(y,\hat{y})$$ was used to determine the similarity between two samples. Finally, the average $$\text{IoU}$$ of all matched pairs was used as the Hungarian-matched $$\text{IoU}$$ metric. 
-
-> Contrary to $$D^2_{GED}$$, higher values mean better performances.
+- $$M_{\theta}$$ is the backbone model with its parameters $$\theta$$.
 
 &nbsp;
 
-## Reconstruction fidelity: $$\text{IoU}_\text{rec}$$
+##### Vision encoder
 
-* The reconstruction fidelity is defined as an upper bound on the fidelity of the conditional samples.
-* It measures how well the model’s posteriors are able to reconstruct a given segmentation in terms of the IoU metric.
+$$X^{\nu} \in \mathbb{R}^{(N+1) \times D} \,=\, \left[ p_I; p_1 E^{\nu}; \cdots; p_N E^{\nu} \right]\,+\,E^{\nu}_{pos}$$
 
-$$\text{IoU}_\text{rec}=\text{IoU}\left( y, S\left( x,\mu_{post}(x,y) \right) \right)$$
+- Each image $$I \in \mathbb{R}^{H \times W \times C}$$ is divided into $$N$$ patches $$\{ p_1,\cdots,p_N \}$$
 
-where $$S\left( x,\mu_{post}(x,y) \right)$$ corresponds to the segmentation result computed from the posterior network.
+- $$E^{\nu} \in \mathbb{R}^{P^2 \times D}$$ is the projection matrix into the patch embeddings
+
+- $$p_I \in \mathbb{R}^{D}$$ used for the aggregation of visual information
+
+- $$X^{\nu}$$ is fed into a transformer model with $$N_{\nu}$$ transformer blocks to obtain the contextualized image representation $$H^{\nu} \in \mathbb{R}^{(N+1) \times D} \,=\, \left[ h^{\nu}_I; h^{\nu}_1; \cdots; h^{\nu}_N \right]$$
+
+&nbsp;
+
+##### Language encoder
+
+$$X^{l} \in \mathbb{R}^{(M+2) \times D} \,=\, \left[ w_T; w_1 E^{l}; \cdots; w_M E^{l}; w_{SEP} \right]\,+\,E^{l}_{pos}$$
+
+- Each input text is tokenize to subword tokens $${w_1,\cdots;w_M}$$ by WordPiece, where tokens $$w_m \in \mathbb{R}^{V}$$ are represented in one-hot form and $$V$$ is the vocabulary size
+
+- $$E^{l} \in \mathbb{R}^{V \times D}$$ is the projection matrix into the text embeddings
+
+- $$w_T \in \mathbb{R}^{D}$$ and $$w_{SEP} \in \mathbb{R}^{D}$$ correspond to a start-of-sequence token embedding and a special boundary token embedding, respectively 
+
+- $$X^{l}$$ is fed into a transformer model with $$N_{l}$$ transformer blocks to obtain the contextualized text representation $$H^{l} \in \mathbb{R}^{(M+2) \times D} \,=\, \left[ h^{l}_T; h^{l}_1; \cdots; h^{l}_M; h^{l}_{SEP} \right]$$
+
+&nbsp;
+
+##### Masking scheme
+
+- the authors used random sampling with a much greater masking ratio for images (i.e. $$75\%$$) than for texts (i.e. $$15\%$$). This is justified by the fact that images are redundant while languages are information-dense
+
+&nbsp;
+
+##### Representation selection for reconstruction
+
+- Images and texts are abstracted at different levels, with pixels having a lower semantic level than token of texts.
+
+- The outputs from the $$k$$-th transformer block ($$Z^{\nu k}$$) are used to compute the reconstruction loss (red part in the figure of the architecture)
+
+- The final output $$Z^{l}$$ is used for the prediction of text tokens since predicting missing words requires richer semantic information
+
+&nbsp;
+
+##### Decoder designs
+
+- A transformer model is used to perform the reconstruction task from $$Z^{\nu k}$$
+
+- A simple MLP is used to retrieve the missing text tokens
 
 &nbsp;
 
 # Results
 
-## LIDC-IDRI dataset
+## ROCO dataset - [repo](https://github.com/razorx89/roco-dataset) 
 
-* 1010 2D+slices CT scan of lungs with lesions 
-* For each scan, 4 radiologists (from a total of 12) provided annotation masks for lesions that they independently detected
-* the CT scans were resampled to $$0.5 \, \text{mm} \times 0.5 \, \text{mm}$$ in-plane resolution and cropped 2D images ($$180 \times 180$$ pixels) centered at the lesion positions.
-* This resulted in $$8882$$ images in the training set, $$1996$$ images in the validations set and $$1992$$ images in the test set.
-* Because the experts can disagree, up to 3 masks per image can be empty.
-* A number of latent scales of 4 ($$L=3$$) was experimentally chosen.
-* A GECO loss using $$\kappa=0.05$$ was used.
+* 81,000 medical images with their captions and the corresponding UMLS Semantic Types useful for classification purposes
+> UMLS (Unified Medical Language System): provides a standardized way of categorizing biomedical concepts based on their semantic characteristics.
 
-The figure below first shows the evolution of the different parts of the loss over time for 10 random initializations.
+* Contains several medical imaging modalities with the corresponding text automatically extracted from PubMed Central Open Access FTP mirror
 
-![](/collections/images/hierarchical_probabilistic_unet/loss_evolution.jpg)
+* There are 16 times more radiological images than the others modalities
 
-&nbsp;
+* Randomly split the dataset into 80/10/10.
 
-The table below provides the overall results obtained in terms of $$\text{IoU}_\text{Rec}$$ and Hungarian-matched $$\text{IoU}$$. Subset B corresponds to cases where 4 graders agree on the presence of an abnormality.
+![](/collections/images/multimodal_autoencoder/ROCO.jpg)
 
-![](/collections/images/hierarchical_probabilistic_unet/table_overall_results.jpg)
 
-&nbsp;
+## MedICaT dataset - [repo](https://github.com/allenai/medicat)
 
-The next figure displays the results obtained on two different cases. sPU-Net corresponds to the [Probabilistic U-Net](https://creatis-myriad.github.io/2022/10/11/ProbabilisticUNet.html) method.
+* 217,000 medical images from with their captions and inline textual references for 74% of figures
 
-![](/collections/images/hierarchical_probabilistic_unet/two_examples.jpg)
+* Contains several medical imaging modalities with the corresponding text automatically extracted from PubMed Central Open Access FTP mirror
+
+* Randomly sample 1,000 images for validation, 1,000 images for testing, and the remaining images for training 
 
 &nbsp;
 
-In order to explore how the model leverages the hierarchical latent space decomposition, the predicted means $$\mu_{prior}$$ can be used for some scales instead of sampling. The figure below (Fig. 3a) shows samples for the given CT scans resulting from the process of sampling from the full hierarchy, i.e. from 4 scales in this case.
-Fig. 3b,c show the resulting samples when sampling from the most global or most local scale only.
+## Implementation details
 
-![](/collections/images/hierarchical_probabilistic_unet/scales_influence.jpg)
+* Vision encoder: CLIP-ViT-B
+
+* Language encoder: RoBERTa-base
+
+* $$N_m=6$$ transformer blocks for the multi-modal fusion module with a number of heads of 12 per block
+
+* AdamW optimizer during pre-training for 100,000 iterations
+
+* Center-crop to resize each image into the size of 288x288
 
 &nbsp;
 
-The last figure below shows other examples of segmentations generated from the proposed method.
+## Downstream tasks
 
-![](/collections/images/hierarchical_probabilistic_unet/many_examples.jpg)
+* ***Medical Visual Question Answering (Med-VQA)*** - Answering natural language questions about medical images. VQA-RAD, SLAKE and VQA-2019 dataset were used for evaluation
+
+* ***Medical Image-Text Classification*** - Produce the label given an image-text pair. The MELINDA dataset was used for evaluation
+
+* ***Medical Image-Caption Retrieval*** - Two subtasks: image-to-text (I2T) retrieval requires retrieving the most relevant texts from a large pool of texts given an image and vice versa for text-to-image (T2I). The ROCO dataset was used for evaluation
+
+* Accuracy is used as metric for the Med-VQA and medical Image-Text classification tasks
+
+* Recall@K (K=1, 5, 10) is used for the Medical Image-Caption Retrieval task
+
+> Unfortunately, nothing is said concerning the fine-tuning of the pretrained methods for the different downstream tasks :(
+
+&nbsp;
+
+## Results for Med-VQA task
+
+![](/collections/images/multimodal_autoencoder/med-VQA-results.jpg)
+
+&nbsp;
+
+## Results for Medical Image-Text Classification
+
+![](/collections/images/multimodal_autoencoder/classification-results.jpg)
+
+&nbsp;
+
+## Results for Medical Image-Caption Retrieval
+
+![](/collections/images/multimodal_autoencoder/retrieval-results.jpg)
+
+(ZS) means zero-shot and (FT) means fine-tuning 
+
+&nbsp;
+
+## Ablation study
+
+![](/collections/images/multimodal_autoencoder/ablation-study.jpg)
+
+(MIM) stands for Masked Image Modeling and (MLM) stands for Masked Language Modeling
+
+&nbsp;
+
+## Qualitative results
+
+![](/collections/images/multimodal_autoencoder/qualitative-results.jpg)
 
 &nbsp;
 
 # Conclusions
 
-* The work proposed a significantly improved version of the probabilistic U-Net
-* It allows to model complex-structured conditional distribution thanks to a coarse-to-fine hierarchy of latent variables
+* Image/text coupling for medical data analysis looks like a promising way forward
 
-&nbsp;
+* Pre-training in a self-supervised way using maskink strategy appears to be relevant
 
-# Appendix
-
-## KL-divergence of the proposed model
-
-$$D_{KL}\left(q(\boldsymbol{z} \vert x,y)\parallel p(\boldsymbol{z} \vert x)\right) = \mathbb{E}_{\boldsymbol{z}\sim q(\boldsymbol{z} \vert x,y)}\left[ log\left(q(\boldsymbol{z} \vert x,y)\right) - log\left(p(\boldsymbol{z} \vert x)\right) \right]$$
-
-$$=\int_{z_0,\cdots,z_L} q(\boldsymbol{z} \vert x,y) \cdot \left[ log\left(q(\boldsymbol{z} \vert x,y)\right) - log\left(p(\boldsymbol{z} \vert x)\right) \right] dz_0 \ldots dz_L$$
-
-$$=\int \prod_{j=0}^{L}q(z_j \vert z_{<j},x,y) \cdot \left[ log\left(\prod_{i=0}^{L}q(z_i \vert z_{<i},x,y)\right) - log\left(\prod_{i=0}^{L}p(z_i \vert z_{<i},x)\right) \right] dz_0 \ldots dz_L$$
-
-$$=\int_{z_0,\cdots,z_L} \prod_{j=0}^{L}q(z_j \vert z_{<j},x,y) \cdot \sum_{i=0}^{L}\left[ log\left(q(z_i \vert z_{<i},x,y)\right) - log\left(p(z_i \vert z_{<i},x)\right) \right] dz_0 \ldots dz_L$$
-
-$$=\sum_{i=0}^{L} \int_{z_0,\cdots,z_L} \prod_{j=0}^{L}q(z_j \vert z_{<j},x,y) \cdot \left[ log\left(q(z_i \vert z_{<i},x,y)\right) - log\left(p(z_i \vert z_{<i},x)\right) \right] dz_0 \ldots dz_L$$
-
-Using
-
-$$\int_{z_0,\cdots,z_L} \phi(z_i) \prod_{j=0}^{L} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_L=\int_{z_0,\cdots,z_i} \phi(z_i) \prod_{j=0}^{i} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_i$$
-
-(this relationship is demonstrated at the end of this post, a big thank to Lucas Braz for his help !)
-
-We have
-
-$$=\sum_{i=0}^{L} \int_{z_0,\cdots,z_i} \prod_{j=0}^{i}q(z_j \vert z_{<j},x,y) \cdot \left[ log\left(q(z_i \vert z_{<i},x,y)\right) - log\left(p(z_i \vert z_{<i},x)\right) \right] dz_0 \ldots dz_i$$
-
-$$=\sum_{i=0}^{L} \int \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y) \, \underbrace{q(z_i \vert z_{<i},x,y) \cdot \left[ log\left(q(z_i \vert z_{<i},x,y)\right) - log\left(p(z_i \vert z_{<i},x)\right) \right]}_{D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))} dz_0 \ldots dz_i$$
-
-$$=\sum_{i=0}^{L}\mathbb{E}_{z_{i-1}\sim \prod_{j=0}^{i-1} q(z_j \vert z_{<j},x,y)} [D_{KL}(q(z_i \vert z_{<i},x,y) \parallel p(z_i \vert z_{<i},x))]$$
-
-&nbsp;
-
-## Intermediate demonstration
-
-$$\int_{z_0,\cdots,z_L} \phi(z_i) \prod_{j=0}^{L} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_L$$
-
-$$=\int_{z_0,\cdots,z_i} \phi(z_i) \prod_{j=0}^{i} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_i \cdot \int_{z_{i+1},\cdots,z_L} \prod_{j=i+1}^{L} q(z_j \vert z_{<j},x,y) dz_{i+1},\ldots,dz_L$$
-
-$$=\int_{z_0,\cdots,z_i} \phi(z_i) \prod_{j=0}^{i} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_i \cdot \prod_{j=i+1}^{L} \underbrace{\int_{z_{j}}  q(z_j \vert z_{<j},x,y) dz_{j}}_{=1}$$
-
-$$=\int_{z_0,\cdots,z_i} \phi(z_i) \prod_{j=0}^{i} q(z_j \vert z_{<j},x,y) dz_0,\ldots,dz_i$$
-
-
+* Exploiting embedings at different levels of abstraction for images and text would seem to be a good approach
 
