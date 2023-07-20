@@ -14,13 +14,13 @@ Github available [here](https://github.com/dmelis/SENN) (PyTorch)
 
 # Highlights
 
-- Post-hoc interpretability methods are not always faithful in regard to model's predictions and their explanations aren't robust to small perturbations of the input[^1]
+- Post-hoc interpretability methods are not always faithful in regard to models' predictions and their explanations aren't robust to small perturbations of the input[^1]
 - The authors propose a class of intrinsically interpretable neural networks models which are as interpretable as linear regression
 
 # Introduction
 
 - Most interpretability methods are post-hoc, explaining the model after its training
-- But their explanations lack stability, small changes to the input can lead to different (or even contradicting) explanations for similar predictions
+- But their explanations lack stability, small changes to the input can lead to different (or even contradictory) explanations for similar predictions
 - Linear models are considered to be interpretable, which is the starting point of this paper
 
 # Self-Explaining Neural Networks models
@@ -52,7 +52,7 @@ $$\nabla_xf(x) \approx \theta(x_0) \tag{3}$$
 So the model acts locally, around each $$x_0$$, as a linear model with a vector of stable coefficients $$\theta(x_0)$$
 
 **Concepts**  
-Then, explanations can also be considered in terms of higher order feature, or concepts, derived from the input, like a function $$h(x) : \mathcal{X} \rightarrow \mathcal{Z}$$ where $$\mathcal{Z}$$ is some space of interpretable concepts. The model thus becomes:
+Then, explanations can also be considered in terms of higher order features, or concepts, derived from the input, like a function $$h(x) : \mathcal{X} \rightarrow \mathcal{Z}$$ where $$\mathcal{Z}$$ is some space of interpretable concepts. The model thus becomes:
 
 $$f(x) = \theta(x)^T h(x) = \sum_{i=1}^K \theta(x)_i h(x)_i \tag{4} $$
 
