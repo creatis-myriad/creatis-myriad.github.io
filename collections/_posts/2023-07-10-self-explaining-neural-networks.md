@@ -10,7 +10,7 @@ cite:
 pdf: https://arxiv.org/pdf/1806.07538.pdf
 ---
 
-Github available [here](https://github.com/dmelis/SENN) (PyTorch)
+Useful links: [GitHub repository (PyTorch)](https://github.com/dmelis/SENN), [submission process](https://proceedings.neurips.cc/paper_files/paper/2018/hash/3e9f0fc9b2f89e043bc6233994dfcf76-Abstract.html)
 
 # Highlights
 
@@ -124,4 +124,4 @@ The Self-Explaining Neural Network model is less subject to adverse effects of i
 
 # References
 
-[^1]: [Alvarez-Melis D. and Jaakkola T.S., On the Robustness of Interpretability Methods. ]()
+[^1]: [Alvarez-Melis D. and Jaakkola T.S., On the Robustness of Interpretability Methods. ICML 2018](http://arxiv.org/abs/1806.08049)
