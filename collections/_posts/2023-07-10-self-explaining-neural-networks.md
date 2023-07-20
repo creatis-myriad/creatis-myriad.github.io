@@ -14,14 +14,14 @@ Github available [here](https://github.com/dmelis/SENN) (PyTorch)
 
 # Highlights
 
-- Post-hoc interpretability methods are not always faithful in regard to model's predictions and their explanations aren't robust to small perturbations of the input
+- Post-hoc interpretability methods are not always faithful in regard to model's predictions and their explanations aren't robust to small perturbations of the input[^1]
 - The authors propose a class of intrinsically interpretable neural networks models which are as interpretable as linear regression
 
 # Introduction
 
 - Most interpretability methods are post-hoc, explaining the model after its training
 - But their explanations lack stability, small changes to the input can lead to different (or even contradicting) explanations for similar predictions
-- Linear models are considered to be interpretable, so the proposed design build from this ground
+- Linear models are considered to be interpretable, which is the starting point of this paper
 
 # Self-Explaining Neural Networks models
 
@@ -36,55 +36,35 @@ Linear models are considered interpretable for 3 reasons:
 
 ## Formalization
 
-Linear regression:
+**Supervised problem**: linear regression:
 
 $$f(x) = \sum_i^n \theta_i x_i + \theta_0 \tag{1}$$
 
-To improve the modeling power, we can allow the coefficients themselves to depend on the input $$x$$:
+To improve the modeling power, the coefficients themselves can depend on the input $$x$$:
 
 $$f(x) = \theta(x)^T x \tag{2}$$
 
-The function $$\theta(\cdot)$$ can be anything from a simple model to deep neural networks. But to maintain a decent level of interpretability, we need to ensure that $$\theta(x)$$ and $$\theta(x')$$ do not differ significantly for close inputs $$x$$ and $$x'$$. More precisely:
+**Locally linear**  
+The function $$\theta(\cdot)$$ can be anything from a simple model to deep neural networks. But to maintain a decent level of interpretability, $$\theta(x)$$ and $$\theta(x')$$ should not differ significantly for close inputs $$x$$ and $$x'$$, $$\theta(\cdot)$$ needs to be stable. More precisely:
 
 $$\nabla_xf(x) \approx \theta(x_0) \tag{3}$$
 
 So the model acts locally, around each $$x_0$$, as a linear model with a vector of stable coefficients $$\theta(x_0)$$
 
+**Concepts**  
 Then, explanations can also be considered in terms of higher order feature, or concepts, derived from the input, like a function $$h(x) : \mathcal{X} \rightarrow \mathcal{Z}$$ where $$\mathcal{Z}$$ is some space of interpretable concepts. The model thus becomes:
 
 $$f(x) = \theta(x)^T h(x) = \sum_{i=1}^K \theta(x)_i h(x)_i \tag{4} $$
 
+**General model**  
 And finally, the aggregation function, e.g. the sum, can also be replaced by a more general form. This general aggregation function would need specific properties like permutation invariance or the preservation of relative magnitude of the impact of the relevance values $$\theta(x)_i$$. This would result in a model of the following form:
 
 $$ f(x) = g( \theta_1(x)h_1(x) , ... , \theta_k(x)h_k(x) ) \tag{5}$$
 
-## Definition
+**Proposed stability loss**  
+Now, the stability, or slow variation, of $$\theta(\cdot)$$ should be pursued in regards to $$h(x)$$ and not $$x$$. Thus, the objective is now to enforce $$\theta(x_0) \approx \nabla_z f$$ with $$z = h(x)$$. Using the chain rule, it implies the following loss for $$\theta$$:
 
-The generalized model can thus be formalized as:
-
-
-
-with the following desirable properties:
-
-1. $$g$$ is monotone and completely additively separable
-2. For every $$z_i = \theta_i(x) h_i(x)$$, $$g$$ satisfies $$\frac{\partial g}{\partial z_i} ≥ 0$$
-3. $$\theta(\cdot)$$ is locally stable with respect to $$h(\cdot)$$
-4. $$h_i(x)$$ is an interpretable representation of $$x$$
-5. $$k$$ is small
-
-<br/>
-
-
-Properties 1 & 2 entirely depend on $$g$$ which, besides trivial addition, include affine functions $$g(z_1, ..., z_k) = \sum_i A_i z_i$$ with positive $$A_i$$.
-
-Properties 4 & 5 are application-dependent, concepts can be:
-- input features directly, $$h(x) = x$$
-- subset aggregates of the input, $$h(x) = A x$$ with boolean mask matrix $$A$$
-- prototype-based concepts, $$h_i(x) = \| x - z_i \|$$
-
-The property 3 is a little bit trickier to enforce. With the goal to locally mimic linear regression, $$\theta_i$$ can be seen as constant, resulting in the following definition of the model $$f(x) = g(h(x))$$ or $$f(x) = g(z)$$ with $$z = h(x)$$. Then, using the chain rule the gradient of $$f$$ can be reformulated as $$\nabla_x f = \nabla_z f \cdot J_x^h$$. **[As they seek $$\theta(x_0) \approx \nabla_z f$$]**, the local stability enforcer/robustness loss $$\mathcal{L}_\theta$$ can be formulated as:
-
-$$\| \nabla_x f(x) - \theta(x)^T J_x^h(x) \| \approx 0 \tag{2} $$
+$$\mathcal{L}_\theta(f(x)) := \| \nabla_x f(x) - \theta(x)^T J_x^h(x) \| \approx 0 \tag{2} $$
 
 This results in the following loss for the model to optimize:
 
@@ -99,15 +79,15 @@ Interpretable models need to be evaluated in term of accuracy on the prediction 
 
 ## Datasets used
 
-[Introduce/show examples of datasets]
-
-- MNIST & CIFAR10  
-  32x32 & 32x32x3 images  
-  Original datasets with standard mean and variance normalization, using 10% of the training split for validation
-- Several benchmark datasets from UCI (Diabetes, Wine, Heart, ...)  
-  Using (80%, 10%, 10%) train, validation and test splits, with standard mean and variance scaling on all datasets
-- Propublica's COMPAS Recidivism Risk Score  
-  Filtered out inconsistent examples and rescaled ordinal variable `Number_of_priors` to range [0, 1]
+- MNIST & CIFAR10
+  - Images classification
+  - 32x32 & 32x32x3
+- Several datasets from UCI Machine Learning Repository
+  - Regression, classification, segmentation tasks
+  - Data types are numerical, categories, images, ...
+- Propublica's COMPAS Recidivism Risk Score
+  - COMPAS is a closed-source model used by USA DoJ to evaluate probability of recidivism
+  - Dataset consists of results from the score, often used to evaluate fairness of predictive algorithms
 
 ## Architectures details and accuracy results
 
@@ -122,34 +102,26 @@ For each task, they used different architectures for the sub-branches $$h (\cdot
 
 ## Intelligibility
 
+Explanations of this model are to be understood relative to the concepts defined. Here, they propose to retrieve examples of the dataset which maximally activate specific concepts.
+
 ![](/collections/images/SENN-model/figure2.jpg)
-
-![](/collections/images/SENN-model/results-on-cifar10.jpg)
-
-## Faithfulness
-
-To assess if an explanation correctly estimate the relevance of a feature without ground truth, one can rely on a proxy notion of importance: observing the effect of removing features on the model's prediction. Removing a feature in this model corresponds to setting its coefficient $$\theta_i$$ to zero.
-
-Here, they compute the correlations between prediction probability drops and relevance scores on various points and aggregate the results (Fig.3, Left). Note that $$h(x) = x$$ for UCI datasets used here.
-
-![](/collections/images/SENN-model/figure3.jpg)
 
 ## Stability
 
-- Empiric tests show low robustness of interpretability methods to local perturbations of the input.
+Empiric tests show low robustness of interpretability methods to local perturbations of the input. Small changes in the input produce visible modifications of the explanations
 
 ![](/collections/images/SENN-model/figure4.jpg)
 
-- To formally define a measure, they reuse their "locally difference bounded" property as stability estimation
-- Search for adversarial example maximizing this quantity
-  $$ \hat{L}(x_i) = \underset{x_j \in B_\epsilon (x_i)}{\arg \max} \frac{\| f_{expl}(x_i) - f_{expl}(x_j) \|_2}{\| h(x_i) - h(x_j) \|_2} \tag{2}$$
-  [Question: what's the $$...\|_2$$ for?]
-- For raw-input methods, where $$h(x) = x$$, this corresponds to an estimation of the Lipschitz constant
+The Self-Explaining Neural Network model is less subject to adverse effects of input perturbation on explanations stability.
 
-![](/collections/images/SENN-model/figure5.jpg)
+![](/collections/images/SENN-model/figure8.jpg)
 
 # Limitations
 
 - No details on model performances, even in supplementary materials
 - Definition of interpretable concepts is a problem in itself
 - The final prediction is more explainable, but the intermediate steps are not: the concept encoder and relevance parametrizer are still complete black-boxes
+
+# References
+
+[^1]: [Alvarez-Melis D. and Jaakkola T.S., On the Robustness of Interpretability Methods. ]()
