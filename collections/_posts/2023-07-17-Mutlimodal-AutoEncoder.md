@@ -89,7 +89,7 @@ $$X^{\nu} \in \mathbb{R}^{(N+1) \times D} \,=\, \left[ p_I; p_1 E^{\nu}; \cdots;
 
 - $$E^{\nu} \in \mathbb{R}^{P^2 \times D}$$ is the projection matrix into the patch embeddings
 
-- $$p_I \in \mathbb{R}^{D}$$ used for the aggregation of visual information
+- $$p_I \in \mathbb{R}^{D}$$ is used for the aggregation of visual information
 
 - $$X^{\nu}$$ is fed into a transformer model with $$N_{\nu}$$ transformer blocks to obtain the contextualized image representation $$H^{\nu} \in \mathbb{R}^{(N+1) \times D} \,=\, \left[ h^{\nu}_I; h^{\nu}_1; \cdots; h^{\nu}_N \right]$$
 
