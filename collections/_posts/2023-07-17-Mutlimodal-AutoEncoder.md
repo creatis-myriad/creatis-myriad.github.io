@@ -99,7 +99,7 @@ $$X^{\nu} \in \mathbb{R}^{(N+1) \times D} \,=\, \left[ p_I; p_1 E^{\nu}; \cdots;
 
 $$X^{l} \in \mathbb{R}^{(M+2) \times D} \,=\, \left[ w_T; w_1 E^{l}; \cdots; w_M E^{l}; w_{SEP} \right]\,+\,E^{l}_{pos}$$
 
-- Each input text is tokenize to subword tokens $${w_1,\cdots;w_M}$$ by WordPiece, where tokens $$w_m \in \mathbb{R}^{V}$$ are represented in one-hot form and $$V$$ is the vocabulary size
+- Each input text is tokenized to subword tokens $${w_1,\cdots;w_M}$$ by WordPiece, where tokens $$w_m \in \mathbb{R}^{V}$$ are represented in one-hot form and $$V$$ is the vocabulary size
 
 - $$E^{l} \in \mathbb{R}^{V \times D}$$ is the projection matrix into the text embeddings
 
