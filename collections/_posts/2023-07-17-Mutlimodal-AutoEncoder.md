@@ -117,7 +117,7 @@ $$X^{l} \in \mathbb{R}^{(M+2) \times D} \,=\, \left[ w_T; w_1 E^{l}; \cdots; w_M
 
 ##### Representation selection for reconstruction
 
-- Images and texts are abstracted at different levels, with pixels having a lower semantic level than token of texts.
+- Images and texts are abstracted at different levels, with pixels having a lower semantic level than text tokens.
 
 - The outputs from the $$k$$-th transformer block ($$Z^{\nu k}$$) are used to compute the reconstruction loss (red part in the figure of the architecture)
 
