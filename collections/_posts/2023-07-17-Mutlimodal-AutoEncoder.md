@@ -19,7 +19,7 @@ pdf: "https://arxiv.org/pdf/2209.07098.pdf"
 # Highlights
 
 * The objective of this paper is to develop a self-supervised learning paradigm which can learn cross-modal domain knowledge (vision and language) from medical data.
-* The self-supervised strategy is based on the reconstruction of missing pixels (vision) and token (language) from randomly masked images and texts.
+* The self-supervised strategy is based on the reconstruction of missing pixels (vision) and text labels (language) from randomly masked images and texts.
 * The evaluation is based on an medical vision-and-language benchmark including three tasks.
 
 &nbsp;
