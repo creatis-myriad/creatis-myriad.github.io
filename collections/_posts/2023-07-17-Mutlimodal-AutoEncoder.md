@@ -227,7 +227,7 @@ $$X^{l} \in \mathbb{R}^{(M+2) \times D} \,=\, \left[ w_T; w_1 E^{l}; \cdots; w_M
 
 * Image/text coupling for medical data analysis looks like a promising way forward
 
-* Pre-training in a self-supervised way using maskink strategy appears to be relevant
+* Pre-training in a self-supervised way using a masking strategy appears to be relevant
 
 * Exploiting embedings at different levels of abstraction for images and text would seem to be a good approach
 
