@@ -28,7 +28,7 @@ pdf: "https://arxiv.org/pdf/2209.07098.pdf"
 
 * Medical vision-and-language pre-training (Med-VLP) aims to learn generic representations from large-scale medical image-text data
 
-* This representation can be transferred to various medical vision-and-language tasks such as medical visual question answering, medical image-text classification, medical image-text retrieval (the corresponding definitions are given below)
+* This representation can be transferred to various tasks relevant for medical vision-and-language analysis, such as visual question answering, image-text classification, image-text retrieval (the corresponding definitions are given below)
 
 
 <!--
