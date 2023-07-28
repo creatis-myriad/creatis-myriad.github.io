@@ -30,15 +30,6 @@ pdf: "https://arxiv.org/pdf/2209.07098.pdf"
 
 * This representation can be transferred to various tasks relevant for medical vision-and-language analysis, such as visual question answering, image-text classification, image-text retrieval (the corresponding definitions are given below)
 
-
-<!--
-* There are still few articles on this subject in the field of medical imaging, and the proposed work breaks new ground in four respects:
-	* data (pre-trainining corpus)
-	* models (purely transformer-based models)
-	* objectives (pre-traning objectives)
-	* evaluation (design of downstream benchmark)
--->
-
 &nbsp;
 
 # Method
