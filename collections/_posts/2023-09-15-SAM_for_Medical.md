@@ -13,10 +13,10 @@ pdf: "https://arxiv.org/pdf/2304.12306.pdf"
 
 This is a combined review of the four following papers. The aim is to give an idea about how Segment Anything (SAM)[^1] has been used and adapted to medical images since its release in April 2023.
 
-* J. Ma, Y. He, F. Li, L. Han, C. You, B. Wang, **Segment Anything in medical imaging**, April 2023, 
-* K. Zhang, D. Liu, **Customized Segment Anything Model for Medical Image Segmentation**, April 2023
-* J. Wu, R. Fu, Y. Zhang, H. Fang, Y. Liu, Z.Wang, Y. Xu, Y. Jin, **Medical SAM Adapter: Adapting Segment Anything Model for Medical Image Segmentation**, April 2023
-* X. Lin, Y. Xiang, L. Zhang, X. Yang, Z. Yan, L. Yu, **SAMUS: Adapting Segment Anything Model for Clinically-Friendly and Generalizable Ultrasound Image Segmentation**, September 2023
+* J. Ma, Y. He, F. Li, L. Han, C. You, B. Wang, **Segment Anything in medical imaging**, April 2023, [link to paper](https://arxiv.org/pdf/2304.12306.pdf).
+* K. Zhang, D. Liu, **Customized Segment Anything Model for Medical Image Segmentation**, April 2023, [link to paper](https://arxiv.org/pdf/2304.13785.pdf).
+* J. Wu, R. Fu, Y. Zhang, H. Fang, Y. Liu, Z.Wang, Y. Xu, Y. Jin, **Medical SAM Adapter: Adapting Segment Anything Model for Medical Image Segmentation**, April 2023, [link to paper](https://arxiv.org/pdf/2304.12620.pdf).
+* X. Lin, Y. Xiang, L. Zhang, X. Yang, Z. Yan, L. Yu, **SAMUS: Adapting Segment Anything Model for Clinically-Friendly and Generalizable Ultrasound Image Segmentation**, September 2023, [link to paper](https://arxiv.org/pdf/2309.06824.pdf).
 
 # Highlights
 
@@ -142,6 +142,6 @@ Other figures and additional results in the articles include ablation studies, r
 Several recent works have leveraged SAM architecture and training and tried to modify it in order to improve its capacities on medical imaging tasks. They mainly rely on Low-rank adaptation modules introduced inside the transformer's architecture of SAM, but new ideas, such as using a CNN as a local features extractor, may lead to even an greater increase in performances in the future.
 
 # References
-[^1]: A. Kirillov, E. Mintun, N. Ravi,H. Mao, C. Rolland,L. Gustafson, T. Xiao, S. Whitehead, A. C. Berg,  W.-Y. Lo, P. Dollar, R. Girshick, *Segment Anything*, ICCV 2023
-[^2]: M. A. Mazurowski, H. Dong, H. Gu, J. Yang, N. Konz, Y. Zhang, *Segment Anything Model for Medical Image Analysis: an Experimental Study*, April 2023
-[^3]: E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, W. Chen, *LoRA: Low-Rank Adaptation of Large Language Models*, ICLR 2022
+[^1]: A. Kirillov, E. Mintun, N. Ravi,H. Mao, C. Rolland,L. Gustafson, T. Xiao, S. Whitehead, A. C. Berg,  W.-Y. Lo, P. Dollar, R. Girshick, *Segment Anything*, ICCV 2023, [link to paper](https://arxiv.org/pdf/2304.02643.pdf)
+[^2]: M. A. Mazurowski, H. Dong, H. Gu, J. Yang, N. Konz, Y. Zhang, *Segment Anything Model for Medical Image Analysis: an Experimental Study*, April 2023, [link to paper](https://arxiv.org/pdf/2304.10517.pdf)
+[^3]: E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, W. Chen, *LoRA: Low-Rank Adaptation of Large Language Models*, ICLR 2022, [link to paper](https://openreview.net/pdf?id=nZeVKeeFYf9)
