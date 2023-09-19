@@ -57,6 +57,7 @@ For an extended review of SAM, please refer to [this post](https://creatis-myria
 ## Segment Anything in Medical Imaging (MedSAM)
 
 * Architecture copied from SAM, with a lighter ViT as image encoder. 89M and 4M parameters respectively for the encoder and the decoder.
+* The prompt encoder is frozen.
 * Combination of cross-entropy and dice loss
 * 1.0M+ medical image-mask pairs covering 15 imaging modalities and over 30 cancer types
 
