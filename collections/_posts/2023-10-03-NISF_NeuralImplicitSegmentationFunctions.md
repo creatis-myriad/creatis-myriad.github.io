@@ -38,7 +38,7 @@ The authors propose a model NISF (Neural Implicit Segmentation Functions) that u
 
 From an input {single sample coordinate + latent vector}, NISF outputs {image intensity + segmentation label}.
 
-The network consists of a MLP with 8 residual layers of 128 hidden units each. This MLP jointly learns two functions: 
+The network consists of an MLP with 8 residual layers of 128 hidden units each. This MLP jointly learns two functions: 
 - a reconstruction function $$f_\phi$$ that gives the image intensity $$i_c$$ for any queried coordinate, 
 - a segmentation function $$f_\theta$$ that gives the segmentation probability of each label $$s_c$$ for said coordinate.
 
