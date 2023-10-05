@@ -7,7 +7,7 @@ cite:
     authors: "Nil Stolt-Anso, Julian McGinnis, Jiazhen Pan, Kerstin Hammernik, Daniel Rueckert"
     title:   "NISF: Neural Implicit Segmentation Functions"
     venue:   "MICCAI 2023"
-pdf: "https://arxiv.org/pdf/2309.08643v1.pdf"
+pdf: "https://arxiv.org/pdf/2309.08643.pdf"
 ---
 
 # Notes
@@ -26,7 +26,7 @@ The authors propose a new type of model based on neural implicit functions (NIF)
 **What are NIFs?**
 NIFs are models which map a signal (for example: image intensity, segmentation) from a coordinate space.
 
-The authors propose a model NISF (Neural Implicit Segmentation Functions) that use NIFs. This model produces a segmentation as well as interpolate the results on unseen areas of an image, at an arbitrary resolution.
+The authors propose a model NISF (Neural Implicit Segmentation Functions) that use NIFs. This model produces a segmentation as well as interpolates the results to unseen areas of an image, at an arbitrary resolution.
 
 # Method
 
@@ -36,17 +36,17 @@ The authors propose a model NISF (Neural Implicit Segmentation Functions) that u
 
 ## Architecture
 
-From an input {single sample cordinate + latent vector}, NISF outputs {image intensity + segmentation label}.
+From an input {single sample coordinate + latent vector}, NISF outputs {image intensity + segmentation label}.
 
-The network consist in a MLP with 8 residual layers with 128 hidden units each. This MLP learns jointly two functions: 
-- a reconstruction function $$f_\theta$$ which gives the image intensity $$i_c$$ for any queried coordinate, 
-- a segmentation function $$f_\phi$$ which gives the segmentation probability of each label $$s_c$$ for said coordinate.
+The network consists of an MLP with 8 residual layers of 128 hidden units each. This MLP jointly learns two functions: 
+- a reconstruction function $$f_\phi$$ that gives the image intensity $$i_c$$ for any queried coordinate, 
+- a segmentation function $$f_\theta$$ that gives the segmentation probability of each label $$s_c$$ for said coordinate.
 
 The authors use Gabor wavelet activation function, combined with ReLU or sinusoidal activation function.
 
 ## Prior training
 
-The method presented uses an auto-decoder which simultaneously optimizes the weights of the network, as well as a latent vector $$h_j$$ representing each subject $$j$$.
+The presented method uses an auto-decoder that simultaneously optimizes the weights of the network, as well as a latent vector $$h_j$$ representing each subject $$j$$.
 
 Therefore, during training, the network learns a shared prior $$\mathcal{H}$$ over all subjects. 
 
