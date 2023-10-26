@@ -1,7 +1,7 @@
 ---
 layout: review
 title: "This Looks Like That: Deep Learning for Interpretable Image Recognition"
-tags: interpretability classification uncertainty ultrasound
+tags: interpretability classification
 author: "Thierry Judge"
 cite:
     authors: "Chaofan Chen, Oscar Li, Chaofan Tao, Alina Jade Barnett, Jonathan Su, Cynthia Rudin"
