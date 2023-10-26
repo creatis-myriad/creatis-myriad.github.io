@@ -26,7 +26,7 @@ Most deep-learning approaches to classification of aortic stenosis are black-box
 # Method 
 
 ## Prototype-Based Models
-See "This Looks Like That: Deep Learning for Interpretable Image Recognition" for a more detail explanation. 
+See "This Looks Like That: Deep Learning for Interpretable Image Recognition" [^1] for a more detail explanation. 
 The notation in this paper is slightly different and is redefined here.
 
 A prototype based model is generally the composition of three models. The structure is defined by $$h(g(f(x)))$$ where 
@@ -38,6 +38,10 @@ A prototype based model is generally the composition of three models. The struct
 
 The prototype layer contains $$P$$ prototypes ($$K$$ for each class or the $$C$$ classes$$): $$p^c_k$$. 
 
+As the prototypes are learned vectors, they must be "pushed" to a real image to be interpretable. This is done by finding 
+the closest training example feature in the latent space. 
+
+![](/collections/images/ProtoASNet/push.jpg)
 
 ## ProtoASNet
 
@@ -46,7 +50,7 @@ The prototype layer contains $$P$$ prototypes ($$K$$ for each class or the $$C$$
 In ProtoASNet, the convolutional backbone is a pre-trained R(2+1)D-18 with two region of interest (ROI) modules. Given
 an input video $$x \in R^{H_o \times W_o \times T_o \times 3}$$, features $$F(x) \in R^{H \times W \times T \times D}$$
 are computed. The second branch computes $$P$$ region of interest (one for each prototype) 
-$$M_{p^c_k)(x) \in R^{H \times W \times T}$$. 
+$$M_{p^c_k}(x) \in R^{H \times W \times T}$$. 
 
 The spatial temporal features are pooled before being compared to the prototypes. 
 
@@ -60,10 +64,14 @@ $$f_{p^c_k}$$
 ![](/collections/images/ProtoASNet/eq_cosine.jpg)
 
 
+The similarity scores are used by the fully-connected layer to predict the class probabilities. The weights of the layer
+$$w_h$$ are initialized to be 1 between corresponding class logits and prototypes and 0 otherwise. 
+
+
 ## Prototypes for Aleatoric Uncertainty
 To learn the aleatoric uncertainty, another set of prototypes (not related to any class) is defined: $$p^c_k$$. 
 The similarity between the features $$f_{p^c_k}$$ and the uncertainty prototypes $$p^c_k$$ are used to predict 
-$$\alpha \in \[ 0, \]$$. The loss to train this part of the model is taken from [^1]
+$$\alpha \in [ 0, 1 ]$$. The loss to train this part of the model is taken from [^2]
 
 
 ![](/collections/images/ProtoASNet/abs_loss.jpg)
@@ -74,6 +82,20 @@ The full loss function is given by
 
 ![](/collections/images/ProtoASNet/loss.jpg)
 
+The clustering and separation losses are not applied to the uncertainty prototypes are there are no labels for the 
+uncertainty. 
+
+The other terms are 
+
+*  Orthogonality loss (Eq. (8)) to encourage diverse prototypes 
+* Transformation loss $$L_{trns}$$ to "regularize the consistency of the predicted occurrence regions under random
+affine transformations" (taken from [^3])
+* $$L_norm$$ regularizes $$w_h$$ for sparsity with respect to noncoresponding prototypes and class logits. [^1] 
+
+
+Contrary to [^1] which pushes the prototypes only after the latent representation is learned. The authors "push" the 
+prototypes to the closest training feature every 5 epochs. They also do not mention training in stages which implies 
+the training is conducted end-to-end. 
 
 
 # Experiments 
@@ -109,5 +131,12 @@ The authors report an ablation study showing the effects of different components
 
 # References
 
-[^1]: DeVries, T., Taylor, G.W.: Learning confidence for out-of-distribution detection in
+
+[^1]: Chen, C., Li, O., Tao, D., Barnett, A., Rudin, C., Su, J.K.: This looks like that:
+deep learning for interpretable image recognition. Neurips 2019.
+
+[^2]: DeVries, T., Taylor, G.W.: Learning confidence for out-of-distribution detection in
 neural networks. arXiv.  
+
+[^3]: Kim, E., Kim, S., Seo, M., Yoon, S.: Xprotonet: Diagnosis in chest radiography
+with global and local explanations. CVPR 2021
