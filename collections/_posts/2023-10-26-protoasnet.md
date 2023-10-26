@@ -14,22 +14,23 @@ pdf: "https://arxiv.org/pdf/2307.14433.pdf"
 * Link to the code [here](https://github.com/hooman007/ProtoASNet)
 
 # Highlights
-* The authors propose a interpretable classification model to classify aortic stenosis (AS). 
-* The model is a prototype-based model which analyzed the similarity between the input and a set of prototypes. 
+* The authors propose an interpretable classification model to classify aortic stenosis (AS). 
+* The model is a prototype-based model which analyzes the similarity between the input and a set of prototypes. 
 
 # Introduction
 
-Most deep-learning approaches to classification of aortic stenosis are black-box models that are not interpretable.
-
+Most deep-learning approaches for the classification of aortic stenosis are black-box models that are not interpretable.
 
 
 # Method 
 
 ## Prototype-Based Models
-See "This Looks Like That: Deep Learning for Interpretable Image Recognition" [^1] for a more detail explanation. 
+Prototype-based models were introduced in "This Looks Like That: Deep Learning for Interpretable Image Recognition" [^1] 
+(see review for a more detailed explanation. 
+
 The notation in this paper is slightly different and is redefined here.
 
-A prototype based model is generally the composition of three models. The structure is defined by $$h(g(f(x)))$$ where 
+A prototype-based model is generally the composition of three models. The structure is defined by $$h(g(f(x)))$$ where 
 
 * $$x \in R^{H_o \times W_o \ times 3}$$ is the input 
 * $$f(x)$$ is a convolutional backbone. 
@@ -38,8 +39,8 @@ A prototype based model is generally the composition of three models. The struct
 
 The prototype layer contains $$P$$ prototypes ($$K$$ for each class or the $$C$$ classes$$): $$p^c_k$$. 
 
-As the prototypes are learned vectors, they must be "pushed" to a real image to be interpretable. This is done by finding 
-the closest training example feature in the latent space. 
+As the prototypes are learned vectors, they must be "pushed" to a real image to be interpretable. This is done by 
+finding the closest training example feature in the latent space. 
 
 ![](/collections/images/ProtoASNet/push.jpg)
 
@@ -64,8 +65,8 @@ $$f_{p^c_k}$$
 ![](/collections/images/ProtoASNet/eq_cosine.jpg)
 
 
-The similarity scores are used by the fully-connected layer to predict the class probabilities. The weights of the layer
-$$w_h$$ are initialized to be 1 between corresponding class logits and prototypes and 0 otherwise. 
+Finally, the similarity scores are used by the fully-connected layer to predict the class probabilities. The weights of 
+the layer $$w_h$$ are initialized to be 1 between corresponding class logits and prototypes and 0 otherwise. 
 
 
 ## Prototypes for Aleatoric Uncertainty
@@ -76,9 +77,9 @@ $$\alpha \in [ 0, 1 ]$$. The loss to train this part of the model is taken from 
 
 ![](/collections/images/ProtoASNet/abs_loss.jpg)
 
-## Full loss 
+## Training 
 
-The full loss function is given by 
+The model is trained with the following loss function
 
 ![](/collections/images/ProtoASNet/loss.jpg)
 
@@ -87,7 +88,7 @@ uncertainty.
 
 The other terms are 
 
-*  Orthogonality loss (Eq. (8)) to encourage diverse prototypes 
+* Orthogonality loss (Eq. (8)) to encourage diverse prototypes 
 * Transformation loss $$L_{trns}$$ to "regularize the consistency of the predicted occurrence regions under random
 affine transformations" (taken from [^3])
 * $$L_norm$$ regularizes $$w_h$$ for sparsity with respect to noncoresponding prototypes and class logits. [^1] 
@@ -103,14 +104,13 @@ the training is conducted end-to-end.
 ## Data 
 
 The authors used two datasets. The first is a private AS dataset for which the AS severity was determined with a standard 
-Dopple echo. The dataset contains 5055 PLAX and 4062 PSAX view cines for a total of 2572 studies. 
+Doppler echo. The dataset contains 5055 PLAX and 4062 PSAX view cines for a total of 2572 studies. 
 
 The second dataset is the TMED-2. It contains 599 fully labeled echo studies (17270 images). The studies contain 
 
 ## Results 
 
 ![](/collections/images/ProtoASNet/table1.jpg)
-
 
 ## Examples
 
@@ -124,19 +124,19 @@ The second dataset is the TMED-2. It contains 599 fully labeled echo studies (17
 
 The authors report an ablation study showing the effects of different components of their model. 
 
-
 ![](/collections/images/ProtoASNet/ablation.jpg)
+
+
+# Conclusion
+
 
 
 
 # References
 
 
-[^1]: Chen, C., Li, O., Tao, D., Barnett, A., Rudin, C., Su, J.K.: This looks like that:
-deep learning for interpretable image recognition. Neurips 2019.
+[^1]: Chen, C., Li, O., Tao, D., Barnett, A., Rudin, C., Su, J.K.: This looks like that: deep learning for interpretable image recognition. Neurips 2019.
 
-[^2]: DeVries, T., Taylor, G.W.: Learning confidence for out-of-distribution detection in
-neural networks. arXiv.  
+[^2]: DeVries, T., Taylor, G.W.: Learning confidence for out-of-distribution detection in neural networks. arXiv.  
 
-[^3]: Kim, E., Kim, S., Seo, M., Yoon, S.: Xprotonet: Diagnosis in chest radiography
-with global and local explanations. CVPR 2021
+[^3]: Kim, E., Kim, S., Seo, M., Yoon, S.: Xprotonet: Diagnosis in chest radiography with global and local explanations. CVPR 2021

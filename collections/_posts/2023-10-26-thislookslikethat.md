@@ -15,15 +15,16 @@ pdf: "https://arxiv.org/pdf/1806.10574.pdf"
 * Link to the code [here](https://github.com/cfchen-duke/ProtoPNet).
 
 # Highlights
-* The authors propose a interpretable classification model to classify aortic stenosis (AS). 
-* The model is a prototype-based model which analyzed the similarity between the input and a set of prototypes. 
+* The authors propose a model for interpretable classification which provides classification outputs along with 
+similarity scores with learned prototypes that correspond to training image patches.  
 
 # Introduction
 
-Most interpretable models fall under two categories: posthoc interpretability and attention-based interpretability. 
+Most interpretable models fall under two categories: post-hoc interpretability and attention-based interpretability. 
 
 
 ![](/collections/images/thislookslikethat/fig1.jpg)
+
 *Figure 1: Example.*
 
 
@@ -36,7 +37,7 @@ Most interpretable models fall under two categories: posthoc interpretability an
 *Figure 2: ProtoPNet architecture.*
 
 
-The model architecture is illustrated in figure 2. It consists of three main blocks. 
+The model architecture is illustrated in Figure 2. It consists of three main blocks. 
 
 * $$f$$ is a convolutional neural network with weights $$w_{conv}$$.
 * $$g_{\mathbf{P}}$$ is a prototype layer.
@@ -45,8 +46,8 @@ The model architecture is illustrated in figure 2. It consists of three main blo
 Given an input image $$x \in R^{224 \times 224 \times 3}$$, convolutional features $$z = f(x) \in R^{H \times W \times D }$$ 
 are computed ($$H = W = 7$$, $$D$$ is chosen from {128, 256, 512} with cross-validation). 
 
-The prototype layer contains $$m_k$$ prototypes for each class $$k$$. In practice all classes have 10 prototypes. 
-In total the model learns a total of $$m$$ prototypes defined by 
+The prototype layer contains $$m_k$$ prototypes for each class $$k$$. In practice, all classes have 10 prototypes. 
+In total, the model learns a total of $$m$$ prototypes defined by 
 $$\mathbf{P} = \{ \mathbf{p}_j \}_{j=1}^m$$ with shape $$H_1 \times W_1 \times D$$  such that 
 $$H_1 \leq H$$ and $$W_1 \leq W$$ (in the experiments, $$H_1 = W_1 = 1$$). This means that a prototype can represent the
 activation of a patch of the convolutional features which corresponds to a real patch in the image. 
@@ -57,7 +58,7 @@ is similar to the prototype. Global pooling is used to reduce the activation map
 
 ![](/collections/images/thislookslikethat/g_equation.jpg)
 
-The $$m$$ similarity scores are passed to the fully-connected $$h$$ which computes output logits which are then normalized
+The $$m$$ similarity scores are passed to the fully connected $$h$$ which computes output logits which are then normalized
 by a softmax to return a standard classification output. 
 
 ## Training 
@@ -75,10 +76,10 @@ Given a dataset $$D=[X, Y] = \{ x_i, y_i \}_{i=1}^n$$ the following loss functio
 
 The CrsEnt term is a standard cross-entropy loss. The Clst term is a cluster loss that forces each training image to have 
 a latent  patch close to at least one prototype of its class. The Sep term is a separation cost that encourages every 
-latent path of an image to be projected far away from the prototypes not associated to its class. 
+latent path of an image to be projected far away from the prototypes not associated with its class. 
 
-**2) Projection of prototypes** This stage takes the learned prototypes and associates them to a real latent patch that
-corresponds to a real training example. Each prototype $$\mathbf{p}_j$$ associated to class $$k$$ is pushed to the nearest 
+**2) Projection of prototypes** This stage takes the learned prototypes and associates them with a real latent patch that
+corresponds to a real training example. Each prototype $$\mathbf{p}_j$$ associated with class $$k$$ is pushed to the nearest 
 latent training patch from the same class. 
    
 ![](/collections/images/thislookslikethat/push.jpg)
@@ -96,24 +97,39 @@ weights close to zero.
 
 ## Prototype Visualization 
 
-In order to be interpretable, the prototypes must correspond to a real patch in a training image. To find this 
-corresponding patch for each prototype obtained from step 2 of the training process, the activation map for prototype's
-corresponing image is upsampled to get an activation map. The patch is defined as the smallest rectangle that encloses 
+To be interpretable, the prototypes must correspond to a real patch in a training image. To find this 
+corresponding patch for each prototype obtained from step 2 of the training process, the activation map for the prototype's
+corresponding image is upsampled to get an activation map. The patch is defined as the smallest rectangle that encloses 
 all the pixel values that are as large as the 95th percentile of values in the activation map. 
 
 
 ##  Reasoning process of the network
 
-![](/collections/images/thislookslikethat/fig3.jpg)
+The following figure shows an example of how the network classifies a type of bird. 
 
+![](/collections/images/thislookslikethat/fig3.jpg)
 
 
 # Data
 
+The authors testes their method on the CUB-200-2011 classification dataset which contains 200 bird species and on the 
+Stanford Cars dataset which contains 196 car models. 
+
 
 # Results 
 
-![](/collections/images/thislookslikethat/results.jpg)
+![](/collections/images/thislookslikethat/results.jpg) 
 
+The authors first compared their PropPNet to a baseline classification model with the same architecture. They then 
+compared with state-of-the-art methods and report a loss of accuracy of up to 3.5%. They authors mention the multiple 
+ProtoPNet can be combined to obtain an accuracy of 84.8% which is on part with the state-of-the-art. 
+
+The following figures highlights the higher level of interoperability with respect to other methods 
+
+![](/collections/images/thislookslikethat/fig4.jpg) 
+
+
+The authors report similar results on the car model identification dataset with an accuracy reaching 91.4% for the 
+combined model with is on part with B-CNN (91.3%), RA-CNN (92.5%), and MA-CNN (92.8%). 
 
 # Conclusion
