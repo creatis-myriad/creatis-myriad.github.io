@@ -112,7 +112,7 @@ The following figure shows an example of how the network classifies a type of bi
 
 # Data
 
-The authors testes their method on the CUB-200-2011 classification dataset which contains 200 bird species and on the 
+The authors test their method on the CUB-200-2011 classification dataset which contains 200 bird species and on the 
 Stanford Cars dataset which contains 196 car models. 
 
 
@@ -121,10 +121,10 @@ Stanford Cars dataset which contains 196 car models.
 ![](/collections/images/thislookslikethat/results.jpg) 
 
 The authors first compared their PropPNet to a baseline classification model with the same architecture. They then 
-compared with state-of-the-art methods and report a loss of accuracy of up to 3.5%. They authors mention the multiple 
-ProtoPNet can be combined to obtain an accuracy of 84.8% which is on part with the state-of-the-art. 
+compared with state-of-the-art methods and report a loss of accuracy of up to 3.5%. The authors mention the multiple 
+ProtoPNet can be combined to obtain an accuracy of 84.8% which is on par with the state-of-the-art. 
 
-The following figures highlights the higher level of interoperability with respect to other methods 
+The following figures highlight the higher level of interoperability with respect to other methods 
 
 ![](/collections/images/thislookslikethat/fig4.jpg) 
 
@@ -133,3 +133,6 @@ The authors report similar results on the car model identification dataset with 
 combined model with is on part with B-CNN (91.3%), RA-CNN (92.5%), and MA-CNN (92.8%). 
 
 # Conclusion
+
+The authors proposed a method to learn prototype patches from the training dataset and use these to provide 
+interpretable classification predictions.  
