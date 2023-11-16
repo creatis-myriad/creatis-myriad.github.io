@@ -83,7 +83,11 @@ where $$M$$ is the number of Monte-Carlo samples used to approximate the integra
 
 By using equation (4) we get :
 
-$$ - log \frac{1}{M} \sum_{m=1}^M  p(y \vert \eta^{(m)}) = - log \sum_{m=1}^M  \prod_{i=1}^Sp(y_i \vert  \eta_i^{(m)}) + log(M) =  - log \sum_{m=1}^M  exp(log(\prod_{i=1}^Sp(y_i \vert  \eta_i^{(m)}))) + log(M)  = -logsumexp_{m=1}^{M}\Bigg( \sum_{i=1}^S log(p(y_i \vert  \eta_i^{(m)})) \Bigg) + log(M)$$
+$$ - log \frac{1}{M} \sum_{m=1}^M  p(y \vert \eta^{(m)}) = - log \sum_{m=1}^M  \prod_{i=1}^Sp(y_i \vert  \eta_i^{(m)}) + log(M) $$
+
+$$ =  - log \sum_{m=1}^M  exp(log(\prod_{i=1}^Sp(y_i \vert  \eta_i^{(m)}))) + log(M)$$
+
+$$= -logsumexp_{m=1}^{M}\Bigg( \sum_{i=1}^S log(p(y_i \vert  \eta_i^{(m)})) \Bigg) + log(M)$$
 
 where $$ log(p(y_i \vert  \eta_i^{(m)}))$$ can be solved as in equation (4).
 
