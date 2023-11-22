@@ -12,7 +12,6 @@ categories: diffusion, model
 * We was also strongly inspired by this excellent [post](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/).
 
 &nbsp;
-
 - [**Introduction**](#introduction)
 - [**Fondamental concepts**](#fondamental-concepts)
   - [Sum of normally distributed variables](#sum-of-normally-distributed-variables)
@@ -28,15 +27,29 @@ categories: diffusion, model
   - [Loss function](#loss-function) 
 - [**To go further**](#to-go-further)
   - [The first DDPM algorithm](#first-ddpm-algorithm) 
-  - [How toimprove the log-likelihood ?](#how-to-improve-the-log-likelihood) 
+  - [How to improve the log-likelihood ?](#how-to-improve-the-log-likelihood) 
   - [Improve sampling speed](#improve-sampling-speed)
 &nbsp;
 
 ## **Introduction**
 
-Diffusion models are a class of generative models such as GAN, [normalizing flow](http://127.0.0.1:4000/tutorials/2023-01-05-tutorial_normalizing_flow.html) or [variational auto-encoders](http://127.0.0.1:4000/tutorials/2022-09-12-tutorial-vae.html). They are inspired by non-equilibrum thermodynamics. A diffusion probabilistic model is a forward stage where the original image in input is gradually perturbed by adding random noise through a Markov chain. The model learn to reverse the process in order to construct data samples from noise. Diffusion models have shown effectiveness in generating high-quality samples that encompass a wide range of modes. However, they entail significant computational burdens. Indeed, unlike VAE or flow models, latent variable has high dimensionality (the same as the input). 
+Diffusion models are a class of generative models such as GAN, [normalizing flow](http://127.0.0.1:4000/tutorials/2023-01-05-tutorial_normalizing_flow.html) or [variational auto-encoders](http://127.0.0.1:4000/tutorials/2022-09-12-tutorial-vae.html). A diffusion probabilistic model involves a forward stage where the original input image undergoes gradual perturbation by adding random noise. The model learns to reverse this process, constructing data samples from noise. These models have demonstrated effectiveness in generating high-quality samples that encompass a wide range of modes.  However, they come with significant computational burdens. Unlike VAEs or flow models, diffusion models have high-dimensional latent variables equivalent to the input.
 
-Diffusion model can be classified into two main perspective : **the variational perspective** and the **score perspective**. The 
+&nbsp;
+
+<div style="text-align:center">
+<img src="/collections/images/ddpm/diffusionModels.jpg" width=600></div>
+
+&nbsp;
+
+Diffusion model can be classified into two main perspective : **the variational perspective** and the **score perspective**. [Score models](http://127.0.0.1:4000/tutorials/2023-05-09-tutorial-score-based-models.html) are based on a maximum likelihood-based estimation approach. They use the score function of the loglikelihood of the data to estimate parameters within the diffusion process. On the other hand, the variational perspective involves models that approximate the target distribution using variational inference. Typically, these models minimize the Kullback-Liebler (KL) divergence between the target and the approximate distribution. An example of a diffusion model following the variational perspective is the Denoising Diffusion Probabilistic Model (DDPM).
+
+![](/collections/images/ddpm/diffusionProcess.jpg)
+
+
+DDPMs are inspired by non-equilibrum thermodynamics. The fundamental concept is to gradually dismantling the structure present in the data distribution and subsequently learning a reverse process that reconstructs this structure within the data. In the forward diffusion process, we start with an original image. A step-by-step addition of noise, with a sufficient number of iteration, make the image become pur noise. In existing DDPMs, this noise is sampled from a normal distribution. The quantity of noise added at each step increases and is specified by a predefined schedule that determines the variance of the noise. This schedule is designed to prevent explosive growth of the noise.
+
+The reverse process, also know as denoising, should recover an image from pur noise. This process involves a neural network that has learned to remove noise from an image step by step. The objective is to input noise sampled from a normal distribution into the model, so it could gradually remove the noise until generating a clear image as output. This stepwise process is preferred over direct transformation from noise to image, as the latter would not be tractable and would give inferior results. The neural networks predicts, at each step, the noise of the image. Since the noise follows a normal distribution, predicting the noise is equals to predict both its mean and its variance. Some DDPMs fix the variance, so the neural network only needs to predict the mean of the noise.
 
 &nbsp;
 
@@ -61,11 +74,24 @@ $$ q(x_{t-1} \vert x_t) = \frac{q(x_t \vert x_{t-1})q(x_{t-1})}{q(x_t)} $$
 
 ### Reparameterization trick
 
+The idea of the reparametirization trick is to transform a stochastic node sampled from a parameterized distribution into a deterministic ones. Indeed, in a stochastic operation, you cannot perform backpropagation. Reparameterization allows a gradient path through such a stochastic node by turning him into  deterministic node. 
+
+Let's assume that $$x_t$$ is a point sampled from a parameterized gaussian distribution $$q(x_t)$$ with mean $$\mu$$ and variance $$\sigma^2$$. Our model should learn the distribution to subsequently reverse the process. Thus, we want to treat the noise term as a standard normal distribution $$\mathcal{N}(0,1)$$ that is independent of our model (not parameterized by it).  The reparameterization trick make it possible: the sample is drawn from a fixed Gaussian distribution, which we add our $$\mu$$ to and multiply by our standard deviation $$\sigma$$.
+
+$$ x_t = \mu + \sigma \cdot \epsilon$$
+
+The epsilon term introduces the stochastic part ($$\epsilon \sim \mathcal{N}(0,1)$$) and is not involved in the training process. The prediction of the mean and the variance is no longer tied to the stochastic sampling operation. Therefore, we can now compute the gradient and run backpropagation of our loss function with respect to the parameters. 
+
+
+![](/collections/images/ddpm/reparameterizationTrick.jpg)
+
 ### Kullback-Liebler divergence
 
 ## **Forward diffusion process**
 
 ### Principle
+
+![](/collections/images/ddpm/forwardProcess.jpg)
 
 Let define $$x_0$$ a point sampled from a real data distribution $$x_0 \sim q(x)$$. The forward process of a probabilistic diffusion model is a Markov chain \(the prediction at the step $$t+1$$ only depends on the state attained at the step $$t$$\) that gradually adds gaussian noise to the data $$x_0$$. We define a forward process with T steps that produces more and more noisy samples $$x_1, x_2,\ldots, x_T$$ : 
 
@@ -97,7 +123,7 @@ Notice that when $$T \rightarrow  \infty $$, $$ x_T $$ is equivalent to a pure n
 
 ### How to define the scheduler ?
 
-The first article presenting ddpm set the forward variances to be a sequence of linearly increasing constants, this sequence defining the values of the variances is called a scheduler. They are chosen to be small relative to data scaled to [-1,1], which ensure that reverse and forward process have approximately the same functionnal form.
+The first article presenting DDPM set the forward variances to be a sequence of linearly increasing constants. This sequence, determining the variance values, is referred to as a scheduler. They are chosen to be relatively small compared to data scaled to [-1,1]. This ensure that reverse and forward process maintain approximately the same functionnal form.
 
 A second article improved the results given by the ddpm algorithm. A first suggestion for this improvment was in the definition of the scheduler : the linear noise schedule work well for high resolution images but proved to be sub-optimal for images of lower resolution (64x64 and 32x32). Indeed, the end of the forward noising process is very noisy with most of the steps being useless. A cosine scheduler was provided :
 
@@ -105,14 +131,22 @@ $$ \alpha _t = \frac{f(t)}{f(0)}, f(t) = cos (\frac{\frac{t}{T} + s}{1+s} \cdot 
 
 The variances $$\beta _t$$ can be deducted from this definition as $$ \beta _t = 1 - \frac{\bar \alpha _t}{\bar \alpha _{t-1}}$$ with in pactice $$\beta _t $$ being cliped to be no larger than $$0{,}999$$ to prevent singularities for $$t \rightarrow T$$.
 
+![](/collections/images/ddpm/schedules.jpg)
+
 
 ## **Backward process**
 
 ### General Idea
 
-Now, if we are able to reverse the above diffusion process, we will be able to generate a sample from a Gaussian noise input $$x_T \sim \mathcal{N}(0,1)$$. However, unlike the forward process, we can not use $$q(x_{t-1} \vert x_t)$$ to reverse the noise because it is intractable: it needs the entire dataset to estimate. It is noteworthy that the reverse conditional probability is tractable when conditioned on $$x_0$$ and that if $$\beta _t$$ is small enough, $$q(x_{t-1} \vert x_t,x_0)$$ will also be a Gaussian, $$q(x_{t-1} \vert x_t,x_0) \sim \mathcal{N}(x_{t-1}, \tilde \mu _t(x_t,x_0), \tilde \beta _t \cdot \textbf{I})$$.
+Now, if we are able to reverse the above diffusion process, we will be able to generate a sample from a Gaussian noise input $$x_T \sim \mathcal{N}(0,1)$$. However, unlike the forward process, we can not use $$q(x_{t-1} \vert x_t)$$ to reverse the noise because it is intractable: it needs the entire dataset to estimate. 
+
+![](/collections/images/ddpm/markovProcess.jpg)
+
+It is noteworthy that the reverse conditional probability is tractable when conditioned on $$x_0$$ and that if $$\beta _t$$ is small enough, $$q(x_{t-1} \vert x_t,x_0)$$ will also be a Gaussian, $$q(x_{t-1} \vert x_t,x_0) \sim \mathcal{N}(x_{t-1}, \tilde \mu _t(x_t,x_0), \tilde \beta _t \cdot \textbf{I})$$.
 
 Thus, we will train a neural network $$p_{\theta}(x_{t-1} \vert x_t) \sim \mathcal{N}(x_{t-1},\mu _{\theta}(x_t,t), \Sigma _{\theta}(x_t,t) \cdot \textbf{I})$$ to approximate $$q(x_{t-1} \vert x_t,x_0)$$. 
+
+![](/collections/images/ddpm/reverseProcess.jpg)
 
 ### Loss function
 
@@ -261,9 +295,11 @@ where C is a constant that does not depends on $$\theta$$.
 
 Finally, to sample $$x_{t-1} \sim p_{\theta} (x_{t-1} \vert x_t)$$, we compute $$x_{t-1} = \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha _t}{1- \bar \alpha _t} \epsilon _{\theta} (x_t ,t)) + \sigma _t z $$ where $$ z \sim \mathcal{N}(0,1)$$.
 
+![](/collections/images/ddpm/algorithms.jpg)
+
 ### How to improve the log-likelihood ?
 
-However, if DDPM have been shown to produce excellent samples,  the log-likelihoods did not reflects this quality. A second article suggests that fixing $$\sigma _t$$ is a reasonable choice for the sake of sample quality but as the first few steps of the diffusion process contribute the most to the variational lower bound, using a better choice of $$\Sigma _{\theta}$$ would improve  the log-likelihood. Thus, they proposed to learn $$\Sigma _{\theta} (x_t, t)$$ as an interpolation of $$\beta _t$$ and $$\tilde \beta _t$$ by model predicting a vector $$\mathbf v$$ :
+However, if DDPM have been shown to produce excellent samples,  the log-likelihood did not reflect this quality. The second article suggests that fixing $$\sigma _t$$ is a reasonable choice for the sake of sample quality but as the first few steps of the diffusion process contribute the most to the variational lower bound, using a better choice of $$\Sigma _{\theta}$$ would improve  the log-likelihood. Thus, they proposed to learn $$\Sigma _{\theta} (x_t, t)$$ as an interpolation of $$\beta _t$$ and $$\tilde \beta _t$$ by model predicting a vector $$\mathbf v$$ :
 
 $$ \Sigma _{\theta} (x_t, t) = exp (\mathbf  v log(\beta _t)+ (1- \mathbf v) log(\tilde \beta _t))$$
 
@@ -276,7 +312,7 @@ They set $$\lambda = 0{,}001 $$ to prevent $$\mathcal{L}_{vlb}$$ from overwhelmi
 
 ### Improve sampling speed
 
-The principal weakness of diffusion problem is the time-consuming process of sampling. Indeed, it is very slow to generate a sample from DDPM by following the Markov chain of the reverse process and producing a single sample takes several minutes on a modern GPU. Thus, it is hard to produce high-resolution samples.
+The principal weakness of diffusion problem is the time-consuming process of sampling. Indeed, it is very slow to generate a sample from DDPM by following the Markov chain of the reverse process and producing a single sample can takes several minutes on a modern GPU. Thus, it is hard to produce high-resolution samples.
 
 One simple way to improve this is to run a strided sampling scheduler. For a model trained with T diffusion steps, instead of sample using the same sequence of t values $$(1, 2, \dots , T )$$ as used during training, the sample uses an arbitrary subsequence S of t values. Thus, given the training noise schedule $$\bar \alpha _t$$, for a given sequence S  the sampling noise schedule $$\bar \alpha _{S_t}$$ is used to obtain corresponding sampling variances:
 
@@ -284,4 +320,10 @@ $$ \beta _{S_t} = 1 - \frac{\bar \alpha _{S_t}}{\bar \alpha _{S_{t-1}}} , \tilde
 
 Another algorithm, DDIM, modified the forward diffusion process making it non-Marovian to speed up the generation.
 
-### Classifier
+### Conditional image generation : Guided diffusion
+
+The conditioning of the sampling is a crucial point of image generation. The aim of the conditioning, or guidance, is to incorporate image embeddings into the diffusion to "guide" the genration. It refers to conditioning a prior data distribution with a condition y : the class label or an image/text embedding.
+
+**Classifier guidance**
+
+**Classifier free guidance**
