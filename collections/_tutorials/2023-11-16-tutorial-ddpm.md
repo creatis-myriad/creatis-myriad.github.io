@@ -17,7 +17,7 @@ categories: diffusion, model
   - [Sum of normally distributed variables](#sum-of-normally-distributed-variables)
   - [Bayes theorem](#bayes-theorem)
   - [Reparameterization trick](#reparameterization-trick) 
-  - [Kullback-Liebler divergence](#kullback-liebler-divergence)    
+  - [Cross Entropy](#cross-entropy)    
 
 - [**Forward diffusion process**](#forward-diffusion-process)
   - [Principle](#principle) 
@@ -85,7 +85,28 @@ The epsilon term introduces the stochastic part ($$\epsilon \sim \mathcal{N}(0,1
 
 ![](/collections/images/ddpm/reparameterizationTrick.jpg)
 
-### Kullback-Liebler divergence
+### Information theory reminder
+
+In information theory, Entropy $$H(p)$$ corresponds to the average information of a process. Its expression can be written as, for continuous distributions:
+
+$$ H(p) = -\int{p(x)\cdot log\left(p(x)\right)}\,dx$$
+
+From this, we can also define the cross entropy between two probability distributions $$p$$ and $$q$$ concerning the same events. 
+
+$$H_{pq} = -\int{p(x)\cdot log\left(q(x)\right)}\,dx = \mathbb{E}_{p(x)} [log(q(x))]$$
+
+The cross entropy quantifies the average bit requirement to identify an event selected from a set when using a coding scheme optimized for the estimated probability distribution q, instead of the actual distribution p. We can also define the Kullback–Leibler divergence from this two definitions : 
+
+$$\begin{align}
+D_{KL}(p \| q) &= H(p,q) - H(p) \\
+& = -\int{p(x)\cdot log(q(x))}\,dx + \int{p(x)\cdot log(p(x))}\,dx \\
+& = -\int{p(x)\cdot log(\frac{q(x)}{p(x)})}\,dx \\
+& = \int{p(x)\cdot log(\frac{p(x)}{q(x)})}\,dx \\
+& = \mathbb{E}_{p(x)} [log(\frac{p(x)}{q(x)})]
+\end{align}$$
+
+Cross-entropy minimization is frequently used in optimization and rare-event probability estimation. Note that when comparing a distribution $$q$$ against a fixed reference distribution $$p$$, cross-entropy and KL divergence are identical up to an additive constant (since $$p$$ is fixed). Note also that $$H(p)$$, $$H(p,q)$$ and $$D_{KL}(p \| q)$$ are always positives.
+
 
 ## **Forward diffusion process**
 
@@ -97,7 +118,7 @@ Let define $$x_0$$ a point sampled from a real data distribution $$x_0 \sim q(x)
 
 $$q(x_{1:T}|x_0) = \prod_{t=1}^{T}{q(x_t|x_{t-1})}$$
 
-The amount of noise added at each step is controlled by a variance schedule $$\{\beta_t \in (0,1)\}_{t=1}^{T}$$ : 
+Note in particular that the Markov formulation asserts that a given reverse diffusion transition distribution depends only on the previous timestep. The amount of noise added at each step is controlled by a variance schedule $$\{\beta_t \in (0,1)\}_{t=1}^{T}$$ : 
 
 $$q(x_t|x_{t-1}) = \mathcal{N}(x_t,\sqrt{1 - \beta _t},\beta _t \cdot \textbf{I})$$
 
@@ -142,36 +163,46 @@ Now, if we are able to reverse the above diffusion process, we will be able to g
 
 ![](/collections/images/ddpm/markovProcess.jpg)
 
-It is noteworthy that the reverse conditional probability is tractable when conditioned on $$x_0$$ and that if $$\beta _t$$ is small enough, $$q(x_{t-1} \vert x_t,x_0)$$ will also be a Gaussian, $$q(x_{t-1} \vert x_t,x_0) \sim \mathcal{N}(x_{t-1}, \tilde \mu _t(x_t,x_0), \tilde \beta _t \cdot \textbf{I})$$.
+It is noteworthy that the reverse conditional probability is tractable when conditioned on $$x_0$$. Indeed, thanks to [Bayes theorem](#bayes-theorem) $$q(x_{t-1} \vert x_t, x_0)$$ = $$\frac{q(x_t \vert x_{t-1}, x_0)q(x_{t-1}\vert  x_0)}{q(x_t \vert  x_0)}$$ where all distribution are known from the forward process.
 
-Thus, we will train a neural network $$p_{\theta}(x_{t-1} \vert x_t) \sim \mathcal{N}(x_{t-1},\mu _{\theta}(x_t,t), \Sigma _{\theta}(x_t,t) \cdot \textbf{I})$$ to approximate $$q(x_{t-1} \vert x_t,x_0)$$. 
+Then note that if $$\beta _t$$ is small enough, $$q(x_{t-1} \vert x_t,x_0)$$ will also be a Gaussian, $$q(x_{t-1} \vert x_t,x_0) \sim \mathcal{N}(x_{t-1}, \tilde \mu _t(x_t,x_0), \tilde \beta _t \cdot \textbf{I})$$.
+
+Thus, we will train a neural network $$p_{\theta}(x_{t-1} \vert x_t) \sim \mathcal{N}(x_{t-1},\mu _{\theta}(x_t,t), \Sigma _{\theta}(x_t,t) \cdot \textbf{I})$$ to approximate $$q(x_{t-1} \vert x_t,x_0)$$. What is important here is that the learned parameters are time-dependent. 
 
 ![](/collections/images/ddpm/reverseProcess.jpg)
 
 ### Loss function
 
-We define our loss as a negative log-likelihood, a loss already used for others generative models :
+The final objective of our reverse process is to have the more similarity between the generated images and the original images. The cross entropy between $$q(x_0)$$ and $$p_{\theta}(x_0)$$ is suitable as loss function. By minimizing the cross entropy between $$q(x_0)$$ and $$p_{\theta}(x_0)$$, we are minimizing the divergence between the two distributions.
 
-$$ \mathcal{L} = -log( p_{\theta}(x_0))$$
+$$H(p_{\theta}(x_0),q(x_0)) = - \mathbb{E}_{q(x_0)}[log( p_{\theta}(x_0))]$$
 
-But $$ p_{\theta}(x_0) $$ depends on $$x_1, x_2, \dots, x_T$$ and so it is intractable (uncomputable). Instead of optimizing the intractable loss itself, we can optimize the Variational Lower Bound (VLB). The idea is that by optimizing the bound of our function, we will inderectly optimize the intractable loss function. We introduce the [Kullback-Liebler divergence](#kullback-liebler-divergence) between $$ q(x_{1:T} \vert x_0)$$ and  $$ p_{\theta}(x_{1:T} \vert x_0)$$. As the KL divergence $$D_{KL}$$ is always positive, we can write :
+However, $$ p_{\theta}(x_0) $$ depends on $$x_1, x_2, \dots, x_T$$ and so it is intractable (uncomputable), let's rewrite it to find a computable loss: 
+
+$$ \begin{align} 
+H(p_{\theta}(x_0),q(x_0))  & = - \mathbb{E}_{q(x_0)}[log(\int p_{\theta}(x_{0:T}) d_{x_{1:T}})] \\
+&  = - \mathbb{E}_{q(x_0)}[log( \int q(x_{1:T} \vert x_0)\frac{p_{\theta}(x_{0:T})}{q(x_{1:T} \vert x_0)}  d_{x_{1:T}})] \\
+&  = - \mathbb{E}_{q(x_0)}[log( \mathbb{E}_{q( x_{1:T} \vert x_0)}\frac{p_{\theta}(x_{0:T})}{q(x_{1:T} \vert x_0)})]
+\end{align}$$
+
+Now, we can use Jensen's inequality :
+
+$$ \begin{align} 
+H(p_{\theta}(x_0),q(x_0))  &\leq - \mathbb{E}_{q(x_0)}\mathbb{E}_{q( x_{1:T} \vert x_0)}[log(\frac{p_{\theta}(x_{0:T})}{q(x_{1:T} \vert x_0)})]= - \mathbb{E}_{q( x_{0:T} \vert x_0)}[log(\frac{p_{\theta}(x_{0:T})}{q(x_{1:T} \vert x_0)})] = \mathbb{E}_{q( x_{0:T} \vert x_0)}[log(\frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})})]\\
+\end{align}$$
+
+
+Let $$ \mathcal{L}_{VLB} = \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})})]$$. Now, instead of minimizing H(p_{\theta}(x_0),q(x_0)), we can minimize its Variational Lower Bound (VLB) $$\mathcal{L}_{VLB}$$. Note that the Variational Lower Bound can be found simply if we optimize the negative log-likelihood of $$p_{\theta}(x_0)$$, assuming the process is the same than the one of VAE, as the setups are very similar.
 
 $$ \begin{align} 
 -log( p_{\theta}(x_0))  & \leq -log( p_{\theta}(x_0)) + D_{KL}(q(x_{1:T} \vert x_0) \| p_{\theta}(x_{1:T} \vert x_0)) \\ 
-& \leq -log( p_{\theta}(x_0)) + \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{1:T} \vert x_0)})] \\
-& \leq -log( p_{\theta}(x_0)) + \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{(\frac{p_{\theta}(x_{0:T})}{p_{\theta}(x_0)})})] \\
-&  \leq -log( p_{\theta}(x_0)) + \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})}) + log(p_{\theta}(x_0))]
+& = -log( p_{\theta}(x_0)) + \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{1:T} \vert x_0)})] \\
+& = -log( p_{\theta}(x_0)) + \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{(\frac{p_{\theta}(x_{0:T})}{p_{\theta}(x_0)})})] \\
+& = -log( p_{\theta}(x_0)) + \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})}) + log(p_{\theta}(x_0))]\\
+& = \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})})]
 \end{align} $$
 
-This expression can be simplified as $$log(p_{\theta}(x_0))$$ does not depends on $$q$$.
-
-$$ \begin{align}
--log( p_{\theta}(x_0))  & \leq -log( p_{\theta}(x_0)) + log( p_{\theta}(x_0)) + \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})})] \\
-
-& \leq \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})})]
-\end{align} $$
-
-Let $$ \mathcal{L}_{VLB} = \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})})]$$. We want to express each term of the loss to be anatycally computable, so using [Bayes theorem](#bayes-theorem), we can rewritte :
+We want to express each term of the loss to be anatycally computable, so using [Bayes theorem](#bayes-theorem), we can rewritte :
 
 $$ \begin{align} 
 \mathcal{L}_{VLB}  & = \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})})] \\ 
@@ -322,8 +353,12 @@ Another algorithm, DDIM, modified the forward diffusion process making it non-Ma
 
 ### Conditional image generation : Guided diffusion
 
-The conditioning of the sampling is a crucial point of image generation. The aim of the conditioning, or guidance, is to incorporate image embeddings into the diffusion to "guide" the genration. It refers to conditioning a prior data distribution with a condition y : the class label or an image/text embedding.
+The conditioning of the sampling is a crucial point of image generation. The aim of the conditioning, or guidance, is to incorporate image embeddings into the diffusion to "guide" the generation. It refers to conditioning a prior data distribution with a condition y : the class label or an image/text embedding. To turnour diffusion model into a conditional model, we conditione each diffusion step wih the information $$y$$: 
+
+$$ p_{\theta}(x_{0:T} \vert y) =  p_{\theta}(x_T) \prod_{i=1}^{T}{ p_{\theta}(x_{t-1} \vert x_t , y)}$$
 
 **Classifier guidance**
+
+A first idea for conditionning is to use a second model, called a classifier, to guide diffusion during the trainning. Therefore, we train a classifier $$ f_{\phi}(y \vert x_t,t) $$ on the image $$x_t$$ to predict its class $$y$$.
 
 **Classifier free guidance**
