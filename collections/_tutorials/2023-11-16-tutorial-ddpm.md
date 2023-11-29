@@ -114,7 +114,7 @@ Cross-entropy minimization is frequently used in optimization and rare-event pro
 
 ![](/collections/images/ddpm/forwardProcess.jpg)
 
-Let define $$x_0$$ a point sampled from a real data distribution $$x_0 \sim q(x)$$. The forward process of a probabilistic diffusion model is a Markov chain \(the prediction at the step $$t+1$$ only depends on the state attained at the step $$t$$\) that gradually adds gaussian noise to the data $$x_0$$. We define a forward process with T steps that produces more and more noisy samples $$x_1, x_2,\ldots, x_T$$ : 
+Let define $$x_0$$ a point sampled from a real data distribution $$x_0 \sim q(X_0)$$. The forward process of a probabilistic diffusion model is a Markov chain \(the prediction at the step $$t+1$$ only depends on the state attained at the step $$t$$\) that gradually adds gaussian noise to the data $$x_0$$. We define a forward process with T steps that produces more and more noisy samples $$x_1, x_2,\ldots, x_T$$ : 
 
 $$q(x_{1:T}|x_0) = \prod_{t=1}^{T}{q(x_t|x_{t-1})}$$
 
@@ -173,60 +173,64 @@ Thus, we will train a neural network $$p_{\theta}(x_{t-1} \vert x_t) \sim \mathc
 
 ### Loss function
 
-The final objective of our reverse process is to have the more similarity between the generated images and the original images. The cross entropy between $$q(x_0)$$ and $$p_{\theta}(x_0)$$ is suitable as loss function. By minimizing the cross entropy between $$q(x_0)$$ and $$p_{\theta}(x_0)$$, we are minimizing the divergence between the two distributions.
+The final objective of our reverse process is to have the more similarity between the generated images and the original images. The cross entropy between $$q(X_0)$$ and $$p_{\theta}(X_0)$$ is suitable as loss function. By minimizing the cross entropy between $$q(X_0)$$ and $$p_{\theta}(X_0)$$, we are minimizing the divergence between the two distributions.
 
-$$H(p_{\theta}(x_0),q(x_0)) = - \mathbb{E}_{q(x_0)}[log( p_{\theta}(x_0))]$$
+$$H(q(X_0),p_{\theta}(X_0)) = - \mathbb{E}_{q(X_0)}[log( p_{\theta}(X_0))]$$
 
-However, $$ p_{\theta}(x_0) $$ depends on $$x_1, x_2, \dots, x_T$$ and so it is intractable (uncomputable), let's rewrite it to find a computable loss: 
+However, $$ p_{\theta}(X_0) $$ depends on $$X_1, X_2, \dots, X_T$$ and so it is intractable (uncomputable), let's rewrite it to find a computable loss: 
 
 $$ \begin{align} 
-H(p_{\theta}(x_0),q(x_0))  & = - \mathbb{E}_{q(x_0)}[log(\int p_{\theta}(x_{0:T}) d_{x_{1:T}})] \\
-&  = - \mathbb{E}_{q(x_0)}[log( \int q(x_{1:T} \vert x_0)\frac{p_{\theta}(x_{0:T})}{q(x_{1:T} \vert x_0)}  d_{x_{1:T}})] \\
-&  = - \mathbb{E}_{q(x_0)}[log( \mathbb{E}_{q( x_{1:T} \vert x_0)}\frac{p_{\theta}(x_{0:T})}{q(x_{1:T} \vert x_0)})]
+H(q(X_0),p_{\theta}(X_0))  & = - \mathbb{E}_{q(X_0)}[log(\int p_{\theta}(X_{0:T}) d_{X_{1:T}})] \\
+&  = - \mathbb{E}_{q(X_0)}[log( \int q(X_{1:T} \vert X_0)\frac{p_{\theta}(X_{0:T})}{q(X_{1:T} \vert X_0)}  d_{X_{1:T}})] \\
+&  = - \mathbb{E}_{q(X_0)}[log( \mathbb{E}_{q( X_{1:T} \vert X_0)}\frac{p_{\theta}(X_{0:T})}{q(X_{1:T} \vert X_0)})]
 \end{align}$$
 
 Now, we can use Jensen's inequality :
 
 $$ \begin{align} 
-H(p_{\theta}(x_0),q(x_0))  &\leq - \mathbb{E}_{q(x_0)}\mathbb{E}_{q( x_{1:T} \vert x_0)}[log(\frac{p_{\theta}(x_{0:T})}{q(x_{1:T} \vert x_0)})]= - \mathbb{E}_{q( x_{0:T} \vert x_0)}[log(\frac{p_{\theta}(x_{0:T})}{q(x_{1:T} \vert x_0)})] = \mathbb{E}_{q( x_{0:T} \vert x_0)}[log(\frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})})]\\
+H(q(X_0),p_{\theta}(X_0))  &\leq - \mathbb{E}_{q(X_0)}\mathbb{E}_{q( X_{1:T} \vert X_0)}[log(\frac{p_{\theta}(X_{0:T})}{q(X_{1:T} \vert X_0)})]= - \mathbb{E}_{q( X_{0:T})}[log(\frac{p_{\theta}(X_{0:T})}{q(X_{1:T} \vert X_0)})] = \mathbb{E}_{q( X_{0:T})}[log(\frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{0:T})})]\\
 \end{align}$$
 
 
-Let $$ \mathcal{L}_{VLB} = \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})})]$$. Now, instead of minimizing H(p_{\theta}(x_0),q(x_0)), we can minimize its Variational Lower Bound (VLB) $$\mathcal{L}_{VLB}$$. Note that the Variational Lower Bound can be found simply if we optimize the negative log-likelihood of $$p_{\theta}(x_0)$$, assuming the process is the same than the one of VAE, as the setups are very similar.
+Let $$ \mathcal{L}_{VLB} = \mathbb{E}_q[log( \frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{0:T})})]$$. Now, instead of minimizing $$H(q(X_0),p_{\theta}(X_0))$$, we can minimize its Variational Lower Bound (VLB) $$\mathcal{L}_{VLB}$$. Note that the Variational Lower Bound can be found simply if we optimize the negative log-likelihood of $$p_{\theta}(X_0)$$, assuming the process is the same than the one of VAE, as the setups are very similar.
 
 $$ \begin{align} 
--log( p_{\theta}(x_0))  & \leq -log( p_{\theta}(x_0)) + D_{KL}(q(x_{1:T} \vert x_0) \| p_{\theta}(x_{1:T} \vert x_0)) \\ 
-& = -log( p_{\theta}(x_0)) + \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{1:T} \vert x_0)})] \\
-& = -log( p_{\theta}(x_0)) + \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{(\frac{p_{\theta}(x_{0:T})}{p_{\theta}(x_0)})})] \\
-& = -log( p_{\theta}(x_0)) + \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})}) + log(p_{\theta}(x_0))]\\
-& = \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})})]
+-log( p_{\theta}(X_0)) & \leq -log( p_{\theta}(X_0)) + D_{KL}(q(X_{1:T} \vert X_0) \| p_{\theta}(X_{1:T} \vert X_0))\\
+-log( p_{\theta}(X_0)) + D_{KL}(q(X_{1:T} \vert X_0) \| p_{\theta}(X_{1:T} \vert X_0)) & = -log( p_{\theta}(X_0)) + \mathbb{E}_{X_{1:T} \sim q(X_{1:T} \vert X_0)}[log( \frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{1:T} \vert X_0)})] \\
+& = -log( p_{\theta}(X_0)) + \mathbb{E}_{X_{1:T} \sim q(X_{1:T} \vert X_0)}[log( \frac{q(X_{1:T} \vert X_0) p_{\theta}(X_0)}{p_{\theta}(X_{0:T})})] \\
+& = -log( p_{\theta}(X_0)) + \mathbb{E}_{X_{1:T} \sim q(X_{1:T} \vert X_0)}[log( \frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{0:T})}) + log(p_{\theta}(X_0))]\\
+& = \mathbb{E}_{X_{1:T} \sim q(X_{1:T} \vert X_0)}[log( \frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{0:T})})]
 \end{align} $$
+
+So, finally:
+
+$$- \mathbb{E}_{q(X_0)} [log( p_{\theta}(X_0))] \leq \mathbb{E}_{q(X_{0:T})}[log( \frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{0:T})})] = \mathcal{L}_{VLB}$$
 
 We want to express each term of the loss to be anatycally computable, so using [Bayes theorem](#bayes-theorem), we can rewritte :
 
 $$ \begin{align} 
-\mathcal{L}_{VLB}  & = \mathbb{E}_q[log( \frac{q(x_{1:T} \vert x_0)}{p_{\theta}(x_{0:T})})] \\ 
-& = \mathbb{E}_q(log( \frac{ \prod^T_{t=1} q(x_t \vert x_{t-1})}{p_{\theta}(x_{T}) \prod^T_{t=1} p_{\theta}(x_t \vert x_{t-1})})] \\
+\mathcal{L}_{VLB}  & = \mathbb{E}_q[log( \frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{0:T})})] \\ 
+& = \mathbb{E}_q(log( \frac{ \prod^T_{t=1} q(X_t \vert X_{t-1})}{p_{\theta}(X_{T}) \prod^T_{t=1} p_{\theta}(X_{t-1} \vert X_t)})] \\
 
-& = \mathbb{E}_q[-log(p_{\theta}(x_{T}) ) + \sum^T_{t=1} log( \frac{ q(x_t \vert x_{t-1})}{p_{\theta}(x_t \vert x_{t-1})})] \\
+& = \mathbb{E}_q[-log(p_{\theta}(X_{T}) ) + \sum^T_{t=1} log( \frac{ q(X_t \vert X_{t-1})}{p_{\theta}(X_{t-1} \vert X_t)})] \\
 
-& = \mathbb{E}_q[-log(p_{\theta}(x_{T}) ) + \sum^T_{t=2} log( \frac{ q(x_t \vert x_{t-1})}{p_{\theta}(x_t \vert x_{t-1})}) + \log( \frac{ q(x_1 \vert x_0)}{p_{\theta}(x_1 \vert x_0)})] 
+& = \mathbb{E}_q[-log(p_{\theta}(X_{T}) ) + \sum^T_{t=2} log( \frac{ q(X_t \vert X_{t-1})}{p_{\theta}(X_{t-1} \vert X_t)}) + \log( \frac{ q(X_1 \vert X_0)}{p_{\theta}(X_0 \vert X_1)})] 
 \end{align} $$
 
 Then,using the conditionnal probability formula : 
 
 $$ \begin{align} 
-\mathcal{L}_{VLB}  & = \mathbb{E}_q[-log(p_{\theta}(x_{T}) ) + \sum^T_{t=2} log( \frac{ q(x_t \vert x_{t-1},x_0)q(x_t \vert x_0)}{p_{\theta}(x_t \vert x_{t-1})q(x_{t-1} \vert x_0)}) + \log( \frac{ q(x_1 \vert x_0)}{p_{\theta}(x_1 \vert x_0)})] \\
+\mathcal{L}_{VLB}  & = \mathbb{E}_q[-log(p_{\theta}(X_{T}) ) + \sum^T_{t=2} log( \frac{ q(X_{t-1} \vert X_t,X_0)q(X_t \vert X_0)}{p_{\theta}(X_{t-1} \vert X_t)q(X_{t-1} \vert X_0)}) + \log( \frac{ q(X_1 \vert X_0)}{p_{\theta}(X_0 \vert X_1)})] \\
 
-& = \mathbb{E}_q[-log(p_{\theta}(x_{T}) ) + \sum^T_{t=2} log( \frac{ q(x_t \vert x_{t-1},x_0)}{p_{\theta}(x_t \vert x_{t-1})}) + \sum^T_{t=2} log( \frac{q(x_t \vert x_0)}{q(x_{t-1} \vert x_0)}) + \log( \frac{ q(x_1 \vert x_0)}{p_{\theta}(x_1 \vert x_0)})] \\
+& = \mathbb{E}_q[-log(p_{\theta}(X_{T}) ) + \sum^T_{t=2} log( \frac{ q(X_{t-1} \vert X_t,X_0)}{p_{\theta}(X_{t-1} \vert X_t)}) + \sum^T_{t=2} log( \frac{q(X_t \vert X_0)}{q(X_{t-1} \vert X_0)}) + \log( \frac{ q(X_1 \vert X_0)}{p_{\theta}(X_0 \vert X_1)})] \\
 
-& = \mathbb{E}_q[-log(p_{\theta}(x_{T}) ) + \sum^T_{t=2} log( \frac{ q(x_t \vert x_{t-1},x_0)}{p_{\theta}(x_t \vert x_{t-1})}) + log( \frac{q(x_T \vert x_0)}{q(x_1 \vert x_0)}) + \log( \frac{ q(x_1 \vert x_0)}{p_{\theta}(x_1 \vert x_0)})] \\
+& = \mathbb{E}_q[-log(p_{\theta}(X_{T}) ) + \sum^T_{t=2} log( \frac{ q(X_{t-1} \vert X_t,X_0)}{p_{\theta}(X_{t-1} \vert X_t)}) + log( \frac{q(X_T \vert X_0)}{q(X_1 \vert X_0)}) + \log( \frac{ q(X_1 \vert X_0)}{p_{\theta}(X_0 \vert X_1)})] \\
 
-& = \mathbb{E}_q[log({\frac{q(x_T \vert x_0)}{p_\theta(x_{T})}} ) + \sum^T_{t=2} log( \frac{ q(x_t \vert x_{t-1},x_0)}{p_{\theta}(x_t \vert x_{t-1})}) + \underbrace{log(\frac{q(x_1 \vert x_0)}{q(x_1 \vert x_0)})}_{= 0} - log( p_{\theta}(x_1 \vert x_0))] \\
+& = \mathbb{E}_q[log({\frac{q(X_T \vert X_0)}{p_\theta(X_{T})}} ) + \sum^T_{t=2} log( \frac{ q(X_{t-1} \vert X_t,X_0)}{p_{\theta}(X_{t-1} \vert X_t)}) + \underbrace{log(\frac{q(X_1 \vert X_0)}{q(X_1 \vert X_0)})}_{= 0} - log( p_{\theta}(X_0 \vert X_1))] \\
 
-& = \mathbb{E}_q[log({\frac{q(x_T \vert x_0)}{p_\theta(x_{T})}} ) + \sum^T_{t=2} log( \frac{ q(x_t \vert x_{t-1},x_0)}{p_{\theta}(x_t \vert x_{t-1})}) - log( p_{\theta}(x_1 \vert x_0))] \\
+& = \mathbb{E}_q[log({\frac{q(X_T \vert X_0)}{p_\theta(X_{T})}} ) + \sum^T_{t=2} log( \frac{ q(X_{t-1} \vert X_t,X_0)}{p_{\theta}(X_{t-1} \vert X_t)}) - log( p_{\theta}(X_0 \vert X_1))] \\
 
-& =  \underbrace{D_{KL}(q(x_T \vert x_0) \| p_\theta(x_{T}))}_{L_T} + \sum^T_{t=2}  \underbrace{D_{KL}(q(x_t \vert x_{t-1},x_0) \| p_{\theta}(x_t \vert x_{t-1}))}_{L_{t-1}} -  \underbrace{log( p_{\theta}(x_1 \vert x_0))}_{L_0} \\
+& =  \underbrace{D_{KL}(q(X_T \vert X_0) \| p_\theta(X_{T}))}_{L_T} + \sum^T_{t=2}  \underbrace{D_{KL}(q(X_t \vert X_{t-1},X_0) \| p_{\theta}(X_{t-1} \vert X_t))}_{L_{t-1}} -  \underbrace{log( p_{\theta}(X_0 \vert X_1))}_{L_0} \\
 \end{align} $$
 
 
@@ -251,9 +255,9 @@ Given that the form of the probability density function of a normal distribution
 $$\begin{align} 
 q(x_{t-1} \vert x_t,x_0)  & \propto exp[-\frac{1}{2} ( \frac{(x_t - \sqrt{\alpha _t} x_{t-1})^2}{\beta _t} + \frac{(x_{t-1} - \sqrt{\bar \alpha _{t-1}} x_0)^2}{1 - \bar \alpha _{t-1}} + \frac{(x_t - \sqrt{\bar \alpha _t} x_0)^2}{1 - \bar \alpha _t})] \\
 
-& =  exp[-\frac{1}{2} ( \frac{x_t^2 - 2 \sqrt{\alpha _t} x_t x_{t-1} + \alpha _t x_{t-1}^2}{\beta _t} + \frac{x_{t-1}^2 - 2 \sqrt{\bar \alpha _{t-1}} x_0 x_t + \bar \alpha _{t-1} x_0^2}{1 - \bar \alpha _{t-1}} + \frac{(x_t - \sqrt{\bar \alpha _t} x_0)^2}{1 - \bar \alpha _t})]  \\
+& =  exp[-\frac{1}{2} ( \frac{x_t^2 - 2 \sqrt{\alpha _t} x_t x_{t-1} + \alpha _t x_{t-1}^2}{\beta _t} + \frac{x_{t-1}^2 - 2 \sqrt{\bar \alpha _{t-1}} x_0 x_{t-1} + \bar \alpha _{t-1} x_0^2}{1 - \bar \alpha _{t-1}} + \frac{(x_t - \sqrt{\bar \alpha _t} x_0)^2}{1 - \bar \alpha _t})]  \\
 
-& = exp[-\frac{1}{2} ( (\frac{\alpha _t}{\beta _t}+ \frac{1}{1 - \bar \alpha _{t-1}})x_{t-1}^2 - (\frac{2 \sqrt{\alpha _t}} {\beta _t} x_t + \frac{2 \sqrt{\bar \alpha _{t-1}}}{1 - \bar \alpha _{t-1}}x_0)x_t + C(x_t, x_0)) ]  \\
+& = exp[-\frac{1}{2} ( (\frac{\alpha _t}{\beta _t}+ \frac{1}{1 - \bar \alpha _{t-1}})x_{t-1}^2 - (\frac{2 \sqrt{\alpha _t}} {\beta _t} x_t + \frac{2 \sqrt{\bar \alpha _{t-1}}}{1 - \bar \alpha _{t-1}}x_0)x_{t-1} + C(x_t, x_0)) ]  \\
 \end{align} $$
 
 By identification we find :
@@ -270,7 +274,7 @@ $$\begin{align}
 Finally , using $$x_t = \sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t}  \epsilon  $$, we have $$x_0 = \frac{1}{\sqrt{\bar \alpha _t}} ( x_t - \sqrt{1 - \bar \alpha _t} \epsilon  )$$. We rewritte :
 
 $$\begin{align} 
-\tilde \mu _t(x_t,x_0) & = \frac{\sqrt{ \alpha _t }(1 - \bar \alpha _{t-1})}{ 1 - \bar \alpha _t} x_t + \frac{\sqrt{\bar \alpha _{t-1}} \beta _t}{1 - \bar \alpha _t} \\
+\tilde \mu _t(x_t,x_0) & = \frac{\sqrt{ \alpha _t }(1 - \bar \alpha _{t-1})}{ 1 - \bar \alpha _t} x_t + \frac{\sqrt{\bar \alpha _{t-1}} \beta _t}{1 - \bar \alpha _t} \frac{1}{\sqrt{\bar \alpha _t}}(x_t - \sqrt{1 - \bar \alpha _t} \epsilon  )\\
 &= \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha _t}{1- \bar \alpha _t} \epsilon )
 \end{align}$$
 
@@ -282,7 +286,7 @@ The loss term $$\mathcal{L}_t$$ is defined to minimize the difference from $$\ti
 
 $$ \begin{align}
 \mathcal{L}_t &= \mathbb{E}_{x_0, \epsilon} [ \frac{1}{ 2 \|\Sigma _{\theta} (x_t , t) \|^2_2} \| \tilde \mu _t (x_t , x_0) - \mu _{\theta}(x_t , t) \|^2]\\
-&= \mathbb{E}_{x_0, \epsilon} [ \frac{1}{ 2 \|\Sigma _{\theta} (x_t , t) \|^2_2} \| \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha _t}{1- \bar \alpha _t} \epsilon ) -  \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha _t}{1- \bar \alpha _t} \epsilon _{\theta}(x_t , t) ) \|^2]\\
+&= \mathbb{E}_{x_0, \epsilon} [ \frac{1}{ 2 \|\Sigma _{\theta} (x_t , t) \|^2_2} \| \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha _t}{1- \bar \alpha _t} \epsilon ) -  \frac{1}{\sqrt{\alpha_t}} (x_t - \frac{1-\alpha _t}{1- \bar \alpha _t} \epsilon _{\theta}(x_t , t) ) \|^2]\\
 &= \mathbb{E}_{x_0, \epsilon} [ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \| \epsilon  - \epsilon _{\theta}(x_t , t)\|^2]\\
 &= \mathbb{E}_{x_0, \epsilon} [ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \| \epsilon  - \epsilon _{\theta}(\sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t}\epsilon, t)\|^2]
 \end{align}$$
@@ -357,8 +361,38 @@ The conditioning of the sampling is a crucial point of image generation. The aim
 
 $$ p_{\theta}(x_{0:T} \vert y) =  p_{\theta}(x_T) \prod_{i=1}^{T}{ p_{\theta}(x_{t-1} \vert x_t , y)}$$
 
-**Classifier guidance**
+A first idea for conditionning is to use a second model, called a classifier, to guide diffusion during the trainning. Therefore, we train a classifier $$ p_{\phi}(y \vert x_t,t) $$ that approximates the label distribution for a noised sampple $$x_t$$.
 
-A first idea for conditionning is to use a second model, called a classifier, to guide diffusion during the trainning. Therefore, we train a classifier $$ f_{\phi}(y \vert x_t,t) $$ on the image $$x_t$$ to predict its class $$y$$.
+Indeed, let's define a Markovian process $$\hat q$$ such as $$\hat q(y \vert x_0) is known and :
 
-**Classifier free guidance**
+$$\hat q(x_0) := q(x_0)$$
+$$\hat q(x_t \vert x_{t-1},y) := q(x_t \vert x_{t-1})$$
+$$\hat q(x_{1:T} \vert x_0,y) := \prod^T_{t=1}\hat q(x_t \vert x_{t-1},y)$$
+
+Then, we can easily find that $$\hat q$$ behaves exacly like $$q$$ when not conditioned on $$y$$ :
+
+$$\hat q(x_t \vert x_{t-1}) = \int_y \hat q(x_t,y \vert x_{t-1})dy$$
+
+Thanks to conditional probability formula : 
+
+$$\hat q(x_t \vert x_{t-1}) = \int_y \hat q(x_t\vert x_{t-1},y)q(y \vert x_{t-1})dy$$
+
+And by definition:
+
+$$\hat q(x_t \vert x_{t-1}) = \int_y q(x_t\vert x_{t-1}) \hat q(y \vert x_{t-1})dy =  q(x_t\vert x_{t-1}) \int_y \hat q(y \vert x_{t-1}) dy= q(x_t \vert x_{t-1}) = \hat q(x_t\vert x_{t-1},y)$$
+
+With a similar method, we can find $$\hat q(x_{1:T} \vert x_0) = q(x_{1:T} \vert x_0)$$ and $$\hat q(x_t) = q(x_t)$$. Thus using [Bayes theorem](#bayes-theorem) we also have $$\hat q(x_{t-1} \vert x_t) = q(x_{t-1} \vert x_t)$$.
+
+$$\begin{align}
+\hat q(x_{t-1}\vert x_t,y) &= \frac{\hat q(x_t,x_{t-1},y)}{\hat q(x_t,y)}\\
+&= \frac{\hat q(x_t,x_{t-1},y)}{\hat q(y \vert x_t)\hat q(x_t)}\\
+&= \frac{\hat q(x_t,x_{t-1},y)}{\hat q(y \vert x_t)\hat q(x_t)}\\
+&= \frac{\hat q(x_{t-1} \vert x_t) \hat q(y \vert x_{t-1} , x_t)\hat q(x_t)}{\hat q(y \vert x_t)q(x_t)}\\
+&= \frac{q(x_{t-1} \vert x_t) \hat q(y \vert x_{t-1})}{\hat q(y \vert x_t)}\\
+\end{align}$$
+
+Thus, we can treat $$\hat q(y \vert x_t)$$ as a constant, as it does not depend on $$x_{t-1}$$. Our problem is thus to sample from the distribution $$Z\hat q(x_{t-1} \vert x_t) \hat q(y \vert x_{t-1})$$. We already have a neural network $$p_{\theta}(x_{t-1} \vert x_t)$$ that approximate $$q(x_{t-1} \vert x_t)$$. The approximation of $$\hat q(y \vert x_{t-1})$$ is then done by training a classifier $$ p_{\phi}(y \vert x_t,t) $$.
+
+![](/collections/images/ddpm/classifierAlgorithms.jpg)
+
+Note that is also possible to run conditional difusion steps by incorporating the scores from a conditional and an unconditional diffusion model even if the method is not explained here.
