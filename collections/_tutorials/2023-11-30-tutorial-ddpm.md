@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "The denoising diffusion probabilistic models (DDPM) paradigm demystified - celia"
+title:  "The denoising diffusion probabilistic models (DDPM) paradigm demystified"
 author: 'Celia Goujat, Olivier Bernard'
 date:   2023-11-16
 categories: diffusion, model
@@ -8,11 +8,12 @@ categories: diffusion, model
 
 # Notes
 
-* Here are links to two video that we used to create this tutorial: [video1](https://www.youtube.com/watch?v=HoKDTa5jHvg&ab_channel=Outlier), [video2](https://www.youtube.com/watch?v=TBCRlnwJtZU&ab_channel=Outlier). 
-* We was also strongly inspired by this excellent [post](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/).
+* Here are links to two video and an excellent post that we used to create this tutorial: [video1](https://www.youtube.com/watch?v=HoKDTa5jHvg&ab_channel=Outlier), [video2](https://www.youtube.com/watch?v=TBCRlnwJtZU&ab_channel=Outlier), 
+[post](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/).
 
-&nbsp;
 - [**Introduction**](#introduction)
+  - [Overview of diffusion models](#overview-of-diffusion-models)
+  - [Diffusion models vs generative models](#diffusion-models-vs-generative models)
 - [**Fondamental concepts**](#fondamental-concepts)
   - [Sum of normally distributed variables](#sum-of-normally-distributed-variables)
   - [Bayes theorem](#bayes-theorem)
@@ -29,27 +30,30 @@ categories: diffusion, model
   - [The first DDPM algorithm](#first-ddpm-algorithm) 
   - [How to improve the log-likelihood ?](#how-to-improve-the-log-likelihood) 
   - [Improve sampling speed](#improve-sampling-speed)
+
 &nbsp;
 
 ## **Introduction**
 
-Diffusion models are a class of generative models such as GAN, [normalizing flow](http://127.0.0.1:4000/tutorials/2023-01-05-tutorial_normalizing_flow.html) or [variational auto-encoders](http://127.0.0.1:4000/tutorials/2022-09-12-tutorial-vae.html). A diffusion probabilistic model involves a forward stage where the original input image undergoes gradual perturbation by adding random noise. The model learns to reverse this process, constructing data samples from noise. These models have demonstrated effectiveness in generating high-quality samples that encompass a wide range of modes.  However, they come with significant computational burdens. Unlike VAEs or flow models, diffusion models have high-dimensional latent variables equivalent to the input.
+### Overview of diffusion models (DM)
+
+- DM are a class of generative models such as GAN, [normalizing flow](http://127.0.0.1:4000/tutorials/2023-01-05-tutorial_normalizing_flow.html) or [variational auto-encoders](http://127.0.0.1:4000/tutorials/2022-09-12-tutorial-vae.html). 
+- DM defines a Markov chain of diffusion steps to slowly add random noise to data.
+- The model then learns to reverse the diffusion process to construct data samples from noise.
+- The figure below gives an overview of the Markov chain involved in the DM formalism, where the forward (reverse) diffusion process is the key element in generating a sample by slowly adding (removing) noise.
+
+![](/collections/images/ddpm/ddpm_overview.jpg)
 
 &nbsp;
 
-<div style="text-align:center">
-<img src="/collections/images/ddpm/diffusionModels.jpg" width=600></div>
+### Diffusion models vs generative models
 
-&nbsp;
+- DM belongs to the generative models family.
+- DM has demonstrated effectiveness in generating high-quality samples.
+- Unlike GAN, VAEs and flow-based models, the latent space involved in the DM formalism has high-dimensionality corresponding to the dimensionality of the original data.
+- The figure below gives and overview of the different types of generative models:
 
-Diffusion model can be classified into two main perspective : **the variational perspective** and the **score perspective**. [Score models](http://127.0.0.1:4000/tutorials/2023-05-09-tutorial-score-based-models.html) are based on a maximum likelihood-based estimation approach. They use the score function of the loglikelihood of the data to estimate parameters within the diffusion process. On the other hand, the variational perspective involves models that approximate the target distribution using variational inference. Typically, these models minimize the Kullback-Liebler (KL) divergence between the target and the approximate distribution. An example of a diffusion model following the variational perspective is the Denoising Diffusion Probabilistic Model (DDPM).
-
-![](/collections/images/ddpm/diffusionProcess.jpg)
-
-
-DDPMs are inspired by non-equilibrum thermodynamics. The fundamental concept is to gradually dismantling the structure present in the data distribution and subsequently learning a reverse process that reconstructs this structure within the data. In the forward diffusion process, we start with an original image. A step-by-step addition of noise, with a sufficient number of iteration, make the image become pur noise. In existing DDPMs, this noise is sampled from a normal distribution. The quantity of noise added at each step increases and is specified by a predefined schedule that determines the variance of the noise. This schedule is designed to prevent explosive growth of the noise.
-
-The reverse process, also know as denoising, should recover an image from pur noise. This process involves a neural network that has learned to remove noise from an image step by step. The objective is to input noise sampled from a normal distribution into the model, so it could gradually remove the noise until generating a clear image as output. This stepwise process is preferred over direct transformation from noise to image, as the latter would not be tractable and would give inferior results. The neural networks predicts, at each step, the noise of the image. Since the noise follows a normal distribution, predicting the noise is equals to predict both its mean and its variance. Some DDPMs fix the variance, so the neural network only needs to predict the mean of the noise.
+![](/collections/images/ddpm/generative-model-overview.jpg)
 
 &nbsp;
 
@@ -57,24 +61,49 @@ The reverse process, also know as denoising, should recover an image from pur no
 
 ### Sum of normally distributed variables
 
-Let X and Y be independent random variables that are normally distributed $$ X \sim \mathcal{N}(\mu _X , \sigma ^2_X)$$ and $$ Y \sim \mathcal{N}(\mu _Y , \sigma ^2_Y)$$. Then, their sum is defined as follow : 
+- Let X and Y be independent random variables that are normally distributed $$ X \sim \mathcal{N}(\mu _X , \sigma ^2_X)$$ and $$ Y \sim \mathcal{N}(\mu _Y , \sigma ^2_Y)$$.
 
+- Their sum is defined as follow : 
 $$ X + Y \sim \mathcal{N}(\mu _X + \mu _Y, \sigma ^2_X + \sigma ^2_Y)$$
 
-This means that the sum of two independent normally distributed random variables is also normally distributed, with its mean being the sum of the two means, and its variance being the sum of the two variances.
+- The sum of two independent normally distributed random variables is also normally distributed, with its mean being the sum of the two means, and its variance being the sum of the two variances.
 
-It is noteworthy that if $$ X \sim \mathcal{N}(0, 1)$$ then $$ \sigma X \sim \mathcal{N}(0, \sigma ^2)$$. Thus if X and Y be independent standard normal random variables $$ X \sim \mathcal{N}(0, 1)$$ and $$ Y \sim \mathcal{N}(0, 1)$$, the sum $$ \sigma _X X +  \sigma _Y Y $$ is normally distributed such as $$\sigma _X X +  \sigma _Y Y \sim \mathcal{N}(0, \sigma ^2_X + \sigma ^2_Y)$$.
+- If $$ X \sim \mathcal{N}(0, 1)$$ then $$ \sigma X \sim \mathcal{N}(0, \sigma ^2)$$. 
+
+- If X and Y be independent standard normal random variables $$ X \sim \mathcal{N}(0, 1)$$ and $$ Y \sim \mathcal{N}(0, 1)$$, the sum $$ \sigma _X X +  \sigma _Y Y $$ is normally distributed such as $$\sigma _X X +  \sigma _Y Y \sim \mathcal{N}(0, \sigma ^2_X + \sigma ^2_Y)$$.
+
+&nbsp;
 
 ### Bayes Theorem
 
-Bayes theorem describes the probability of occurrence of an event related to any condition. We assume that a data $$x_t$$ is generated by our model from a probability distribution depending on the data $$ x _{t-1}$$. We also assume that we have a prior knowledge about the data $$ x _{t-1} $$ that can be expressed as a probability distribution $$q(x _{t-1})$$. Thus, when the data $$x_t$$ is observed, we can update the prior knowledge using Bayes theorem as follows:
+$$ q(x_{t} \mid x_{t-1}) = \frac{q(x_{t-1} \mid x_{t}) \, q(x_{t})}{q(x_{t-1})} $$
 
-$$ q(x_{t-1} \vert x_t) = \frac{q(x_t \vert x_{t-1})q(x_{t-1})}{q(x_t)} $$
+$$ q(x_{t-1} \mid x_t) = \frac{q(x_t \mid x_{t-1}) \, q(x_{t-1})}{q(x_t)} $$
 
+&nbsp;
+
+### Marginal theorem
+
+$$q(x_{0},x_{1},\cdots,x_{T}) = q(x_{0:T})$$ 
+
+$$q(x_{0}) = \int q(x_{0},x_{1},\cdots,x_{T}) \,dx_{1}\,\cdots\,dx_{T}$$ 
+
+$$q(x_{0}) = \int q(x_{0:T}) \,dx_{1:T}$$ 
+
+&nbsp;
+
+### Markov chain
+
+$$q(x_{1:T} \mid x_0) = \prod_{t=1}^{T} q(x_t \mid x_{t-1})$$ 
+
+$$q(x_{0:T}) = q(x_{T}) \prod_{t=1}^{T} q(x_{t-1} \mid x_{t})$$
+
+&nbsp;
 
 ### Reparameterization trick
 
-The idea of the reparametirization trick is to transform a stochastic node sampled from a parameterized distribution into a deterministic ones. Indeed, in a stochastic operation, you cannot perform backpropagation. Reparameterization allows a gradient path through such a stochastic node by turning him into  deterministic node. 
+- Transform a stochastic node sampled from a parameterized distribution into a deterministic ones. 
+- Allows backpropagation to through such a stochastic node by turning him into deterministic node. 
 
 Let's assume that $$x_t$$ is a point sampled from a parameterized gaussian distribution $$q(x_t)$$ with mean $$\mu$$ and variance $$\sigma^2$$. Our model should learn the distribution to subsequently reverse the process. Thus, we want to treat the noise term as a standard normal distribution $$\mathcal{N}(0,1)$$ that is independent of our model (not parameterized by it).  The reparameterization trick make it possible: the sample is drawn from a fixed Gaussian distribution, which we add our $$\mu$$ to and multiply by our standard deviation $$\sigma$$.
 
@@ -84,6 +113,8 @@ The epsilon term introduces the stochastic part ($$\epsilon \sim \mathcal{N}(0,1
 
 
 ![](/collections/images/ddpm/reparameterizationTrick.jpg)
+
+&nbsp;
 
 ### Information theory reminder
 
@@ -107,6 +138,8 @@ D_{KL}(p \| q) &= H(p,q) - H(p) \\
 
 Cross-entropy minimization is frequently used in optimization and rare-event probability estimation. Note that when comparing a distribution $$q$$ against a fixed reference distribution $$p$$, cross-entropy and KL divergence are identical up to an additive constant (since $$p$$ is fixed). Note also that $$H(p)$$, $$H(p,q)$$ and $$D_{KL}(p \| q)$$ are always positives.
 
+
+&nbsp;
 
 ## **Forward diffusion process**
 
