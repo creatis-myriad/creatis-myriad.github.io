@@ -61,16 +61,13 @@ categories: diffusion, model
 
 ### Sum of normally distributed variables
 
-- Let X and Y be independent random variables that are normally distributed $$ X \sim \mathcal{N}(\mu _X , \sigma ^2_X)$$ and $$ Y \sim \mathcal{N}(\mu _Y , \sigma ^2_Y)$$.
+- If $$x$$ and $$y$$ be independent random variables that are normally distributed $$ x \sim \mathcal{N}(\mu _X , \sigma ^2_X)$$ and $$ y \sim \mathcal{N}(\mu _Y , \sigma ^2_Y)$$, the sum is equal to $$ x + y \sim \mathcal{N}(\mu _X + \mu _Y, \sigma ^2_X + \sigma ^2_Y)$$
 
-- Their sum is defined as follow : 
-$$ X + Y \sim \mathcal{N}(\mu _X + \mu _Y, \sigma ^2_X + \sigma ^2_Y)$$
+> The sum of two independent normally distributed random variables is also normally distributed, with its mean being the sum of the two means, and its variance being the sum of the two variances.
 
-- The sum of two independent normally distributed random variables is also normally distributed, with its mean being the sum of the two means, and its variance being the sum of the two variances.
+- If $$ x \sim \mathcal{N}(0, 1)$$ then $$ \sigma x \sim \mathcal{N}(0, \sigma ^2)$$. 
 
-- If $$ X \sim \mathcal{N}(0, 1)$$ then $$ \sigma X \sim \mathcal{N}(0, \sigma ^2)$$. 
-
-- If X and Y be independent standard normal random variables $$ X \sim \mathcal{N}(0, 1)$$ and $$ Y \sim \mathcal{N}(0, 1)$$, the sum $$ \sigma _X X +  \sigma _Y Y $$ is normally distributed such as $$\sigma _X X +  \sigma _Y Y \sim \mathcal{N}(0, \sigma ^2_X + \sigma ^2_Y)$$.
+- If x and y be independent standard normal random variables $$ x \sim \mathcal{N}(0, 1)$$ and $$ y \sim \mathcal{N}(0, 1)$$, the sum $$ \sigma _X x +  \sigma _Y y $$ is normally distributed such as $$\sigma _X x +  \sigma _Y y \sim \mathcal{N}(0, \sigma ^2_X + \sigma ^2_Y)$$.
 
 &nbsp;
 
@@ -103,14 +100,13 @@ $$q(x_{0:T}) = q(x_{T}) \prod_{t=1}^{T} q(x_{t-1} \mid x_{t})$$
 ### Reparameterization trick
 
 - Transform a stochastic node sampled from a parameterized distribution into a deterministic ones. 
-- Allows backpropagation to through such a stochastic node by turning him into deterministic node. 
-
-Let's assume that $$x_t$$ is a point sampled from a parameterized gaussian distribution $$q(x_t)$$ with mean $$\mu$$ and variance $$\sigma^2$$. Our model should learn the distribution to subsequently reverse the process. Thus, we want to treat the noise term as a standard normal distribution $$\mathcal{N}(0,1)$$ that is independent of our model (not parameterized by it).  The reparameterization trick make it possible: the sample is drawn from a fixed Gaussian distribution, which we add our $$\mu$$ to and multiply by our standard deviation $$\sigma$$.
+- Allows backpropagation through such a stochastic node by turning it into deterministic node. 
+- Let's assume that $$x_t$$ is a point sampled from a parameterized gaussian distribution $$q(x_t)$$ with mean $$\mu$$ and variance $$\sigma^2$$. 
+- The following reparametrization tricks uses a standard normal distribution $$\mathcal{N}(0,1)$$ that is independent to the model, with $$\epsilon \sim \mathcal{N}(0,1)$$:
 
 $$ x_t = \mu + \sigma \cdot \epsilon$$
 
-The epsilon term introduces the stochastic part ($$\epsilon \sim \mathcal{N}(0,1)$$) and is not involved in the training process. The prediction of the mean and the variance is no longer tied to the stochastic sampling operation. Therefore, we can now compute the gradient and run backpropagation of our loss function with respect to the parameters. 
-
+- The prediction of $$\mu$$ and $$\sigma$$ is no longer tied to the stochastic sampling operation, which allows a simple backpropagation process as illustrated in the figure below
 
 ![](/collections/images/ddpm/reparameterizationTrick.jpg)
 
@@ -118,25 +114,30 @@ The epsilon term introduces the stochastic part ($$\epsilon \sim \mathcal{N}(0,1
 
 ### Information theory reminder
 
-In information theory, Entropy $$H(p)$$ corresponds to the average information of a process. Its expression can be written as, for continuous distributions:
+- Entropy $$H(p)$$ corresponds to the average information of a process defined by its corresponding distribution
 
-$$ H(p) = -\int{p(x)\cdot log\left(p(x)\right)}\,dx$$
+$$ H_{p} = -\int{p(x)\cdot log\left(p(x)\right)}\,dx$$
 
-From this, we can also define the cross entropy between two probability distributions $$p$$ and $$q$$ concerning the same events. 
+> The cross entropy measures the average amount of information you need to add to go from a given distribution $$p$$ to a reference distribution $$q$$
 
-$$H_{pq} = -\int{p(x)\cdot log\left(q(x)\right)}\,dx = \mathbb{E}_{p(x)} [log(q(x))]$$
+$$H_{pq} = -\int{p(x)\cdot log\left(q(x)\right)}\,dx = \mathbb{E}_{x \sim p} [log(q(x))]$$
 
-The cross entropy quantifies the average bit requirement to identify an event selected from a set when using a coding scheme optimized for the estimated probability distribution q, instead of the actual distribution p. We can also define the Kullback–Leibler divergence from this two definitions : 
+
+- It can also been seen as a tool to quantify the extent to which a distribution differs from a reference distribution. It is thus strongly link to the Kullback–Leibler divergence measures as follow:
 
 $$\begin{align}
-D_{KL}(p \| q) &= H(p,q) - H(p) \\
+D_{KL}(p \| q) &= H_{pq} - H_{p} \\
 & = -\int{p(x)\cdot log(q(x))}\,dx + \int{p(x)\cdot log(p(x))}\,dx \\
-& = -\int{p(x)\cdot log(\frac{q(x)}{p(x)})}\,dx \\
-& = \int{p(x)\cdot log(\frac{p(x)}{q(x)})}\,dx \\
-& = \mathbb{E}_{p(x)} [log(\frac{p(x)}{q(x)})]
+& = -\int{p(x)\cdot log\left(\frac{q(x)}{p(x)}\right)}\,dx \\
+& = \int{p(x)\cdot log\left(\frac{p(x)}{q(x)}\right)}\,dx \\
+& = \mathbb{E}_{x\sim p} \left[log\left(\frac{p(x)}{q(x)}\right)\right]
 \end{align}$$
 
-Cross-entropy minimization is frequently used in optimization and rare-event probability estimation. Note that when comparing a distribution $$q$$ against a fixed reference distribution $$p$$, cross-entropy and KL divergence are identical up to an additive constant (since $$p$$ is fixed). Note also that $$H(p)$$, $$H(p,q)$$ and $$D_{KL}(p \| q)$$ are always positives.
+- $$H(p)$$, $$H(p,q)$$ and $$D_{KL}(p \| q)$$ are always positives.
+
+&nbsp;
+
+> When comparing a distribution $$q$$ against a fixed reference distribution $$p$$, cross-entropy and KL divergence are identical up to an additive constant (since $$p$$ is fixed).
 
 
 &nbsp;
@@ -145,35 +146,91 @@ Cross-entropy minimization is frequently used in optimization and rare-event pro
 
 ### Principle
 
-![](/collections/images/ddpm/forwardProcess.jpg)
+&nbsp;
 
-Let define $$x_0$$ a point sampled from a real data distribution $$x_0 \sim q(X_0)$$. The forward process of a probabilistic diffusion model is a Markov chain \(the prediction at the step $$t+1$$ only depends on the state attained at the step $$t$$\) that gradually adds gaussian noise to the data $$x_0$$. We define a forward process with T steps that produces more and more noisy samples $$x_1, x_2,\ldots, x_T$$ : 
+![](/collections/images/ddpm/ddpm-forward-process.jpg)
 
-$$q(x_{1:T}|x_0) = \prod_{t=1}^{T}{q(x_t|x_{t-1})}$$
+&nbsp;
 
-Note in particular that the Markov formulation asserts that a given reverse diffusion transition distribution depends only on the previous timestep. The amount of noise added at each step is controlled by a variance schedule $$\{\beta_t \in (0,1)\}_{t=1}^{T}$$ : 
+- Let define $$x_0$$ a point sampled from a real data distribution $$x_0 \sim q(X_0)$$. 
 
-$$q(x_t|x_{t-1}) = \mathcal{N}(x_t,\sqrt{1 - \beta _t},\beta _t \cdot \textbf{I})$$
+- The forward diffusion process is a procedure where a small amount of Gaussian noise is added to the point sample $$x_0$$, producing a sequence of noisy samples $$x_1, \cdots , x_T$$.
 
-Usually, the scheduler is defined such as $$ \beta _1 <\beta _2 < \ldots < \beta _T $$. A key point in the quality of the results is the construction of the schedule. However, this sampling process is stochastic and so a backprogation for the training of the reverse process will not be possible. We use a [reparameterization trick](#reparameterization-trick) to make the sampling deterministic:
+> The forward process of a probabilistic diffusion model is a Markov chain, i.e. the prediction at step $$t$$ only depends on the state at step $$t-1$$, that gradually adds gaussian noise to the data $$x_0$$. 
 
-$$x_t = \sqrt{1 - \beta _t} x_{t-1} + \sqrt {\beta _t} \epsilon _{t-1} $$
+- The full forward process can be modeled as: 
 
-Let define $$\alpha _t = 1 - \beta _t $$ and $$\bar \alpha _t = \prod_{k=1}^{t}{\alpha _k}$$. As the previous formula is true for all $$t \in [1,T]$$ we can rewrite :
+$$q(x_{1:T} \mid x_0) = \prod_{t=1}^{T}{q(x_t \mid x_{t-1})}$$
 
-$$x_t = \sqrt{1 - \beta _t} (\sqrt{1 - \beta _{t-1}} x_{t-2} + \sqrt {\beta _{t-2}} \epsilon _{t-2} )+ \sqrt {\beta _t} \epsilon _{t-1} $$
+- Based on the definition of the forward process, the conditional distribution $$q(x_t \mid x_{t-1})$$ can be efficiently represented as:
 
-$$x_t = \sqrt{\alpha _t \alpha _{t-1}} x_{t-2} + \sqrt{\alpha _t - \alpha _t \alpha _{t-1}} \epsilon _{t-2} + \sqrt {1- \alpha_t} \epsilon _{t-1} $$
+<div style="text-align:center">
+<span style="color:#00478F">
+$$q(x_t \mid x_{t-1}) = \mathcal{N}\left((\sqrt{1 - \beta _t}) \, x_{t-1},\beta _t \, \textbf{I}\right)$$
+</span>
+</div>
 
-Using the formula for the [sum of normally distributed variables](#sum-of-normally-distributed-variables) we obtain:
+&nbsp;
 
-$$x_t = \sqrt{\alpha _t \alpha _{t-1}} x_{t-2} + \sqrt{1 - \alpha _t \alpha _{t-1}} \bar \epsilon _{t-2} $$
+- The step sizes are controlled by a variance schedule $$\{ \beta_t \in (0,1) \}_{t=1}^T$$
 
-Then we can extend this to earlier timesteps recursively and define directly $$x_t$$ from $$x_0$$: 
+- $$\beta_t$$ becomes increasingly larger as the sample becomes noisier, __i.e.__
 
-$$x_t = \sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t} \bar \epsilon _0 $$
+$$0 < \beta_1 < \beta_2 < \cdots < \beta_T < 1$$
 
-Notice that when $$T \rightarrow  \infty $$, $$ x_T $$ is equivalent to a pure noise (Gaussian distribution). We have therefore defined a forward process called a diffusion probabilistic process that introduce slowly noise into an image. 
+- Based on the above equation, the two extrem cases can be easily derived: 
+
+$$\begin{align}
+& \text{if} \quad \beta_t=0 , \quad \text{then} \quad q(x_t \mid x_{t-1})=x_{t-1} \\
+& \text{if} \quad \beta_t=1 , \quad \text{then} \quad q(x_t \mid x_{t-1})=\mathcal{N}(0,\textbf{I})
+\end{align}$$
+
+&nbsp;
+
+- A nice property of the forward process is that we can sample $$x_t$$ at any arbitrary time step $$t$$ in a closed form using [reparametrization trick](#reparameterization-trick) and the property of the [sum of normally distributed variables](#sum-of-normally-distributed-variables), as shown below:
+
+$$q(x_t \mid x_{t-1}) = \mathcal{N}\left((\sqrt{1 - \beta _t}) \, x_{t-1},\beta _t \, \textbf{I}\right)$$
+
+$$x_t = (\sqrt{1 - \beta_t}) \, x_{t-1} + \sqrt{\beta_t} \, \epsilon_{t-1}$$
+
+$$\quad$$ Let's define $$\alpha_t = 1 - \beta_t$$
+
+$$x_t = \sqrt{\alpha_t} \, x_{t-1} + \sqrt {1-\alpha_t} \, \epsilon_{t-1}$$
+
+$$\quad$$ This expression is true for any $$t$$ so we can write
+
+$$x_{t-1} = \sqrt{\alpha_{t-1}} \, x_{t-2} + \sqrt{1-\alpha_{t-1}} \, \epsilon_{t-2}$$
+
+$$\quad$$ and
+
+$$x_t = \sqrt{\alpha_t \alpha_{t-1}} \, x_{t-2} + \sqrt{\alpha_t- \alpha_t \alpha_{t-1}} \, \epsilon_{t-2} + \sqrt{1-\alpha_t} \, \epsilon_{t-1}$$
+
+$$x_t \sim \mathcal{N}\left(\sqrt{\alpha_t \alpha_{t-1}} \, x_{t-2}, \alpha_t- \alpha_t \alpha_{t-1} \right) + \mathcal{N}\left(0, 1-\alpha_t \right)$$
+
+$$x_t \sim \mathcal{N}\left(\sqrt{\alpha_t \alpha_{t-1}} \, x_{t-2}, \alpha_t- \alpha_t \alpha_{t-1} + 1-\alpha_t \right)$$
+
+$$x_t \sim \mathcal{N}\left(\sqrt{\alpha_t \alpha_{t-1}} \, x_{t-2}, 1 - \alpha_t \alpha_{t-1} \right)$$
+
+$$x_t = \sqrt{\alpha_t \alpha_{t-1}} \, x_{t-2} + \sqrt{1-\alpha_t \alpha_{t-1}} \, \bar{\epsilon}_{t-2}$$
+
+$$\quad$$ One can repeat this process recursively until reaching and expression of $$x_t$$ from $$x_0$$:
+
+$$x_t = \sqrt{\alpha_t \cdots \alpha_1} \, x_0 + \sqrt{1 - \alpha_t \cdots \alpha_1} \, \bar \epsilon _0 $$
+
+$$\quad$$ By defining $$\bar{\alpha}_t = \prod_{k=1}^{t}{\alpha _k}$$, we finally get this final relation
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$x_t = \sqrt{\bar{\alpha}_t} \, x_0 + \sqrt{1 - \bar{\alpha}_t} \, \bar{\epsilon}_0$$
+</span>
+</div>
+
+
+> When $$\, T \rightarrow \infty$$, $$\, \beta_t \rightarrow 1$$, $$\, \alpha_t \rightarrow 0$$, thus $$\, \bar{\alpha}_t \rightarrow 0$$ and $$\, x_T \sim \mathcal{N(0,\mathbf{I})}$$. 
+
+> This means that $$x_T$$ is equivalent to a pure noise from a Gaussian distribution. We have therefore defined a forward process called a diffusion probabilistic process that introduce slowly noise into an image. 
+
+&nbsp;
 
 ### How to define the scheduler ?
 
