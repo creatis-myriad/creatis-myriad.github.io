@@ -18,11 +18,11 @@ categories: diffusion, model
   - [Sum of normally distributed variables](#sum-of-normally-distributed-variables)
   - [Bayes theorem](#bayes-theorem)
   - [Reparameterization trick](#reparameterization-trick) 
-  - [Cross Entropy](#cross-entropy)    
+  - [Cross entropy](#cross-entropy)    
 
 - [**Forward diffusion process**](#forward-diffusion-process)
   - [Principle](#principle) 
-  - [How to define the scheduler ?](#how-to-define-the-scheduler) 
+  - [How to define the variance scheduler ?](#how-to-define-the-variance-scheduler) 
 - [**Backward process**](#backward-process)
   - [General idea](#general-idea) 
   - [Loss function](#loss-function) 
@@ -61,13 +61,13 @@ categories: diffusion, model
 
 ### Sum of normally distributed variables
 
-- If $$x$$ and $$y$$ be independent random variables that are normally distributed $$ x \sim \mathcal{N}(\mu _X , \sigma ^2_X)$$ and $$ y \sim \mathcal{N}(\mu _Y , \sigma ^2_Y)$$, the sum is equal to $$ x + y \sim \mathcal{N}(\mu _X + \mu _Y, \sigma ^2_X + \sigma ^2_Y)$$
+- If $$x$$ and $$y$$ be independent random variables that are normally distributed $$ x \sim \mathcal{N}(\mu _X , \sigma ^2_X \, \mathbf{I})$$ and $$ y \sim \mathcal{N}(\mu _Y , \sigma ^2_Y \, \mathbf{I})$$ then $$ x + y \sim \mathcal{N}(\mu _X + \mu _Y, (\sigma ^2_X + \sigma ^2_Y) \, \mathbf{I})$$
 
 > The sum of two independent normally distributed random variables is also normally distributed, with its mean being the sum of the two means, and its variance being the sum of the two variances.
 
-- If $$ x \sim \mathcal{N}(0, 1)$$ then $$ \sigma x \sim \mathcal{N}(0, \sigma ^2)$$. 
+- If $$ x \sim \mathcal{N}(0, \mathbf{I})$$ then $$ \sigma \, x \sim \mathcal{N}(0, \sigma^2 \, \mathbf{I})$$. 
 
-- If x and y be independent standard normal random variables $$ x \sim \mathcal{N}(0, 1)$$ and $$ y \sim \mathcal{N}(0, 1)$$, the sum $$ \sigma _X x +  \sigma _Y y $$ is normally distributed such as $$\sigma _X x +  \sigma _Y y \sim \mathcal{N}(0, \sigma ^2_X + \sigma ^2_Y)$$.
+- If x and y be independent standard normal random variables $$x \sim \mathcal{N}(0, \mathbf{I})$$ and $$y \sim \mathcal{N}(0, \mathbf{I})$$, the sum $$\sigma_X x + \sigma_Y y $$ is normally distributed such as $$\sigma_X x + \sigma_Y y \sim \mathcal{N}(0, (\sigma^2_X + \sigma^2_Y) \, \mathbf{I})$$.
 
 &nbsp;
 
@@ -76,6 +76,12 @@ categories: diffusion, model
 $$ q(x_{t} \mid x_{t-1}) = \frac{q(x_{t-1} \mid x_{t}) \, q(x_{t})}{q(x_{t-1})} $$
 
 $$ q(x_{t-1} \mid x_t) = \frac{q(x_t \mid x_{t-1}) \, q(x_{t-1})}{q(x_t)} $$
+
+&nbsp;
+
+### Conditional probability theorem
+
+$$ q(x_{t} \mid x_{t-1}) = \frac{q(x_{t-1} \mid x_{t}, x_0) \, q(x_{t} \mid x_0)}{q(x_{t-1}) \mid x_0} $$
 
 &nbsp;
 
@@ -102,7 +108,7 @@ $$q(x_{0:T}) = q(x_{T}) \prod_{t=1}^{T} q(x_{t-1} \mid x_{t})$$
 - Transform a stochastic node sampled from a parameterized distribution into a deterministic ones. 
 - Allows backpropagation through such a stochastic node by turning it into deterministic node. 
 - Let's assume that $$x_t$$ is a point sampled from a parameterized gaussian distribution $$q(x_t)$$ with mean $$\mu$$ and variance $$\sigma^2$$. 
-- The following reparametrization tricks uses a standard normal distribution $$\mathcal{N}(0,1)$$ that is independent to the model, with $$\epsilon \sim \mathcal{N}(0,1)$$:
+- The following reparametrization tricks uses a standard normal distribution $$\mathcal{N}(0,\mathbf{I})$$ that is independent to the model, with $$\epsilon \sim \mathcal{N}(0,\mathbf{I})$$:
 
 $$ x_t = \mu + \sigma \cdot \epsilon$$
 
@@ -112,28 +118,28 @@ $$ x_t = \mu + \sigma \cdot \epsilon$$
 
 &nbsp;
 
-### Information theory reminder
+### Cross entropy
 
 - Entropy $$H(p)$$ corresponds to the average information of a process defined by its corresponding distribution
 
-$$ H_{p} = -\int{p(x)\cdot log\left(p(x)\right)}\,dx$$
+$$ H_{p} = -\int{p(x)\cdot \log\left(p(x)\right)}\,dx$$
 
 > The cross entropy measures the average amount of information you need to add to go from a given distribution $$p$$ to a reference distribution $$q$$
 
-$$H_{pq} = -\int{p(x)\cdot log\left(q(x)\right)}\,dx = \mathbb{E}_{x \sim p} [log(q(x))]$$
+$$H_{pq} = -\int{p(x)\cdot \log\left(q(x)\right)}\,dx = \mathbb{E}_{x \sim p} [\log(q(x))]$$
 
 
 - It can also been seen as a tool to quantify the extent to which a distribution differs from a reference distribution. It is thus strongly link to the Kullback–Leibler divergence measures as follow:
 
 $$\begin{align}
-D_{KL}(p \| q) &= H_{pq} - H_{p} \\
-& = -\int{p(x)\cdot log(q(x))}\,dx + \int{p(x)\cdot log(p(x))}\,dx \\
-& = -\int{p(x)\cdot log\left(\frac{q(x)}{p(x)}\right)}\,dx \\
-& = \int{p(x)\cdot log\left(\frac{p(x)}{q(x)}\right)}\,dx \\
-& = \mathbb{E}_{x\sim p} \left[log\left(\frac{p(x)}{q(x)}\right)\right]
+D_{KL}(p \parallel q) &= H_{pq} - H_{p} \\
+& = -\int{p(x)\cdot \log(q(x))}\,dx + \int{p(x)\cdot \log(p(x))}\,dx \\
+& = -\int{p(x)\cdot \log\left(\frac{q(x)}{p(x)}\right)}\,dx \\
+& = \int{p(x)\cdot \log\left(\frac{p(x)}{q(x)}\right)}\,dx \\
+& = \mathbb{E}_{x\sim p} \left[\log\left(\frac{p(x)}{q(x)}\right)\right]
 \end{align}$$
 
-- $$H(p)$$, $$H(p,q)$$ and $$D_{KL}(p \| q)$$ are always positives.
+- $$H(p)$$, $$H(p,q)$$ and $$D_{KL}(p \parallel q)$$ are always positives.
 
 &nbsp;
 
@@ -217,7 +223,7 @@ $$\quad$$ One can repeat this process recursively until reaching and expression 
 
 $$x_t = \sqrt{\alpha_t \cdots \alpha_1} \, x_0 + \sqrt{1 - \alpha_t \cdots \alpha_1} \, \bar \epsilon _0 $$
 
-$$\quad$$ By defining $$\bar{\alpha}_t = \prod_{k=1}^{t}{\alpha _k}$$, we finally get this final relation
+$$\quad$$ By defining $$\bar{\alpha}_t = \prod_{k=1}^{t}{\alpha _k}$$, we finally get this final relation:
 
 <div style="text-align:center">
 <span style="color:#00478F">
@@ -226,109 +232,209 @@ $$x_t = \sqrt{\bar{\alpha}_t} \, x_0 + \sqrt{1 - \bar{\alpha}_t} \, \bar{\epsilo
 </div>
 
 
+<div style="text-align:center">
+<span style="color:#00478F">
+$$q(x_t \mid x_{0}) = \mathcal{N}\left( \sqrt{\bar{\alpha}_t} \, x_0, (1 - \bar{\alpha}_t) \, \mathbf{I} \right)$$
+</span>
+</div>
+
+
+&nbsp;
+
 > When $$\, T \rightarrow \infty$$, $$\, \beta_t \rightarrow 1$$, $$\, \alpha_t \rightarrow 0$$, thus $$\, \bar{\alpha}_t \rightarrow 0$$ and $$\, x_T \sim \mathcal{N(0,\mathbf{I})}$$. 
 
 > This means that $$x_T$$ is equivalent to a pure noise from a Gaussian distribution. We have therefore defined a forward process called a diffusion probabilistic process that introduce slowly noise into an image. 
 
 &nbsp;
 
-### How to define the scheduler ?
+### How to define the variance scheduler?
 
-The first article presenting DDPM set the forward variances to be a sequence of linearly increasing constants. This sequence, determining the variance values, is referred to as a scheduler. They are chosen to be relatively small compared to data scaled to [-1,1]. This ensure that reverse and forward process maintain approximately the same functionnal form.
+- The orignial article set the forward variances $$\{\beta_t \in (0,1) \}_{t=1}^T$$ to be a sequence of linearly increasing constants. 
 
-A second article improved the results given by the ddpm algorithm. A first suggestion for this improvment was in the definition of the scheduler : the linear noise schedule work well for high resolution images but proved to be sub-optimal for images of lower resolution (64x64 and 32x32). Indeed, the end of the forward noising process is very noisy with most of the steps being useless. A cosine scheduler was provided :
+- Forward variances are chosen to be relatively small compared to data scaled to [-1,1]. This ensure that reverse and forward process maintain approximately the same functionnal form.
 
-$$ \alpha _t = \frac{f(t)}{f(0)}, f(t) = cos (\frac{\frac{t}{T} + s}{1+s} \cdot \frac{\pi}{2})^2$$
+- More recently, a cosine scheduler has been proposed to improve results. 
 
-The variances $$\beta _t$$ can be deducted from this definition as $$ \beta _t = 1 - \frac{\bar \alpha _t}{\bar \alpha _{t-1}}$$ with in pactice $$\beta _t $$ being cliped to be no larger than $$0{,}999$$ to prevent singularities for $$t \rightarrow T$$.
+$$\alpha _t = \frac{f(t)}{f(0)}, \quad f(t) = cos\left(\frac{\frac{t}{T} + s}{1+s} \cdot \frac{\pi}{2}\right)^2$$
+
+- The variances $$\beta _t$$ can be deducted from this definition as $$\beta_t = 1 - \frac{\bar{\alpha_t}}{\bar{\alpha_{t-1}}}$$ 
+
+- In pactice $$\beta_t $$ is clipped to be no larger than $$0,999$$ to prevent singularities for $$t \rightarrow T$$.
 
 ![](/collections/images/ddpm/schedules.jpg)
 
+&nbsp;
 
 ## **Backward process**
 
-### General Idea
+### General idea
 
-Now, if we are able to reverse the above diffusion process, we will be able to generate a sample from a Gaussian noise input $$x_T \sim \mathcal{N}(0,1)$$. However, unlike the forward process, we can not use $$q(x_{t-1} \vert x_t)$$ to reverse the noise because it is intractable: it needs the entire dataset to estimate. 
+&nbsp;
 
-![](/collections/images/ddpm/markovProcess.jpg)
+![](/collections/images/ddpm/ddpm-reverse-process.jpg)
 
-It is noteworthy that the reverse conditional probability is tractable when conditioned on $$x_0$$. Indeed, thanks to [Bayes theorem](#bayes-theorem) $$q(x_{t-1} \vert x_t, x_0)$$ = $$\frac{q(x_t \vert x_{t-1}, x_0)q(x_{t-1}\vert  x_0)}{q(x_t \vert  x_0)}$$ where all distribution are known from the forward process.
+&nbsp;
 
-Then note that if $$\beta _t$$ is small enough, $$q(x_{t-1} \vert x_t,x_0)$$ will also be a Gaussian, $$q(x_{t-1} \vert x_t,x_0) \sim \mathcal{N}(x_{t-1}, \tilde \mu _t(x_t,x_0), \tilde \beta _t \cdot \textbf{I})$$.
 
-Thus, we will train a neural network $$p_{\theta}(x_{t-1} \vert x_t) \sim \mathcal{N}(x_{t-1},\mu _{\theta}(x_t,t), \Sigma _{\theta}(x_t,t) \cdot \textbf{I})$$ to approximate $$q(x_{t-1} \vert x_t,x_0)$$. What is important here is that the learned parameters are time-dependent. 
+- If we are able to reverse the diffusion process from $$q(x_{t-1} \mid x_t)$$, we will be able to generate a sample from a Gaussian noise input $$x_T \sim \mathcal{N}(0,\mathbf{I})$$ !
 
-![](/collections/images/ddpm/reverseProcess.jpg)
+- Unfortunately, using the [Bayes theorem](#bayes-theorem) and keeping in mind that $$q(x_t)$$ is an unknown, one can easy see that $$q(x_{t-1} \mid x_t)$$ is intractable.
+
+$$q(x_{t-1} \mid x_t) = \frac{q(x_{t} \mid x_{t-1}) \, q(x_{t-1})}{q(x_{t})}$$
+
+
+> It is noteworthy that the reverse conditional probability is tractable when conditioned on $$x_0$$. Indeed, thanks to Bayes theorem $$\, q(x_{t-1} \mid x_t, x_0)$$ = $$\frac{q(x_t \mid x_{t-1}, x_0)q(x_{t-1} \mid x_0)}{q(x_t \mid x_0)}$$, where all distributions are known from the forward process.
+
+&nbsp;
+
+- However, if $$\beta_t$$ is small enough, $$q(x_{t-1} \mid x_t)$$ will also be Gaussian.
+
+- We will learn a model $$p_{\theta}$$ to approximate these conditional probabilities in order to run the reverse diffusion process:
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$p_{\theta}(x_{t-1} \mid x_t) = \mathcal{N}(\mu _{\theta}(x_t,t), \Sigma_{\theta}(x_t,t))$$
+</span>
+</div>
+
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$p_{\theta}(x_{0:T}) = p_{\theta}(x_T) \, \prod_{t=1}^{T} p_{\theta}(x_{t-1} \mid x_t)$$
+</span>
+</div>
+
+> $$\mu _{\theta}(x_t,t)$$ and $$\, \Sigma_{\theta}(x_t,t))$$ depend not only on $$x_t$$ but also on $$t$$. Those parameters that need to be estimated are thus time-dependent !
+
+<!-- ![](/collections/images/ddpm/reverseProcess.jpg) -->
+
+&nbsp;
 
 ### Loss function
 
-The final objective of our reverse process is to have the more similarity between the generated images and the original images. The cross entropy between $$q(X_0)$$ and $$p_{\theta}(X_0)$$ is suitable as loss function. By minimizing the cross entropy between $$q(X_0)$$ and $$p_{\theta}(X_0)$$, we are minimizing the divergence between the two distributions.
+&nbsp;
 
-$$H(q(X_0),p_{\theta}(X_0)) = - \mathbb{E}_{q(X_0)}[log( p_{\theta}(X_0))]$$
+![](/collections/images/ddpm/ddpm_overview_complete.jpg)
 
-However, $$ p_{\theta}(X_0) $$ depends on $$X_1, X_2, \dots, X_T$$ and so it is intractable (uncomputable), let's rewrite it to find a computable loss: 
+&nbsp;
 
-$$ \begin{align} 
-H(q(X_0),p_{\theta}(X_0))  & = - \mathbb{E}_{q(X_0)}[log(\int p_{\theta}(X_{0:T}) d_{X_{1:T}})] \\
-&  = - \mathbb{E}_{q(X_0)}[log( \int q(X_{1:T} \vert X_0)\frac{p_{\theta}(X_{0:T})}{q(X_{1:T} \vert X_0)}  d_{X_{1:T}})] \\
-&  = - \mathbb{E}_{q(X_0)}[log( \mathbb{E}_{q( X_{1:T} \vert X_0)}\frac{p_{\theta}(X_{0:T})}{q(X_{1:T} \vert X_0)})]
+- The loss function designed to learn the reverse process involves minimizing the cross-entropy between the target distribution $$q(X_0)$$ and the approximated distribution $$p_{\theta}(X_0)$$
+
+$$H(q,p_{\theta}) = - \mathbb{E}_{x_0 \sim q}\left[\log( p_{\theta}(x_0))\right]$$
+
+> Minimizing the cross entropy between $$q(X_0)$$ and $$\, p_{\theta}(X_0)$$ results in the two distributions being as close as possible
+
+&nbsp;
+
+- $$p_{\theta}(X_0)$$ depends on $$X_1, X_2, \dots, X_T$$. Thanks to the [mariginal theorem](#marginal-theorem), the above expression can be rewritten as:
+
+$$\begin{align} 
+H(q,p_{\theta})  & = - \mathbb{E}_{x_0 \sim q}\left[\log\left(\int p_{\theta}(x_{0:T}) \,d_{x_{1:T}}\right)\right] \\
+&  = - \mathbb{E}_{x_0 \sim q}\left[\log\left(\int q(x_{1:T} \mid x_0)\frac{p_{\theta}(x_{0:T})}{q(x_{1:T} \mid x_0)}  \,d_{x_{1:T}} \right)\right] \\
+&  = - \mathbb{E}_{x_0 \sim q}\left[\log \left(\mathbb{E}_{x_{1:T} \sim q(x_{1:T} \mid x_0)} \left[\frac{p_{\theta}(x_{0:T})}{q(x_{1:T} \mid x_0)}\right) \right] \right]
 \end{align}$$
 
-Now, we can use Jensen's inequality :
+- Using the Jensen's inequality, the above equation can be rewritten as:
 
-$$ \begin{align} 
-H(q(X_0),p_{\theta}(X_0))  &\leq - \mathbb{E}_{q(X_0)}\mathbb{E}_{q( X_{1:T} \vert X_0)}[log(\frac{p_{\theta}(X_{0:T})}{q(X_{1:T} \vert X_0)})]= - \mathbb{E}_{q( X_{0:T})}[log(\frac{p_{\theta}(X_{0:T})}{q(X_{1:T} \vert X_0)})] = \mathbb{E}_{q( X_{0:T})}[log(\frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{0:T})})]\\
+
+$$\begin{align} 
+H(q,p_{\theta})  & \leq - \mathbb{E}_{x_0 \sim q}\,\mathbb{E}_{x_{1:T} \sim q(x_{1:T} \mid x_0)}\left[ \log\left(\frac{p_{\theta}(x_{0:T})}{q(x_{1:T} \mid x_0)}\right) \right] \\
+& \leq - \mathbb{E}_{x_{0:T} \sim q(x_{0:T})}\left[ \log\left(\frac{p_{\theta}(x_{0:T})}{q(x_{1:T} \mid x_0)}\right) \right] \\
+& \leq \mathbb{E}_{x_{0:T} \sim q(x_{0:T})}\left[ \log\left(\frac{q(x_{1:T} \mid x_0)}{p_{\theta}(x_{0:T})}\right) \right] \\
 \end{align}$$
 
+- We define the Variational Lower Bound (VLB) as 
 
-Let $$ \mathcal{L}_{VLB} = \mathbb{E}_q[log( \frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{0:T})})]$$. Now, instead of minimizing $$H(q(X_0),p_{\theta}(X_0))$$, we can minimize its Variational Lower Bound (VLB) $$\mathcal{L}_{VLB}$$. Note that the Variational Lower Bound can be found simply if we optimize the negative log-likelihood of $$p_{\theta}(X_0)$$, assuming the process is the same than the one of VAE, as the setups are very similar.
+<div style="text-align:center">
+<span style="color:#00478F">
+$$\mathcal{L}_{VLB} = \mathbb{E}_{x_{0:T} \sim q(x_{0:T})}\left[ \log\left(\frac{q(x_{1:T} \mid x_0)}{p_{\theta}(x_{0:T})}\right) \right]$$
+</span>
+</div>
 
-$$ \begin{align} 
--log( p_{\theta}(X_0)) & \leq -log( p_{\theta}(X_0)) + D_{KL}(q(X_{1:T} \vert X_0) \| p_{\theta}(X_{1:T} \vert X_0))\\
--log( p_{\theta}(X_0)) + D_{KL}(q(X_{1:T} \vert X_0) \| p_{\theta}(X_{1:T} \vert X_0)) & = -log( p_{\theta}(X_0)) + \mathbb{E}_{X_{1:T} \sim q(X_{1:T} \vert X_0)}[log( \frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{1:T} \vert X_0)})] \\
-& = -log( p_{\theta}(X_0)) + \mathbb{E}_{X_{1:T} \sim q(X_{1:T} \vert X_0)}[log( \frac{q(X_{1:T} \vert X_0) p_{\theta}(X_0)}{p_{\theta}(X_{0:T})})] \\
-& = -log( p_{\theta}(X_0)) + \mathbb{E}_{X_{1:T} \sim q(X_{1:T} \vert X_0)}[log( \frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{0:T})}) + log(p_{\theta}(X_0))]\\
-& = \mathbb{E}_{X_{1:T} \sim q(X_{1:T} \vert X_0)}[log( \frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{0:T})})]
-\end{align} $$
+&nbsp;
 
-So, finally:
+- Since $$H(q,p_{\theta})$$ is positive, minimizing $$\mathcal{L}_{VLB}$$ is equivalent to minimize $$H(q,p_{\theta})$$.
 
-$$- \mathbb{E}_{q(X_0)} [log( p_{\theta}(X_0))] \leq \mathbb{E}_{q(X_{0:T})}[log( \frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{0:T})})] = \mathcal{L}_{VLB}$$
-
-We want to express each term of the loss to be anatycally computable, so using [Bayes theorem](#bayes-theorem), we can rewritte :
+- To convert each term in the equation to be analytically computable, the minimization of $$\mathcal{L}_{VLB}$$ can be further rewritten to be a combination of several KL-divergence and entropy terms, as follows: 
 
 $$ \begin{align} 
-\mathcal{L}_{VLB}  & = \mathbb{E}_q[log( \frac{q(X_{1:T} \vert X_0)}{p_{\theta}(X_{0:T})})] \\ 
-& = \mathbb{E}_q(log( \frac{ \prod^T_{t=1} q(X_t \vert X_{t-1})}{p_{\theta}(X_{T}) \prod^T_{t=1} p_{\theta}(X_{t-1} \vert X_t)})] \\
+\mathcal{L}_{VLB}  & = \mathbb{E}_{x_{0:T} \sim q}\left[\log\left( \frac{q(x_{1:T} \mid x_0)}{p_{\theta}(x_{0:T})}\right)\right] \\ 
+& = \mathbb{E}_{x_{0:T} \sim q}\left[\log\left( \frac{ \prod^T_{t=1} q(x_t \mid x_{t-1})}{p_{\theta}(x_{T}) \prod^T_{t=1} p_{\theta}(x_{t-1} \mid x_t)}\right)\right] \\
 
-& = \mathbb{E}_q[-log(p_{\theta}(X_{T}) ) + \sum^T_{t=1} log( \frac{ q(X_t \vert X_{t-1})}{p_{\theta}(X_{t-1} \vert X_t)})] \\
+& = \mathbb{E}_{x_{0:T} \sim q}\left[-\log\left(p_{\theta}(x_{T})\right) + \sum^T_{t=1} \log\left(\frac{ q(x_t \vert x_{t-1})}{p_{\theta}(x_{t-1} \mid x_t)}\right)\right] \\
 
-& = \mathbb{E}_q[-log(p_{\theta}(X_{T}) ) + \sum^T_{t=2} log( \frac{ q(X_t \vert X_{t-1})}{p_{\theta}(X_{t-1} \vert X_t)}) + \log( \frac{ q(X_1 \vert X_0)}{p_{\theta}(X_0 \vert X_1)})] 
+& = \mathbb{E}_{x_{0:T} \sim q}\left[-\log\left(p_{\theta}(x_{T})\right) + \sum^T_{t=2} \log\left( \frac{ q(x_t \vert x_{t-1})}{p_{\theta}(x_{t-1} \vert x_t)}\right) + \log\left( \frac{ q(x_1 \vert x_0)}{p_{\theta}(x_0 \vert x_1)}\right)\right] 
 \end{align} $$
 
-Then,using the conditionnal probability formula : 
+&nbsp;
+
+- Using the [conditional probability theorem](#conditional-probability-theorem), the above expression can reformulated as:
 
 $$ \begin{align} 
-\mathcal{L}_{VLB}  & = \mathbb{E}_q[-log(p_{\theta}(X_{T}) ) + \sum^T_{t=2} log( \frac{ q(X_{t-1} \vert X_t,X_0)q(X_t \vert X_0)}{p_{\theta}(X_{t-1} \vert X_t)q(X_{t-1} \vert X_0)}) + \log( \frac{ q(X_1 \vert X_0)}{p_{\theta}(X_0 \vert X_1)})] \\
+\mathcal{L}_{VLB}  & = \mathbb{E}_{x_{0:T} \sim q} \left[-\log \left(p_{\theta}(x_{T}) \right) + \sum^T_{t=2} \log \left( \frac{ q(x_{t-1} \vert x_t,x_0)q(x_t \mid x_0)}{p_{\theta}(x_{t-1} \vert x_t)q(x_{t-1} \mid x_0)} \right) + \log \left( \frac{ q(x_1 \mid x_0)}{p_{\theta}(x_0 \mid x_1)} \right) \right] \\
 
-& = \mathbb{E}_q[-log(p_{\theta}(X_{T}) ) + \sum^T_{t=2} log( \frac{ q(X_{t-1} \vert X_t,X_0)}{p_{\theta}(X_{t-1} \vert X_t)}) + \sum^T_{t=2} log( \frac{q(X_t \vert X_0)}{q(X_{t-1} \vert X_0)}) + \log( \frac{ q(X_1 \vert X_0)}{p_{\theta}(X_0 \vert X_1)})] \\
+& = \mathbb{E}_{x_{0:T} \sim q} \left[-\log \left(p_{\theta}(x_{T})\right) + \sum^T_{t=2} \log \left( \frac{ q(x_{t-1} \mid x_t,x_0)}{p_{\theta}(x_{t-1} \mid x_t)} \right) + \sum^T_{t=2} \log \left( \frac{q(x_t \mid x_0)}{q(x_{t-1} \mid x_0)} \right) + \log \left( \frac{ q(x_1 \mid x_0)}{p_{\theta}(x_0 \mid x_1)} \right)\right] \\
 
-& = \mathbb{E}_q[-log(p_{\theta}(X_{T}) ) + \sum^T_{t=2} log( \frac{ q(X_{t-1} \vert X_t,X_0)}{p_{\theta}(X_{t-1} \vert X_t)}) + log( \frac{q(X_T \vert X_0)}{q(X_1 \vert X_0)}) + \log( \frac{ q(X_1 \vert X_0)}{p_{\theta}(X_0 \vert X_1)})] \\
+& = \mathbb{E}_{x_{0:T} \sim q} \left[-\log \left(p_{\theta}(x_{T}) \right) + \sum^T_{t=2} \log \left( \frac{ q(x_{t-1} \mid x_t,x_0)}{p_{\theta}(x_{t-1} \mid x_t)} \right) + \log \left( \frac{q(x_T \mid x_0)}{q(x_1 \mid x_0)} \right) + \log \left( \frac{ q(x_1 \mid x_0)}{p_{\theta}(x_0 \mid x_1)} \right) \right] \\
 
-& = \mathbb{E}_q[log({\frac{q(X_T \vert X_0)}{p_\theta(X_{T})}} ) + \sum^T_{t=2} log( \frac{ q(X_{t-1} \vert X_t,X_0)}{p_{\theta}(X_{t-1} \vert X_t)}) + \underbrace{log(\frac{q(X_1 \vert X_0)}{q(X_1 \vert X_0)})}_{= 0} - log( p_{\theta}(X_0 \vert X_1))] \\
+& = \mathbb{E}_{x_{0:T} \sim q} \left[\log \left({\frac{q(x_T \mid x_0)}{p_\theta(x_{T})}} \right) + \sum^T_{t=2} \log \left( \frac{ q(x_{t-1} \mid x_t,x_0)}{p_{\theta}(x_{t-1} \mid x_t)} \right) - \log \left( p_{\theta}(x_0 \mid x_1) \right) \right] \\
 
-& = \mathbb{E}_q[log({\frac{q(X_T \vert X_0)}{p_\theta(X_{T})}} ) + \sum^T_{t=2} log( \frac{ q(X_{t-1} \vert X_t,X_0)}{p_{\theta}(X_{t-1} \vert X_t)}) - log( p_{\theta}(X_0 \vert X_1))] \\
+& =  \underbrace{D_{KL} \left(q(x_T \mid x_0) \parallel p_\theta(x_{T})\right)}_{\mathcal{L}_T} + \sum^{T}_{t=2}  \underbrace{D_{KL}\left(q(x_{t-1} \mid x_t,x_0) \parallel p_{\theta}(x_{t-1} \mid x_t)\right)}_{\mathcal{L}_{t-1}} - \underbrace{\log \left( p_{\theta}(x_0 \mid x_1)\right)}_{\mathcal{L}_0} \\
 
-& =  \underbrace{D_{KL}(q(X_T \vert X_0) \| p_\theta(X_{T}))}_{L_T} + \sum^T_{t=2}  \underbrace{D_{KL}(q(X_t \vert X_{t-1},X_0) \| p_{\theta}(X_{t-1} \vert X_t))}_{L_{t-1}} -  \underbrace{log( p_{\theta}(X_0 \vert X_1))}_{L_0} \\
+& =  \underbrace{D_{KL} \left(q(x_T \mid x_0) \parallel p_\theta(x_{T})\right)}_{\mathcal{L}_T} + \sum^{T-1}_{t=1}  \underbrace{D_{KL}\left(q(x_t \mid x_{t+1},x_0) \parallel p_{\theta}(x_t \mid x_{t-1})\right)}_{\mathcal{L}_{t}} - \underbrace{\log \left( p_{\theta}(x_0 \mid x_1)\right)}_{\mathcal{L}_0} \\
 \end{align} $$
 
+&nbsp;
 
-Now that we expressed the variational lower bound as a sum of T+1 components, $$ \mathcal{L}_{VLB} = \mathcal{L}_T +\sum^T_{t=2}{\mathcal{L}_{t-1}} + \mathcal{L}_0$$, let take a look on each one.
+- The variational lower bound can thus be rewritten as follow:
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$ \mathcal{L}_{VLB} = \mathcal{L}_T +\sum^{T-1}_{t=1}{\mathcal{L}_t} + \mathcal{L}_0$$
+</span>
+</div>
+
+where
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$ \begin{align} 
+& \mathcal{L}_T = D_{KL} \left(q(x_T \mid x_0) \parallel p_\theta(x_{T})\right)\\
+& \mathcal{L}_t = D_{KL}\left(q(x_t \mid x_{t+1},x_0) \parallel p_{\theta}(x_t \mid x_{t+1})\right)\\
+& \mathcal{L}_0 = -\log \left( p_{\theta}(x_0 \mid x_1)\right)\\
+\end{align}$$
+</span>
+</div>
+
+&nbsp;
 
 **$$\mathcal{L}_T:$$ Constant Term**
 
 Then, $$\mathcal{L}_T = D_{KL}(q(x_T \vert x_0) \| p_\theta(x_{T}))$$ can be ignored for the training. Indeed, q has no learnable parameters and p is a gaussian noise probability so the term $$\mathcal{L}_T$$ is a constant.
+
+&nbsp;
+
+**$$\mathcal{L}_0:$$ Reconstruction term**
+
+This is the reconstruction loss of the last denoising step. To obtain discrete log likelihoods, we set it to an independent discrete decoder derived from the Gaussian $$ \mathcal{N}(x_0,\mu _{\theta} (x_1,1), \Sigma _{\theta} (x_1,1)) $$ :
+
+$$ p _{\theta} (x_0 | x_1) = \prod^{D}_{i=1} \int_{\delta - (x_0^i)}^{\delta + (x_0^i)}{\mathcal{N}(x_0,\mu _{\theta} (x_1,1), \Sigma _{\theta} (x_1,1)) dx} $$
+
+
+$$\delta _{+} (x) = \begin{cases}
+\infty & \text{if $x = 1$} \\
+x + \frac{1}{255} & \text{if $x < 1$}
+\end{cases}
+$$
+$$\delta _{-} (x) = \begin{cases}
+-\infty & \text{if $x = -1$} \\
+x - \frac{1}{255} & \text{if $x > -1$}
+\end{cases}
+$$
+
+where $$D$$ is the data dimensionality and $$i$$ indicate the extraction of one coordinate.
+
+&nbsp;
 
 **$$\mathcal{L}_t:$$ Stepwise denoising terms**
 
@@ -381,26 +487,7 @@ $$ \begin{align}
 &= \mathbb{E}_{x_0, \epsilon} [ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \| \epsilon  - \epsilon _{\theta}(\sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t}\epsilon, t)\|^2]
 \end{align}$$
 
-
-**$$\mathcal{L}_0:$$ Reconstruction term**
-
-This is the reconstruction loss of the last denoising step. To obtain discrete log likelihoods, we set it to an independent discrete decoder derived from the Gaussian $$ \mathcal{N}(x_0,\mu _{\theta} (x_1,1), \Sigma _{\theta} (x_1,1)) $$ :
-
-$$ p _{\theta} (x_0 | x_1) = \prod^{D}_{i=1} \int_{\delta - (x_0^i)}^{\delta + (x_0^i)}{\mathcal{N}(x_0,\mu _{\theta} (x_1,1), \Sigma _{\theta} (x_1,1)) dx} $$
-
-
-$$\delta _{+} (x) = \begin{cases}
-\infty & \text{if $x = 1$} \\
-x + \frac{1}{255} & \text{if $x < 1$}
-\end{cases}
-$$
-$$\delta _{-} (x) = \begin{cases}
--\infty & \text{if $x = -1$} \\
-x - \frac{1}{255} & \text{if $x > -1$}
-\end{cases}
-$$
-
-where $$D$$ is the data dimensionality and $$i$$ indicate the extraction of one coordinate.
+&nbsp;
 
 
 ## **To go further**
