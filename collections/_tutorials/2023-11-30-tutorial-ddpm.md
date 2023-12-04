@@ -19,12 +19,11 @@ categories: diffusion, model
   - [Bayes theorem](#bayes-theorem)
   - [Reparameterization trick](#reparameterization-trick) 
   - [Cross entropy](#cross-entropy)    
-
 - [**Forward diffusion process**](#forward-diffusion-process)
   - [Principle](#principle) 
   - [How to define the variance scheduler ?](#how-to-define-the-variance-scheduler) 
-- [**Backward process**](#backward-process)
-  - [General idea](#general-idea) 
+- [**Reverse process**](#reverse-process)
+  - [General idea](#general-idea)
   - [Loss function](#loss-function) 
 - [**To go further**](#to-go-further)
   - [The first DDPM algorithm](#first-ddpm-algorithm) 
@@ -124,7 +123,11 @@ $$ x_t = \mu + \sigma \cdot \epsilon$$
 
 $$ H_{p} = -\int{p(x)\cdot \log\left(p(x)\right)}\,dx$$
 
+&nbsp;
+
 > The cross entropy measures the average amount of information you need to add to go from a given distribution $$p$$ to a reference distribution $$q$$
+
+&nbsp;
 
 $$H_{pq} = -\int{p(x)\cdot \log\left(q(x)\right)}\,dx = \mathbb{E}_{x \sim p} [\log(q(x))]$$
 
@@ -162,7 +165,11 @@ D_{KL}(p \parallel q) &= H_{pq} - H_{p} \\
 
 - The forward diffusion process is a procedure where a small amount of Gaussian noise is added to the point sample $$x_0$$, producing a sequence of noisy samples $$x_1, \cdots , x_T$$.
 
+&nbsp;
+
 > The forward process of a probabilistic diffusion model is a Markov chain, i.e. the prediction at step $$t$$ only depends on the state at step $$t-1$$, that gradually adds gaussian noise to the data $$x_0$$. 
+
+&nbsp;
 
 - The full forward process can be modeled as: 
 
@@ -199,7 +206,7 @@ $$q(x_t \mid x_{t-1}) = \mathcal{N}\left((\sqrt{1 - \beta _t}) \, x_{t-1},\beta 
 
 $$x_t = (\sqrt{1 - \beta_t}) \, x_{t-1} + \sqrt{\beta_t} \, \epsilon_{t-1}$$
 
-$$\quad$$ Let's define $$\alpha_t = 1 - \beta_t$$
+$$\quad$$ Let's define <span style="color:#00478F">$$\alpha_t = 1 - \beta_t$$</span>
 
 $$x_t = \sqrt{\alpha_t} \, x_{t-1} + \sqrt {1-\alpha_t} \, \epsilon_{t-1}$$
 
@@ -223,7 +230,7 @@ $$\quad$$ One can repeat this process recursively until reaching and expression 
 
 $$x_t = \sqrt{\alpha_t \cdots \alpha_1} \, x_0 + \sqrt{1 - \alpha_t \cdots \alpha_1} \, \bar \epsilon _0 $$
 
-$$\quad$$ By defining $$\bar{\alpha}_t = \prod_{k=1}^{t}{\alpha _k}$$, we finally get this final relation:
+$$\quad$$ By defining <span style="color:#00478F">$$\bar{\alpha}_t = \prod_{k=1}^{t}{\alpha _k}$$</span>, we finally get this final relation:
 
 <div style="text-align:center">
 <span style="color:#00478F">
@@ -265,7 +272,7 @@ $$\alpha _t = \frac{f(t)}{f(0)}, \quad f(t) = cos\left(\frac{\frac{t}{T} + s}{1+
 
 &nbsp;
 
-## **Backward process**
+## **Reverse process**
 
 ### General idea
 
@@ -282,8 +289,31 @@ $$\alpha _t = \frac{f(t)}{f(0)}, \quad f(t) = cos\left(\frac{\frac{t}{T} + s}{1+
 
 $$q(x_{t-1} \mid x_t) = \frac{q(x_{t} \mid x_{t-1}) \, q(x_{t-1})}{q(x_{t})}$$
 
+&nbsp;
 
 > It is noteworthy that the reverse conditional probability is tractable when conditioned on $$x_0$$. Indeed, thanks to Bayes theorem $$\, q(x_{t-1} \mid x_t, x_0)$$ = $$\frac{q(x_t \mid x_{t-1}, x_0)q(x_{t-1} \mid x_0)}{q(x_t \mid x_0)}$$, where all distributions are known from the forward process.
+
+&nbsp;
+
+- The analytical expression of $$q(x_{t-1} \mid x_t, x_0)$$ can be derived using the individual definitions of $$q(x_t \mid x_{t-1})$$, $$q(x_{t-1} \mid x_0)$$ and $$q(x_t \mid x_0)$$, which leads to the following expression (see the blog of [Lilian Wang](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/#parameterization-of-l_t-for-training-loss) for details on the derivation):
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$q(x_{t-1} \mid x_t, x_0) = \mathcal{N}(\tilde{\mu}_t(x_t,x_0), \tilde{\beta}_t \cdot \textbf{I})$$
+</span>
+</div>
+
+$$\quad$$ where
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$ \begin{align} 
+& \tilde{\mu}_t(x_t,x_0) = \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha _t}{\sqrt{1- \bar \alpha _t}} \epsilon _t)\\
+& \tilde{\beta}_t = \frac{1 - \bar{\alpha}_{t-1}}{1 - \bar{\alpha}_t} \cdot \beta_t \\
+\end{align}$$
+</span>
+</div>
+
 
 &nbsp;
 
@@ -304,6 +334,8 @@ $$p_{\theta}(x_{0:T}) = p_{\theta}(x_T) \, \prod_{t=1}^{T} p_{\theta}(x_{t-1} \m
 </span>
 </div>
 
+&nbsp;
+
 > $$\mu _{\theta}(x_t,t)$$ and $$\, \Sigma_{\theta}(x_t,t))$$ depend not only on $$x_t$$ but also on $$t$$. Those parameters that need to be estimated are thus time-dependent !
 
 <!-- ![](/collections/images/ddpm/reverseProcess.jpg) -->
@@ -321,6 +353,8 @@ $$p_{\theta}(x_{0:T}) = p_{\theta}(x_T) \, \prod_{t=1}^{T} p_{\theta}(x_{t-1} \m
 - The loss function designed to learn the reverse process involves minimizing the cross-entropy between the target distribution $$q(X_0)$$ and the approximated distribution $$p_{\theta}(X_0)$$
 
 $$H(q,p_{\theta}) = - \mathbb{E}_{x_0 \sim q}\left[\log( p_{\theta}(x_0))\right]$$
+
+&nbsp;
 
 > Minimizing the cross entropy between $$q(X_0)$$ and $$\, p_{\theta}(X_0)$$ results in the two distributions being as close as possible
 
@@ -381,8 +415,7 @@ $$ \begin{align}
 
 & =  \underbrace{D_{KL} \left(q(x_T \mid x_0) \parallel p_\theta(x_{T})\right)}_{\mathcal{L}_T} + \sum^{T}_{t=2}  \underbrace{D_{KL}\left(q(x_{t-1} \mid x_t,x_0) \parallel p_{\theta}(x_{t-1} \mid x_t)\right)}_{\mathcal{L}_{t-1}} - \underbrace{\log \left( p_{\theta}(x_0 \mid x_1)\right)}_{\mathcal{L}_0} \\
 
-& =  \underbrace{D_{KL} \left(q(x_T \mid x_0) \parallel p_\theta(x_{T})\right)}_{\mathcal{L}_T} + \sum^{T-1}_{t=1}  \underbrace{D_{KL}\left(q(x_t \mid x_{t+1},x_0) \parallel p_{\theta}(x_t \mid x_{t-1})\right)}_{\mathcal{L}_{t}} - \underbrace{\log \left( p_{\theta}(x_0 \mid x_1)\right)}_{\mathcal{L}_0} \\
-\end{align} $$
+\end{align}$$
 
 &nbsp;
 
@@ -390,17 +423,17 @@ $$ \begin{align}
 
 <div style="text-align:center">
 <span style="color:#00478F">
-$$ \mathcal{L}_{VLB} = \mathcal{L}_T +\sum^{T-1}_{t=1}{\mathcal{L}_t} + \mathcal{L}_0$$
+$$ \mathcal{L}_{VLB} = \mathcal{L}_T +\sum^{T}_{t=2}{\mathcal{L}_{t-1}} + \mathcal{L}_0$$
 </span>
 </div>
 
-where
+$$\quad$$ where
 
 <div style="text-align:center">
 <span style="color:#00478F">
 $$ \begin{align} 
 & \mathcal{L}_T = D_{KL} \left(q(x_T \mid x_0) \parallel p_\theta(x_{T})\right)\\
-& \mathcal{L}_t = D_{KL}\left(q(x_t \mid x_{t+1},x_0) \parallel p_{\theta}(x_t \mid x_{t+1})\right)\\
+& \mathcal{L}_{t-1} = D_{KL}\left(q(x_{t-1} \mid x_{t},x_0) \parallel p_{\theta}(x_{t-1} \mid x_{t})\right)\\
 & \mathcal{L}_0 = -\log \left( p_{\theta}(x_0 \mid x_1)\right)\\
 \end{align}$$
 </span>
@@ -410,33 +443,76 @@ $$ \begin{align}
 
 **$$\mathcal{L}_T:$$ Constant Term**
 
-Then, $$\mathcal{L}_T = D_{KL}(q(x_T \vert x_0) \| p_\theta(x_{T}))$$ can be ignored for the training. Indeed, q has no learnable parameters and p is a gaussian noise probability so the term $$\mathcal{L}_T$$ is a constant.
+- $$\mathcal{L}_T$$ is a constant matrix since $$x_0$$ is known, the forward process is deterministic, $$q(x_T \mid x_0)$$ is a constant and $$p_\theta(x_{T})$$ is a sample from a known Gaussian distribution.
+
+- $$\mathcal{L}_T$$ is thus ignored during the training process.
 
 &nbsp;
 
 **$$\mathcal{L}_0:$$ Reconstruction term**
 
-This is the reconstruction loss of the last denoising step. To obtain discrete log likelihoods, we set it to an independent discrete decoder derived from the Gaussian $$ \mathcal{N}(x_0,\mu _{\theta} (x_1,1), \Sigma _{\theta} (x_1,1)) $$ :
+- $$\mathcal{L}_0$$ is the likelihood of a Gaussian distribution of the form $$\mathcal{N}(\mu _{\theta}(x_1,1),\Sigma _{\theta}(x_1,1))$$
 
-$$ p _{\theta} (x_0 | x_1) = \prod^{D}_{i=1} \int_{\delta - (x_0^i)}^{\delta + (x_0^i)}{\mathcal{N}(x_0,\mu _{\theta} (x_1,1), \Sigma _{\theta} (x_1,1)) dx} $$
+- $$p_{\theta}(x_0 \mid x_1)$$ is computed as follow:
 
+$$p _{\theta}(x_0 \mid x_1) = \prod^{D}_{i=1} \int_{\delta - (x_0^i)}^{\delta + (x_0^i)}{\mathcal{N}(x_0,\mu_{\theta}(x_1,1), \Sigma_{\theta} (x_1,1)) \, dx} $$
+
+$$\quad$$ where $$D$$ is the data dimensionality of sample $$x_0$$ and $$i$$ indicates the extraction of one coordinate
 
 $$\delta _{+} (x) = \begin{cases}
 \infty & \text{if $x = 1$} \\
 x + \frac{1}{255} & \text{if $x < 1$}
 \end{cases}
 $$
+
 $$\delta _{-} (x) = \begin{cases}
 -\infty & \text{if $x = -1$} \\
 x - \frac{1}{255} & \text{if $x > -1$}
 \end{cases}
 $$
 
-where $$D$$ is the data dimensionality and $$i$$ indicate the extraction of one coordinate.
+- An independant discrete decoder is set to obtain the corresponding log likelihood.
 
 &nbsp;
 
 **$$\mathcal{L}_t:$$ Stepwise denoising terms**
+
+- Recall that $$p_{\theta}(x_{t-1} \vert x_t) = \mathcal{N}(\mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t,t))$$ and $$q(x_{t-1} \vert x_t, x_0) = \mathcal{N}(\tilde{\mu}_t(x_t,x_0), \tilde{\beta}_t \cdot \textbf{I})$$, <spam style="color:#00478F">the idea is first to focus on the mean terms</spam> and train a neural network $$\mu_{\theta}$$ to predict $$\tilde{\mu}_t = \frac{1}{\sqrt{\bar{\alpha}_t}} (x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}} \epsilon _t)$$
+
+&nbsp;
+
+> Because $$x_t$$ is available as input at training time, we can reparameterize the Gaussian noise term instead to make it predict $$\epsilon_t$$ from the input $$x_t$$ at time step
+
+&nbsp;
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$\mu_{\theta}(x_t,t) = \frac{1}{\sqrt{\bar{\alpha}_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\right) \epsilon_{\theta}(x_t,t)$$
+</span>
+</div>
+
+&nbsp;
+
+- The loss term $$\mathcal{L}_t$$ is revisited to minimize the difference between $$\mu_{\theta}$$ and $$\tilde{\mu}$$:
+
+
+$$ \begin{align}
+\mathcal{L}_t &= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{1}{ 2 \|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \tilde \mu _t (x_t , x_0) - \mu _{\theta}(x_t , t) \|^2_2 \right]\\
+&= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{1}{ 2 \|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \frac{1}{\sqrt{\bar \alpha_t}} \left(x_t - \frac{1-\alpha _t}{\sqrt{1- \bar \alpha _t}} \epsilon_t \right) -  \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha _t}{\sqrt{1- \bar \alpha _t}} \epsilon_{\theta}(x_t , t) \right) \|^2_2 \right]\\
+&= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \epsilon_t  - \epsilon _{\theta}(x_t , t)\|^2_2 \right]\\
+&= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \epsilon_t  - \epsilon_{\theta}(\sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t}\epsilon_t, t)\|^2_2 \right]
+\end{align}$$
+
+- Finally, the stepwise denoising terms are expressed as:
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$\mathcal{L}_t = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \epsilon_t  - \epsilon_{\theta}(\sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t}\epsilon_t, t)\|^2_2 \right]$$
+</span>
+</div>
+
+
+<!--
 
 This term compares, at each step of the process, the target $$q$$ and the approximation $$p_{\theta}$$. We recall that $$q(x_{t-1} \vert x_t,x_0) \sim \mathcal{N}(x_{t-1}, \tilde \mu _t(x_t,x_0), \tilde \beta _t \cdot \textbf{I})$$.
 
@@ -477,15 +553,8 @@ $$\begin{align}
 Then , we would like to train $$\mu _{\theta}$$ to predict $$\tilde \mu _t$$ and as $$x_t$$ is available as input at training time, we can reparameterize it to make the neural network to predict $$\epsilon$$ from $$x_t$$ at time step t : 
 
 $$\mu _{\theta} (x_t , t) = \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha _t}{1- \bar \alpha _t} \epsilon _{\theta} (x_t ,t))$$
+-->
 
-The loss term $$\mathcal{L}_t$$ is defined to minimize the difference from $$\tilde \mu $$:
-
-$$ \begin{align}
-\mathcal{L}_t &= \mathbb{E}_{x_0, \epsilon} [ \frac{1}{ 2 \|\Sigma _{\theta} (x_t , t) \|^2_2} \| \tilde \mu _t (x_t , x_0) - \mu _{\theta}(x_t , t) \|^2]\\
-&= \mathbb{E}_{x_0, \epsilon} [ \frac{1}{ 2 \|\Sigma _{\theta} (x_t , t) \|^2_2} \| \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha _t}{1- \bar \alpha _t} \epsilon ) -  \frac{1}{\sqrt{\alpha_t}} (x_t - \frac{1-\alpha _t}{1- \bar \alpha _t} \epsilon _{\theta}(x_t , t) ) \|^2]\\
-&= \mathbb{E}_{x_0, \epsilon} [ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \| \epsilon  - \epsilon _{\theta}(x_t , t)\|^2]\\
-&= \mathbb{E}_{x_0, \epsilon} [ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \| \epsilon  - \epsilon _{\theta}(\sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t}\epsilon, t)\|^2]
-\end{align}$$
 
 &nbsp;
 
