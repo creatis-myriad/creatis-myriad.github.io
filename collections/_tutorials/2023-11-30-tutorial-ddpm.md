@@ -21,7 +21,7 @@ categories: diffusion, model
   - [Cross entropy](#cross-entropy)    
 - [**Forward diffusion process**](#forward-diffusion-process)
   - [Principle](#principle) 
-  - [How to define the variance scheduler ?](#how-to-define-the-variance-scheduler) 
+  - [Parameterization of reverse process variance](#parameterization-of-reverse-process-variance) 
 - [**Reverse process**](#reverse-process)
   - [General idea](#general-idea)
   - [Loss function](#loss-function) 
@@ -563,43 +563,86 @@ $$\mu _{\theta} (x_t , t) = \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha
 
 ### The first DDPM algorithm
 
-Empirically , a first article on DDPM proposed to fix $$\beta _t$$ as constants because they found that learning a diagonal variance $$\Sigma _{\theta}$$ leads to unstable training and poorer sample quality. Thus, instead of making $$\beta _t$$ learnable, they set $$\Sigma _{\theta} (x_t ,t) = \sigma_t^2 I$$. Then, they found experimentally that both $$\sigma _t^2 = \tilde \beta _t = \frac{1- \bar \alpha _{t-1}}{1 - \bar \alpha _t} \beta _t$$ and $$\sigma _t^2 = \beta _t$$ had similar results. Indeed the first is optimal for $$ x_0 \sim \mathcal{N}(0,I)$$ and the second one is optimal for $$x_0$$ set to one point deterministically. These are in facts the two extrem choices and correspond to the upper and the lower bounds on reverse process entropy. With this simplifacation, the loss at step $$t$$ become the following :
+- The authors from a [seminal paper](https://arxiv.org/abs/2006.11239) of the DDPM method proposed to fix $${\beta _t}^T_{t=1}$$ as constants for simplicity's sake.
 
-$$ \mathcal{L}_t = \mathbb{E}_{x_0, \epsilon} [ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\sigma _{t}^2} \| \epsilon  - \epsilon _{\theta}(\sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t}\epsilon, t)\|^2]$$
+- Instead of making $$\beta_t$$ learnable, they set $$\Sigma _{\theta} (x_t ,t) = \sigma_t^2 I$$, where $$\sigma_t$$ is not learned but set to $$\beta_t$$ or $$\bar{\beta}_t = \frac{1 - \bar{\alpha}_{t-1}}{1-\bar{\alpha}_t}\cdot \beta_t$$.
 
-They also found that a simplification in the loss by ignoring the weithing term would improve the training of the model, making it less noisy:
+- The stepwise denoising loss function becomes:
 
-$$ \mathcal{L}_t^{simple} = \mathbb{E}_{x_0, \epsilon} [ \| \epsilon  - \epsilon _{\theta}(\sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t }\epsilon, t)\|^2]$$
+$$ \mathcal{L}_t = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha_t)^2}{ 2 \alpha_t (1- \bar \alpha_t)\sigma_{t}^2} \, \| \epsilon_t - \epsilon _{\theta}(\sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t}\epsilon, t)\|^2 \right]$$
 
+
+- They also found that simplifying the loss function by ignoring the weighting term improved the model training, making it less noisy:
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$ \mathcal{L}_t^{simple} = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}, t \sim [1,T]} \left[ \| \epsilon_t - \epsilon _{\theta} \left(\sqrt{\bar \alpha_t} x_0 + \sqrt{1 - \bar \alpha_t }\epsilon_t, t \right)\|^2 \right]$$
+</span>
+</div>
+
+<!--
 $$\mathcal{L}_{simple} = \mathcal{L}_t^{simple} + C$$
 where C is a constant that does not depends on $$\theta$$.
+-->
 
-Finally, to sample $$x_{t-1} \sim p_{\theta} (x_{t-1} \vert x_t)$$, we compute $$x_{t-1} = \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha _t}{1- \bar \alpha _t} \epsilon _{\theta} (x_t ,t)) + \sigma _t z $$ where $$ z \sim \mathcal{N}(0,1)$$.
+- During the reverse process, it is needed to compute the set of samples $$x_T, x_{T-1}, \cdots, x_{0}$$ in a recursive manner. 
+
+- Starting from $$x_T \sim \mathcal{N}(0,\mathbf{I})$$ and keeping in mind that $$p_{\theta}(x_{t-1} \mid x_t) = \mathcal{N}\left( \mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t,t) \right)$$ this is done through the following relation:
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$x_{t-1} = \frac{1}{\sqrt{\bar \alpha_t}} \left(x_t - \frac{1-\alpha _t}{1- \bar \alpha _t} \epsilon _{\theta} (x_t ,t) \right) + \sigma _t z$$
+</span>
+</div>
+
+$$\quad$$ where 
+
+$$ z \sim \mathcal{N}(0,\mathbf{I})$$
+
+&nbsp;
 
 ![](/collections/images/ddpm/algorithms.jpg)
 
-### How to improve the log-likelihood ?
+&nbsp;
 
-However, if DDPM have been shown to produce excellent samples,  the log-likelihood did not reflect this quality. The second article suggests that fixing $$\sigma _t$$ is a reasonable choice for the sake of sample quality but as the first few steps of the diffusion process contribute the most to the variational lower bound, using a better choice of $$\Sigma _{\theta}$$ would improve  the log-likelihood. Thus, they proposed to learn $$\Sigma _{\theta} (x_t, t)$$ as an interpolation of $$\beta _t$$ and $$\tilde \beta _t$$ by model predicting a vector $$\mathbf v$$ :
+### Parameterization of reverse process variance
 
-$$ \Sigma _{\theta} (x_t, t) = exp (\mathbf  v log(\beta _t)+ (1- \mathbf v) log(\tilde \beta _t))$$
+- In a recent [article](https://arxiv.org/abs/2102.09672), the authors proposed to improve DDPM results by learning $$\Sigma _{\theta}(x_t,t)$$ as an interpolation between $$\beta_t$$ and $$\bar{\beta}_t$$ by predicting a mixing vector $$\mathbf{v}$$:
 
-However, $$\mathcal{L}_{simple}$$ does not depend  on $$\Sigma _{\theta} (x_t,t)$$. They defined a new hybrid objective :
+<div style="text-align:center">
+<span style="color:#00478F">
+$$\Sigma_{\theta} (x_t, t) = exp \left(\mathbf{v} log(\beta_t)+ (1- \mathbf{v}) log(\bar{\beta}_t) \right)$$
+</span>
+</div>
 
-$$\mathcal{L}_{hybrid} = \mathcal{L}_{simple} + \lambda \mathcal{L}_{_vlb}$$
+- Since $$\mathcal{L}_{simple}$$ does not depend on $$\Sigma_{\theta}(x_t,t)$$, the following new hybrid loss function was defined:
 
-They set $$\lambda = 0{,}001 $$ to prevent $$\mathcal{L}_{vlb}$$ from overwhelming $$\mathcal{L}_{simple}$$ and applied a stop gradient to the $$ \mu _{\theta} (x_t,t) $$ output of the $$\mathcal{L}_{vlb}$$ term. The objective was to make $$\mathcal{L}_{vlb}$$ guide $$\Sigma _{\theta} (x_t,t)$$ and keeping $$\mathcal{L}_{simple}$$ as the main source of influence over $$ \mu _{\theta} (x_t,t) $$.
+$$\mathcal{L}_{hybrid} = \mathcal{L}_{simple} + \lambda \mathcal{L}_{VLB}$$
 
+- $$\lambda = 0.001$$ to prevent $$\mathcal{L}_{VLB}$$ from overwhelming $$\mathcal{L}_{simple}$$ and applied a stop gradient on $$\mu_{\theta}(x_t,t)$$ in the $$\mathcal{L}_{VLB}$$ term such that $$\mathcal{L}_{VLB}$$ only guides the learning of $$\Sigma_{\theta}(x_t,t)$$. 
+
+> The use of a time-averaging smoothed version of $$\mathcal{L}_{VLB}$$ was key to stabelize the optimization of $$\mathcal{L}_{VLB}$$ due to the presence of noisy gradients coming from this term.
+
+&nbsp;
 
 ### Improve sampling speed
 
-The principal weakness of diffusion problem is the time-consuming process of sampling. Indeed, it is very slow to generate a sample from DDPM by following the Markov chain of the reverse process and producing a single sample can takes several minutes on a modern GPU. Thus, it is hard to produce high-resolution samples.
+- It is very slow to generate a sample from DDPM by following the Markov chain of the reverse process as $$T$$ can be up to one or a few thousand steps
 
-One simple way to improve this is to run a strided sampling scheduler. For a model trained with T diffusion steps, instead of sample using the same sequence of t values $$(1, 2, \dots , T )$$ as used during training, the sample uses an arbitrary subsequence S of t values. Thus, given the training noise schedule $$\bar \alpha _t$$, for a given sequence S  the sampling noise schedule $$\bar \alpha _{S_t}$$ is used to obtain corresponding sampling variances:
+- Producing a single sample can takes several minutes on a modern GPU.
 
-$$ \beta _{S_t} = 1 - \frac{\bar \alpha _{S_t}}{\bar \alpha _{S_{t-1}}} , \tilde \beta _{S_t} = \frac{1 - \bar \alpha _{S_{t-1}}}{1- \bar \alpha _{S_t}}.$$
+- One simple way to improve this is to run a strided sampling scheduler.
 
-Another algorithm, DDIM, modified the forward diffusion process making it non-Marovian to speed up the generation.
+- For a model trained with $$T$$ diffusion steps, the sampling procedure only use $$[T/S]$$ steps to reduce the process from $$T$$ to $$S$$ steps. 
+
+- The new sampling schedule for data generation is $$\{\tau_1,\cdots,\tau_S\}$$ where $$\tau_1 < \tau_2 < \cdots < \tau_S \in [1,T]$$ and $$S<T$$.
+
+
+&nbsp;
+
+- Another algorithm, DDIM named [Denoising Diffusion Implicit Model](https://arxiv.org/abs/2010.02502), modified the forward diffusion process making it non-Markovian to speed up the generation.
+
+&nbsp;
 
 ### Conditional image generation : Guided diffusion
 
