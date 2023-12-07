@@ -71,6 +71,48 @@ Bayes theorem describes the probability of occurrence of an event related to any
 
 $$ q(x_{t-1} \vert x_t) = \frac{q(x_t \vert x_{t-1})q(x_{t-1})}{q(x_t)} $$
 
+### Conditional probability theorem
+
+$$ q(x_{t} , x_{t-1}) = q(x_{t-1} \mid x_{t}) q(x_{t})$$
+
+Combining with Bayes theorem :
+
+$$ q(x_{t} \mid x_{t-1}) = \frac{q(x_{t-1} \mid x_{t}, x_0) \, q(x_{t} \mid x_0)}{q(x_{t-1}) \mid x_0} $$
+
+&nbsp;
+
+### Marginal theorem
+
+$$q(x_{0},x_{1},\cdots,x_{T}) = q(x_{0:T})$$ 
+
+$$q(x_{0}) = \int q(x_{0},x_{1},\cdots,x_{T}) \,dx_{1}\,\cdots\,dx_{T}$$ 
+
+$$q(x_{0}) = \int q(x_{0:T}) \,dx_{1:T}$$ 
+
+&nbsp;
+
+
+### Markov chain
+
+From conditional probability we have :
+
+$$q(x_{1:T} \mid x_0) = q(x_{2:T} \mid x_0,x_1) q(x_1 \mid x_0)$$ 
+
+$$q(x_{1:T} \mid x_0) = q(x_T \mid x_{0:T-1}) q(x_{T-1} \mid x_{0:T-2}) \dots q(x_1 \mid x_0)$$ 
+
+Or in a context of Markov chain :
+
+$$q(x_T \mid x_{0:T-1}) = q(x_T \mid x_{T-1})$$
+
+so :
+
+$$q(x_{1:T} \mid x_0) = \prod_{t=1}^{T} q(x_t \mid x_{t-1})$$ 
+
+
+
+$$p_{\theta}(x_{0:T}) = p_{\theta}(x_{T}) \prod_{t=1}^{T} p_{\theta}(x_{t-1} \mid x_{t})$$
+
+&nbsp;
 
 ### Reparameterization trick
 
