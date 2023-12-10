@@ -558,6 +558,13 @@ $$\mu _{\theta} (x_t , t) = \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha
 
 &nbsp;
 
+## **Deep learning architecture**
+
+![](/collections/images/ddpm/ddpm_architecture_1.jpg)
+
+![](/collections/images/ddpm/ddpm_architecture_2.jpg)
+
+&nbsp;
 
 ## **To go further**
 
@@ -642,6 +649,10 @@ $$\mathcal{L}_{hybrid} = \mathcal{L}_{simple} + \lambda \mathcal{L}_{VLB}$$
 
 - Another algorithm, DDIM named [Denoising Diffusion Implicit Model](https://arxiv.org/abs/2010.02502), modified the forward diffusion process making it non-Markovian to speed up the generation.
 
+
+
+
+<!--
 &nbsp;
 
 ### Conditional image generation : Guided diffusion
@@ -685,3 +696,5 @@ Thus, we can treat $$\hat q(y \vert x_t)$$ as a constant, as it does not depend 
 ![](/collections/images/ddpm/classifierAlgorithms.jpg)
 
 Note that is also possible to run conditional difusion steps by incorporating the scores from a conditional and an unconditional diffusion model even if the method is not explained here.
+
+-->
