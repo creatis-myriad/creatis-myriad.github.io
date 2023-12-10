@@ -206,7 +206,7 @@ $$q(x_t \mid x_{t-1}) = \mathcal{N}\left((\sqrt{1 - \beta _t}) \, x_{t-1},\beta 
 
 $$x_t = (\sqrt{1 - \beta_t}) \, x_{t-1} + \sqrt{\beta_t} \, \epsilon_{t-1}$$
 
-$$\quad$$ Let's define <span style="color:#00478F">$$\alpha_t = 1 - \beta_t$$</span>
+$$\quad$$ Let define <span style="color:#00478F">$$\alpha_t = 1 - \beta_t$$</span>
 
 $$x_t = \sqrt{\alpha_t} \, x_{t-1} + \sqrt {1-\alpha_t} \, \epsilon_{t-1}$$
 
@@ -559,6 +559,52 @@ $$\mu _{\theta} (x_t , t) = \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha
 &nbsp;
 
 ## **Deep learning architecture**
+
+- Even if the key modeling of diffusion models is the Markov chain, it is possible to directly expressed $$x_t$$ according to $$x_0$$ using the following equation:
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$x_t = \sqrt{\bar{\alpha}_t} \, x_0 + \sqrt{1 - \bar{\alpha}_t} \, \epsilon_t$$
+</span>
+</div>
+
+$$\quad$$ where <span style="color:#00478F">$$\bar{\alpha}_t = \prod_{k=1}^{t}{\alpha _k}$$</span> and <span style="color:#00478F">$$\alpha_t = 1 - \beta_t$$</span>.
+
+&nbsp;
+
+> It is thus possible to generate a random image $$x_t$$ of the input image $$x_0$$ at any time $$t$$ of the diffusion process with a known noise $$\epsilon_t \in \mathcal{N}(0,\mathbf{I})$$ added to the previous image $$x_{t-1}$$. 
+
+&nbsp;
+
+- It is important to remember that $$\epsilon_{t}$$ and $$\epsilon_{t-1}$$ come from the same Gaussian process since $$\epsilon_{t} \sim \mathcal{N}(0,\mathbf{I})$$ whatever time $$t$$.
+
+- The previous noisy image $$x_{t-1}$$ can thus be deduced from the $$x_t$$ and the added noise $$\epsilon_{t}$$ using the following relation
+
+$$x_t = \sqrt{\alpha_t} \, x_{t-1} + \sqrt{1-\alpha_t} \, \epsilon_{t-1}$$
+
+$$x_t = \sqrt{\alpha_t} \, x_{t-1} + \sqrt{1-\alpha_t} \, \epsilon_{t}$$
+
+$$x_{t-1} = \frac{x_{t}-\sqrt{1-\alpha_t} \, \epsilon_{t}}{\sqrt{\alpha_t}}$$
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$x_{t-1}=\frac{1}{\sqrt{\alpha_t}}\,x_{t} - \sqrt{\frac{1-\alpha_t}{\alpha_t}}\,\epsilon_{t}$$
+</span>
+</div>
+
+- It is thus possible for any time $$t$$ to generate the corresponding noisy image $$x_t$$ from $$x_0$$ as well as the additional noise $$\epsilon_t$$ and learn to estimate it from $$x_t$$. The estimated noise $$\tilde{\epsilon}_t$$ can then be used to retrieve $$x_{t-1}$$ from $$x_t$$ as illustrated in the above figure.
+
+&nbsp;
+
+![](/collections/images/ddpm/ddpm_scheme_for_deep_learning.jpg)
+
+&nbsp;
+
+- This diffusion process can be efficiently learned using the above deep learning architecture for any time $$t$$ and for any image $$x_0 \sim q(X_0)$$ of the targeted distribution.
+
+- This architecture involves a standard U-Net model with attention layers and positional embedding to encode the temporal information. This is needed as the amount of noise added varies over time. 
+
+&nbsp;
 
 ![](/collections/images/ddpm/ddpm_architecture_1.jpg)
 
