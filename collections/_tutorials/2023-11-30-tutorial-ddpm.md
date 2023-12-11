@@ -17,6 +17,9 @@ categories: diffusion, model
 - [**Fondamental concepts**](#fondamental-concepts)
   - [Sum of normally distributed variables](#sum-of-normally-distributed-variables)
   - [Bayes theorem](#bayes-theorem)
+  - [Conditional probability theorem](#conditional-probability-theorem)
+  - [Mariginal theorem](#marginal-theorem)
+  - [Markov chain properties](#markov-chain)
   - [Reparameterization trick](#reparameterization-trick) 
   - [Cross entropy](#cross-entropy)    
 - [**Forward diffusion process**](#forward-diffusion-process)
@@ -80,7 +83,9 @@ $$ q(x_{t-1} \mid x_t) = \frac{q(x_t \mid x_{t-1}) \, q(x_{t-1})}{q(x_t)} $$
 
 ### Conditional probability theorem
 
-$$ q(x_{t} \mid x_{t-1}) = \frac{q(x_{t-1} \mid x_{t}, x_0) \, q(x_{t} \mid x_0)}{q(x_{t-1}) \mid x_0} $$
+$$ q(x_{t-1} , x_{t}) = q(x_{t} \mid x_{t-1}) q(x_{t-1})$$
+
+$$q(x_{1:T} \mid x_0) = q(x_T \mid x_{0:T-1}) q(x_{T-1} \mid x_{0:T-2}) \dots q(x_1 \mid x_0)$$ 
 
 &nbsp;
 
@@ -94,11 +99,23 @@ $$q(x_{0}) = \int q(x_{0:T}) \,dx_{1:T}$$
 
 &nbsp;
 
-### Markov chain
+### Markov chain properties
+
+In a Markov chain, the probability of each event depends only on the state attained in the previous event. Thus :
+
+$$q(x_T \mid x_{0:T-1}) = q(x_T \mid x_{T-1})$$
+
+We can rewrite the [conditional probability theorem](#conditional-probability-theorem) in this context : 
 
 $$q(x_{1:T} \mid x_0) = \prod_{t=1}^{T} q(x_t \mid x_{t-1})$$ 
 
-$$q(x_{0:T}) = q(x_{T}) \prod_{t=1}^{T} q(x_{t-1} \mid x_{t})$$
+Likewise, for the reverse process :
+
+$$p_{\theta}(x_{0:T}) = p_{\theta}(x_{T}) \prod_{t=1}^{T} p_{\theta}(x_{t-1} \mid x_{t})$$
+
+We can also rewrite the [Bayes theorem](#bayes-theorem) in the markov chain context :
+
+$$ q(x_{t} \mid x_{t-1}) = q(x_{t} \mid x_{t-1}, x_0) = \frac{q(x_{t-1} \mid x_{t}, x_0) \, q(x_{t} \mid x_0)}{q(x_{t-1}) \mid x_0} $$
 
 &nbsp;
 
@@ -336,7 +353,7 @@ $$p_{\theta}(x_{0:T}) = p_{\theta}(x_T) \, \prod_{t=1}^{T} p_{\theta}(x_{t-1} \m
 
 &nbsp;
 
-> $$\mu _{\theta}(x_t,t)$$ and $$\, \Sigma_{\theta}(x_t,t))$$ depend not only on $$x_t$$ but also on $$t$$. Those parameters that need to be estimated are thus time-dependent !
+> $$\mu _{\theta}(x_t,t)$$ and $$\, \Sigma_{\theta}(x_t,t)$$ depend not only on $$x_t$$ but also on $$t$$. Those parameters that need to be estimated are thus time-dependent !
 
 <!-- ![](/collections/images/ddpm/reverseProcess.jpg) -->
 
@@ -402,7 +419,7 @@ $$ \begin{align}
 
 &nbsp;
 
-- Using the [conditional probability theorem](#conditional-probability-theorem), the above expression can reformulated as:
+- Using the [markov chain property](#markov-chain) with Bayes, the above expression can be reformulated as:
 
 $$ \begin{align} 
 \mathcal{L}_{VLB}  & = \mathbb{E}_{x_{0:T} \sim q} \left[-\log \left(p_{\theta}(x_{T}) \right) + \sum^T_{t=2} \log \left( \frac{ q(x_{t-1} \vert x_t,x_0)q(x_t \mid x_0)}{p_{\theta}(x_{t-1} \vert x_t)q(x_{t-1} \mid x_0)} \right) + \log \left( \frac{ q(x_1 \mid x_0)}{p_{\theta}(x_0 \mid x_1)} \right) \right] \\
@@ -616,7 +633,7 @@ $$x_{t-1}=\frac{1}{\sqrt{\alpha_t}}\,x_{t} - \sqrt{\frac{1-\alpha_t}{\alpha_t}}\
 
 ### The first DDPM algorithm
 
-- The authors from a [seminal paper](https://arxiv.org/abs/2006.11239) of the DDPM method proposed to fix $${\beta _t}^T_{t=1}$$ as constants for simplicity's sake.
+- The authors from a [seminal paper](https://arxiv.org/abs/2006.11239) of the DDPM method proposed to fix $$\{\beta _t\}^T_{t=1}$$ as constants for simplicity's sake.
 
 - Instead of making $$\beta_t$$ learnable, they set $$\Sigma _{\theta} (x_t ,t) = \sigma_t^2 I$$, where $$\sigma_t$$ is not learned but set to $$\beta_t$$ or $$\bar{\beta}_t = \frac{1 - \bar{\alpha}_{t-1}}{1-\bar{\alpha}_t}\cdot \beta_t$$.
 
