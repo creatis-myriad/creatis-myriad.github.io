@@ -167,7 +167,7 @@ D_{KL}(p \parallel q) &= H_{pq} - H_{p} \\
 
 &nbsp;
 
-> The forward process of a probabilistic diffusion model is a Markov chain, i.e. the prediction at step $$t$$ only depends on the state at step $$t-1$$, that gradually adds gaussian noise to the data $$x_0$$. 
+> The forward process of a probabilistic diffusion model is a Markov chain, i.e. the prediction at step $$\,t$$ only depends on the state at step $$\,t-1$$, that gradually adds gaussian noise to the data $$\,x_0$$. 
 
 &nbsp;
 
@@ -592,7 +592,7 @@ $$x_{t-1}=\frac{1}{\sqrt{\alpha_t}}\,x_{t} - \sqrt{\frac{1-\alpha_t}{\alpha_t}}\
 </span>
 </div>
 
-- It is thus possible for any time $$t$$ to generate the corresponding noisy image $$x_t$$ from $$x_0$$ as well as the additional noise $$\epsilon_t$$ and learn to estimate it from $$x_t$$. The estimated noise $$\tilde{\epsilon}_t$$ can then be used to retrieve $$x_{t-1}$$ from $$x_t$$ as illustrated in the above figure.
+> It is thus possible for any time $$t$$ to generate the corresponding noisy image $$\,x_t$$ from $$\,x_0$$ as well as the additional noise $$\,\epsilon_t$$ and learn to estimate it from $$\,x_t$$. The estimated noise $$\,\tilde{\epsilon}_t$$ can then be used to retrieve $$\,x_{t-1}$$ from $$\,x_t$$ as illustrated in the above figure.
 
 &nbsp;
 
