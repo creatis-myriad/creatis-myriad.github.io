@@ -29,7 +29,6 @@ categories: diffusion, model
   - [General idea](#general-idea)
   - [Loss function](#loss-function) 
 - [**To go further**](#to-go-further)
-  - [The first DDPM algorithm](#first-ddpm-algorithm) 
   - [How to improve the log-likelihood ?](#how-to-improve-the-log-likelihood) 
   - [Improve sampling speed](#improve-sampling-speed)
 
@@ -101,21 +100,21 @@ $$q(x_{0}) = \int q(x_{0:T}) \,dx_{1:T}$$
 
 ### Markov chain properties
 
-In a Markov chain, the probability of each event depends only on the state attained in the previous event. Thus :
+In a Markov chain, the probability of each event depends only on the state attained in the previous event. The following expressions can thus be written:
+
+[Conditional probability theorem](#conditional-probability-theorem)
 
 $$q(x_T \mid x_{0:T-1}) = q(x_T \mid x_{T-1})$$
 
-We can rewrite the [conditional probability theorem](#conditional-probability-theorem) in this context : 
-
 $$q(x_{1:T} \mid x_0) = \prod_{t=1}^{T} q(x_t \mid x_{t-1})$$ 
 
-Likewise, for the reverse process :
+[Reverse process](#reverse-process)
 
 $$p_{\theta}(x_{0:T}) = p_{\theta}(x_{T}) \prod_{t=1}^{T} p_{\theta}(x_{t-1} \mid x_{t})$$
 
-We can also rewrite the [Bayes theorem](#bayes-theorem) in the markov chain context :
+[Bayes theorem](#bayes-theorem)
 
-$$ q(x_{t} \mid x_{t-1}) = q(x_{t} \mid x_{t-1}, x_0) = \frac{q(x_{t-1} \mid x_{t}, x_0) \, q(x_{t} \mid x_0)}{q(x_{t-1}) \mid x_0} $$
+$$ q(x_{t} \mid x_{t-1}) = q(x_{t} \mid x_{t-1}, x_0) = \frac{q(x_{t-1} \mid x_{t}, x_0) \, q(x_{t} \mid x_0)}{q(x_{t-1} \mid x_0)}$$
 
 &nbsp;
 
@@ -251,7 +250,7 @@ $$\quad$$ By defining <span style="color:#00478F">$$\bar{\alpha}_t = \prod_{k=1}
 
 <div style="text-align:center">
 <span style="color:#00478F">
-$$x_t = \sqrt{\bar{\alpha}_t} \, x_0 + \sqrt{1 - \bar{\alpha}_t} \, \bar{\epsilon}_0$$
+$$x_t = \sqrt{\bar{\alpha}_t} \, x_0 + \sqrt{1 - \bar{\alpha}_t} \, \epsilon_t$$
 </span>
 </div>
 
@@ -300,7 +299,7 @@ $$\alpha _t = \frac{f(t)}{f(0)}, \quad f(t) = cos\left(\frac{\frac{t}{T} + s}{1+
 &nbsp;
 
 
-- If we are able to reverse the diffusion process from $$q(x_{t-1} \mid x_t)$$, we will be able to generate a sample from a Gaussian noise input $$x_T \sim \mathcal{N}(0,\mathbf{I})$$ !
+- If we are able to reverse the diffusion process from $$q(x_{t-1} \mid x_t)$$, we will be able to generate a sample $$x_0$$ from a Gaussian noise input $$x_T \sim \mathcal{N}(0,\mathbf{I})$$ !
 
 - Unfortunately, using the [Bayes theorem](#bayes-theorem) and keeping in mind that $$q(x_t)$$ is an unknown, one can easy see that $$q(x_{t-1} \mid x_t)$$ is intractable.
 
@@ -308,7 +307,7 @@ $$q(x_{t-1} \mid x_t) = \frac{q(x_{t} \mid x_{t-1}) \, q(x_{t-1})}{q(x_{t})}$$
 
 &nbsp;
 
-> It is noteworthy that the reverse conditional probability is tractable when conditioned on $$x_0$$. Indeed, thanks to Bayes theorem $$\, q(x_{t-1} \mid x_t, x_0)$$ = $$\frac{q(x_t \mid x_{t-1}, x_0)q(x_{t-1} \mid x_0)}{q(x_t \mid x_0)}$$, where all distributions are known from the forward process.
+> It is noteworthy that the reverse conditional probability is tractable when conditioned on $$x_0$$. Indeed, thanks to Bayes theorem $$\, q(x_{t-1} \mid x_t, x_0)$$ = $$\frac{q(x_t \mid x_{t-1}, x_0)q(x_{t-1} \mid x_0)}{q(x_t \mid x_0)}$$=$$\frac{q(x_t \mid x_{t-1})q(x_{t-1} \mid x_0)}{q(x_t \mid x_0)}$$, where all distributions are known from the forward process.
 
 &nbsp;
 
@@ -325,7 +324,7 @@ $$\quad$$ where
 <div style="text-align:center">
 <span style="color:#00478F">
 $$ \begin{align} 
-& \tilde{\mu}_t(x_t,x_0) = \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha _t}{\sqrt{1- \bar \alpha _t}} \epsilon _t)\\
+& \tilde{\mu}_t(x_t,x_0) = \frac{1}{\sqrt{\alpha_t}} (x_t - \frac{1-\alpha _t}{\sqrt{1- \bar \alpha _t}} \epsilon _t)\\
 & \tilde{\beta}_t = \frac{1 - \bar{\alpha}_{t-1}}{1 - \bar{\alpha}_t} \cdot \beta_t \\
 \end{align}$$
 </span>
@@ -353,7 +352,7 @@ $$p_{\theta}(x_{0:T}) = p_{\theta}(x_T) \, \prod_{t=1}^{T} p_{\theta}(x_{t-1} \m
 
 &nbsp;
 
-> $$\mu _{\theta}(x_t,t)$$ and $$\, \Sigma_{\theta}(x_t,t)$$ depend not only on $$x_t$$ but also on $$t$$. Those parameters that need to be estimated are thus time-dependent !
+> $$\mu _{\theta}(x_t,t)$$ and $$\, \Sigma_{\theta}(x_t,t)$$ depend not only on $$x_t$$ but also on $$\,t$$. Those parameters that need to be estimated are thus time-dependent !
 
 <!-- ![](/collections/images/ddpm/reverseProcess.jpg) -->
 
@@ -494,7 +493,7 @@ $$
 
 **$$\mathcal{L}_t:$$ Stepwise denoising terms**
 
-- Recall that $$p_{\theta}(x_{t-1} \vert x_t) = \mathcal{N}(\mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t,t))$$ and $$q(x_{t-1} \vert x_t, x_0) = \mathcal{N}(\tilde{\mu}_t(x_t,x_0), \tilde{\beta}_t \cdot \textbf{I})$$, <spam style="color:#00478F">the idea is first to focus on the mean terms</spam> and train a neural network $$\mu_{\theta}$$ to predict $$\tilde{\mu}_t = \frac{1}{\sqrt{\bar{\alpha}_t}} (x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}} \epsilon _t)$$
+- Recall that $$p_{\theta}(x_{t-1} \vert x_t) = \mathcal{N}(\mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t,t))$$ and $$q(x_{t-1} \vert x_t, x_0) = \mathcal{N}(\tilde{\mu}_t(x_t,x_0), \tilde{\beta}_t \cdot \textbf{I})$$, <spam style="color:#00478F">the idea is first to focus on the mean terms</spam> and train a neural network $$\mu_{\theta}$$ to predict $$\tilde{\mu}_t = \frac{1}{\sqrt{\alpha_t}} (x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}} \epsilon _t)$$
 
 &nbsp;
 
@@ -504,7 +503,7 @@ $$
 
 <div style="text-align:center">
 <span style="color:#00478F">
-$$\mu_{\theta}(x_t,t) = \frac{1}{\sqrt{\bar{\alpha}_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\right) \epsilon_{\theta}(x_t,t)$$
+$$\mu_{\theta}(x_t,t) = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\right) \epsilon_{\theta}(x_t,t)$$
 </span>
 </div>
 
@@ -515,16 +514,36 @@ $$\mu_{\theta}(x_t,t) = \frac{1}{\sqrt{\bar{\alpha}_t}} \left(x_t - \frac{1-\alp
 
 $$ \begin{align}
 \mathcal{L}_t &= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{1}{ 2 \|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \tilde \mu _t (x_t , x_0) - \mu _{\theta}(x_t , t) \|^2_2 \right]\\
-&= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{1}{ 2 \|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \frac{1}{\sqrt{\bar \alpha_t}} \left(x_t - \frac{1-\alpha _t}{\sqrt{1- \bar \alpha _t}} \epsilon_t \right) -  \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha _t}{\sqrt{1- \bar \alpha _t}} \epsilon_{\theta}(x_t , t) \right) \|^2_2 \right]\\
+&= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{1}{ 2 \|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha _t}{\sqrt{1- \bar \alpha _t}} \epsilon_t \right) -  \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha _t}{\sqrt{1- \bar \alpha _t}} \epsilon_{\theta}(x_t , t) \right) \|^2_2 \right]\\
 &= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \epsilon_t  - \epsilon _{\theta}(x_t , t)\|^2_2 \right]\\
-&= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \epsilon_t  - \epsilon_{\theta}(\sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t}\epsilon_t, t)\|^2_2 \right]
 \end{align}$$
+
+<!--&= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \epsilon_t  - \epsilon_{\theta}(\sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t}\epsilon_t, t)\|^2_2 \right]-->
 
 - Finally, the stepwise denoising terms are expressed as:
 
 <div style="text-align:center">
 <span style="color:#00478F">
-$$\mathcal{L}_t = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \epsilon_t  - \epsilon_{\theta}(\sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t}\epsilon_t, t)\|^2_2 \right]$$
+$$\mathcal{L}_t = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \epsilon_t  - \epsilon_{\theta}(x_t, t)\|^2_2 \right]$$
+</span>
+</div>
+
+&nbsp;
+
+- The authors from a [seminal paper](https://arxiv.org/abs/2006.11239) of the DDPM method proposed to fix $$\{\beta _t\}^T_{t=1}$$ as constants for simplicity's sake.
+
+- Instead of making $$\beta_t$$ learnable, they set $$\Sigma _{\theta} (x_t ,t) = \sigma_t^2 \, \mathbf{I}$$, where $$\sigma_t$$ is not learned but set to $$\beta_t$$ or $$\bar{\beta}_t = \frac{1 - \bar{\alpha}_{t-1}}{1-\bar{\alpha}_t}\cdot \beta_t$$.
+
+- The stepwise denoising loss function becomes:
+
+$$ \mathcal{L}_t = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha_t)^2}{ 2 \alpha_t (1- \bar \alpha_t)\sigma_{t}^2} \, \| \epsilon_t - \epsilon _{\theta}(x_t, t)\|^2 \right]$$
+
+
+- They also found that simplifying the loss function by ignoring the weighting term improved the model training, making it less noisy:
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$ \mathcal{L}_t^{simple} = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}, t \sim [1,T]} \left[ \| \epsilon_t - \epsilon _{\theta}(x_t,t)\|^2 \right]$$
 </span>
 </div>
 
@@ -589,27 +608,31 @@ $$\quad$$ where <span style="color:#00478F">$$\bar{\alpha}_t = \prod_{k=1}^{t}{\
 
 &nbsp;
 
-> It is thus possible to generate a random image $$x_t$$ of the input image $$x_0$$ at any time $$t$$ of the diffusion process with a known noise $$\epsilon_t \in \mathcal{N}(0,\mathbf{I})$$ added to the previous image $$x_{t-1}$$. 
+> It is thus possible to generate a random image $$\,x_t$$ of the input image $$\,x_0$$ at any time $$\,t$$ of the diffusion process with a known noise $$\,\epsilon_t \in \mathcal{N}(0,\mathbf{I})$$. 
 
 &nbsp;
 
-- It is important to remember that $$\epsilon_{t}$$ and $$\epsilon_{t-1}$$ come from the same Gaussian process since $$\epsilon_{t} \sim \mathcal{N}(0,\mathbf{I})$$ whatever time $$t$$.
+- In diffusion model, the deep learning architecture aims to estimate $$\epsilon_t$$ from $$x_t$$ at time $$t$$. The estimated noise is denoted $$\epsilon_{\theta}(x_t,t)$$.
 
-- The previous noisy image $$x_{t-1}$$ can thus be deduced from the $$x_t$$ and the added noise $$\epsilon_{t}$$ using the following relation
+- Recall that $$p_{\theta}(x_{t-1} \vert x_t) = \mathcal{N}(\mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t,t))$$ with $$\mu_{\theta}(x_t,t) = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\right) \epsilon_{\theta}(x_t,t)$$.
 
-$$x_t = \sqrt{\alpha_t} \, x_{t-1} + \sqrt{1-\alpha_t} \, \epsilon_{t-1}$$
-
-$$x_t = \sqrt{\alpha_t} \, x_{t-1} + \sqrt{1-\alpha_t} \, \epsilon_{t}$$
-
-$$x_{t-1} = \frac{x_{t}-\sqrt{1-\alpha_t} \, \epsilon_{t}}{\sqrt{\alpha_t}}$$
+- Making the assumption that $$\Sigma_{\theta}(x_t,t)$$ is equal to $$\sigma^2_t  \, \mathbf{I}$$ (see previous section), the above expression can be rewritten as:
 
 <div style="text-align:center">
 <span style="color:#00478F">
-$$x_{t-1}=\frac{1}{\sqrt{\alpha_t}}\,x_{t} - \sqrt{\frac{1-\alpha_t}{\alpha_t}}\,\epsilon_{t}$$
+$$x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\right) \epsilon_{\theta} + \sigma_t \, \epsilon$$
 </span>
 </div>
 
-> It is thus possible for any time $$t$$ to generate the corresponding noisy image $$\,x_t$$ from $$\,x_0$$ as well as the additional noise $$\,\epsilon_t$$ and learn to estimate it from $$\,x_t$$. The estimated noise $$\,\tilde{\epsilon}_t$$ can then be used to retrieve $$\,x_{t-1}$$ from $$\,x_t$$ as illustrated in the above figure.
+$$\quad$$ where 
+
+$$ \epsilon \sim \mathcal{N}(0,\mathbf{I})$$
+
+&nbsp;
+
+
+> It is thus possible for any time $$t$$ to generate the corresponding noisy image $$\,x_t$$ from $$\,x_0$$ as well as the additional noise $$\,\epsilon_t$$ and learn to estimate it from $$\,x_t$$ and $$\,t$$. The estimated noise $$\,\epsilon_{\theta}(x_t,t)$$ can then be used to retrieve $$\,x_{t-1}$$ from $$\,x_t$$ as illustrated in the 
+figure below.
 
 &nbsp;
 
@@ -629,51 +652,23 @@ $$x_{t-1}=\frac{1}{\sqrt{\alpha_t}}\,x_{t} - \sqrt{\frac{1-\alpha_t}{\alpha_t}}\
 
 &nbsp;
 
-## **To go further**
-
-### The first DDPM algorithm
-
-- The authors from a [seminal paper](https://arxiv.org/abs/2006.11239) of the DDPM method proposed to fix $$\{\beta _t\}^T_{t=1}$$ as constants for simplicity's sake.
-
-- Instead of making $$\beta_t$$ learnable, they set $$\Sigma _{\theta} (x_t ,t) = \sigma_t^2 I$$, where $$\sigma_t$$ is not learned but set to $$\beta_t$$ or $$\bar{\beta}_t = \frac{1 - \bar{\alpha}_{t-1}}{1-\bar{\alpha}_t}\cdot \beta_t$$.
-
-- The stepwise denoising loss function becomes:
-
-$$ \mathcal{L}_t = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha_t)^2}{ 2 \alpha_t (1- \bar \alpha_t)\sigma_{t}^2} \, \| \epsilon_t - \epsilon _{\theta}(\sqrt{\bar \alpha _t} x_0 + \sqrt{1 - \bar \alpha _t}\epsilon, t)\|^2 \right]$$
-
-
-- They also found that simplifying the loss function by ignoring the weighting term improved the model training, making it less noisy:
-
-<div style="text-align:center">
-<span style="color:#00478F">
-$$ \mathcal{L}_t^{simple} = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}, t \sim [1,T]} \left[ \| \epsilon_t - \epsilon _{\theta} \left(\sqrt{\bar \alpha_t} x_0 + \sqrt{1 - \bar \alpha_t }\epsilon_t, t \right)\|^2 \right]$$
-</span>
-</div>
-
-<!--
-$$\mathcal{L}_{simple} = \mathcal{L}_t^{simple} + C$$
-where C is a constant that does not depends on $$\theta$$.
--->
-
 - During the reverse process, it is needed to compute the set of samples $$x_T, x_{T-1}, \cdots, x_{0}$$ in a recursive manner. 
 
 - Starting from $$x_T \sim \mathcal{N}(0,\mathbf{I})$$ and keeping in mind that $$p_{\theta}(x_{t-1} \mid x_t) = \mathcal{N}\left( \mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t,t) \right)$$ this is done through the following relation:
 
 <div style="text-align:center">
 <span style="color:#00478F">
-$$x_{t-1} = \frac{1}{\sqrt{\bar \alpha_t}} \left(x_t - \frac{1-\alpha _t}{1- \bar \alpha _t} \epsilon _{\theta} (x_t ,t) \right) + \sigma _t z$$
+$$x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\right) \epsilon_{\theta} + \sigma_t \, \epsilon$$
 </span>
 </div>
-
-$$\quad$$ where 
-
-$$ z \sim \mathcal{N}(0,\mathbf{I})$$
 
 &nbsp;
 
 ![](/collections/images/ddpm/algorithms.jpg)
 
 &nbsp;
+
+## **To go further**
 
 ### Parameterization of reverse process variance
 
