@@ -705,9 +705,37 @@ $$\mathcal{L}_{hybrid} = \mathcal{L}_{simple} + \lambda \mathcal{L}_{VLB}$$
 
 &nbsp;
 
-- Another algorithm, DDIM named [Denoising Diffusion Implicit Model](https://arxiv.org/abs/2010.02502), modified the forward diffusion process making it non-Markovian to speed up the generation.
+- Another algorithm, DDIM named [Denoising Diffusion Implicit Model](https://arxiv.org/abs/2010.02502), modified the forward diffusion process making it non-Markovian to speed up the generation. The key is to change the forward diffusion into a non-Markovian process while keeeping the reverse process Markovian but with fewer steps.
 
+- DDIMs defined a family of inference distributions, indexed by a real vector $$\sigma \in \mathbb{R}^{L}_{\geq 0}$$ such as :
 
+$$q_{\sigma}(x_{1:T} \mid x_{0}) = q_{\sigma}(x_{T} \mid x_{0}) \prod_{t=1}^{T} q_{\sigma}(x_{t-1} \mid x_{t}, x_{0})$$
+
+$$q_{\sigma}(x_{T} \mid x_{0}) = \mathcal{N}\left( \sqrt{\bar{\alpha}_T} \, x_0, (1 - \bar{\alpha}_T) \, \mathbf{I} \right)$$
+
+And for all t > 1 :
+
+$$q_{\sigma}(x_{t-1} \mid x_{t}, x_{0}) = \mathcal{N}\left( \sqrt{\bar{\alpha}_{t-1}} \, x_0 + \sqrt{1 - \bar{\alpha}_{t-1} - \sigma_{t}^{2}} \, \frac{x_{t} - \sqrt{\bar{\alpha}_{t}} \, x_{0}}{\sqrt{1 - \bar{\alpha}_{t}} }, \sigma_{t}^{2} \, \mathbf{I} \right)$$
+
+> Note that such a family ensure , for all t, $$q_{\sigma}(x_{t} \mid x_{0}) = \mathcal{N}\left( \sqrt{\bar{\alpha}_t} \, x_0, (1 - \bar{\alpha}_t) \, \mathbf{I} \right)$$.
+
+- This forward process, derived from [Bayes theorem](#bayes-theorem), is Gaussian but no longer Markovian. It depends on $$x_{0}$$ :
+
+$$ q(x_{t} \mid x_{t-1}, x_{0}) = \frac{q(x_{t-1} \mid x_{t}, x_{0}) \, q(x_{t} \mid x_{0})}{q(x_{t-1} \mid x_{0})} $$
+
+- The reverse process $$q_{\sigma}(x_{t-1} \mid x_{t}, x_{0})$$ is approximated by $$p_{\theta}(x_{t-1} \mid x_{t})$$. The training process stay the same than for DDPM, so pre-trained DDPM models can be used for DDIM. The only difference lies in the sampling process, that becomes :
+
+<div style="text-align:center">
+<span style="color:#00478F">
+$$x_{t-1} = \sqrt{\bar{\alpha}_{t-1}} \, \frac{x_{t} - \sqrt{1 - \bar{\alpha}_t} \, \epsilon_{\theta}(x_t,t)}{\sqrt{\bar{\alpha}_t}} + \sqrt{1 - \bar{\alpha}_{t-1} - \sigma_{t}^{2}} \, x_{t} + \sigma_{t}^{2} \, \theta$$
+</span>
+</div>
+
+> With $$T$$ diffusion steps, the sampling procedure only use $$[T/S]$$ steps. DDIMs outperform DDPMs in terms of image generation when fewer iterations are considered. 
+
+Usually, we define $$ \sigma_{t}(\eta) = \eta \, \sqrt{\frac{1 - \bar{\alpha}_{t-1}}{1 - \bar{\alpha}_{t}}} \, \sqrt{1 - \frac{\bar{\alpha}_{t}}{\bar{\alpha}_{t-1}}}$$ where $$\eta \in \mathbb{R}_{\geq 0}$$ is an hyperparameter that we can directly control.
+
+> When $$\eta = 1$$, the forward process becomes Markovian, and the generative process becomes a DDPM. When $$\eta = 0$$, the forward process becomes deterministic given $$x_{t-1}$$ and $$x_t$$ exect for $$t = 1$$. The resulting model is an implicit probabilistic model.
 
 
 <!--
