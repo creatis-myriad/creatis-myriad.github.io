@@ -120,9 +120,9 @@ $$ q(x_{t} \mid x_{t-1}) = q(x_{t} \mid x_{t-1}, x_0) = \frac{q(x_{t-1} \mid x_{
 
 ### Reparameterization trick
 
-- Transform a stochastic node sampled from a parameterized distribution into a deterministic ones. 
+- Transform a stochastic node sampled from a parameterized distribution into a deterministic one. 
 - Allows backpropagation through such a stochastic node by turning it into deterministic node. 
-- Let's assume that $$x_t$$ is a point sampled from a parameterized gaussian distribution $$q(x_t)$$ with mean $$\mu$$ and variance $$\sigma^2$$. 
+- Let's assume that $$x_t$$ is a point sampled from a parameterized Gaussian distribution $$q(x_t)$$ with mean $$\mu$$ and variance $$\sigma^2$$. 
 - The following reparametrization tricks uses a standard normal distribution $$\mathcal{N}(0,\mathbf{I})$$ that is independent to the model, with $$\epsilon \sim \mathcal{N}(0,\mathbf{I})$$:
 
 $$ x_t = \mu + \sigma \cdot \epsilon$$
@@ -141,14 +141,14 @@ $$ H_{p} = -\int{p(x)\cdot \log\left(p(x)\right)}\,dx$$
 
 &nbsp;
 
-> The cross entropy measures the average amount of information you need to add to go from a given distribution $$p$$ to a reference distribution $$q$$
+> Cross entropy measures the average number of bits needed to encode an event when using a different probability distribution than the true distribution.
 
 &nbsp;
 
 $$H_{pq} = -\int{p(x)\cdot \log\left(q(x)\right)}\,dx = \mathbb{E}_{x \sim p} [\log(q(x))]$$
 
 
-- It can also been seen as a tool to quantify the extent to which a distribution differs from a reference distribution. It is thus strongly link to the Kullback–Leibler divergence measures as follow:
+- It can also be seen as a tool to quantify the extent to which a distribution differs from a reference distribution. It is thus strongly link to the Kullback–Leibler divergence measures as follow:
 
 $$\begin{align}
 D_{KL}(p \parallel q) &= H_{pq} - H_{p} \\
@@ -177,13 +177,13 @@ D_{KL}(p \parallel q) &= H_{pq} - H_{p} \\
 
 &nbsp;
 
-- Let define $$x_0$$ a point sampled from a real data distribution $$x_0 \sim q(X_0)$$. 
+- Let's define $$x_0$$ a point sampled from a real data distribution $$x_0 \sim q(X_0)$$. 
 
 - The forward diffusion process is a procedure where a small amount of Gaussian noise is added to the point sample $$x_0$$, producing a sequence of noisy samples $$x_1, \cdots , x_T$$.
 
 &nbsp;
 
-> The forward process of a probabilistic diffusion model is a Markov chain, i.e. the prediction at step $$\,t$$ only depends on the state at step $$\,t-1$$, that gradually adds gaussian noise to the data $$\,x_0$$. 
+> The forward process of a probabilistic diffusion model is a Markov chain, i.e. the prediction at step $$\,t$$ only depends on the state at step $$\,t-1$$, that gradually adds Gaussian noise to the data $$\,x_0$$. 
 
 &nbsp;
 
@@ -195,7 +195,7 @@ $$q(x_{1:T} \mid x_0) = \prod_{t=1}^{T}{q(x_t \mid x_{t-1})}$$
 
 <div style="text-align:center">
 <span style="color:#00478F">
-$$q(x_t \mid x_{t-1}) = \mathcal{N}\left((\sqrt{1 - \beta _t}) \, x_{t-1},\beta _t \, \textbf{I}\right)$$
+$$q(x_t \mid x_{t-1}) = \mathcal{N}\left(\sqrt{1 - \beta _t} \, x_{t-1},\beta _t \, \textbf{I}\right)$$
 </span>
 </div>
 
@@ -207,7 +207,7 @@ $$q(x_t \mid x_{t-1}) = \mathcal{N}\left((\sqrt{1 - \beta _t}) \, x_{t-1},\beta 
 
 $$0 < \beta_1 < \beta_2 < \cdots < \beta_T < 1$$
 
-- Based on the above equation, the two extrem cases can be easily derived: 
+- Based on the above equation, the two extreme cases can be easily derived: 
 
 $$\begin{align}
 & \text{if} \quad \beta_t=0 , \quad \text{then} \quad q(x_t \mid x_{t-1})=x_{t-1} \\
@@ -218,11 +218,11 @@ $$\begin{align}
 
 - A nice property of the forward process is that we can sample $$x_t$$ at any arbitrary time step $$t$$ in a closed form using [reparametrization trick](#reparameterization-trick) and the property of the [sum of normally distributed variables](#sum-of-normally-distributed-variables), as shown below:
 
-$$q(x_t \mid x_{t-1}) = \mathcal{N}\left((\sqrt{1 - \beta _t}) \, x_{t-1},\beta _t \, \textbf{I}\right)$$
+$$q(x_t \mid x_{t-1}) = \mathcal{N}\left(\sqrt{1 - \beta _t} \, x_{t-1},\beta _t \, \textbf{I}\right)$$
 
-$$x_t = (\sqrt{1 - \beta_t}) \, x_{t-1} + \sqrt{\beta_t} \, \epsilon_{t-1}$$
+$$x_t = \sqrt{1 - \beta_t} \, x_{t-1} + \sqrt{\beta_t} \, \epsilon_{t-1}$$
 
-$$\quad$$ Let define <span style="color:#00478F">$$\alpha_t = 1 - \beta_t$$</span>
+$$\quad$$ Let's define <span style="color:#00478F">$$\alpha_t = 1 - \beta_t$$</span>
 
 $$x_t = \sqrt{\alpha_t} \, x_{t-1} + \sqrt {1-\alpha_t} \, \epsilon_{t-1}$$
 
@@ -264,9 +264,9 @@ $$q(x_t \mid x_{0}) = \mathcal{N}\left( \sqrt{\bar{\alpha}_t} \, x_0, (1 - \bar{
 
 &nbsp;
 
-> When $$\, T \rightarrow \infty$$, $$\, \beta_t \rightarrow 1$$, $$\, \alpha_t \rightarrow 0$$, thus $$\, \bar{\alpha}_t \rightarrow 0$$ and $$\, x_T \sim \mathcal{N(0,\mathbf{I})}$$. 
+> When $$\, T \rightarrow \infty$$, $$\, \beta_t \rightarrow 1$$, $$\, \alpha_t \rightarrow 0$$, thus $$\, \bar{\alpha}_t \rightarrow 0$$ and $$\, x_T \sim \mathcal{N}(0,\mathbf{I})$$. 
 
-> This means that $$x_T$$ is equivalent to a pure noise from a Gaussian distribution. We have therefore defined a forward process called a diffusion probabilistic process that introduce slowly noise into an image. 
+> This means that $$x_T$$ is equivalent to a pure noise from a Gaussian distribution. We have therefore defined a forward process called a diffusion probabilistic process that slowly introduce noise into a signal. 
 
 &nbsp;
 
@@ -299,9 +299,9 @@ $$\alpha _t = \frac{f(t)}{f(0)}, \quad f(t) = cos\left(\frac{\frac{t}{T} + s}{1+
 &nbsp;
 
 
-- If we are able to reverse the diffusion process from $$q(x_{t-1} \mid x_t)$$, we will be able to generate a sample $$x_0$$ from a Gaussian noise input $$x_T \sim \mathcal{N}(0,\mathbf{I})$$ !
+- If we are able to reverse the diffusion process from $$q(x_{t-1} \mid x_t)$$, we would be able to generate a sample $$x_0$$ from a Gaussian noise input $$x_T \sim \mathcal{N}(0,\mathbf{I})$$ !
 
-- Unfortunately, using the [Bayes theorem](#bayes-theorem) and keeping in mind that $$q(x_t)$$ is an unknown, one can easy see that $$q(x_{t-1} \mid x_t)$$ is intractable.
+- Following the [Bayes theorem](#bayes-theorem) and considering that $$q(x_t)$$ is an unknown, one can easily see that $$q(x_{t-1} \mid x_t)$$ is intractable.
 
 $$q(x_{t-1} \mid x_t) = \frac{q(x_{t} \mid x_{t-1}) \, q(x_{t-1})}{q(x_{t})}$$
 
@@ -352,9 +352,7 @@ $$p_{\theta}(x_{0:T}) = p_{\theta}(x_T) \, \prod_{t=1}^{T} p_{\theta}(x_{t-1} \m
 
 &nbsp;
 
-> $$\mu _{\theta}(x_t,t)$$ and $$\, \Sigma_{\theta}(x_t,t)$$ depend not only on $$x_t$$ but also on $$\,t$$. Those parameters that need to be estimated are thus time-dependent !
-
-<!-- ![](/collections/images/ddpm/reverseProcess.jpg) -->
+> $$\mu _{\theta}(x_t,t)$$ and $$\, \Sigma_{\theta}(x_t,t)$$ depend not only on $$x_t$$ but also on $$\,t$$.
 
 &nbsp;
 
@@ -366,7 +364,7 @@ $$p_{\theta}(x_{0:T}) = p_{\theta}(x_T) \, \prod_{t=1}^{T} p_{\theta}(x_{t-1} \m
 
 &nbsp;
 
-- The loss function designed to learn the reverse process involves minimizing the cross-entropy between the target distribution $$q(X_0)$$ and the approximated distribution $$p_{\theta}(X_0)$$
+- The reverse process loss function minimizes the cross-entropy between the target distribution $$q(X_0)$$ and the approximated distribution $$p_{\theta}(X_0)$$
 
 $$H(q,p_{\theta}) = - \mathbb{E}_{x_0 \sim q}\left[\log( p_{\theta}(x_0))\right]$$
 
@@ -393,7 +391,7 @@ H(q,p_{\theta})  & \leq - \mathbb{E}_{x_0 \sim q}\,\mathbb{E}_{x_{1:T} \sim q(x_
 & \leq \mathbb{E}_{x_{0:T} \sim q(x_{0:T})}\left[ \log\left(\frac{q(x_{1:T} \mid x_0)}{p_{\theta}(x_{0:T})}\right) \right] \\
 \end{align}$$
 
-- We define the Variational Lower Bound (VLB) as 
+- Since by definition, the Variational Lower Bound (VLB) is
 
 <div style="text-align:center">
 <span style="color:#00478F">
@@ -403,9 +401,9 @@ $$\mathcal{L}_{VLB} = \mathbb{E}_{x_{0:T} \sim q(x_{0:T})}\left[ \log\left(\frac
 
 &nbsp;
 
-- Since $$H(q,p_{\theta})$$ is positive, minimizing $$\mathcal{L}_{VLB}$$ is equivalent to minimize $$H(q,p_{\theta})$$.
+$$\quad$$ and since $$H(q,p_{\theta})$$ is positive, minimizing $$\mathcal{L}_{VLB}$$ is equivalent to minimize $$H(q,p_{\theta})$$.
 
-- To convert each term in the equation to be analytically computable, the minimization of $$\mathcal{L}_{VLB}$$ can be further rewritten to be a combination of several KL-divergence and entropy terms, as follows: 
+- The minimization of $$\mathcal{L}_{VLB}$$ can be further rewritten as the combination of several KL-divergence and entropy terms, as follows: 
 
 $$ \begin{align} 
 \mathcal{L}_{VLB}  & = \mathbb{E}_{x_{0:T} \sim q}\left[\log\left( \frac{q(x_{1:T} \mid x_0)}{p_{\theta}(x_{0:T})}\right)\right] \\ 
@@ -418,7 +416,7 @@ $$ \begin{align}
 
 &nbsp;
 
-- Using the [markov chain property](#markov-chain) with Bayes, the above expression can be reformulated as:
+- Using the [markov chain properties](#markov-chain-properties) with Bayes, the above expression can be reformulated as:
 
 $$ \begin{align} 
 \mathcal{L}_{VLB}  & = \mathbb{E}_{x_{0:T} \sim q} \left[-\log \left(p_{\theta}(x_{T}) \right) + \sum^T_{t=2} \log \left( \frac{ q(x_{t-1} \vert x_t,x_0)q(x_t \mid x_0)}{p_{\theta}(x_{t-1} \vert x_t)q(x_{t-1} \mid x_0)} \right) + \log \left( \frac{ q(x_1 \mid x_0)}{p_{\theta}(x_0 \mid x_1)} \right) \right] \\
@@ -457,15 +455,13 @@ $$ \begin{align}
 
 &nbsp;
 
-**$$\mathcal{L}_T:$$ Constant Term**
+**$$\mathcal{L}_T$$: Constant Term**
 
-- $$\mathcal{L}_T$$ is a constant matrix since $$x_0$$ is known, the forward process is deterministic, $$q(x_T \mid x_0)$$ is a constant and $$p_\theta(x_{T})$$ is a sample from a known Gaussian distribution.
-
-- $$\mathcal{L}_T$$ is thus ignored during the training process.
+- Since the forward variances $$\beta_t$$ are fixed as constants, the approximate posterior $$q$$ has no learnable parameters, so $$\mathcal{L}_T$$ is a constant during training and can be ignored.
 
 &nbsp;
 
-**$$\mathcal{L}_0:$$ Reconstruction term**
+**$$\mathcal{L}_0$$: Reconstruction term**
 
 - $$\mathcal{L}_0$$ is the likelihood of a Gaussian distribution of the form $$\mathcal{N}(\mu _{\theta}(x_1,1),\Sigma _{\theta}(x_1,1))$$
 
@@ -491,7 +487,7 @@ $$
 
 &nbsp;
 
-**$$\mathcal{L}_t:$$ Stepwise denoising terms**
+**$$\mathcal{L}_t$$: Stepwise denoising terms**
 
 - Recall that $$p_{\theta}(x_{t-1} \vert x_t) = \mathcal{N}(\mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t,t))$$ and $$q(x_{t-1} \vert x_t, x_0) = \mathcal{N}(\tilde{\mu}_t(x_t,x_0), \tilde{\beta}_t \cdot \textbf{I})$$, <spam style="color:#00478F">the idea is first to focus on the mean terms</spam> and train a neural network $$\mu_{\theta}$$ to predict $$\tilde{\mu}_t = \frac{1}{\sqrt{\alpha_t}} (x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}} \epsilon _t)$$
 
@@ -614,13 +610,13 @@ $$\quad$$ where <span style="color:#00478F">$$\bar{\alpha}_t = \prod_{k=1}^{t}{\
 
 - In diffusion model, the deep learning architecture aims to estimate $$\epsilon_t$$ from $$x_t$$ at time $$t$$. The estimated noise is denoted $$\epsilon_{\theta}(x_t,t)$$.
 
-- Recall that $$p_{\theta}(x_{t-1} \vert x_t) = \mathcal{N}(\mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t,t))$$ with $$\mu_{\theta}(x_t,t) = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\right) \epsilon_{\theta}(x_t,t)$$.
+- Recall that $$p_{\theta}(x_{t-1} \vert x_t) = \mathcal{N}(\mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t,t))$$ with $$\mu_{\theta}(x_t,t) = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\epsilon_{\theta}(x_t,t)\right)$$.
 
 - Making the assumption that $$\Sigma_{\theta}(x_t,t)$$ is equal to $$\sigma^2_t  \, \mathbf{I}$$ (see previous section), the above expression can be rewritten as:
 
 <div style="text-align:center">
 <span style="color:#00478F">
-$$x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\right) \epsilon_{\theta} + \sigma_t \, \epsilon$$
+$$x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\epsilon_{\theta}\right) + \sigma_t \, \epsilon$$
 </span>
 </div>
 
@@ -658,7 +654,7 @@ figure below.
 
 <div style="text-align:center">
 <span style="color:#00478F">
-$$x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\right) \epsilon_{\theta} + \sigma_t \, \epsilon$$
+$$x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\epsilon_{\theta}\right) + \sigma_t \, \epsilon$$
 </span>
 </div>
 
@@ -684,9 +680,9 @@ $$\Sigma_{\theta} (x_t, t) = exp \left(\mathbf{v} log(\beta_t)+ (1- \mathbf{v}) 
 
 $$\mathcal{L}_{hybrid} = \mathcal{L}_{simple} + \lambda \mathcal{L}_{VLB}$$
 
-- $$\lambda = 0.001$$ to prevent $$\mathcal{L}_{VLB}$$ from overwhelming $$\mathcal{L}_{simple}$$ and applied a stop gradient on $$\mu_{\theta}(x_t,t)$$ in the $$\mathcal{L}_{VLB}$$ term such that $$\mathcal{L}_{VLB}$$ only guides the learning of $$\Sigma_{\theta}(x_t,t)$$. 
+- $$\lambda = 0.001$$ to prevent $$\mathcal{L}_{VLB}$$ from dominating $$\mathcal{L}_{simple}$$ and applied a stop gradient on $$\mu_{\theta}(x_t,t)$$ in the $$\mathcal{L}_{VLB}$$ term such that $$\mathcal{L}_{VLB}$$ only guides the learning of $$\Sigma_{\theta}(x_t,t)$$. 
 
-> The use of a time-averaging smoothed version of $$\mathcal{L}_{VLB}$$ was key to stabelize the optimization of $$\mathcal{L}_{VLB}$$ due to the presence of noisy gradients coming from this term.
+> The use of a time-averaging smoothed version of $$\mathcal{L}_{VLB}$$ was key to stabilize the optimization of $$\mathcal{L}_{VLB}$$ due to the presence of noisy gradients coming from this term.
 
 &nbsp;
 
@@ -694,7 +690,7 @@ $$\mathcal{L}_{hybrid} = \mathcal{L}_{simple} + \lambda \mathcal{L}_{VLB}$$
 
 - It is very slow to generate a sample from DDPM by following the Markov chain of the reverse process as $$T$$ can be up to one or a few thousand steps
 
-- Producing a single sample can takes several minutes on a modern GPU.
+- Producing a single sample takes several minutes on a modern GPU.
 
 - One simple way to improve this is to run a strided sampling scheduler.
 
@@ -705,7 +701,7 @@ $$\mathcal{L}_{hybrid} = \mathcal{L}_{simple} + \lambda \mathcal{L}_{VLB}$$
 
 &nbsp;
 
-- Another algorithm, DDIM named [Denoising Diffusion Implicit Model](https://arxiv.org/abs/2010.02502), modified the forward diffusion process making it non-Markovian to speed up the generation. The key is to change the forward diffusion into a non-Markovian process while keeeping the reverse process Markovian but with fewer steps.
+- Another algorithm, DDIM named [Denoising Diffusion Implicit Model](https://arxiv.org/abs/2010.02502), modifies the forward diffusion process making it non-Markovian to speed up the generation. The key is to change the forward diffusion into a non-Markovian process while keeping the reverse process Markovian but with fewer steps.
 
 - DDIMs defined a family of inference distributions, indexed by a real vector $$\sigma \in \mathbb{R}^{L}_{\geq 0}$$ such as :
 
