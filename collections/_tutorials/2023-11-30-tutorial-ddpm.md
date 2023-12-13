@@ -499,7 +499,7 @@ $$
 
 <div style="text-align:center">
 <span style="color:#00478F">
-$$\mu_{\theta}(x_t,t) = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\right) \epsilon_{\theta}(x_t,t)$$
+$$\mu_{\theta}(x_t,t) = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\epsilon_{\theta}(x_t,t)\right)$$
 </span>
 </div>
 
