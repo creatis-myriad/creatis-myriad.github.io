@@ -469,7 +469,7 @@ $$ \begin{align}
 
 $$p _{\theta}(x_0 \mid x_1) = \prod^{D}_{i=1} \int_{\delta - (x_0^i)}^{\delta + (x_0^i)}{\mathcal{N}(x_0,\mu_{\theta}(x_1,1), \Sigma_{\theta} (x_1,1)) \, dx} $$
 
-$$\quad$$ where $$D$$ is the data dimensionality of sample $$x_0$$ and $$i$$ indicates the extraction of one coordinate
+$$\quad$$ where $$D$$ is the data dimensionality and $$i$$ indicates the extraction of one coordinate.
 
 $$\delta _{+} (x) = \begin{cases}
 \infty & \text{if $x = 1$} \\
@@ -493,7 +493,7 @@ $$
 
 &nbsp;
 
-> Because $$x_t$$ is available as input at training time, we can reparameterize the Gaussian noise term instead to make it predict $$\epsilon_t$$ from the input $$x_t$$ at time step
+> Because $$x_t$$ is available at training time, we can reparameterize the Gaussian noise term (a neural network) to make it predict $$\epsilon_t$$ from the input $$x_t$$
 
 &nbsp;
 
@@ -526,7 +526,7 @@ $$\mathcal{L}_t = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \fra
 
 &nbsp;
 
-- The authors from a [seminal paper](https://arxiv.org/abs/2006.11239) of the DDPM method proposed to fix $$\{\beta _t\}^T_{t=1}$$ as constants for simplicity's sake.
+- The authors from a [seminal paper](https://arxiv.org/abs/2006.11239) of the DDPM method proposed to fix $$\{\beta _t\}^T_{t=1}$$ as constants for the sake of simplicity.
 
 - Instead of making $$\beta_t$$ learnable, they set $$\Sigma _{\theta} (x_t ,t) = \sigma_t^2 \, \mathbf{I}$$, where $$\sigma_t$$ is not learned but set to $$\beta_t$$ or $$\bar{\beta}_t = \frac{1 - \bar{\alpha}_{t-1}}{1-\bar{\alpha}_t}\cdot \beta_t$$.
 
@@ -604,11 +604,11 @@ $$\quad$$ where <span style="color:#00478F">$$\bar{\alpha}_t = \prod_{k=1}^{t}{\
 
 &nbsp;
 
-> It is thus possible to generate a random image $$\,x_t$$ of the input image $$\,x_0$$ at any time $$\,t$$ of the diffusion process with a known noise $$\,\epsilon_t \in \mathcal{N}(0,\mathbf{I})$$. 
+> It is thus possible to generate a random image $$\,x_t$$ of the input image $$\,x_0$$ at any time $$\,t$$ of the diffusion process with a known noise $$\,\epsilon_t \in \mathcal{N}(0,\mathbf{I})$$ from the input image. 
 
 &nbsp;
 
-- In diffusion model, the deep learning architecture aims to estimate $$\epsilon_t$$ from $$x_t$$ at time $$t$$. The estimated noise is denoted $$\epsilon_{\theta}(x_t,t)$$.
+- For diffusion models, the deep learning architecture aims to estimate $$\epsilon_t$$ from $$x_t$$ at time $$t$$. The estimated noise is denoted $$\epsilon_{\theta}(x_t,t)$$.
 
 - Recall that $$p_{\theta}(x_{t-1} \vert x_t) = \mathcal{N}(\mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t,t))$$ with $$\mu_{\theta}(x_t,t) = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}}\epsilon_{\theta}(x_t,t)\right)$$.
 
