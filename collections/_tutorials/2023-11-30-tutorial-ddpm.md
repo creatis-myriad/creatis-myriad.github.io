@@ -487,7 +487,7 @@ $$
 
 &nbsp;
 
-**$$\mathcal{L}_t$$: Stepwise denoising terms**
+**$$\mathcal{L}_{t-1}$$: Stepwise denoising terms**
 
 - Recall that $$p_{\theta}(x_{t-1} \vert x_t) = \mathcal{N}(\mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t,t))$$ and $$q(x_{t-1} \vert x_t, x_0) = \mathcal{N}(\tilde{\mu}_t(x_t,x_0), \tilde{\beta}_t \cdot \textbf{I})$$, <spam style="color:#00478F">the idea is first to focus on the mean terms</spam> and train a neural network $$\mu_{\theta}$$ to predict $$\tilde{\mu}_t = \frac{1}{\sqrt{\alpha_t}} (x_t - \frac{1-\alpha_t}{\sqrt{1- \bar{\alpha}_t}} \epsilon _t)$$
 
@@ -509,7 +509,7 @@ $$\mu_{\theta}(x_t,t) = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha_t}{
 
 
 $$ \begin{align}
-\mathcal{L}_t &= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{1}{ 2 \|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \tilde \mu _t (x_t , x_0) - \mu _{\theta}(x_t , t) \|^2_2 \right]\\
+\mathcal{L}_{t-1} &= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{1}{ 2 \|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \tilde \mu _t (x_t , x_0) - \mu _{\theta}(x_t , t) \|^2_2 \right]\\
 &= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{1}{ 2 \|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha _t}{\sqrt{1- \bar \alpha _t}} \epsilon_t \right) -  \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{1-\alpha _t}{\sqrt{1- \bar \alpha _t}} \epsilon_{\theta}(x_t , t) \right) \|^2_2 \right]\\
 &= \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \epsilon_t  - \epsilon _{\theta}(x_t , t)\|^2_2 \right]\\
 \end{align}$$
@@ -520,7 +520,7 @@ $$ \begin{align}
 
 <div style="text-align:center">
 <span style="color:#00478F">
-$$\mathcal{L}_t = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \epsilon_t  - \epsilon_{\theta}(x_t, t)\|^2_2 \right]$$
+$$\mathcal{L}_{t-1} = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha _t)^2}{ 2 \alpha _t (1- \bar \alpha_t)\|\Sigma _{\theta} (x_t , t) \|^2_2} \, \| \epsilon_t  - \epsilon_{\theta}(x_t, t)\|^2_2 \right]$$
 </span>
 </div>
 
@@ -532,14 +532,14 @@ $$\mathcal{L}_t = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \fra
 
 - The stepwise denoising loss function becomes:
 
-$$ \mathcal{L}_t = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha_t)^2}{ 2 \alpha_t (1- \bar \alpha_t)\sigma_{t}^2} \, \| \epsilon_t - \epsilon _{\theta}(x_t, t)\|^2 \right]$$
+$$ \mathcal{L}_{t-1} = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}} \left[ \frac{(1-\alpha_t)^2}{ 2 \alpha_t (1- \bar \alpha_t)\sigma_{t}^2} \, \| \epsilon_t - \epsilon _{\theta}(x_t, t)\|^2 \right]$$
 
 
 - They also found that simplifying the loss function by ignoring the weighting term improved the model training, making it less noisy:
 
 <div style="text-align:center">
 <span style="color:#00478F">
-$$ \mathcal{L}_t^{simple} = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}, t \sim [1,T]} \left[ \| \epsilon_t - \epsilon _{\theta}(x_t,t)\|^2 \right]$$
+$$ \mathcal{L}_{t-1}^{simple} = \mathbb{E}_{x_0 \sim q, \epsilon \sim \mathcal{N}, t \sim [1,T]} \left[ \| \epsilon_t - \epsilon _{\theta}(x_t,t)\|^2 \right]$$
 </span>
 </div>
 
