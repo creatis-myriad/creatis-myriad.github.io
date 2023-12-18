@@ -39,7 +39,7 @@ categories: diffusion, model
 ### Overview of diffusion models (DM)
 
 - DM are a class of generative models such as GAN, [normalizing flow](http://127.0.0.1:4000/tutorials/2023-01-05-tutorial_normalizing_flow.html) or [variational auto-encoders](http://127.0.0.1:4000/tutorials/2022-09-12-tutorial-vae.html). 
-- DM defines a Markov chain of diffusion steps to slowly add random noise to data.
+- DM define a Markov chain of diffusion steps to slowly add random noise to data.
 - The model then learns to reverse the diffusion process to construct data samples from noise.
 - The figure below gives an overview of the Markov chain involved in the DM formalism, where the forward (reverse) diffusion process is the key element in generating a sample by slowly adding (removing) noise.
 
@@ -49,8 +49,8 @@ categories: diffusion, model
 
 ### Diffusion models vs generative models
 
-- DM belongs to the generative models family.
-- DM has demonstrated effectiveness in generating high-quality samples.
+- DM belong to the generative models family.
+- DM have demonstrated effectiveness in generating high-quality samples.
 - Unlike GAN, VAEs and flow-based models, the latent space involved in the DM formalism has high-dimensionality corresponding to the dimensionality of the original data.
 - The figure below gives and overview of the different types of generative models:
 
@@ -123,7 +123,7 @@ $$ q(x_{t} \mid x_{t-1}) = q(x_{t} \mid x_{t-1}, x_0) = \frac{q(x_{t-1} \mid x_{
 - Transform a stochastic node sampled from a parameterized distribution into a deterministic one. 
 - Allows backpropagation through such a stochastic node by turning it into deterministic node. 
 - Let's assume that $$x_t$$ is a point sampled from a parameterized Gaussian distribution $$q(x_t)$$ with mean $$\mu$$ and variance $$\sigma^2$$. 
-- The following reparametrization tricks uses a standard normal distribution $$\mathcal{N}(0,\mathbf{I})$$ that is independent to the model, with $$\epsilon \sim \mathcal{N}(0,\mathbf{I})$$:
+- The following reparametrization trick uses a standard normal distribution $$\mathcal{N}(0,\mathbf{I})$$ that is independent of the model, with $$\epsilon \sim \mathcal{N}(0,\mathbf{I})$$:
 
 $$ x_t = \mu + \sigma \cdot \epsilon$$
 
@@ -148,7 +148,7 @@ $$ H_{p} = -\int{p(x)\cdot \log\left(p(x)\right)}\,dx$$
 $$H_{pq} = -\int{p(x)\cdot \log\left(q(x)\right)}\,dx = \mathbb{E}_{x \sim p} [\log(q(x))]$$
 
 
-- It can also be seen as a tool to quantify the extent to which a distribution differs from a reference distribution. It is thus strongly link to the Kullback–Leibler divergence measures as follow:
+- It can also be seen as a tool to quantify the extent to which a distribution differs from a reference distribution. It is thus strongly linked to the Kullback–Leibler divergence measure as follows:
 
 $$\begin{align}
 D_{KL}(p \parallel q) &= H_{pq} - H_{p} \\
@@ -242,7 +242,7 @@ $$x_t \sim \mathcal{N}\left(\sqrt{\alpha_t \alpha_{t-1}} \, x_{t-2}, 1 - \alpha_
 
 $$x_t = \sqrt{\alpha_t \alpha_{t-1}} \, x_{t-2} + \sqrt{1-\alpha_t \alpha_{t-1}} \, \bar{\epsilon}_{t-2}$$
 
-$$\quad$$ One can repeat this process recursively until reaching and expression of $$x_t$$ from $$x_0$$:
+$$\quad$$ One can repeat this process recursively until reaching an expression of $$x_t$$ from $$x_0$$:
 
 $$x_t = \sqrt{\alpha_t \cdots \alpha_1} \, x_0 + \sqrt{1 - \alpha_t \cdots \alpha_1} \, \bar \epsilon _0 $$
 
@@ -401,7 +401,7 @@ $$\mathcal{L}_{VLB} = \mathbb{E}_{x_{0:T} \sim q(x_{0:T})}\left[ \log\left(\frac
 
 &nbsp;
 
-$$\quad$$ and since $$H(q,p_{\theta})$$ is positive, minimizing $$\mathcal{L}_{VLB}$$ is equivalent to minimize $$H(q,p_{\theta})$$.
+$$\quad$$ and since $$H(q,p_{\theta})$$ is positive, minimizing $$\mathcal{L}_{VLB}$$ is equivalent to minimizing $$H(q,p_{\theta})$$.
 
 - The minimization of $$\mathcal{L}_{VLB}$$ can be further rewritten as the combination of several KL-divergence and entropy terms, as follows: 
 
@@ -433,7 +433,7 @@ $$ \begin{align}
 
 &nbsp;
 
-- The variational lower bound can thus be rewritten as follow:
+- The variational lower bound can thus be rewritten as follows:
 
 <div style="text-align:center">
 <span style="color:#00478F">
@@ -465,7 +465,7 @@ $$ \begin{align}
 
 - $$\mathcal{L}_0$$ is the likelihood of a Gaussian distribution of the form $$\mathcal{N}(\mu _{\theta}(x_1,1),\Sigma _{\theta}(x_1,1))$$
 
-- $$p_{\theta}(x_0 \mid x_1)$$ is computed as follow:
+- $$p_{\theta}(x_0 \mid x_1)$$ is computed as follows:
 
 $$p _{\theta}(x_0 \mid x_1) = \prod^{D}_{i=1} \int_{\delta - (x_0^i)}^{\delta + (x_0^i)}{\mathcal{N}(x_0,\mu_{\theta}(x_1,1), \Sigma_{\theta} (x_1,1)) \, dx} $$
 
@@ -592,7 +592,7 @@ $$\mu _{\theta} (x_t , t) = \frac{1}{\sqrt{\bar \alpha_t}} (x_t - \frac{1-\alpha
 
 ## **Deep learning architecture**
 
-- Even if the key modeling of diffusion models is the Markov chain, it is possible to directly expressed $$x_t$$ according to $$x_0$$ using the following equation:
+- Even if the key modeling of diffusion models is the Markov chain, it is possible to directly express $$x_t$$ according to $$x_0$$ using the following equation:
 
 <div style="text-align:center">
 <span style="color:#00478F">
@@ -648,7 +648,7 @@ figure below.
 
 &nbsp;
 
-- During the reverse process, it is needed to compute the set of samples $$x_T, x_{T-1}, \cdots, x_{0}$$ in a recursive manner. 
+- During the reverse process, the set of samples $$x_T, x_{T-1}, \cdots, x_{0}$$ have to be computed in a recursive manner. 
 
 - Starting from $$x_T \sim \mathcal{N}(0,\mathbf{I})$$ and keeping in mind that $$p_{\theta}(x_{t-1} \mid x_t) = \mathcal{N}\left( \mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t,t) \right)$$ this is done through the following relation:
 
