@@ -201,7 +201,7 @@ $$q(x_t \mid x_{t-1}) = \mathcal{N}\left(\sqrt{1 - \beta _t} \, x_{t-1},\beta _t
 
 &nbsp;
 
-- The step sizes are controlled by a variance schedule $$\{ \beta_t \in (0,1) \}_{t=1}^T$$
+- The step sizes are controlled by a variance schedule $$\{ \beta_t \in [0,1] \}_{t=1}^T$$
 
 - $$\beta_t$$ becomes increasingly larger as the sample becomes noisier, __i.e.__
 
@@ -266,15 +266,15 @@ $$q(x_t \mid x_{0}) = \mathcal{N}\left( \sqrt{\bar{\alpha}_t} \, x_0, (1 - \bar{
 
 > When $$\, T \rightarrow \infty$$, $$\, \beta_t \rightarrow 1$$, $$\, \alpha_t \rightarrow 0$$, thus $$\, \bar{\alpha}_t \rightarrow 0$$ and $$\, x_T \sim \mathcal{N}(0,\mathbf{I})$$. 
 
-> This means that $$x_T$$ is equivalent to a pure noise from a Gaussian distribution. We have therefore defined a forward process called a diffusion probabilistic process that slowly introduce noise into a signal. 
+> This means that $$x_T$$ is equivalent to pure noise from a Gaussian distribution. We have therefore defined a forward process called a diffusion probabilistic process that slowly introduces noise into a signal.
 
 &nbsp;
 
 ### How to define the variance scheduler?
 
-- The orignial article set the forward variances $$\{\beta_t \in (0,1) \}_{t=1}^T$$ to be a sequence of linearly increasing constants. 
+- The original article set the forward variances $$\{\beta_t \in (0,1) \}_{t=1}^T$$ to be a sequence of linearly increasing constants. 
 
-- Forward variances are chosen to be relatively small compared to data scaled to [-1,1]. This ensure that reverse and forward process maintain approximately the same functionnal form.
+- Forward variances are chosen to be relatively small compared to data scaled to [-1,1]. This ensures that reverse and forward processes maintain approximately the same functionnal form.
 
 - More recently, a cosine scheduler has been proposed to improve results. 
 
@@ -282,7 +282,7 @@ $$\alpha _t = \frac{f(t)}{f(0)}, \quad f(t) = cos\left(\frac{\frac{t}{T} + s}{1+
 
 - The variances $$\beta _t$$ can be deducted from this definition as $$\beta_t = 1 - \frac{\bar{\alpha_t}}{\bar{\alpha_{t-1}}}$$ 
 
-- In pactice $$\beta_t $$ is clipped to be no larger than $$0,999$$ to prevent singularities for $$t \rightarrow T$$.
+- In practice $$\beta_t $$ is clipped to be no larger than $$0,999$$ to prevent singularities for $$t \rightarrow T$$.
 
 ![](/collections/images/ddpm/schedules.jpg)
 
