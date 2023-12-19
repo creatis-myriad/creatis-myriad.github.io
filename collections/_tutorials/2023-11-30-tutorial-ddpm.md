@@ -18,7 +18,7 @@ categories: diffusion, model
   - [Sum of normally distributed variables](#sum-of-normally-distributed-variables)
   - [Bayes theorem](#bayes-theorem)
   - [Conditional probability theorem](#conditional-probability-theorem)
-  - [Mariginal theorem](#marginal-theorem)
+  - [Marginal theorem](#marginal-theorem)
   - [Markov chain properties](#markov-chain)
   - [Reparameterization trick](#reparameterization-trick) 
   - [Cross entropy](#cross-entropy)    
@@ -374,7 +374,7 @@ $$H(q,p_{\theta}) = - \mathbb{E}_{x_0 \sim q}\left[\log( p_{\theta}(x_0))\right]
 
 &nbsp;
 
-- $$p_{\theta}(X_0)$$ depends on $$X_1, X_2, \dots, X_T$$. Thanks to the [mariginal theorem](#marginal-theorem), the above expression can be rewritten as:
+- $$p_{\theta}(X_0)$$ depends on $$X_1, X_2, \dots, X_T$$. Thanks to the [marginal theorem](#marginal-theorem), the above expression can be rewritten as:
 
 $$\begin{align} 
 H(q,p_{\theta})  & = - \mathbb{E}_{x_0 \sim q}\left[\log\left(\int p_{\theta}(x_{0:T}) \,d_{x_{1:T}}\right)\right] \\
