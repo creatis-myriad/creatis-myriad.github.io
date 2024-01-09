@@ -12,99 +12,103 @@ pdf: "https://arxiv.org/pdf/2112.10752.pdf"
 
 # Notes
 
-* Here is a useful link: [repo](https://github.com/CompVis/latent-diffusion)
+* Code is available on this [GitHub repo](https://github.com/CompVis/latent-diffusion)
 
 
 # Highlights
 
-* DEtection TRansformer (DETR) is a new transformer-based model to perform object detection in an end-to-end fashion.
-* The main idea of the paper is to force unique predictions via bipartite matching that finds the optimal assignment between the predicted bounding boxes and the ground truth, avoiding the use of surrogate components or post-processing like non-maximum suppression or anchors.
-* It combines a CNN-based feature extraction with a transformer encoder-decoder architecture[^1].
-* Code is available on this [GitHub repo](https://github.com/facebookresearch/detr).
+* Diffusion models (DMs) are applied in the latent space of powerfull pretrained autoencoders
+* Allows to reach a good compromise between complexity reduction and details preservation
+* Introduce cross-attention layers into the model architecture for general conditioning inputs such as text
+
+* The model significantly reduces computational requirement compared to pixel-based DMs
+* The model achieves new SOTA for image inpainting and class-conditional image synthesis
+* The model achieves highly competitive results on text-to-image synthesis, unconditional image generation and super-resolution
+
 
 &nbsp;
 
 # Introduction
 
-The goal of object detection is to predict a set of bounding boxes and category labels for each object of interest. Modern detectors address this set prediction task in an indirect way, by defining surrogate regression and classification problems on a large set of proposals, anchors, or window centers. Their performances are significantly influenced by postprocessing steps to collapse near-duplicate predictions, by the design of the anchor sets and by the heuristics that assign target boxes to anchors.
+* DMs are computationally demanding since it requires repeated  function evaluation in the high-dimensional space of RGB images
 
-The authors propose to simplify this pipeline and avoid surrogate tasks by a direct set prediction approach.
+![](/collections/images/ddpm/ddpm_overview_complete.jpg)
 
-# Model architecture
+<!--
+&nbsp;
 
-<div style="text-align:center">
-<img src="/collections/images/detr/architecture.jpg" width=800></div>
-<p style="text-align: center;font-style:italic">Figure 1. High-level overview of DETR architecture.</p>
-
-DETR model is composed of 4 main parts :
-* a CNN backbone feature extractor
-* a transformer encoder that acts on the features extracted by the backbone CNN
-* a transformer decoder that performs cross-attention between object queries and visual features output by the image encoder
-* a prediction head that converts the outputs of the decoder to position and class bouding boxes predictions
-
-Figure 1 gives a high-level overview of the architecture of DETR and figure 2 illustrates it more precisely. The details of DETR's architecture are discussed in the following subsections.
-
-## Feature extractor
-
-Given an input image $$x \in \mathbb{R}^{3 \times H_0 \times W_0}$$, an ImageNet-pretrained ResNet-50 or 101 is used to extract visual features $$f \in \mathbb{R}^{2048 \times \frac{H_0}{32} \times \frac{W_0}{32}}$$. Note that this module could be replaced by a classical patch extractor (usually parametrized by a unique strided convolution) but extracting features from a model pretrained on natural images yields better results.
-
-## Transformer Encoder
-
-The image encoder is a stack of transformer encoder blocks, where multi-head self-attention is performed between image tokens. It has a slight modification from the original architecture as a fixed sinusoidal positional encoding is added at *each* block. A 1x1 convolution precedes the encoder to reduce the input feature size from $$C$$ to $$d$$.
-
-## Transformer Decoder
-
-The inputs of the decoder are $$N$$ embeddings of size $$d$$. $$N$$ represents the maximum number of possible object predicted in an image, and each embdding represents a future bounding box predicted by the network (after the decoder and the feed-forward prediction head).
-
-To be more precise, the input embedding are *learnt* positional encodings, in this context also called **object queries**.
-
-Contrary to the original architecture, there is no masking in the decoder, *i.e.* the model is not auto-regressive. 
-
-## Prediction feed-forward networks
-
-The final prediction is computed by a 3-layer perceptron with ReLU activation function and hidden dimension d. A first linear layer outputs 4 scalars to represent the normalized center coordinated, height and width of the box, and a second linear layer predicts the class label associated with the box using a softmax function.
-
-It is important to note that each embedding output by the decoder is decoded *independently* from the others.
-
-Since there are generally less than $$N$$ objects present in the image, an additional class $$\emptyset$$ ("no object") is added.
-
-<div style="text-align:center">
-<img src="/collections/images/detr/detailled_architecture.jpg" width=400></div>
-<p style="text-align: center;font-style:italic">Figure 2. Details of the encoder-decoder architecture of DETR.</p>
-
-# Object detection set prediction loss
-
-Since the model aims to get rid of the anchors box and non maximum suppression mechanism, it has to find a clever way to predict all the object in a single forward pass. 
-
-Let's denote $$y=\{ y_i\}$$ the ground truth set of objects of an image and $$\hat{y} = \{ \hat{y}_i \}_{i=1}^N$$ the set of N predictions. As $$N$$ is generally larger than the number of objects in the image, $$y$$ is padded to a set of size $$N$$ with the labels $$\emptyset$$.
-
-The loss procedure first looks for an optimal bipartite matching between the ground truth and the prediction sets, *i.e.* the goal is to find a permutation $$\\sigma \in \mathcal{S}_N$$ with the lowest cost :
-
-$$ \hat{\sigma} = \underset{\sigma \in \mathcal{S}_N}{\arg \min} \sum_{i}^{N} \mathcal{L}_{match}(y_i, \hat{y}_{\sigma(i)})$$
-
-where $$ \mathcal{L}_{match}(y_i, y_{\sigma_i}) $$ is a pairwise cost between between a ground truth bounding box $$y_i$$ and a predicted bounding box $$ y_{\sigma(i)} $$. This optimal permutation can be computed efficiently with the *Hungarian algorithm*.
-
-In the case of object detection, the matching cost must take into account both the coordinates/height/width and the class of the bounding boxes. It is defined as follows :
-
-$$ \mathcal{L}_{match} (y_i, \hat{y}_{\sigma (i)}) = \unicode{x1D7D9}_{ \{ c_i \notin \emptyset \} } \hat{p}_{\sigma (i)} (c_i) + \unicode{x1D7D9}_{ \{ c_i \notin \emptyset \} } \mathcal{L}_{box} (b_i, \hat{b}_{\sigma (i)})$$
-
-with $$c_i$$ the class of the ground truth bounding box $$b_i \in [ 0, 1] ^{4}$$ and $$ \hat{p}_{\sigma (i)} (c_i)$$ the probability of the for bounding box $$\hat{b}_{\sigma (i)}$$ for the class $$c_i$$.
-
-$$ \mathcal{L}_{box}(\cdot, \cdot)$$ is a loss to compare vectors of $$\mathcal{R}^4$$ that represent the normalized center coordinates, width and height of a bounding box. It is defined as follows :
-
-$$ \mathcal{L}_{box} (b_i, \hat{b}_{\sigma (i)}) = \lambda_{iou} \mathcal{L}_{iou} (b_i, \hat{b}_{\sigma (i)}) + \lambda_{L1} \lVert b_i - \hat{b}_{\sigma (i)} \rVert _1$$ 
-
-with $$ \lambda_{iou} $$ and $$ \lambda_{L1} $$ two hyperparameters set respectively to 2 and 5 in the experiments presented later.
-
-> Note that this whole process is detached from the computational graph that will be used for backpropagation.
+![](/collections/images/ddpm/ddpm_scheme_for_deep_learning.jpg)
 
 &nbsp;
 
-Once the best permutation $$\hat{\sigma}_i$$ is found, the *Hungarian loss* is computed for all pairs matched in the previous steps and is then used to compute the gradients in the network. The loss is a combination of negative log-likelihood for class prediction and the box loss defined earlier, *only for the predicted bounding boxes that have been assigned to real non-empty bounding boxes in the ground truth*. More precisely, it is computed as follows:
+![](/collections/images/ddpm/ddpm_architecture_1.jpg)
 
-$$ \mathcal{L}_{Hungarian}(y, \hat{y}) = \sum_{i=1}^{N} [ - \log \hat{p}_{\hat{\sigma} (i)} (c_i) + \unicode{x1D7D9}_{ \{ c_i \notin \emptyset \} } \mathcal{L}_{box} (b_i, \hat{b}_{\hat{\sigma} (i)}) ]$$
+&nbsp;
 
-The authors found helpful to use additional losses inside the decoder during training. They added prediction FFNs (N.B: all the FFNs share the same parameters) and Hungarian loss *after each decoder layer*. 
+![](/collections/images/ddpm/ddpm_architecture_2.jpg)
+-->
+
+See [the tutorial on DDPM](https://creatis-myriad.github.io/tutorials/2023-11-30-tutorial-ddpm.html) for more information.
+
+&nbsp;
+
+The figure below shows the rate-distorsion trade-off of a trained model. Learning can be divided into two stages:
+
+<div style="text-align:center">
+<img src="/collections/images/latent-DM/distortion-rate.jpg" width=400></div>
+<p style="text-align: center;font-style:italic">Figure 1. Illustrating perceptual and semantic compression.</p>
+
+
+* Most bits of a digital image correspond to imperceptible details, leading to unnecessary expensive optimization and inference  
+
+> If a latent space without imperceptible details can be learned independently, DMs can then be applied efficiently from this space to only focus on semantic properties
+
+&nbsp;
+
+# Methodology
+
+## Perceptual image compression
+
+* A perceptual compression model based on previous work [1] is used to efficiently encode images
+* It consists in an auto-encoder trained by combinaison of a perceptual loss and a patch-based adversarial objective
+* The overall objective of the cited paper is more complex than only computed an efficient latent space (high-resolution image synthesis based on transformer), but as far as I understand the pre-trained encoder/decoder parts are available and directly used in latent DM formalism. This paper should be the subject of a future post!
+
+![](/collections/images/latent-DM/perceptual-image-compression.jpg)
+
+&nbsp;
+
+## Model artchitecture
+
+The latent diffusion model is composed of 3 main parts:
+* an encoder $$E$$ / decoder $$D$$ module which allows to go from the pixel space to a latent space which is perceptually equivalent, but offers significantly reduced computational complexity
+* a time-conditional U-Net for the denoising parts $$\epsilon_{\theta}(z_t,t)$$.
+* a conditioning module to efficiently encode and propagate an additional source of information $$y$$ through cross-attention mechanisms
+
+
+![](/collections/images/latent-DM/latent-DM-architecture.jpg)
+
+&nbsp;
+
+The learning of the LDM without the cross-attention module can be modeled as:
+
+$$\mathcal{L}_{LDM} := \mathbb{E}_{z \sim E(x), \epsilon \sim \mathcal{N}(0,\mathbf{I}), t \sim [1,T]} \left[ \| \epsilon_t - \epsilon _{\theta}(z_t,t)\|^2 \right]$$
+
+&nbsp;
+
+## Conditioning mechanisms
+
+* a domain specific encoder $$\tau_{\theta}$$ that projects $$y$$ to an intermediate representation $$\tau_{\theta}(y)$$ is introduced
+* this intermediate representation is then mapped to the intermediate layers of the Unet via a cross-attention layer as illustrated below:
+
+![](/collections/images/latent-DM/cross-attention.jpg)
+
+&nbsp;
+
+The learning of the LDM with the cross-attention module can be modeled as:
+
+$$\mathcal{L}_{LDM} := \mathbb{E}_{z \sim E(x), y, \epsilon \sim \mathcal{N}(0,\mathbf{I}), t \sim [1,T]} \left[ \| \epsilon_t - \epsilon _{\theta}(z_t,t,\tau_{\theta}(y))\|^2 \right]$$
+
+&nbsp;
 
 # Results
 
@@ -143,9 +147,17 @@ With small modifications that create a FPN-like network, DETR can also work for 
 <img src="/collections/images/detr/segmentation.jpg" width=600></div>
 <p style="text-align: center;font-style:italic">Figure 6: Qualitative results for panoptic segmentation generated by DETR-R101.</p>
 
+&nbsp;
+
 # Conclusion
 
 DEtection TRansformer (DETR) is a new transformer-based model to perform object detection in an end-to-end fashion. The main idea of the paper is to force unique predictions via bipartite matching that finds the optimal assignment between the predicted bounding boxes and the ground truth, avoiding the use of surrogate components or post-processing like non-maximum suppression or anchors.
 
+&nbsp;
+
 # References
-[^1]: A. Vaswani, N. Shazeer, N.. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L. Kaiser, I. Polosukhin, *Attention Is All You Need*, NeurIPS 2017, [link to paper](https://arxiv.org/pdf/1706.03762.pdf)
+\[1\] P. Esser, R. Rombach, B. Ommer, *Taming transformers for high-resolution image synthesis*, CoRR 2022, [link to paper](https://arxiv.org/pdf/2012.09841.pdf)
+
+
+
+
