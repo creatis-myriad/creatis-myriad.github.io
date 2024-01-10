@@ -2,7 +2,7 @@
 layout: review
 title: "High-resolution image synthesis with latent diffusion models"
 tags: diffusion model, generative model
-author: "Celia Goujeat, Olivier Bernard"
+author: "Olivier Bernard"
 cite:
     authors: "Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Björn Ommer"
     title:   "High-resolution image synthesis with latent diffusion models"
@@ -17,7 +17,7 @@ pdf: "https://arxiv.org/pdf/2112.10752.pdf"
 
 # Highlights
 
-* Diffusion models (DMs) are applied in the latent space of powerfull pretrained autoencoders
+* Diffusion models (DMs) are applied in the latent space of powerful pretrained autoencoders
 * Allows to reach a good compromise between complexity reduction and details preservation
 * Introduce cross-attention layers into the model architecture for general conditioning inputs such as text
 
@@ -131,9 +131,9 @@ $$\mathcal{L}_{LDM} := \mathbb{E}_{z \sim E(x), y, \epsilon \sim \mathcal{N}(0,\
 <p style="text-align: center;font-style:italic">Figure 3. Analyzing the training of class-conditional LDMs with
 different downsampling factors f over 2M train steps on the ImageNet dataset.</p>
 
-* LDM-1 corresponds to DM without any latent representation.
+* LDM-1 corresponds to DM without any latent representation
 * LDM-4, LDM-8 and LDM-16 appear to be the most efficient
-* LDM-32 shows limitations due to to high downsampling effects
+* LDM-32 shows limitations due to high downsampling effects
 
 &nbsp;
 
@@ -200,7 +200,7 @@ recent state-of-the-art methods for class-conditional image generation on ImageN
 
 ## Semantic-map-to-image synthesis
 
-* use of images of landscapes paired with semantic maps 
+* Use of images of landscapes paired with semantic maps 
 * Downsampled versions of the semantic maps are simply concatenated with the latent image representation of a LDM-4 model with VQ-reg.
 * No cross-attention scheme is used here
 * The model is trained on an input resolution of 256x256 but the authors find that the model generalizes to larger resolutions and can generate images up to the megapixel regime
