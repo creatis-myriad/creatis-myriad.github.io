@@ -71,8 +71,8 @@ The figure below shows the rate-distorsion trade-off of a trained model. Learnin
 
 * A perceptual compression model based on previous work [1] is used to efficiently encode images
 * It consists in an auto-encoder trained by combinaison of a perceptual loss and a patch-based adversarial objective
-* The overall objective of the cited paper is more complex than only computed an efficient latent space (high-resolution image synthesis based on transformer), but as far as I understand the pre-trained encoder/decoder parts are available and directly used in latent DM formalism. This paper should be the subject of a future post!
-* two different kinds of regularizations are tested to avoid high-variance latent spaces: *KL-reg* which imposes a slight KL-penality towards a standard normal on the learned latent, and *VQ-reg* which uses a vector quantization layer [2] within the decoder. 
+* The overall objective of the cited paper is more complex than only computing an efficient latent space (high-resolution image synthesis based on transformer), but as far as I understand the pre-trained encoder/decoder parts are available and directly used in latent DM formalism. This paper should be the subject of a future post!
+* two different kinds of regularizations are tested to avoid high-variance latent spaces: *KL-reg* which imposes a slight KL-penality towards a standard normal on the learned latent space, and *VQ-reg* which uses a vector quantization layer [2] within the decoder. 
 
 <div style="text-align:center">
 <img src="/collections/images/latent-DM/perceptual-image-compression.jpg" width=600></div>
@@ -80,7 +80,7 @@ The figure below shows the rate-distorsion trade-off of a trained model. Learnin
 
 &nbsp;
 
-## Model artchitecture
+## Model architecture
 
 The latent diffusion model is composed of 3 main parts:
 * an encoder $$E$$ / decoder $$D$$ module which allows to go from the pixel space to a latent space which is perceptually equivalent, but offers significantly reduced computational complexity
@@ -120,7 +120,7 @@ $$\mathcal{L}_{LDM} := \mathbb{E}_{z \sim E(x), y, \epsilon \sim \mathcal{N}(0,\
 * Latent space with different degrees of downsampling
 * LDM-KL-8 means latent diffusion model with KL-reg and a downsampling of 8 to generate the latent space 
 * DDIM is used during inference (with different number of iterations) as an optimal sampling procedure
-* FID: Fréchet Inception Distance: captures the similarity of generated images to real ones better than the more conventional Inception Score
+* FID (Fréchet Inception Distance): captures the similarity of generated images to real ones better than the more conventional Inception Score
 
 &nbsp;
 
