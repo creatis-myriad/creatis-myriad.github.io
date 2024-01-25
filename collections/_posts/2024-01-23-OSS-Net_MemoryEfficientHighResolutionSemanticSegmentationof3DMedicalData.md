@@ -47,7 +47,7 @@ The architecture of OSS-Net includes:
 
 - a **3D CNN encoder**
     - ResNet-like architecture
-    - input: downscale 3D volume
+    - input: downscale 3D volume $$x$$
     - ouput: global latent vector which consists in the concatenation of the output skip connections (see Fig. 2) 
     - output: a low resolution segmentation (used in an auxiliary loss and during inference to increase speed) 
 
@@ -57,11 +57,12 @@ The architecture of OSS-Net includes:
 
 - a **patch encoder**
     - consists in two 3D convolution layers
-    - input: $$n$$ patches corresponding to $$n$$ locations in the volume
+    - input: $$n$$ patches $$z$$ corresponding to $$n$$ locations $$p$$ in the volume
     - output: $$n$$ local latent vectors (one for each patch)
 
 - an **ONet decoder**
-    - ResNet architecture
+    - fully-connected ResNet architecture
+    - CBN: Conditional Batch-Normalization with parameters $$\beta$$ and $$\gamma$$ predicted from the global latent vector
     - input: concatenation of global and local latent vector and the $$n$$ coordinates
     - output: occupancy probability at the $$n$$ locations
  
@@ -97,7 +98,7 @@ Original MISE algorithm steps:
 4. subdivision of the active voxels
 5. Repeat step 2 to 4 until final resolution is reached
 
-For OSS-Net, the authors also use the low resolution segmentation map as an initial state, which results in a faster inference.
+For OSS-Net, the authors also use the low resolution segmentation map as an initial state, which replaces the first evaluation step. This results enables a faster inference because less  locations have to be queried to reach the desired resolution.
 
 
 
@@ -151,7 +152,8 @@ Comparison with baselines:
 ![](/collections/images/OSSNet/results_runtimes_memory.jpg)
 *Figure 6: Inference runtime (left) and memory performance (right) of OSS-Net*
 
-Proposed approach two times faster for inference whatever the number of points used.
+Proposed approach is the inference based on the low-resolution segmentation.
+It is two times faster for inference whatever the number of points used.
 
 ---
 
