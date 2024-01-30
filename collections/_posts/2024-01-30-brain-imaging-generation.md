@@ -26,206 +26,124 @@ pdf: "https://arxiv.org/pdf/2209.07162.pdf"
 * The model achieves new SOTA for brain MR image synthesis
 * A synthetic dataset of 100,000 volumes together with the conditioning information are publicly available
 
-
 &nbsp;
 
 # Introduction
 
-* DMs are computationally demanding since it requires repeated  function evaluation in the high-dimensional space of RGB images
+* The objective of the paper is to generate realistic large scale dataset with additional related "low dimensional" information such as age, sex or volumes.
 
-![](/collections/images/ddpm/ddpm_overview_complete.jpg)
+* 31,740 T1w 3D MR images from the UK Biobank datas are used during training 
 
-<!--
-&nbsp;
-
-![](/collections/images/ddpm/ddpm_scheme_for_deep_learning.jpg)
-
-&nbsp;
-
-![](/collections/images/ddpm/ddpm_architecture_1.jpg)
-
-&nbsp;
-
-![](/collections/images/ddpm/ddpm_architecture_2.jpg)
--->
-
-See [the tutorial on DDPM](https://creatis-myriad.github.io/tutorials/2023-11-30-tutorial-ddpm.html) for more information.
-
-&nbsp;
-
-The figure below shows the rate-distorsion trade-off of a trained model. Learning can be divided into two stages:
-
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/distortion-rate.jpg" width=400></div>
-<p style="text-align: center;font-style:italic">Figure 1. Illustrating perceptual and semantic compression.</p>
-
-
-* Most bits of a digital image correspond to imperceptible details, leading to unnecessary expensive optimization and inference  
-
-> If a latent space without imperceptible details can be learned independently, DMs can then be applied efficiently from this space to only focus on semantic properties
+* One interest of such dataset would to provide enough data to learn to retrieve the age of a patient based on its brain MR image.
 
 &nbsp;
 
 # Methodology
 
-## Perceptual image compression
+## Preprocessing steps
 
-* A perceptual compression model based on previous work [1] is used to efficiently encode images
-* It consists in an auto-encoder trained by combinaison of a perceptual loss and a patch-based adversarial objective
-* The overall objective of the cited paper is more complex than only computing an efficient latent space (high-resolution image synthesis based on transformer), but as far as I understand the pre-trained encoder/decoder parts are available and directly used in latent DM formalism. This paper should be the subject of a future post!
-* two different kinds of regularizations are tested to avoid high-variance latent spaces: *KL-reg* which imposes a slight KL-penality towards a standard normal on the learned latent space, and *VQ-reg* which uses a vector quantization layer [2] within the decoder. 
+* An existing network called [UnitRes](https://github.com/brudfors/UniRes) was used to perform a rigid body registration to a common MNI space
 
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/perceptual-image-compression.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 2. Illustration of the perceptual compression model detailed in [1] and used to compute the encoder/decoder module.</p>
+* The final images are resampled to a uniform resolution of $$1 \, mm^3$$ 
+
+* The images are all cropped to a consistent volume size of $$160 \times 224 \times 160$$ voxels
 
 &nbsp;
 
-## Model architecture
+## LDM  architecture
 
-The latent diffusion model is composed of 3 main parts:
-* an encoder $$E$$ / decoder $$D$$ module which allows to go from the pixel space to a latent space which is perceptually equivalent, but offers significantly reduced computational complexity
-* a time-conditional U-Net for the denoising parts $$\epsilon_{\theta}(z_t,t)$$.
-* a conditioning module to efficiently encode and propagate an additional source of information $$y$$ through cross-attention mechanisms
-
+* The method is directly inspired by the [latent diffusion model](https://creatis-myriad.github.io/2023/12/19/latent-diffusion-models.html) whose architecture is summarized below:   
 
 ![](/collections/images/latent-DM/latent-DM-architecture.jpg)
 
 &nbsp;
 
-The learning of the LDM without the cross-attention module can be modeled as:
+* The autoencoder is first trained with a combination of L1 loss, perceptual loss, a patch-based adversarial objective and a KL regularization of the latent space
 
-$$\mathcal{L}_{LDM} := \mathbb{E}_{z \sim E(x), \epsilon \sim \mathcal{N}(0,\mathbf{I}), t \sim [1,T]} \left[ \| \epsilon_t - \epsilon _{\theta}(z_t,t)\|^2 \right]$$
+* The encoder maps the brain image to a latent representation with a size of $$20 \times 28 \times 20$$ voxels
 
-&nbsp;
+* The diffusion model is then trained using $$1000$$ steps for the Markov chain process 
 
-## Conditioning mechanisms
+* The model is conditioned according to age, gender, ventricular volume and brain volume
 
-* a domain specific encoder $$\tau_{\theta}$$ that projects $$y$$ to an intermediate representation $$\tau_{\theta}(y)$$ is introduced
-* this intermediate representation is then mapped to the intermediate layers of the Unet via a cross-attention layer as illustrated below:
+* The conditioning is performed bu combining the concatenation of the conditioning with the input data and the use of cross-attention mechanisms
 
 ![](/collections/images/latent-DM/cross-attention.jpg)
 
 &nbsp;
 
-The learning of the LDM with the cross-attention module can be modeled as:
-
-$$\mathcal{L}_{LDM} := \mathbb{E}_{z \sim E(x), y, \epsilon \sim \mathcal{N}(0,\mathbf{I}), t \sim [1,T]} \left[ \| \epsilon_t - \epsilon _{\theta}(z_t,t,\tau_{\theta}(y))\|^2 \right]$$
-
-&nbsp;
 
 # Results
 
-* 6 different kinds of image generation: text-to-Image, Layout-to-Image, Class-Label-to-Image, Super resolution, Inpainting, Semantic-Map-to-Image 
-* Latent space with 2 different regularization strategies: *KL-reg* and *VQ-reg*
-* Latent space with different degrees of downsampling
-* LDM-KL-8 means latent diffusion model with KL-reg and a downsampling of 8 to generate the latent space 
-* DDIM is used during inference (with different number of iterations) as an optimal sampling procedure
-* FID (Fréchet Inception Distance): captures the similarity of generated images to real ones better than the more conventional Inception Score
+* The autoencoder compressed each dimension of the input data by a factor of 8
+* DDIM is used during inference to reduce from $$1000$$ to $$50$$ the number of time steps during sampling
+* The degree of realism of the synthetic data is measured using the Fréchet Inception Distance(FID), the Multi-Scale Structural Similarity metric (MS-SSIM) and the 4-G-R-SSIM
 
 &nbsp;
 
-## Perceptual compression tradeoffs
+## Quality of the synthetic data
 
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-perceptual-compression.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 3. Analyzing the training of class-conditional LDMs with
-different downsampling factors f over 2M train steps on the ImageNet dataset.</p>
-
-* LDM-1 corresponds to DM without any latent representation
-* LDM-4, LDM-8 and LDM-16 appear to be the most efficient
-* LDM-32 shows limitations due to high downsampling effects
-
-&nbsp;
-
-## Hyperparameters overview
+* Measures were computed from 1000 sample pairs from the UK Biobank and the synthetic data
+* The model achieves new SOTA for brain MR image synthesis
 
 
 <div style="text-align:center">
-<img src="/collections/images/latent-DM/results-hyperparameters-unconditioned-cases.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Table 1. Hyperparameters for the unconditional LDMs producing the numbers shown in Tab. 3. All models trained on a single NVIDIA A100.</p>
+<img src="/collections/images/brain-image-generation/results-similarity.jpg" width=500></div>
+<p style="text-align: center;font-style:italic">Figure 1. Quantitative evaluation of the synthetic images on the UK Biobank</p>
 
 &nbsp;
 
 <div style="text-align:center">
-<img src="/collections/images/latent-DM/results-hyperparameters-conditioned-cases.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Table 2. Hyperparameters for the conditional LDMs trained on the ImageNet dataset. All models trained on a single NVIDIA A100.</p>
+<img src="/collections/images/brain-image-generation/results-images.jpg" width=800></div>
+<p style="text-align: center;font-style:italic">Figure 2. Real and synthetic samples of brain MRI</p>
 
 &nbsp;
 
-## Unconditional image synthesis
+## Conditioning on the ventricular volumes
+
+* To quantitatively evaluate the conditioning, [SynthSeg](https://github.com/BBillot/SynthSeg) was used to measure the volumes of the ventricles of 1000 synthetic brains
+
+* The Pearson correlation computed between the obtained volumes and the inputted conditioning values
+
+* High correlation score of $$0.972$$
 
 <div style="text-align:center">
-<img src="/collections/images/latent-DM/results-image-generation-uncondition.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Table 3. Evaluation metrics for unconditional image synthesis. N-s refers to N sampling steps with the DDIM sampler. ∗: trained in KL-regularized latent space</p>
-
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-image-generation-uncondition-CelebA-HQ.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 4. Random samples of the best performing model LDM-4 on the CelebA-HQ dataset. Sampled with 500 DDIM steps (FID = 5.15)</p>
-
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-image-generation-uncondition-bedrooms.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 5. Random samples of the best performing model LDM-4 on the LSUN-Bedrooms dataset. Sampled with 200 DDIM steps (FID = 2.95)</p>
+<img src="/collections/images/brain-image-generation/results-conditioning-ventricular-volumes.jpg" width=500></div>
+<p style="text-align: center;font-style:italic">Figure 3. Correlation between inputted ventricular volumes and ventricular measured with SynthSeg</p>
 
 &nbsp;
 
-## Class-conditional image synthesis
+## Conditioning on the age
+
+* A 3D CNN proposed in [1] was trained from the same UK Biobank dataset. The model takes as input a 3D brain image and predicts chronological age 
+
+* The same model is then used on the synthetic dataset to verify how well the predicted age approximated the inputted age of the synthetic dataset
+
+* Good correlation score of $$0.692$$
 
 <div style="text-align:center">
-<img src="/collections/images/latent-DM/results-image-generation-condition-ImageNet.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Table 4. Comparison of a class-conditional ImageNet LDM with
-recent state-of-the-art methods for class-conditional image generation on ImageNet. c.f.g. denotes classifier-free guidance with a scale s</p>
-
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-class-conditional-image-synthesis.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 6. Random samples from LDM-4 trained on the ImageNet dataset. Sampled with classifier-free guidance scale s = 5.0 and 200 DDIM steps</p>
+<img src="/collections/images/brain-image-generation/results-conditioning-age.jpg" width=500></div>
+<p style="text-align: center;font-style:italic">Figure 4. Correlation between inputted age and predicted brain age</p>
 
 &nbsp;
 
-## Text-conditional image synthesis
+## Synthetic dataset
 
-* a LDM with 1.45B parameters is trained using KL-regularized conditioned on language prompts on LAION-400M
-* use of the BERT-tokenizer
-* $$\tau_{\theta}$$ is implemented as a transformer to infer a latent code which is mapped into the UNet via (multi-head) cross-attention
-
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-text-conditional-image-synthesis.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Table 5. Evaluation of text-conditional image synthesis on the
-256×256-sized MS-COCO dataset: with 250 DDIM steps</p>
-
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-text-conditional-image-synthesis-2.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 7. Illustration of the text-conditional image synthesis. Sampled with 250 DDIM steps</p>
-
-&nbsp;
-
-## Semantic-map-to-image synthesis
-
-* Use of images of landscapes paired with semantic maps 
-* Downsampled versions of the semantic maps are simply concatenated with the latent image representation of a LDM-4 model with VQ-reg.
-* No cross-attention scheme is used here
-* The model is trained on an input resolution of 256x256 but the authors find that the model generalizes to larger resolutions and can generate images up to the megapixel regime
-
-
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-semantic-synthesis.jpg" width=400></div>
-<p style="text-align: center;font-style:italic">Figure 8. When provided a semantic map as conditioning, the LDMs generalize to substantially larger resolutions than those seen during training. Although this model was trained on inputs of size 256x256 it can be used to create high-resolution samples as the ones shown here, which are of resolution 1024×384</p>
-
-
+* a synthetic dataset of 100,000 human brain images was generated and made publicly available together with the conditioning information
 
 &nbsp;
 
 # Conclusions
 
-* Latent diffusion model allows to synthesize high quality images with efficient computational times.
-* The key resides in the use of an efficient latent representation of images which is perceptually equivalent but with reduced computational complexity
+* Latent diffusion model is cool ;)
+* The key resides in the autoencoder performance !
+* Is a database of 31,740 images really necessary ?
+* We need to think carefully about the additive value of the conditioning information chosen to simulate a useful synthetic dataset !
 
 &nbsp;
 
 # References
-\[1\] P. Esser, R. Rombach, B. Ommer, *Taming transformers for high-resolution image synthesis*, CoRR 2022, [\[link to paper\]](https://arxiv.org/pdf/2012.09841.pdf)
-
-\[2\] A. van den Oord, O. Vinyals, and K. Kavukcuoglu, *Neural discrete representation learning*, In NIPS, 2017 [\[link to paper\]](https://arxiv.org/pdf/1711.00937.pdf)
+\[1\] Cole, J.H., Poudel, R.P., Tsagkrasoulis, D., Caan, M.W., Steves, C., Spector, T.D., Montana, G., *Predicting brain age with deep learning from raw imaging data results in a reliable and heritable biomarker*, NeuroImage 163, 115–124 (2017)
 
 
 
