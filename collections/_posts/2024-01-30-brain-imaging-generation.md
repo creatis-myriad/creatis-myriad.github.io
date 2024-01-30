@@ -13,8 +13,9 @@ pdf: "https://arxiv.org/pdf/2209.07162.pdf"
 # Notes
 
 * The generated synthetic dataset is available at [Academics Torrents](https://academictorrents.com/details/63aeb864bbe2115ded0aa0d7d36334c026f0660b) 
-An inspired code is available on the following [Monai link](https://monai.io/model-zoo.html)
+* An inspired code is available on the following [Monai link](https://monai.io/model-zoo.html)
 
+&nbsp;
 
 # Highlights
 
