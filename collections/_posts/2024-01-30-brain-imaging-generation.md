@@ -19,9 +19,9 @@ pdf: "https://arxiv.org/pdf/2209.07162.pdf"
 
 # Highlights
 
-* Application of the Latent Diffusion Model framework for the synthesis of human brain MR images
-* An encoder/decoder model dedicated to brain MRI reconstruction is proposed  
-* Application of conditionning on the age, sex, ventricular volumes and brain volumes are inestigated  
+* Application of the Latent Diffusion Model framework for MR image synthesis of the human brain
+* An encoder/decoder model dedicated to brain MRI reconstruction is proposed
+* Inverstigation of the application of conditioning to age, gender, ventricular volumes and brain volumes 
 
 * The model achieves new SOTA for brain MR image synthesis
 * A synthetic dataset of 100,000 volumes together with the conditioning information are publicly available
