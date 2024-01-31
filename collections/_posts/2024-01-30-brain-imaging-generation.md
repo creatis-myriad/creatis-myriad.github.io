@@ -21,10 +21,10 @@ pdf: "https://arxiv.org/pdf/2209.07162.pdf"
 
 * Application of the Latent Diffusion Model framework for MR image synthesis of the human brain
 * An encoder/decoder model dedicated to brain MRI reconstruction is proposed
-* Inverstigation of the application of conditioning to age, gender, ventricular volumes and brain volumes 
+* Investigation of the application of conditioning to age, gender, ventricular volumes and brain volumes 
 
 * The model achieves new SOTA for brain MR image synthesis
-* A synthetic dataset of 100,000 volumes together with the conditioning information are publicly available
+* A synthetic dataset of 100,000 volumes, along with the conditioning information, is publicly available
 
 &nbsp;
 
@@ -34,7 +34,7 @@ pdf: "https://arxiv.org/pdf/2209.07162.pdf"
 
 * 31,740 T1w 3D MR images from the UK Biobank datas are used during training 
 
-* One interest of such dataset would to provide enough data to learn to retrieve the age of a patient based on its brain MR image.
+* One interest of such dataset would to provide enough data to learn to retrieve the age of a patient based on its brain MR image while giving privacy guarantees.
 
 &nbsp;
 
@@ -66,7 +66,7 @@ pdf: "https://arxiv.org/pdf/2209.07162.pdf"
 
 * The model is conditioned according to age, gender, ventricular volume and brain volume
 
-* The conditioning is performed bu combining the concatenation of the conditioning with the input data and the use of cross-attention mechanisms
+* The conditioning is performed by combining the concatenation of the conditioning with the input data and the use of cross-attention mechanisms
 
 ![](/collections/images/latent-DM/cross-attention.jpg)
 
@@ -76,7 +76,7 @@ pdf: "https://arxiv.org/pdf/2209.07162.pdf"
 # Results
 
 * The autoencoder compressed each dimension of the input data by a factor of 8
-* DDIM is used during inference to reduce from $$1000$$ to $$50$$ the number of time steps during sampling
+* DDIM is used during inference to reduce from $$1000$$ to $$50$$ the number of time steps during sampling. This reduces the average sampling time from $$142 \pm 1.6$$s to $$7.6 \pm 0.2$$s
 * The degree of realism of the synthetic data is measured using the Fréchet Inception Distance(FID), the Multi-Scale Structural Similarity metric (MS-SSIM) and the 4-G-R-SSIM
 
 &nbsp;
@@ -129,7 +129,7 @@ pdf: "https://arxiv.org/pdf/2209.07162.pdf"
 
 ## Synthetic dataset
 
-* a synthetic dataset of 100,000 human brain images was generated and made publicly available together with the conditioning information
+* A synthetic dataset of 100,000 human brain images was generated and made publicly available together with the conditioning information
 
 &nbsp;
 
