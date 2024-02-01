@@ -13,7 +13,7 @@ pdf: "https://arxiv.org/pdf/2209.07162.pdf"
 # Notes
 
 * The generated synthetic dataset is available at [Academics Torrents](https://academictorrents.com/details/63aeb864bbe2115ded0aa0d7d36334c026f0660b) 
-* An inspired code is available on the following [Monai link](https://monai.io/model-zoo.html)
+* A re-implementation is available at the following [Monai link](https://monai.io/model-zoo.html)
 
 &nbsp;
 
@@ -30,11 +30,11 @@ pdf: "https://arxiv.org/pdf/2209.07162.pdf"
 
 # Introduction
 
-* The objective of the paper is to generate realistic large scale dataset with additional related "low dimensional" information such as age, sex or volumes.
+* The objective of the paper is to generate a realistic large scale dataset with additional related "low dimensional" information such as age, sex or volumes.
 
 * 31,740 T1w 3D MR images from the UK Biobank datas are used during training 
 
-* One interest of such dataset would to provide enough data to learn to retrieve the age of a patient based on its brain MR image while giving privacy guarantees.
+* One interest of such a dataset would be to provide enough data to learn to retrieve the age of a patient based on their brain MR image while guaranteeing privacy.
 
 &nbsp;
 
@@ -77,7 +77,7 @@ pdf: "https://arxiv.org/pdf/2209.07162.pdf"
 
 * The autoencoder compressed each dimension of the input data by a factor of 8
 * DDIM is used during inference to reduce from $$1000$$ to $$50$$ the number of time steps during sampling. This reduces the average sampling time from $$142 \pm 1.6$$s to $$7.6 \pm 0.2$$s
-* The degree of realism of the synthetic data is measured using the Fréchet Inception Distance(FID), the Multi-Scale Structural Similarity metric (MS-SSIM) and the 4-G-R-SSIM
+* The degree of realism of the synthetic data is measured using the Fréchet Inception Distance(FID), and the diversity of the data is measured with the Multi-Scale Structural Similarity metric (MS-SSIM) and the 4-G-R-SSIM
 
 &nbsp;
 
@@ -103,7 +103,7 @@ pdf: "https://arxiv.org/pdf/2209.07162.pdf"
 
 * To quantitatively evaluate the conditioning, [SynthSeg](https://github.com/BBillot/SynthSeg) was used to measure the volumes of the ventricles of 1000 synthetic brains
 
-* The Pearson correlation computed between the obtained volumes and the inputted conditioning values
+* The Pearson correlation was computed between the obtained volumes and the inputted conditioning values
 
 * High correlation score of $$0.972$$
 
@@ -117,7 +117,7 @@ pdf: "https://arxiv.org/pdf/2209.07162.pdf"
 
 * A 3D CNN proposed in [1] was trained from the same UK Biobank dataset. The model takes as input a 3D brain image and predicts chronological age 
 
-* The same model is then used on the synthetic dataset to verify how well the predicted age approximated the inputted age of the synthetic dataset
+* The same model is then used on the synthetic dataset to verify how closely the predicted age matches the inputted age of the synthetic dataset
 
 * Good correlation score of $$0.692$$
 
