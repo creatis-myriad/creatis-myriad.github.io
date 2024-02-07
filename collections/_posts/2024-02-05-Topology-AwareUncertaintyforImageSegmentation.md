@@ -14,13 +14,13 @@ pdf: "https://arxiv.org/pdf/2306.05671.pdf"
 * Link to the code [here](https://github.com/Saumya-Gupta-26/struct-uncertainty)
 
 # Highlights
-* The authors propose a novel method to estimate uncertainty for curvilinear stuctures segmentation.
+* The authors propose a novel method to estimate uncertainty for curvilinear structures segmentation.
 * Unlike other methods the uncertainty map obtained is not pixel-wise but structures-wise.
 * The proposed method estimates both inter-structural and intra-structural uncertainty 
 
 # Introduction
 
-Medical segmentation is by nature ambiguous. Therefore, deep-learning models should capture the uncertainty to give meaningful outputs and help the interpretation of the expert. (see this [post](http://127.0.0.1:4000/2023/11/03/StochasticSegmentation.html)). For example in many vessel segmentation pipeline the segmentation output of a automatic algorithm is proofread  by an expert to obtain the final segmentation. In such pipeline the uncertainty map can help the annotator expert to focus on uncertain part of the segmentation and then facilitate this  process.
+Medical segmentation is by nature ambiguous. Therefore, deep-learning models should capture the uncertainty to give meaningful outputs and help the interpretation of the expert. (see this [post](http://127.0.0.1:4000/2023/11/03/StochasticSegmentation.html)). For example, in many vessel segmentation pipelines the segmentation output of an automatic algorithm is proofread by an expert to obtain the final segmentation. In such pipeline the uncertainty map can help the annotator expert to focus on uncertain parts of the segmentation and then facilitate this process.
 
 However, existing uncertainty estimation methods do not apply to curvilinear structure segmentation. Indeed, they compute the uncertainty in a pixel-wise manner, generating uncertainty map highlighting pixels along the boundary of vessels (see *Fig.1*). Such uncertainty map is of limited interest for human annotators , this is why the authors proposed a method to compute the uncertainty at a structural level (a structure is a portion of vessel). 
 
@@ -34,7 +34,7 @@ However, existing uncertainty estimation methods do not apply to curvilinear str
 
 *Figure 2: Overview of the method*
 
-The proposed framework $$M_{\phi}$$ take in input the original image and the likelihood output of a given segmentation network $$F_{\theta}$$. It is composed of a first module, named Probabilistic DMT (Prob. DMT) which goal is to capture the intra-structural uncertainty. The second module is designed to capture the inter-structural uncertainty.
+The proposed framework $$M_{\phi}$$ takes in input the original image and the likelihood output of a given segmentation network $$F_{\theta}$$. It is composed of a first module, named Probabilistic DMT (Prob. DMT) which goal is to capture the intra-structural uncertainty. The second module is designed to capture the inter-structural uncertainty.
 
 ##  Probabilistic DMT
 
@@ -48,7 +48,7 @@ Prob. DMT is based on the discrete morse theory (DMT) which is explained below.
 
 This process is entirely deterministic, therefore the author propose a stochastic version called the **Probabilistic DMT**.
 
-**Probabilistic DMT**.  To make the generative process stochastic, the authors proposed a perturb and walk algorithm. The likelihood function is perturb by a random noise and a skeleton is sampled. 
+**Probabilistic DMT**.  To make the generative process stochastic, the authors proposed a perturb and walk algorithm. The likelihood function is perturbed by a random noise and a skeleton is sampled. 
 
 Formally, we consider a structure $$e$$ obtained following a V-path $$(c_s, c_m)$$ in the likelihood function $$f$$. To generate a variation $$\hat{e}$$ of the structure, a likelihood function $$f_n$$ is drawn from a distribution centered on $$f$$ :
 
@@ -56,7 +56,7 @@ $$f_n \sim  f + r$$
 
 with $$r$$ a random perturbation (Gaussian noise in this work).
 
-With $$f_n$$ a new path is generated between $$(c_s, c_m)$$. The iterative algorithm start from $$c_s$$ and end at $$c_m$$. Two criteria are sued to choose the next pixel location: the probability in $$fn$$ of the neighborhood pixels and the distance to the destination  $$c_m$$.
+With $$f_n$$ a new path is generated between $$(c_s, c_m)$$. The iterative algorithm starts from $$c_s$$ and ends at $$c_m$$. Two criteria are used to choose the next pixel location: the probability in $$fn$$ of the neighborhood pixels and the distance to the destination  $$c_m$$.
 
 If we consider $$c$$ the current pixel location of the walk, the next location $$c''$$ is chosen as $$c''=argmax(Q(c'))$$, with $$c'$$ a neighbor pixel, $$Q(c')=\gamma Q_{d}(c') + (1 - \gamma)f_{n}(c')$$, $$Q_{d}(c')=\frac{1}{\vert \vert c_{m} - c' \vert \vert_{2}}$$ and $$\gamma$$ a hyperparameter.
 
@@ -72,15 +72,15 @@ By repeating this operation one can sample several instances of a structure capt
 
 ## Inter-structural uncertainty
 
-The Prob. DMT module gives a set $$E$$ of structures. The second module take in input each structure $$e \in E$$ and outputs the probability of being positive and the uncertainty of $$F_{\theta}$$ in the prediction.  
+The Prob. DMT module gives a set $$E$$ of structures. The second module takes in input each structure $$e \in E$$ and outputs the probability of being positive and the uncertainty of $$F_{\theta}$$ in the prediction.  
 
 The structures are not independent of each other, therefore it is important to consider the spatial context to capture the inter-structural uncertainty.  
 
 Here the authors use a Graph Convolution Network (GCN) to model the spatial interactions. Each node represents a structure and edges between nodes exist if the structures are connected. 
 
-The input feature for each node is constructed as follow:
+The input feature for each node is constructed as follows:
 
-Crops centered around the structure are derived from the original input $$x^{c}$$, the likelihood feature map $$f^{c}$$ and a binary map indicating the presence of the structure $$m$$.  These crops are then concatenated and passed through convolution blocks and a channel-wise pooling. The persistence value (difference of function values between saddle point and maxima) is also concatenated to the resulting vector. This process is illustrated is Fig. 6.
+Crops centered around the structure are derived from the original input $$x^{c}$$, the likelihood feature map $$f^{c}$$ and a binary map indicating the presence of the structure $$m$$.  These crops are then concatenated and passed through convolution blocks and a channel-wise pooling. The persistence value (difference of function values between saddle point and maxima) is also concatenated to the resulting vector. This process is illustrated in Fig. 6.
 
 ![](/collections/images/TopologyAwareUncertainty/input_feature_vector.jpg)
 
@@ -114,7 +114,7 @@ $$\bar{p} = \cup \bar{p}_{e}$$ and $$\bar{\delta}^{2} = \cup \bar{\delta}{e}^{2}
 
 Then $$\bar{p}$$ is binarized and combined with the segmentation map from $$F_{\theta}$$.
 
-Then the uncertainties values from $$\bar{\delta}^{2}$$ are assigned to the full segmentation map using the shortest distance.
+Then the uncertainty values from $$\bar{\delta}^{2}$$ are assigned to the full segmentation map using the shortest distance.
 
 This process is illustrated in Fig. 7.
 
@@ -161,13 +161,13 @@ The method improve the segmentation results for all segmentation backbones.
 
 ## Performance of proofreading
 
-The authors simulate user interaction.  The final segmentation map is given to a user and he inspects structures in decreasing order of uncertainty (till 0.5). He decides to include the structure in the segmentation or not (one 'click'). The goal is to observe the segmentation improvement with respect to the number of interaction by the users ('clicks'). The results of this experiment are presented in Fig. 8.
+The authors simulate user interaction.  The final segmentation map is given to a user and he inspects structures in decreasing order of uncertainty (till 0.5). He decides to include the structure in the segmentation or not (one 'click'). The goal is to observe the segmentation improvement with respect to the number of interactions by the users ('clicks'). The results of this experiment are presented in Fig. 8.
 
 ![](/collections/images/TopologyAwareUncertainty/proofreading.jpg)
 
 *Figure 8: Proofreading experiment*
 
-The results show that the method allow the user to fix the segmentation with a small amount of 'clicks'.
+The results show that the method allows the user to fix the segmentation with a small amount of 'clicks'.
 
 ## Ablation studies
 
