@@ -20,9 +20,9 @@ pdf: "https://arxiv.org/pdf/2306.05671.pdf"
 
 # Introduction
 
-Medical segmentation is by nature ambiguous. Therefore, deep-learning models should capture the uncertainty to give meaningful outputs and help the interpretation of the expert. (see this [post](http://127.0.0.1:4000/2023/11/03/StochasticSegmentation.html)). For example, in many vessel segmentation pipelines the segmentation output of an automatic algorithm is proofread by an expert to obtain the final segmentation. In such pipeline the uncertainty map can help the annotator expert to focus on uncertain parts of the segmentation and then facilitate this process.
+Medical segmentation is by nature ambiguous. Therefore, deep-learning models should capture the uncertainty to give meaningful outputs and help the interpretation of the expert. (see this [post](https://creatis-myriad.github.io./2023/11/03/StochasticSegmentation.html)). For example, in many vessel segmentation pipelines the segmentation output of an automatic algorithm is proofread by an expert to obtain the final segmentation. In such pipeline the uncertainty map can help the annotator expert to focus on uncertain parts of the segmentation and then facilitate this process.
 
-However, existing uncertainty estimation methods do not apply to curvilinear structure segmentation. Indeed, they compute the uncertainty in a pixel-wise manner, generating uncertainty map highlighting pixels along the boundary of vessels (see *Fig.1*). Such uncertainty map is of limited interest for human annotators , this is why the authors proposed a method to compute the uncertainty at a structural level (a structure is a portion of vessel). 
+However, existing uncertainty estimation methods do not apply to curvilinear structure segmentation. Indeed, they compute the uncertainty in a pixel-wise manner, generating an uncertainty map highlighting pixels along the boundary of vessels (see *Fig.1*). Such an uncertainty map is of limited interest for human annotators , this is why the authors proposed a method to compute the uncertainty at a structural level (a structure is a portion of vessel). 
 
 ![](/collections/images/TopologyAwareUncertainty/motivating_example.jpg)
 
@@ -46,7 +46,7 @@ Prob. DMT is based on the discrete morse theory (DMT) which is explained below.
 
 *Figure 3: Illustration of the Morse skeleton obtained with the discrete morse theory*
 
-This process is entirely deterministic, therefore the author propose a stochastic version called the **Probabilistic DMT**.
+This process is entirely deterministic, therefore the authors propose a stochastic version called the **Probabilistic DMT**.
 
 **Probabilistic DMT**.  To make the generative process stochastic, the authors proposed a perturb and walk algorithm. The likelihood function is perturbed by a random noise and a skeleton is sampled. 
 
@@ -96,7 +96,7 @@ The loss is defined by:
 
 $$L_{UQ}(\phi)=\frac{1}{\vert E \vert}\sum_{e \in E} (\frac{1}{2} \frac{\vert \vert \hat{p}(e) - z_{e} \vert \vert^{2}}{exp(s_{e})} + \frac{1}{2}s_{e})$$
 
-with $$z_{e}=(\sum y \odot m) /(\sum m)$$.
+with $$z_{e}=(\sum y \odot m) /(\sum m)$$, and $$y$$ the ground truth.
 
 ### Proposed module $$M_{\phi}$$
 
@@ -147,7 +147,7 @@ The method has two outputs :
 
 The method is better in terms of calibration (see ECE metrics).
 
-**But the most important results is the readability and interpretability of the uncertainty heatmap.**
+**But the most important result is the readability and interpretability of the uncertainty heatmap.**
 
 ## Comparison against segmentation baselines
 
