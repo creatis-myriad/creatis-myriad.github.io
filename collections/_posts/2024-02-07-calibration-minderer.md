@@ -26,11 +26,11 @@ pdf: "https://arxiv.org/abs/2106.07998"
 
 # Introduction
 
-For the introduction of the key concepts let's go back to the article of Guo et al., **On Calibration of Modern Neural Networks**, PMLR 2017.
+For the introduction of the key concepts, let's go back to the article of Guo et al., **On Calibration of Modern Neural Networks**, PMLR 2017.
 
 ## Calibration 
 
-**A model is well-calibrated if the predicted confidence scores represents a good approximation of the actual probability of correctness.**
+**A model is well-calibrated if the predicted confidence scores represent a good approximation of the actual probability of correctness.**
 
 For example : if we have 100 images predicted *cancer* with a score of 80%, we expect 20 predictions to be wrong. 
 
@@ -38,7 +38,7 @@ How to measure calibration ? Two simple way, first visually and then quantitativ
 
 ## Reliability histogram
 
-**Group the predicted scores into bins, and plot the observed accuracy vs the expected expected accuracy**. In more details : 
+**Group the predicted scores into bins, and plot the observed accuracy vs the expected accuracy**. In more details : 
 
 For a set of $$N$$ images, we define the true class of the $$i$$-th image $$y_i$$ and $$p_i = (p_{i1}, ..., p_{iK})$$ the confidences scores of the $$K$$ classes. The predicted class $$\hat{y}_i$$ is the top-1 classification prediction, that is the class with the greatest confidence score, denoted $$s_i$$:
 \begin{equation}
@@ -84,7 +84,7 @@ Temperature scaling is a post-processing method to improve the calibration of th
 
 * Are recent state-of-the-art network still badly calibrated ? 
 * Do more accurate (and larger) models  produce poorly calibrated prediction ? i.e is there a compromise between accuracy and calibration ? 
-* How does pretrained affect calibration ?
+* How does pretraining affect calibration ?
 
 # Methodology 
 
@@ -111,13 +111,13 @@ In addition, CLIP is well-calibrated given its accuracy.
 
 Difference between model families still hold after temperature scaling.
 
-Within families, larger models have higher accuracy but also higher calibration error. However, at any given accuracy ViT models are better calibrated than BiT models. Therefore, model size can not fully explain the intrisic calibration difference between families. 
+Within families, larger models have higher accuracy but also higher calibration error. However, at any given accuracy, ViT models are better calibrated than BiT models. Therefore, model size can not fully explain the intrisic calibration difference between families. 
 
 <div style="text-align:center">
 <img src="/collections/images/calibration/fig2.jpg" width=600></div>
 <p style="text-align: center;font-style:italic">Figure 2. Before and after temperature scaling.</p>
 
-More training date improves the accuracy of the BiT model but has no significant effect on the calibration. 
+More training date improves the accuracy of the BiT model, but has no significant effect on the calibration. 
 
 <div style="text-align:center">
 <img src="/collections/images/calibration/fig3.jpg" width=600></div>
@@ -133,7 +133,7 @@ As expected classification and calibration error increase with distribution shif
 <img src="/collections/images/calibration/fig4.jpg" width=800></div>
 <p style="text-align: center;font-style:italic">Figure 4. Calibration and accuracy on ImageNet-C.</p>
 
-When in-distribution we observed that larger model had higher calibration error. But the trend is reversed as we move out of the distribution.
+When in-distribution, we observed that larger model had higher calibration error. But the trend is reversed as we move out of the distribution.
 
 <div style="text-align:center">
 <img src="/collections/images/calibration/fig5.jpg" width=600></div>
