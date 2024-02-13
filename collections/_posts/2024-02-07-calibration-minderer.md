@@ -10,6 +10,15 @@ cite:
 pdf: "https://arxiv.org/abs/2106.07998"
 ---
 
+
+
+# Highlights
+
+* ViT are well calibrated compared to past models, and are more robust to distribution shift
+* When in distribution : calibration slightly deteriorates with model size, but is outweighed by a improvement in accuracy
+* Under distribution shift, calibration improves with model size, reversing the in-distribution trend
+* Model size and pretraining cannot fully explain calibration differences between model families
+
 # Notes
 
 * Quick recap of the key concepts in calibration using Guo et al. paper
@@ -64,13 +73,81 @@ Temperature scaling is a post-processing method to improve the calibration of th
     p_{ij} = \frac{\exp^{z_{ij}/T}}{\sum_{k=1}^K \exp^{z_{ik}/T}}
 \end{equation}
 
-## Conclusion of Guo et al. on the calibration of "modern" networks of 2017 :
+## Guo et al. conclusions on the calibration of "modern" networks of 2017 :
 
 ![](/collections/images/calibration/guo_results.jpg)
 
 * Deep Learning models are poorly-calibrated : often very **overconfident**
 * Temperature Scaling is very effective to improve the calibration of these models
 
+## Why "Revisiting the Calibration of Modern Neural Networks" ?
 
+* Are recent state-of-the-art network still badly calibrated ? 
+* Do more accurate (and larger) models  produce poorly calibrated prediction ? i.e is there a compromise between accuracy and calibration ? 
+* How does pretrained affect calibration ?
 
+# Methodology 
 
+### Model families
+
+CNN, Transformers, self-supervised and zero-shot models : `MLP-Mixer` , `ViT` , `BiT` , `ResNext-WSL` , `SimCLR` , `CLIP`  and `AlexNet` . With variant of different model size. 
+
+All models are trained/finetuned on ImageNet training set, except for CLIP. 
+
+### Datasets
+
+Different datasets for out-of-distribution benchmarks : `ImageNet-V2` (same distribution), `ImageNet-C` (corruption) , `ImageNet-R` (art, cartoons, deviantart, graffiti, etc. ) and `ImageNet-A` (hard samples)
+
+For temperature scaling, they use 20% of the validation set to compute the optimal temperature and report the metrics on the remaining 80%.
+
+# In-distribution calibration
+Recent model families (ViT, BiT, MLP-Mixer) are both very accurate and well calibrated compared to old models (AlexNet, Guo et al.). 
+
+In addition, CLIP is well-calibrated given its accuracy. 
+
+<div style="text-align:center">
+<img src="/collections/images/calibration/fig1.jpg" width=800></div>
+<p style="text-align: center;font-style:italic">Figure 1. ECE vs Error Rate (left) and reliability histogram (right). Marker size indicates relative model size.</p>
+
+Difference between model families still hold after temperature scaling.
+
+Within families, larger models have higher accuracy but also higher calibration error. However, at any given accuracy ViT models are better calibrated than BiT models. Therefore, model size can not fully explain the intrisic calibration difference between families. 
+
+<div style="text-align:center">
+<img src="/collections/images/calibration/fig2.jpg" width=600></div>
+<p style="text-align: center;font-style:italic">Figure 2. Before and after temperature scaling.</p>
+
+More training date improves the accuracy of the BiT model but has no significant effect on the calibration. 
+
+<div style="text-align:center">
+<img src="/collections/images/calibration/fig3.jpg" width=600></div>
+<p style="text-align: center;font-style:italic">Figure 3. With different pre-training datasets</p>
+
+**Conclusion** : modern neural networks combine high-accuracy and SOTA calibration, both before and after temperature scaling. Model size and pretraining amount do not fully explain the intrisic difference between the families. 
+
+# Accuracy and calibration under distribution shift
+
+As expected classification and calibration error increase with distribution shift. The decay in calibration performance is slower for ViT and MLP-Mixer than the other families.
+
+<div style="text-align:center">
+<img src="/collections/images/calibration/fig4.jpg" width=800></div>
+<p style="text-align: center;font-style:italic">Figure 4. Calibration and accuracy on ImageNet-C.</p>
+
+When in-distribution we observed that larger model had higher calibration error. But the trend is reversed as we move out of the distribution.
+
+<div style="text-align:center">
+<img src="/collections/images/calibration/fig5.jpg" width=600></div>
+<p style="text-align: center;font-style:italic">Figure 5. Classification error and ECE for the top three families on ImageNet-C, relative to the largest model variant in each family. </p>
+
+When looking at natural distribution shift (ImageNet-V2, ImageNet-R and ImageNet-A), the ranking between the families is consistent with ranking on ImageNet. 
+
+Models that are Pareto-optimal (.i.e no other model is both more accurate and better calibrated) on ImageNet remain Pareto-optimal on the OOD datasets.
+
+<div style="text-align:center">
+<img src="/collections/images/calibration/fig6.jpg" width=800></div>
+<p style="text-align: center;font-style:italic">Figure 6. Calibration and accuracy on out-of-distribution benchmarks.</p>
+
+**Conclusion** :
+
+* The calibration of larger models is more robust to distribution shift.
+* Out-of-distribution calibration tends to correlate with in-distribution calibration and out-of-distribution accuracy. 
