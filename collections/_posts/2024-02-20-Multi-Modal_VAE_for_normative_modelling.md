@@ -97,7 +97,7 @@ and the loss:
 
 $$\mathcal{L} = \sum_{m=1}^{M} \left [ \mathbb{E}_{q_{\phi}(\pmb{z} \vert \pmb{X})}\left[\sum_{m=1}^{M} log \ p_{\theta}(\pmb{x}_m \vert \pmb{z})\right] - D_{KL}\left( q_{\phi}(\pmb{z} \vert \pmb{x}_m) \parallel p(\pmb{z})\right) \right ] $$
 
-* Inconvenient: the model only considers each uni-modal encoding distribution independently and does not explicitly combine information from multiple modalities in the latent representation.
+* Disadvantage: the model only considers each uni-modal encoding distribution independently and does not explicitly combine information from multiple modalities in the latent representations.
 
 &nbsp;
 
