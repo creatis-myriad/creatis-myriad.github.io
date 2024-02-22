@@ -108,7 +108,7 @@ To overcome the problem of overconfident experts, they added a weighted term for
 
 $$ q_{\phi}(\pmb{z} \vert \pmb{X})  = \frac{1}{K} \prod_{m=1}^{M} \frac{1}{M} q_{\phi_{m}}^{\alpha_{m}}(\pmb{z} \vert \pmb{x}_m) $$
 
-With: $$ \sum_{m=1}^{M} \alpha_{m}=1 $$ and $$ 0 < \alpha_{m} < 1 $$ ($$ \alpha $$ is learn during training)
+With: $$ \sum_{m=1}^{M} \alpha_{m}=1 $$ and $$ 0 < \alpha_{m} < 1 $$ ($$ \alpha $$ is learned during training)
 
 Exemple of $$ \alpha $$:
 
