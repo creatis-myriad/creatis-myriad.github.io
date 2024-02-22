@@ -166,7 +166,7 @@ $$ significance \ ratio = \frac{True \ positive \ rate}{False \ positive \ rate}
     - 2,568 healty controls from holdout cohort
     - 122 individuals with one of several neurodegenerative disorders
 * Also tried on another dataset: Alzheimer’s Disease Neuroimaging Initiative (```ADNI```) with 213 subjects
-* (same image modality were extracted (T1 and DTI features) for both dataset)
+* (same image modality were extracted (T1 and DTI features) for both datasets)
 
 ![](/collections/images/Multi-modal_VAE_for_normative_modelling/archi_gPoE.jpg)
 
