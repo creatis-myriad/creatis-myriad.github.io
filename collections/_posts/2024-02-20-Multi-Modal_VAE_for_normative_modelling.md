@@ -34,7 +34,7 @@ Figures to help understand examples of Multi-modal VAE, one with a *Product of E
 
 # Highlights
 
-In this paper, the authors have two contributions:
+In this paper, the authors introduce two contributions:
 * They present two multi-modal normative modelling frameworks (```MoE-normVAE```, ```gPoE-normVAE```).
 * They use a deviation metric that is based on the latent space.
 
@@ -49,7 +49,7 @@ These models assume that disease cohorts are located at the extremes of the heal
 * However, it is often unclear which imaging modality will be the most sensitive in detecting deviations from the norm caused by brain disorders.
 Hence, they choose to develop normative models that are suitable for multiple modalities.
 
-* Multi-modal VAE frameworks usually learn separate encoder and decoder networks for each modality and aggregate the encoding distributions to learn a joint latent representation (cf figure in Notes).
+* Multi-modal VAE frameworks usually learn separate encoder and decoder networks for each modality and aggregate the encoding distributions to learn a joint latent representation (cf. figure in Notes).
 One approach is the Product of Expert (PoE) method, which considers all experts to be equally credible and assigns a uniform contribution from each modality.
 Nevertheless the joint distribution can be biased due to overconfident experts.
 
@@ -57,9 +57,9 @@ Nevertheless the joint distribution can be biased due to overconfident experts.
 
 *Fig 1. (b) Example PoE and gPoE joint distributions.*
 
-* Authors propose a generalised Product-of-Experts (gPoE) by adding a weight to each modility and each latent dimension. They also use the Mixture of Expert (MoE) model and compare it with other methods.
+* Authors propose a generalised Product-of-Experts (gPoE) by adding a weight to each modality and each latent dimension. They also use the Mixture of Expert (MoE) model and compare it with other methods.
 
-* Finally to exploit this joint latent space, they developp a deviation metric from the latent space instead of the feature space.
+* Finally, to exploit this joint latent space, they develop a deviation metric from the latent space instead of the feature space.
 
 &nbsp;
 
@@ -81,7 +81,7 @@ $$\mathcal{L} = \mathbb{E}_{q_{\phi}(\pmb{z} \vert \pmb{X})}\left[\sum_{m=1}^{M}
 * $$ q_{\phi}(\pmb{z} \vert \pmb{X})  = \frac{1}{K} \prod_{m=1}^{M} q_{\phi_{m}}(\pmb{z} \vert \pmb{x}_m)$$ : probability density function
 * $$ \phi  = \left \{ \phi_{1},...,\phi_{M} \right \} $$ : Encoder parameters
 
-They assume that each encoders follow a gaussian distribution: 
+They assume that each encoder follows a gaussian distribution: 
 
 $$ q(\pmb{z} \vert \pmb{x}_m) = \mathcal{N} (\pmb{\mu}_m, \pmb{\sigma}_{m}^{2}\pmb{I})$$
 
@@ -104,7 +104,7 @@ and the loss:
 
 $$\mathcal{L} = \sum_{m=1}^{M} \left [ \mathbb{E}_{q_{\phi}(\pmb{z} \vert \pmb{X})}\left[\sum_{m=1}^{M} log \ p_{\theta}(\pmb{x}_m \vert \pmb{z})\right] - D_{KL}\left( q_{\phi}(\pmb{z} \vert \pmb{x}_m) \parallel p(\pmb{z})\right) \right ] $$
 
-* Inconvenient: the model only considers each uni-modal encoding distribution independently and does not explicitly combine information from multiple modalities in the latent representation.
+* Disadvantage: the model only considers each uni-modal encoding distribution independently and does not explicitly combine information from multiple modalities in the latent representations.
 
 &nbsp;
 
@@ -115,7 +115,7 @@ To overcome the problem of overconfident experts, they added a weighted term for
 
 $$ q_{\phi}(\pmb{z} \vert \pmb{X})  = \frac{1}{K} \prod_{m=1}^{M} \frac{1}{M} q_{\phi_{m}}^{\alpha_{m}}(\pmb{z} \vert \pmb{x}_m) $$
 
-With: $$ \sum_{m=1}^{M} \alpha_{m}=1 $$ and $$ 0 < \alpha_{m} < 1 $$ ($$ \alpha $$ is learn during training)
+With: $$ \sum_{m=1}^{M} \alpha_{m}=1 $$ and $$ 0 < \alpha_{m} < 1 $$ ($$ \alpha $$ is learned during training)
 
 Exemple of $$ \alpha $$:
 
@@ -132,7 +132,7 @@ $$ \pmb{\sigma}^{2} = \frac{1}{\sum_{m=1}^{M} \pmb{\alpha}_m/\pmb{\sigma}_{m}^{2
 
 ## Multi-modal latent deviation metric
 
-* Previous work used the following distance (a univariate feature space metric) to highlight subjects that are out of the distribution:
+* Previous work used the following distance (a univariate feature space metric) to highlight subjects that are out of distribution:
 
 $$ D_{uf} = \frac{d_{ij} - \mu_{norm}(d_{ij}^{norm})}{\sigma_{norm}(d_{ij}^{norm})} $$
 
@@ -160,7 +160,7 @@ To evaluate the performance of their models, they use the significance ratio:
 
 $$ significance \ ratio = \frac{True \ positive \ rate}{False \ positive \ rate} = \frac{\frac{N_{disease}(outliers)}{N_{disease}}}{\frac{N_{holdout}(outliers)}{N_{holdout}}} $$
 
-> Ideally, we want a model which correctly identifies disease individuals as outliers and healthy individuals as sitting within the normative distribution.
+> Ideally, we want a model which correctly identifies pathological individuals as outliers and healthy individuals as sitting within the normative distribution.
 
 &nbsp;
 
@@ -173,7 +173,7 @@ $$ significance \ ratio = \frac{True \ positive \ rate}{False \ positive \ rate}
     - 2,568 healty controls from holdout cohort
     - 122 individuals with one of several neurodegenerative disorders
 * Also tried on another dataset: Alzheimer’s Disease Neuroimaging Initiative (```ADNI```) with 213 subjects
-* (same image modality were extracted (T1 and DTI features) for both dataset)
+* (same image modality were extracted (T1 and DTI features) for both datasets)
 
 ![](/collections/images/Multi-modal_VAE_for_normative_modelling/archi_gPoE.jpg)
 
