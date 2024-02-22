@@ -74,7 +74,7 @@ $$\mathcal{L} = \mathbb{E}_{q_{\phi}(\pmb{z} \vert \pmb{X})}\left[\sum_{m=1}^{M}
 * $$ q_{\phi}(\pmb{z} \vert \pmb{X})  = \frac{1}{K} \prod_{m=1}^{M} q_{\phi_{m}}(\pmb{z} \vert \pmb{x}_m)$$ : probability density function
 * $$ \phi  = \left \{ \phi_{1},...,\phi_{M} \right \} $$ : Encoder parameters
 
-They assume that each encoders follow a gaussian distribution: 
+They assume that each encoder follows a gaussian distribution: 
 
 $$ q(\pmb{z} \vert \pmb{x}_m) = \mathcal{N} (\pmb{\mu}_m, \pmb{\sigma}_{m}^{2}\pmb{I})$$
 
