@@ -17,9 +17,16 @@ Link to Tutorial [VAE](https://creatis-myriad.github.io/tutorials/2022-09-12-tut
 
 No Github repository.
 
-Figure to help understand Multi-modal VAE (First part is the Product of Experts loss. Second part is the Mixture of Experts loss.):
+Figures to help understand examples of Multi-modal VAE, one with a *Product of Experts* loss and the other with a *Mixture of Experts loss*.
 
-![](/collections/images/Multi-modal_VAE_for_normative_modelling/fig_explicative.jpg)
+* Multi-modal VAE (Product of Experts loss):
+
+![](/collections/images/Multi-modal_VAE_for_normative_modelling/Note1.jpg)
+*Figure adapted from A. Salvador*
+
+* Multi-modal VAE (Mixture of Experts loss):
+
+![](/collections/images/Multi-modal_VAE_for_normative_modelling/Note2.jpg)
 *Figure adapted from A. Salvador*
 
 &nbsp;
