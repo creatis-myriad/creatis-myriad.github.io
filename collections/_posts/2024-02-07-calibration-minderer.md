@@ -26,7 +26,7 @@ pdf: "https://arxiv.org/abs/2106.07998"
 
 # Introduction
 
-For the introduction of the key concepts, let's go back to the article of Guo et al., **On Calibration of Modern Neural Networks**, PMLR 2017.
+For the introduction of the key concepts, let's go back to the article of Guo et al., **On Calibration of Modern Neural Networks**, ICML 2017.
 
 ## Calibration 
 
