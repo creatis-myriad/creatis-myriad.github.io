@@ -153,7 +153,7 @@ To evaluate the performance of their models, they use the significance ratio:
 
 $$ significance \ ratio = \frac{True \ positive \ rate}{False \ positive \ rate} = \frac{\frac{N_{disease}(outliers)}{N_{disease}}}{\frac{N_{holdout}(outliers)}{N_{holdout}}} $$
 
-> Ideally, we want a model which correctly identifies disease individuals as outliers and healthy individuals as sitting within the normative distribution.
+> Ideally, we want a model which correctly identifies pathological individuals as outliers and healthy individuals as sitting within the normative distribution.
 
 &nbsp;
 
