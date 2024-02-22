@@ -52,7 +52,7 @@ Nevertheless the joint distribution can be biased due to overconfident experts.
 
 * Authors propose a generalised Product-of-Experts (gPoE) by adding a weight to each modility and each latent dimension. They also use the Mixture of Expert (MoE) model and compare it with other methods.
 
-* Finally to exploit this joint latent space, they developp a deviation metric from the latent space instead of the feature space.
+* Finally, to exploit this joint latent space, they develop a deviation metric from the latent space instead of the feature space.
 
 &nbsp;
 
