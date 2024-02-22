@@ -133,7 +133,7 @@ As expected classification and calibration error increase with distribution shif
 <img src="/collections/images/calibration/fig4.jpg" width=800></div>
 <p style="text-align: center;font-style:italic">Figure 4. Calibration and accuracy on ImageNet-C.</p>
 
-When in-distribution, we observed that larger model had higher calibration error. But the trend is reversed as we move out of the distribution.
+When in-distribution, we observed that larger models had higher calibration error. But the trend is reversed as we move out of the distribution.
 
 <div style="text-align:center">
 <img src="/collections/images/calibration/fig5.jpg" width=600></div>
