@@ -141,7 +141,7 @@ When in-distribution, we observed that larger model had higher calibration error
 
 When looking at natural distribution shift (ImageNet-V2, ImageNet-R and ImageNet-A), the ranking between the families is consistent with ranking on ImageNet. 
 
-Models that are Pareto-optimal (.i.e no other model is both more accurate and better calibrated) on ImageNet remain Pareto-optimal on the OOD datasets.
+Models that are Pareto-optimal (i.e. no other model is both more accurate and better calibrated) on ImageNet remain Pareto-optimal on the OOD datasets.
 
 <div style="text-align:center">
 <img src="/collections/images/calibration/fig6.jpg" width=800></div>
