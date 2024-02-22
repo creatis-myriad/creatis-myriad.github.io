@@ -15,7 +15,7 @@ pdf: "https://arxiv.org/abs/2106.07998"
 # Highlights
 
 * ViT are well calibrated compared to past models, and are more robust to distribution shift
-* When in distribution : calibration slightly deteriorates with model size, but is outweighed by a improvement in accuracy
+* When in distribution : calibration slightly deteriorates with model size, but is outweighed by an improvement in accuracy
 * Under distribution shift, calibration improves with model size, reversing the in-distribution trend
 * Model size and pretraining cannot fully explain calibration differences between model families
 
