@@ -27,7 +27,7 @@ Figure to help understand Multi-modal VAE (First part is the Product of Experts 
 
 # Highlights
 
-In this paper, the authors have two contributions:
+In this paper, the authors introduce two contributions:
 * They present two multi-modal normative modelling frameworks (```MoE-normVAE```, ```gPoE-normVAE```).
 * They use a deviation metric that is based on the latent space.
 
