@@ -125,7 +125,7 @@ $$ \pmb{\sigma}^{2} = \frac{1}{\sum_{m=1}^{M} \pmb{\alpha}_m/\pmb{\sigma}_{m}^{2
 
 ## Multi-modal latent deviation metric
 
-* Previous work used the following distance (a univariate feature space metric) to highlight subjects that are out of the distribution:
+* Previous work used the following distance (a univariate feature space metric) to highlight subjects that are out of distribution:
 
 $$ D_{uf} = \frac{d_{ij} - \mu_{norm}(d_{ij}^{norm})}{\sigma_{norm}(d_{ij}^{norm})} $$
 
