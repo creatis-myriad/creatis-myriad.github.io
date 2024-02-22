@@ -42,7 +42,7 @@ These models assume that disease cohorts are located at the extremes of the heal
 * However, it is often unclear which imaging modality will be the most sensitive in detecting deviations from the norm caused by brain disorders.
 Hence, they choose to develop normative models that are suitable for multiple modalities.
 
-* Multi-modal VAE frameworks usually learn separate encoder and decoder networks for each modality and aggregate the encoding distributions to learn a joint latent representation (cf figure in Notes).
+* Multi-modal VAE frameworks usually learn separate encoder and decoder networks for each modality and aggregate the encoding distributions to learn a joint latent representation (cf. figure in Notes).
 One approach is the Product of Expert (PoE) method, which considers all experts to be equally credible and assigns a uniform contribution from each modality.
 Nevertheless the joint distribution can be biased due to overconfident experts.
 
