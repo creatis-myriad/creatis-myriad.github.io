@@ -13,12 +13,11 @@ pdf: "https://arxiv.org/pdf/2303.12706.pdf"
 
 # Notes
 
-Here are some useful links: 
-* Tutorial [VAE](https://creatis-myriad.github.io/tutorials/2022-09-12-tutorial-vae.html)
+Link to Tutorial [VAE](https://creatis-myriad.github.io/tutorials/2022-09-12-tutorial-vae.html)
 
 No Github repository.
 
-Figure to help understand Multi-modal VAE:
+Figure to help understand Multi-modal VAE (First part is the Product of Experts loss. Second part is the Mixture of Experts loss.):
 
 ![](/collections/images/Multi-modal_VAE_for_normative_modelling/fig_explicative.jpg)
 *Figure adapted from A. Salvador*
@@ -51,8 +50,7 @@ Nevertheless the joint distribution can be biased due to overconfident experts.
 
 *Fig 1. (b) Example PoE and gPoE joint distributions.*
 
-* Authors propose a generalised Product-of-Experts (gPoE) by adding a weight to each modility and each latent dimension.
-Furthermore, they use the Mixture of Expert (MoE) differently to obtain a joint representation.
+* Authors propose a generalised Product-of-Experts (gPoE) by adding a weight to each modility and each latent dimension. They also use the Mixture of Expert (MoE) model and compare it with other methods.
 
 * Finally to exploit this joint latent space, they developp a deviation metric from the latent space instead of the feature space.
 
