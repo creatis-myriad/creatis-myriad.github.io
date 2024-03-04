@@ -24,7 +24,7 @@ professors:
     lastname: 'Benoit-Cattin'
     university: 'INSA, University of Lyon'
     picture: 'hBenoitCattin.jpg'
-    interests: "MR imaging, signal preocessing, deep learning"
+    interests: "MR imaging, signal processing, deep learning"
     url: "https://www.creatis.insa-lyon.fr/~yougz/"
     
   - firstname: 'Denis'
@@ -33,7 +33,7 @@ professors:
     picture: 'dFriboulet.jpg'
     interests: "Cardiac imaging, deep learning" 
     url: "https://www.creatis.insa-lyon.fr/site7/fr/DenisFriboulet"   
-    
+
   - firstname: 'Maciej'
     lastname: 'Orkisz'
     university: 'University Lyon 1'    
@@ -80,7 +80,7 @@ associate_professors:
     lastname: 'Merveille'
     university: 'INSA, University of Lyon'
     picture: 'oMerveille.jpg'
-    interests: "Pulmonary imaging, Neuroimaging, deep learning"          
+    interests: "Pulmonary imaging, neuroimaging, deep learning"          
     url: 'http://www.odyssee-merveille.com/'
     
   - firstname: 'Fabien'
@@ -88,6 +88,13 @@ associate_professors:
     university: 'University Lyon 1'
     picture: 'fMillioz.jpg'
     interests: "Cardiac imaging, deep learning"          
+    
+  - firstname: 'Chantal'
+    lastname: 'Muller'
+    university: 'INSA, University of Lyon'    
+    picture: 'cMuller.jpg'
+    interests: "Image processing, segmentation, deep learning" 
+    url: "https://www.creatis.insa-lyon.fr/~muller"    
     
   - firstname: 'Marc'
     lastname: 'Robini'
@@ -100,7 +107,7 @@ associate_professors:
     lastname: 'Roux'
     university: 'University Lyon 1'
     picture: 'eRoux.jpg'
-    interests: "Pulmonary imaging, Cardiac imaging, deep learning" 
+    interests: "Pulmonary imaging, cardiac imaging, deep learning" 
             
 researchers:
 
@@ -115,7 +122,7 @@ researchers:
     lastname: 'Cohen'
     institution: 'CNRS - CR'
     picture: 'jCohen.jpg'
-    interests: "Machine Learning, Hyperspectral Imaging, Matrix and Tensor Decompositions"
+    interests: "Machine Learning, hyperspectral imaging, matrix and tensor decompositions"
     url: "https://scholar.google.com/citations?hl=en&user=MlBzHfcAAAAJ"
 
   - firstname: 'Stéphanie'
@@ -188,7 +195,7 @@ medical_doctors:
     lastname: 'Fanton'
     institution: 'HCL - PUPH'
     picture: 'lFanton.jpg'
-    speciality: "forensic scientist"
+    speciality: "Forensic scientist"
 
   - firstname: 'Jean-Christophe'
     lastname: 'Richard'
@@ -201,7 +208,7 @@ medical_doctors:
     lastname: 'Jackesson'
     institution: 'HCL - MCU-PH'
     picture: 'tJackesson.jpg'
-    speciality: "neurosurgeon"
+    speciality: "Neurosurgeon"
     
 phd_first: 
    
