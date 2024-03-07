@@ -42,13 +42,13 @@ $$M$$ siamese networks ($$M$$ the number of cubes) with shared weight branches, 
 
 ## Cube ordering
 
-As there are $$M!$$ permutations and that some may be very close to each other and too ambiguous and challenging to distinguish, they iteratively select $$K$$ permutations with the largest Hamming distance. The network is then trained to recognize which one of the $$K$$ permutations has been applied to the input volume: it is a classification task with $$K$$ categories. With $$p$$ the network prediction and $$l$$ the one-hot label, the loss is defined as 
+As there are $$M!$$ permutations and that some may be very close to each other, too ambiguous and challenging to distinguish, they iteratively select $$K$$ permutations with the largest Hamming distance. The network is then trained to recognize which one of the $$K$$ permutations has been applied to the input volume: it is a classification task with $$K$$ categories. With $$p$$ the network prediction and $$l$$ the one-hot label, the loss is defined as 
 
 $$ L_p = - \sum{l_j \log p_j}$$
 
 ## Cube orientation
 
-In order not to extract only translation invariant features, they add some rotation. For each cube there could be 3 (axes) * 2 (directions) * 4 (angles) = 24 configurations. Again, to reduce the complexity, they limited the modifications to 180° horizontal and vertical rotations. The network has to recognize whether each cube has been rotated or not: it is a multi-label classification task with two $$1xM$$ vectors for each direction with 1 at the position of rotated cubes and 0 otherwise as ground truth. If $$r$$ are the predicted vectors and $$g$$ the ground truth, the loss is
+In order not to extract only translation invariant features, they add some rotation. For each cube there could be 3 (axes) * 2 (directions) * 4 (angles) = 24 configurations. Again, to reduce the complexity, they limited the modifications to 180° horizontal and vertical rotations. The network has to recognize whether each cube has been rotated or not: it is a multi-label classification task with two $$1*M$$ vectors for each direction with 1 at the position of rotated cubes and 0 otherwise as ground truth. If $$r$$ are the predicted vectors and $$g$$ the ground truth, the loss is
 
 $$ L_r = - \sum_i^M{g_i^{hor} \log r_i^{hor} + g_i^{ver} \log r_i^{ver}}$$
 
@@ -68,7 +68,7 @@ For a target classification task, the pretrained CNN can be directly fine-tuned 
 
 ## Experimental setup
 
-For classification: brain hemmorage classfication, 1486 volumes classified between aneurysm, arteriovenous malformation, moyamoya disease and hypertension.
+For classification: brain hemmorage classification, 1486 volumes classified between aneurysm, arteriovenous malformation, moyamoya disease and hypertension.
 For segmentation : BraTS-2018 with 285 volumes, the different modalities are concatenated.
 Data sets are randomly separated into two sets: 80% for training, 20% for testing.
 The architecture used for the Siamese-Octad branches is 3D VGG.
