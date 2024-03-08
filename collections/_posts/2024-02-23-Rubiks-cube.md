@@ -19,7 +19,7 @@ pdf: "https://arxiv.org/pdf/1910.02241.pdf"
 
 # Introduction
 
-There is a lot of 3D data available in hospitals, but annotating it to train deep learning algorithms is very costly. One of the solutions proposed to take advantage of all this data is self-supervised learning. The goal is to pre-train a network with a large unannotated dataset, learning a pretext task, and then fine-tune it for the target task with the reduced annotated dataset.
+There is a lot of 3D data available in hospitals, but annotating it to train deep learning algorithms is very costly. One of the solutions proposed to take advantage of all this data is self-supervised learning. The goal is to pre-train a network on a large unannotated dataset by learning a pretext task, and then fine-tune it for the target task with the reduced annotated dataset.
 
 ![](/collections/images/3D_Rubik/SSL.jpg)
 
@@ -33,12 +33,12 @@ The proposed task enforces the network to learn the translation and rotation inv
 
 ![](/collections/images/3D_Rubik/method_diagram.jpg)
 
-The method is inspired by jigsaw puzzle pretext task but adapted for 3D medical images with an increased difficulty by adding some rotation.
+The method is inspired by the jigsaw puzzle pretext task, but adapted to 3D medical images by adding some rotations to increase the difficulty.
 The first step is to separate the volume into cubes, which are then rearranged and randomly rotated. Since the goal is to learn high-level semantic features and not texture information close to cubes boundaries, a gap of "about 10 voxels" is left between two adjacent cubes. Each cube is also normalized to [-1,1].
 
 ## Network architecture
 
-$$M$$ siamese networks ($$M$$ the number of cubes) with shared weight branches, that they call Siamese-Octad, are used to solve the problem. The backbone can be any 3D CNN. The feature maps of the last layer of all branches are concatenated and given to a last fully connected layer for the too tasks and supervised by permutation loss and rotation loss.
+$$M$$ siamese networks with shared weight branches, that they call Siamese-Octad, are used to solve the problem, with $$M$$ being the number of cubes. The backbone can be any 3D CNN. The feature maps of the last layer of all branches are concatenated and given to a last fully connected layer for the too tasks and supervised by permutation loss and rotation loss.
 
 ## Cube ordering
 
@@ -58,11 +58,11 @@ The global loss is weighted according to the importance of the two tasks.
 
 $$L = \alpha L_p + \beta L_r$$
 
-They experimentaly found that $$\alpha = \beta = 0.5$$ are the best weights.
+They experimentally found that $$\alpha = \beta = 0.5$$ are the best weights.
 
 ## Weights transfer
 
-For a target classification task, the pretrained CNN can be directly fine-tuned but for a segmentation task, the weights can only be transferred to the encoder of a FCN. As the random initialization of the decoder might neutralize the improvement brought by the pretraining, they apply convolutional operations directly on the feature maps provided by the pre-trained encoder to obtain the dense pixel-wise prediction instead of the transposed convolutions, inspired by dense upsampling convolutions which has fewer trainable parameters in the decoder.
+For a target classification task, the pretrained CNN can be directly fine-tuned but for a segmentation task, the weights can only be transferred to the encoder of a FCN. As the random initialization of the decoder might neutralize the improvement brought by the pretraining, they apply convolutional operations directly on the feature maps of the pre-trained encoder to obtain dense pixel-wise prediction, instead of using transposed convolutions on downsampled feature maps (i.e. traditional decoder architectures). This decoder architecture was inspired by dense upsampling convolutions, which has fewer trainable parameters in the decoder.
 
 # Results
 
