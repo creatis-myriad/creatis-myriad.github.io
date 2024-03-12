@@ -15,7 +15,7 @@ pdf: "https://telecom-paris.hal.science/hal-03255341"
 # Blind Source Separation (BSS)
 
 ## Problem definition
-Given a observed **mixed signal**
+Given an observed **mixed signal**
 $$x$$
 made from the sum of
 $$M$$
