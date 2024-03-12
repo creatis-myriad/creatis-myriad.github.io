@@ -38,7 +38,7 @@ The first step is to separate the volume into cubes, which are then rearranged a
 
 ## Network architecture
 
-$$M$$ siamese networks with shared weight branches, that they call Siamese-Octad, are used to solve the problem, with $$M$$ being the number of cubes. The backbone can be any 3D CNN. The feature maps of the last layer of all branches are concatenated and given to a last fully connected layer for the too tasks and supervised by permutation loss and rotation loss.
+$$M$$ siamese networks with shared weight branches, that they call Siamese-Octad, are used to solve the problem, with $$M$$ being the number of cubes. The backbone can be any 3D CNN. The feature maps of the last layer of all branches are concatenated and given to a last fully connected layer for the two tasks and supervised by permutation loss and rotation loss.
 
 ## Cube ordering
 
