@@ -262,6 +262,38 @@ permalink: /members/
 
     </table>        
     
+  <h1>PhD - 4th year</h1>
+
+    <table>
+        {% for item in site.data.members.phd_forth %}
+         <tr>
+             <th>
+                 <strong>{{ item.firstname }} {{ item.lastname }}  </strong> </br>
+                 {%if item.institution %}
+                  Institution: {{ item.institution }}
+                 {% endif %} </br>
+                 {%if item.supervisors %}
+                  Supervisor(s): {{ item.supervisors }}
+                 {% endif %} </br>                 
+		 {%if item.subject %}
+                 {%if item.interests %}
+                  Interests: {{ item.interests }}
+                 {% endif %}
+                 </br></br>                 
+		  Subject: <em>{{ item.subject }}</em>
+		 {% endif %}                   
+                 <!--<a href="https://creatis-myriad.github.io/search/?query={{ item.firstname }}+{{ item.lastname }}">Posts</a> -->
+             </th>
+              <th>
+                  {%if item.picture %}
+                    <img src={{ item.picture }}>
+                  {% endif %}
+              </th>
+         </tr>
+       {% endfor %}
+
+    </table>         
+    
   <h1>Alumni</h1>
 
     <table>
