@@ -173,7 +173,7 @@ medical_doctors:
   - firstname: 'Sara'
     lastname: 'Boccalini'
     institution: 'HCL - MCU-PH'
-    picture: 'icon_doctor.jpg'
+    picture: 'sBoccalini.jpg'
     speciality: "Radiologist"
     expertise: "Cardio-vascular imaging"
 
