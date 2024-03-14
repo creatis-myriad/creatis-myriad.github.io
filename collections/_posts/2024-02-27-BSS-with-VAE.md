@@ -15,7 +15,7 @@ pdf: "https://telecom-paris.hal.science/hal-03255341"
 # Blind Source Separation (BSS)
 
 ## Problem definition
-Given a observed **mixed signal**
+Given an observed **mixed signal**
 $$x$$
 made from the sum of
 $$M$$
@@ -106,15 +106,15 @@ is the dimension of
 $$x.$$
 The authors argue that considering a Laplace likelihood instead of a Gaussian one penalizes deviations around the mean and thus prevents blurry reconstructions.
 
+<br/>
+
+## Encoder
 The prior
 $$p(z)$$
 enforces each source element to follow a zero-mean, unit variance Gaussian distribution:
 
 $$p(z) = \prod_{k=1}^K p(z_k) = \prod_{k=1}^K N(z_k | 0, I).$$
 
-<br/>
-
-## Encoder
 Given the signal
 $$x,$$
 the posterior 
@@ -164,6 +164,8 @@ $$\check{s}_k$$
 $$ \check{s}_k = \hat{s}_k \odot (x \oslash \hat{x}) $$
 
 - Baseline methods include: a classic method (NMF), an auto-encoder (AE), a semi-supervised method (GLO) and an unsupervised method (MixIT). Ideal binary masks (IBM) and ideal ratio masks (IRM) provide upper-bound performances.
+
+- Their code is available [here](https://github.com/jundsp/VAE-BSS).
 
 
 <br/>
