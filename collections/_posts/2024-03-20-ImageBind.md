@@ -32,7 +32,7 @@ The main goal of the authors is to learn a single shared multimodal embedding sp
 <img src="/collections/images/imagebind/overview.jpg" width=800></div>
 <p style="text-align: center;font-style:italic">Figure 1. Overview of ImageBind.</p>
 
-ImageBind uses pairs of modalities $$(\mathcal{I}, \mathcal{M})$$ where $$\mathcal{I}$$ represents images and $$\mathcal{M}$$ another modality. In their work, $$\mathcal{M}$$ can be text, audio, depth sensor data, thermal data, and Inertial Measurment Unit (IMU, times-series data from accelerometers and gyroscopes). Note that image can be replaced by video by inflating patch projection layers, thus both are considered as *anchor modality* and treated with the same encoder.
+ImageBind uses pairs of modalities $$(\mathcal{I}, \mathcal{M})$$ where $$\mathcal{I}$$ represents images and $$\mathcal{M}$$ another modality. In their work, $$\mathcal{M}$$ can be text, audio, depth sensor data, thermal data, and Inertial Measurement Unit (IMU, times-series data from accelerometers and gyroscopes). Note that image can be replaced by video by inflating patch projection layers, thus both are considered as *anchor modality* and treated with the same encoder.
 
 Each modality $$M$$ has its own dedicated encoder (see below for details) and an associated projector $$f_\mathcal{M}$$, so that every modality embedding ends up in a space of common dimension.
 
@@ -70,7 +70,7 @@ The authors use several datasets to couple audio, depth maps, thermal data and I
 
 ## Emergent zero-shot classification
 
-Zero-shot classification refers to the task of classifying samples for unknown classes or for models that have not been trained specifically on a classification task. It is applicable to models that have been trained to build a common space between paired modalities ($$\mathcal{T}$$,$$\mathcal{X}$$), where $$\mathcal{T}$$ is text and $$\mathcal{X}$$ can be any other modality, such as image or audio. For such models, it is possible to peform classification without the need for finetuning specific for this task. The class is determined using simple standard prompts, such as "An image of a {class}", where {class} is replaced by every possible class. The class attributed to a sample is the one for which the associated text prompt has the highest similarity with the sample.  
+Zero-shot classification refers to the task of classifying samples for unknown classes or for models that have not been trained specifically on a classification task. It is applicable to models that have been trained to build a common space between paired modalities ($$\mathcal{T}$$,$$\mathcal{X}$$), where $$\mathcal{T}$$ is text and $$\mathcal{X}$$ can be any other modality, such as image or audio. For such models, it is possible to perform classification without the need for finetuning specific for this task. The class is determined using simple standard prompts, such as "An image of a {class}", where {class} is replaced by every possible class. The class attributed to a sample is the one for which the associated text prompt has the highest similarity with the sample.  
 
 Here, ImageBind is able to perform zero-shot classification between text and a modality $$\mathcal{M}$$ which has not been paired with text during training (audio, depth, etc.). This is an indirect phenomenon that appears thanks to the training with pairs of (image, text) and (image, $$\mathcal{M}$$). Such downstream performances are referred to ***emergent*** zero-shot classification by the authors. 
 
@@ -84,7 +84,7 @@ Figure 3 shows emergent zero-shot classification performance of ImageBind on all
 
 ## Zero-shot retrieval
 
-Even withouh having been trained with (text, audio) pairs, ImageBind achieves performance that are on par with AudioCLIP, which uses text-audio supervision, and close to supervised baselines. Figure 5 shows that adding audio to video for text-based retrieval (36.8 R@1 against 36.1 on Figure 3)
+Even without having been trained with (text, audio) pairs, ImageBind achieves performance that are on par with AudioCLIP, which uses text-audio supervision, and close to supervised baselines. Figure 5 shows that adding audio to video for text-based retrieval (36.8 R@1 against 36.1 on Figure 3)
 
 <div style="text-align:center">
 <img src="/collections/images/imagebind/audio_retrieval.jpg" width=500></div>
@@ -104,11 +104,11 @@ On few shot classification, ImageBind's audio feature extractor is largely super
 
 ## Multimodal embedding space manipulation
 
-ImageBind's joint multimodel embedding space allow for many cross-modal manipulations, such as audio-based generation, modality combination for image retrieval (Figure 7) or object detection with audio queries (Figure 8)[^3].
+ImageBind's joint multimodal embedding space allow for many cross-modal manipulations, such as audio-based generation, modality combination for image retrieval (Figure 7) or object detection with audio queries (Figure 8)[^3].
 
 <div style="text-align:center">
 <img src="/collections/images/imagebind/embedding_space_sum.jpg" width=500></div>
-<p style="text-align: center;font-style:italic">Figure 7. By ading image and audio embedding and using the resulting composed embedding for image retrieval, it capture semantics from the two modalities.</p>
+<p style="text-align: center;font-style:italic">Figure 7. By adding image and audio embedding and using the resulting composed embedding for image retrieval, it capture semantics from the two modalities.</p>
 
 <div style="text-align:center">
 <img src="/collections/images/imagebind/audio_queries.jpg" width=500></div>
