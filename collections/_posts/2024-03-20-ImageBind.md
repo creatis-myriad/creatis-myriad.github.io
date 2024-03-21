@@ -13,16 +13,16 @@ pdf: "https://arxiv.org/pdf/2305.05665.pdf"
 # Highlights
 
 * The authors propose ImageBind, an approach to learn a joint embedding space across six different modalities.
-* It is trained in a self-supervised fashion only with image-paired data, but can successfully bind together all modalities together.
-* It is evaluate on many downstream applications, such a zero- and few-shot classification, cross-modal retrieval and generation.
+* It is trained in a self-supervised fashion only with image-paired data, but can successfully bind all modalities together.
+* It is evaluated on many downstream applications, such a zero- and few-shot classification, cross-modal retrieval and generation.
 
 &nbsp;
 
 # Context and objectives
 
-Many recent have worked on align image features with other modalities, such as text or audio. Such networks, like the popular CLIP, They exhibit strong zero-shot performances on downstream tasks and provide powerful feature extractor.However, they are limited to pairs of modalities for training and resulting downstream tasks. 
+Many recent have worked on aligning image features with other modalities, such as text or audio. Such networks, like the popular CLIP, exhibit strong zero-shot performances on downstream tasks and provide powerful feature extractors. However, they are limited to pairs of modalities for training and resulting downstream tasks. 
 
-The main goal of the authors is to learn a single shared multimodal embedding space by using *only image-paired* data. In doing so, they place image as anchor modality and surpress the need of building other paired datasets. Moreover, it does not require datasets where all modalities co-occur with each other. Their **ImageBind** can successfully link modalities that have not been seen together during training, like audio and text.
+The main goal of the authors is to learn a single shared multimodal embedding space by using *only image-paired* data. In doing so, they place images as anchor modality and suppress the need for building other paired datasets. Moreover, it does not require datasets where all modalities co-occur with each other. **ImageBind** can successfully link modalities that have not been seen together during training, like audio and text.
 
 &nbsp;
 
@@ -50,7 +50,7 @@ $$
 
 * **Audio :** Audio samples are recorded at 16kHz. They are cut into 2-second samples and converted into spectrograms using 128-mel spectrograms bins. Spectrograms are processed as images with ViT with a patch size of 16 and stride 10.
 
-* **Text :** They directly use CLIP encoder architecture, which is a VIT. Again, Tyey leverage image-text supervision from large-scale data by using OpenCLIP's text encoder weights (320M parameters). The weights are kept frozen.
+* **Text :** They directly use CLIP's encoder architecture, which is a VIT. Again, they leverage image-text supervision from large-scale data by using OpenCLIP's text encoder weights (320M parameters). The weights are kept frozen.
 
 * **Depth and Thermal data :** They treat both as one-channel images and use ViT to encoder them. 
 
@@ -62,7 +62,7 @@ $$
 
 ## Datasets
 
-The authors use several dataset to couple audio, depth maps, thermal data and IMU to image (or video). Each dataset is split into train/test to evaluate zero-shot classification or retrieval abilities.
+The authors use several datasets to couple audio, depth maps, thermal data and IMU to image (or video). Each dataset is split into train/test to evaluate zero-shot classification or retrieval abilities.
 
 <div style="text-align:center">
 <img src="/collections/images/imagebind/databases.jpg" width=500></div>
@@ -70,9 +70,9 @@ The authors use several dataset to couple audio, depth maps, thermal data and IM
 
 ## Emergent zero-shot classification
 
-Zero-shot is a term used for model trained with a modality X (image or audio for instance) paired with text. The class is determined using simple standard prompts, such as "An image of a {class}", where {class} is replaced by every possible class. The class attributed to a sample is the one for with the associated text prompt has the highest similarity with the sample.  
+Zero-shot is a term used for a model trained with a modality X (image or audio for instance) paired with text. The class is determined using simple standard prompts, such as "An image of a {class}", where {class} is replaced by every possible class. The class attributed to a sample is the one for which the associated text prompt has the highest similarity with the sample.  
 
-Here, ImageBind is able to perform zero-shot classification between text and a modality $$\mathcal{M}$$ with has not been paired with text during training (audio, depth, etc.). This is an indirect phenomenom that appears thanks to the training with pairs of (image, text) and (image, $$\mathcal{M}$$). Such downstream performance are referred to ***emergent*** zero-shot classification by the authors. 
+Here, ImageBind is able to perform zero-shot classification between text and a modality $$\mathcal{M}$$ which has not been paired with text during training (audio, depth, etc.). This is an indirect phenomenon that appears thanks to the training with pairs of (image, text) and (image, $$\mathcal{M}$$). Such downstream performances are referred to ***emergent*** zero-shot classification by the authors. 
 
 &nbsp;
 
@@ -96,7 +96,7 @@ Even withouh having been trained with (text, audio) pairs, ImageBind achieves pe
 
 ## Few-shot classification
 
-On few shot classification, ImageBind's audio feature extractor is largely superior to AudioMAE (self-supervised reconstructiion-based pretraining) and reach performance on par with supervised models. It also compares favorably to state-of-the-art multimodal SSL pretraining techniques, such as a MultiMAE model trained with images, depth and semantic segmentation masks.
+On few shot classification, ImageBind's audio feature extractor is largely superior to AudioMAE (self-supervised reconstruction-based pretraining) and reaches performance on par with supervised models. It also compares favorably to state-of-the-art multimodal SSL pretraining techniques, such as a MultiMAE model trained with images, depth and semantic segmentation masks.
 
 <div style="text-align:center">
 <img src="/collections/images/imagebind/fewshot_classif.jpg" width=500></div>
