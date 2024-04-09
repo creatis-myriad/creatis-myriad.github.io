@@ -29,7 +29,7 @@ pdf: "https://arxiv.org/pdf/2201.09865.pdf"
 
 # Introduction
 
-The state-of-the art of inpainting methods mostly use a distribution of arbitrary masks to train their models. Resulting in poor generalization capabilities. The paper proposes a new method to condition the generation process. The Repaint method takes place during the reverse diffusion and does not require specific training; a classic DDPM is enough!
+The state-of-the art of inpainting methods mostly use a distribution of arbitrary masks to train their models. Resulting in poor generalization capabilities. The paper proposes a new method to condition the generation process. The Repaint method only takes place during the complete generation process and does not require specific training; a classic DDPM is enough!
 
 ![](/collections/images/Repaint/masks_used.jpg)
 
