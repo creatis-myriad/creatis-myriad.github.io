@@ -53,7 +53,7 @@ $$
 
 &nbsp;
 
-As previously mentioned, the innovation of the Repaint paper is due to its method of generation, which is conditioned by the known region of the image. They introduce some notations: the ground truth image is denoted as $$x$$, the unknown pixels as $$m \odot x$$ and the known pixels as $$(1 − m) \odot x$$. They define their new reverse diffusion process as follows:
+As previously mentioned, the innovation of the Repaint paper is due to its method of generation, which is conditioned by the known region of the image. They introduce some notations: the ground truth image is denoted as $$x$$ and the mask corresponding to the unknown area to inpaint as $$m$$. They define their new reverse diffusion process as follows:
 
 &nbsp;
 
