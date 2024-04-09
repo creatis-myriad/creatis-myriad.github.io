@@ -67,7 +67,7 @@ $$
 
 &nbsp;
 
-Basically, the idea boils down to sampling from known and unknown regions at a given timestep. Since this sampling is done through all steps of the reverse diffusion process, the distribution of the intermediaries $$x_{t-1}$$ images matches the propriety of the distributions from a regular reverse diffusion process, thus filling the unknown region with a texture that matches the neighboring regions. The final result is an image with the known regions intact, and the unknown region filled with generated texture.
+Basically, the idea boils down to sampling from known and unknown regions at a given timestep. Since this sampling is done through all steps of the reverse diffusion process, the distribution of the intermediary $$x_{t-1}$$ images match more and more the properties of the known image at each denoising steps. At the end of the process, the generated image is an image with **intact** known region, and a texture related to the known region which covers the unknown region.
 
 ![](/collections/images/Repaint/reverse_diffusion.gif)
 
@@ -81,7 +81,7 @@ Figure 2: Reverse diffusion process with known region conditioning.
 
 As you may have noticed, the previously described reverse diffusion process does not directly restrict diffusion process generation. This can result in a coherent generated texture by itself, but incoherent regarding the general image semantic, with non-matching boundaries, for instance (cf. figure 3, with n from 1 to 5).
 
-To overcome this problem, the authors leverage the fact that DDPM is trained to create images that lie within a data distribution and diffuse the output $$x_{t−1}$$ back to $$x_t$$. The effect of this is to incorporate some information in the $$x^{unknown}_t$$ and add noise to the image, thus creating new $$x^{known}_t$$ and $$x^{unknown}_t$$ regions that are better harmonized.
+To overcome this problem, the authors leverage the fact that DDPM is trained to create images that lie within a data distribution and diffuse the output $$x_{t−1}$$ back to $$x_t$$. The effect of this is to incorporate some information in the $$x^{unknown}_t$$ and add noise to the image. In consequence, the model gain in accuracy to approximate the distribution that correspond to the image the user is trying to inpaint, thus creating new $$x^{known}_t$$ and $$x^{unknown}_t$$ regions that are better harmonized.
 
 ![](/collections/images/Repaint/resampling.jpg)
 
