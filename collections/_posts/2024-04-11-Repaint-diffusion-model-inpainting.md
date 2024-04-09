@@ -132,7 +132,7 @@ As we can see, the Repaint inpainting method was most of the time chosen by vote
 
 ## Ablation Study
 
-A huge con of the Repaint method is its computational cost. The diffusion model inference process is not fast in the first place, but if you need $$T$$ denoising steps to denoise an image, with Repaint you will need $$T \times n$$ steps to inpaint an image.
+A huge con of the Repaint method is its computational cost. The diffusion model inference process is not fast in the first place, but if you need $$T$$ denoising steps to denoise an image, with Repaint you will need $$T \times r$$ steps to inpaint an image.
 
 To overcome that problem, the researchers made an ablatation study, doing a trade-off between the number of resampling and the number of denoising steps for a given number of steps.
 
