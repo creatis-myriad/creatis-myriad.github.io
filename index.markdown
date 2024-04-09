@@ -31,4 +31,4 @@ Welcome to the website of the Modeling & analYsis foR medical Imaging and Diagno
 Drawing heavily on the [VITALab website](https://vitalab.github.io/), which is one of our main collaborators at the University of Sherbrooke, we have set up this website to keep up to date with new advances in our research areas. In that perspective, each time a member of the team finds an interesting paper, he/she can share it via this repo. In this way, a paper read and understood by a person gets shared with the rest of the people.
 
 <br />
-<img src="images/myriad.jpg" width="700" class="center" />
+<img src="images/myriad_2.jpg" width="700" class="center" />
