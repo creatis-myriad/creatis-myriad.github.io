@@ -29,7 +29,11 @@ pdf: "https://arxiv.org/pdf/2201.09865.pdf"
 
 # Introduction
 
-The state-of-the art of inpainting methods mostly use a distribution of arbitrary masks to train their models. Resulting in poor generalization capabilities. The paper proposes a new method to condition the generation process. The Repaint method only takes place during the complete generation process and does not require specific training; a classic DDPM is enough!
+The task of inpainting is what we define as the process of filling damaged, missing, or hidden areas of an image with meaningful information.
+
+The state-of-the-art of inpainting methods were autoregressive-based or GAN-based approaches, which mostly use a distribution of arbitrary masks to train their models. Resulting in poor generalization capabilities.
+
+The paper proposes a new method to condition the generation process and was the first method at the time to use diffusion models. This method, the Repaint method, only takes place during the complete generation process of DDPM and does not require specific training of the model.
 
 ![](/collections/images/Repaint/masks_used.jpg)
 
@@ -39,27 +43,35 @@ Figure 1: Illustration of the variety of masks used.
 
 &nbsp;
 
+## Prerequisites
+
+A quick reminder about diffusion models is needed to understand the following parts of this post. 
+
+Diffusion models are basically U-net networks, which, through training, try to predict the noise added to an image.
+We define a range of noise levels from $$0$$ to $$t$$, $$x_0$$ denoting a noise-free image and $$x_t$$ denoting a pure Gaussian noise $$\sim \mathcal{N}(0, I)$$.
+
+The process of gradually adding noise to an image is called the **forward diffusion process**, and the action of gradually removing it is called the **reverse diffusion process**.
+
+The forward diffusion process is modeled as a Markov chain where noise is added gradually at each step, and the prediction of $$x_t$$ only depends on $$x_ {t-1}$$.
+
+![](/collections/images/Repaint/diffusion_model_scheme.jpg)
+
+<center style="font-style:italic">
+Figure 2: Scheme of a diffusion model.
+</center>
+
+&nbsp;
+
 # Method
 ## Inpainting algorithm and general idea
 
-A quick reminder about diffusion models is needed to understand the following parts: Diffusion models are basically U-net networks, which, through training, try to predict the noise added to an image. We define a range of noise levels from $$0$$ to $$t$$, $$x_0$$ denoting an input image with no noise added and $$x_t$$ denoting a noisy image $$\sim \mathcal{N}(0, I)$$. The process of gradually adding noise to an image is called the **forward diffusion process**, and the action of gradually removing it is called the **reverse diffusion process**.
-The forward diffusion process is modelized as a Markov chain with noise added at each step, we can use the following equation to generate a picture at a specific noise level:
-
-&nbsp;
-
-$$
-q(x_t|x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha_t}}x_0; (1 − \bar{\alpha_t})I)\\
-$$
-
-&nbsp;
-
-As previously mentioned, the innovation of the Repaint paper is due to its method of generation, which is conditioned by the known region of the image. They introduce some notations: the ground truth image is denoted as $$x$$ and the mask corresponding to the unknown area to inpaint as $$m$$. They define their new reverse diffusion process as follows:
+The innovation of the Repaint paper is due to its method of generation, which is conditioned by the known region of the image. They introduce some notations: the ground truth image is denoted as $$x$$ and the mask corresponding to the unknown area to inpaint as $$m$$. They define their new reverse diffusion process as follows:
 
 &nbsp;
 
 $$
 \begin{aligned}
-x^{known}_{t−1} & ∼ \mathcal{N} (\sqrt{\bar{\alpha_t}}x_0, (1 − \bar{\alpha_t})I)\\
+x^{known}_{t−1} & ∼ \mathcal{N} (\sqrt{\bar{\alpha_t}}x_0, (1 − \bar{\alpha_t})I) \leftarrow \text{$x_0$ is set at the noise level t-1}\\
 x^{unknown}_{t−1} & ∼ \mathcal{N} (\mu_\theta(x_t, t), \Sigma_\theta(x_t, t))\\
 x_{t−1} & = m \odot x^{known}_{t−1} + (1 − m) \odot x^{unknown}_{t−1}
 \end{aligned}
@@ -67,12 +79,29 @@ $$
 
 &nbsp;
 
-Basically, the idea boils down to sampling from known and unknown regions at a given timestep. Since this sampling is done through all steps of the reverse diffusion process, the distribution of the intermediary $$x_{t-1}$$ images match more and more the properties of the known image at each denoising steps. At the end of the process, the generated image is an image with **intact** known region, and a texture related to the known region which covers the unknown region.
+The inpainting tactic explained in the paper is rather simple. If we want to generate $$x_{t-1}$$ output from $$x_t$$ input we have to :
+- <span style="color:red">generate through **forward diffusion**  from $$x_0$$ a noisy image at $$t-1$$ noise level</span>
+- <span style="color:green">generate the $$x_{t-1}$$ image from $$x_t$$ using **reverse diffusion**</span>
+- <span style="color:blue">concatenate the known part of the **forward diffusion** with the unknown part of the **reverse diffusion**</span>
 
-![](/collections/images/Repaint/reverse_diffusion.gif)
+&nbsp;
+
+<img src="/collections/images/Repaint/one_reverse_step.jpg" style="display: block; margin: 0 auto" />
 
 <center style="font-style:italic">
-Figure 2: Reverse diffusion process with known region conditioning.
+Figure 3: Scheme of one step of reverse diffusion.
+</center>
+
+&nbsp;
+
+Basically, the idea boils down to sampling from known and unknown regions at a given timestep. Since this sampling is done through all steps of the reverse diffusion process, the distribution of the intermediary images match more and more the properties of the known image at each denoising steps. At the end of the process, the generated image is an image with **intact** known region, and a texture related to the known region which covers the unknown region.
+
+&nbsp;
+
+<img src="/collections/images/Repaint/reverse_diffusion.gif" style="display: block; margin: 0 auto" />
+
+<center style="font-style:italic">
+Figure 4: Reverse diffusion process with known region conditioning.
 </center>
 
 &nbsp;
@@ -86,7 +115,7 @@ To overcome this problem, the authors leverage the fact that DDPM is trained to 
 ![](/collections/images/Repaint/resampling.jpg)
 
 <center style="font-style:italic">
-Figure 3: Inpainting of a dog's snout with different amounts of resampling.
+Figure 5: Inpainting of a dog's snout with different amounts of resampling.
 </center>
 
 &nbsp;
@@ -96,7 +125,7 @@ As you can see, the more resamples are made, the better harmonized the resulting
 ![](/collections/images/Repaint/algorithm.jpg)
 
 <center style="font-style:italic">
-Figure 4: Reverse diffusion process pseudo-code.
+Figure 6: Reverse diffusion process pseudo-code.
 </center>
 
 &nbsp;
@@ -113,7 +142,7 @@ The user study is done by showing each voter the reference image to inpaint and 
 ![](/collections/images/Repaint/sample_test.jpg)
 
 <center style="font-style:italic">
-Figure 5: ImageNet qualitative results.
+Figure 7: ImageNet qualitative results.
 </center>
 
 &nbsp;
@@ -121,7 +150,7 @@ Figure 5: ImageNet qualitative results.
 ![](/collections/images/Repaint/metrics.jpg)
 
 <center style="font-style:italic">
-Figure 6: CelebA-HQ and ImageNet quantitative results.
+Figure 8: CelebA-HQ and ImageNet quantitative results.
 </center>
 
 &nbsp;
@@ -139,7 +168,7 @@ To overcome that problem, the researchers made an ablatation study, doing a trad
 ![](/collections/images/Repaint/ablation_table.jpg)
 
 <center style="font-style:italic">
-Figure 7: Quantitative results of the computational trade-off.
+Figure 9: Quantitative results of the computational trade-off.
 </center>
 
 &nbsp;
@@ -147,7 +176,7 @@ Figure 7: Quantitative results of the computational trade-off.
 ![](/collections/images/Repaint/ablation_example.jpg)
 
 <center style="font-style:italic">
-Figure 8: Quatlitative results of the computational trade-off.
+Figure 10: Quatlitative results of the computational trade-off.
 </center>
 
 &nbsp;
