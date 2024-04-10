@@ -33,7 +33,7 @@ The task of inpainting is what we define as the process of filling damaged, miss
 
 The state-of-the-art of inpainting methods were autoregressive-based or GAN-based approaches, which mostly use a distribution of arbitrary masks to train their models. Resulting in poor generalization capabilities.
 
-The paper proposes a new method to condition the generation process and was the first method at the time to use diffusion models. This method, the Repaint method, only takes place during the complete generation process of DDPM and does not require specific training of the model.
+The paper proposes a new method to condition the generation process and was one of the first methods at the time to use diffusion models. This method, the Repaint method, only takes place during the complete generation process of DDPM and does not require specific training of the model.
 
 ![](/collections/images/Repaint/masks_used.jpg)
 
@@ -47,8 +47,8 @@ Figure 1: Illustration of the variety of masks used.
 
 A quick reminder about diffusion models is needed to understand the following parts of this post. 
 
-Diffusion models are basically U-net networks, which, through training, try to predict the noise added to an image.
-We define a range of noise levels from $$0$$ to $$t$$, $$x_0$$ denoting a noise-free image and $$x_t$$ denoting a pure Gaussian noise $$\sim \mathcal{N}(0, I)$$.
+Diffusion models are basically networks which through training, try to predict the noise added to an image.
+We define a range of noise levels from $$0$$ to $$T$$, $$x_0$$ denoting a noise-free image and $$x_T$$ denoting a pure Gaussian noise $$\sim \mathcal{N}(0, I)$$.
 
 The process of gradually adding noise to an image is called the **forward diffusion process**, and the action of gradually removing it is called the **reverse diffusion process**.
 
@@ -57,7 +57,8 @@ The forward diffusion process is modeled as a Markov chain where noise is added 
 ![](/collections/images/Repaint/diffusion_model_scheme.jpg)
 
 <center style="font-style:italic">
-Figure 2: Scheme of a diffusion model.
+Figure 2: Scheme of a diffusion model.<br/>
+Source : <a href="https://scholar.harvard.edu/binxuw/classes/machine-learning-scratch/materials/foundation-diffusion-generative-models">scholar.harvard.edu</a>
 </center>
 
 &nbsp;
@@ -71,15 +72,15 @@ The innovation of the Repaint paper is due to its method of generation, which is
 
 $$
 \begin{aligned}
-x^{known}_{t−1} & ∼ \mathcal{N} (\sqrt{\bar{\alpha_t}}x_0, (1 − \bar{\alpha_t})I) \leftarrow \text{$x_0$ is set at the noise level t-1}\\
-x^{unknown}_{t−1} & ∼ \mathcal{N} (\mu_\theta(x_t, t), \Sigma_\theta(x_t, t))\\
-x_{t−1} & = m \odot x^{known}_{t−1} + (1 − m) \odot x^{unknown}_{t−1}
+\color{red}{x^{known}_{t−1}} & ∼ \mathcal{N} (\sqrt{\bar{\alpha_t}}x_0, (1 − \bar{\alpha_t})I)\\
+\color{green}{x^{unknown}_{t−1}} & ∼ \mathcal{N} (\mu_\theta(x_t, t), \Sigma_\theta(x_t, t))\\
+\color{blue}{x_{t−1}} & = m \odot \color{red}{x^{known}_{t−1}} + (1 − m) \odot \color{green}{x^{unknown}_{t−1}}
 \end{aligned}
 $$
 
 &nbsp;
 
-The inpainting tactic explained in the paper is rather simple. If we want to generate $$x_{t-1}$$ output from $$x_t$$ input we have to :
+The inpainting process explained in the paper is rather simple. If we want to generate $$x_{t-1}$$ output from $$x_t$$ input we have to :
 - <span style="color:red">generate through **forward diffusion**  from $$x_0$$ a noisy image at $$t-1$$ noise level</span>
 - <span style="color:green">generate the $$x_{t-1}$$ image from $$x_t$$ using **reverse diffusion**</span>
 - <span style="color:blue">concatenate the known part of the **forward diffusion** with the unknown part of the **reverse diffusion**</span>
