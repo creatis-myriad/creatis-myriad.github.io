@@ -25,14 +25,9 @@ pdf: "https://arxiv.org/pdf/2307.07635.pdf"
 * Trained by unrolling the windows across longer video sequences, which improves long-term tracking
 
 
-* Introduce virtual tracks concepts which allows the tracking of 70k points jointly and simultaneously
-* Introduce occlusion concepts which allows the tracking of points for a long time even when they are occluded or leave the field of view
-
-&nbsp;
-
-# Introduction
-
-* Numerous existing AI methods perform motion estimation only between two consecutive frames
+* Introduce the concept of virtual tracks to track more than 70k points jointly and simultaneously
+* Introduce the concept of support points to improve performance by jointly track additional points to reinforce contextualization
+* Introduce the concept of occlusion to track points for a long time even when they are occluded or leave the field of view
 
 &nbsp;
 
@@ -144,6 +139,74 @@ $$G_t^i = \left( \hat{P}_t^i - \hat{P}_1^i, \, \hat{\nu}_t^i, \, Q_t^i, \, C_t^i
 &nbsp;
 
 **_Iterated transformer applications_**
+
+* The track estimates are progressively refined using an iterative process $$m \in \{0,\cdots,M\}$$
+
+* $$m=0$$ denotes initialization
+
+* Each update computes
+
+$$\left(\Delta \hat{P}, \Delta Q\right) = \Psi\left( G\left( \hat{P}^{(m)}, \, \hat{\nu}^{(0)}, \, Q^{(m)} \right)\right)$$
+
+$$\left\{
+\begin{aligned}
+    & \hat{P}^{(m+1)} = \hat{P}^{(m)} + \Delta \hat{P} \\
+    & Q^{(m+1)} = Q^{(m)} + \Delta Q
+\end{aligned}
+\right.$$
+
+* The visibility mask $$\hat{\nu}$$ is not updated by the transformer but once after the last $$M$$ applications of the tansformer usign the appareance features as $$\hat{\nu}^{(M)} = \sigma\left(W Q^{(M)}\right)$$
+
+* The transformer $$\Psi$$ interleaves attention operators that operate across the _time_ and _point track_ dimensions, so to reduce the complexity from $$O( N^2 T^2)$$ to $$O( N^2 + T^2 )$$ 
+
+* Virtual tracks concept is introduced to even reduce the complexity when $$N$$ is large 
+
+* Virtual tracks tokens are simply added as additional tokens to the input grid with a fixed, learnable initialization and removed at the output
+
+* $$K$$ virtual tracks tokens reduce the complexity to $$O( NK + K^2 + T^2 )$$
+
+![](/collections/images/cotracker/cotracker-algorithm.jpg)
+
+&nbsp;
+
+## Training process
+
+* Use of sliding window concept to handle with long videos of lenght $$T'>T$$, where $$T$$ is the maximum window length supported by the architecture
+
+* The videos are split in $$J = [2T'/T-1]$$ windows of length $$T$$, with an overlap of $$T/2$$ frames
+
+* A first loss is used for track regression
+
+$$\mathcal{L}_1\left( \hat{P},P \right) = \sum_{j=1}^J \sum_{m=1}^M \gamma^{M-m} \, \|\hat{P}^{(m,j)} - P^{(j)}\|_{2} $$
+
+* where $$\gamma=0.8$$ discounts for early transformer updates and $$P^{(j)}$$ corresponds to the ground-truth trajectories restricted to window $$j$$
+
+* A second loss is the cross entropy of the visibility flags 
+
+$$\mathcal{L}_2\left( \hat{\nu},\nu \right) = \sum_{j=1}^J CE\left( \hat{\nu}^{(M,j)}, \, \nu^{(j)} \right) $$
+
+* where $$\nu^j$$ are the reference visibility flags
+
+* Use of a simple token masking strategy to deal with points that have not been tracked since the first frame (i.e points with $$t_i > 1$$)
+
+&nbsp;
+
+## Support points
+
+* The author found it beneficial to tack additional _support points_ which are not explicitly requested by the user
+
+* The key idea is to reinforce contextual aspects through the joint tacking formulation
+
+* Different configuration are tested, with global strategy (support points form a regular grid across the whole image), with local strategy (the grid of points is centered around the point we wish to track, allowing the model to focus on a neighbourhood of it)
+
+![](/collections/images/cotracker/support-point-strategies.jpg)
+
+&nbsp;
+
+# Experiments
+
+* TODO
+* TODO
 
 &nbsp;
 
