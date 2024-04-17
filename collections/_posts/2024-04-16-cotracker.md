@@ -202,7 +202,7 @@ $$\mathcal{L}_2\left( \hat{\nu},\nu \right) = \sum_{j=1}^J CE\left( \hat{\nu}^{(
 
 * The key idea is to reinforce contextual aspects through the joint tacking formulation
 
-* Different configuration are tested, with global strategy (support points form a regular grid across the whole image), with local strategy (the grid of points is centered around the point we wish to track, allowing the model to focus on a neighbourhood of it)
+* Different configuration are tested, with global strategy (support points form a regular grid across the whole image), with local strategy (the grid of points is centered around the point we wish to track, allowing the model to focus on a neighbourhood of it), or with SIFT strategy (SIFT is used to detect support points)
 
 ![](/collections/images/cotracker/support-point-strategies.jpg)
 
@@ -253,26 +253,53 @@ $$\mathcal{L}_2\left( \hat{\nu},\nu \right) = \sum_{j=1}^J CE\left( \hat{\nu}^{(
 
 # Results
 
-* TODO
-* TODO
+## Is joint tacking beneficial ?
+
+* TAP-Vid-DAVIS dataset used for tracking using either a single target point at a time or all target point simultaneously 
+* Different configuration of support points are tested
+
+<div style="text-align:center">
+<img src="/collections/images/cotracker/results-joint-tracking.jpg" width=450></div>
+<p style="text-align: center;font-style:italic">Table 1 - Importance of joint tracking. Comparison using time and cross-track attention, tracking single or multiple target points, and using additional support points.</p>
 
 &nbsp;
 
-## TODO
+## How does CoTracker compare to prior work ? 
 
-* TODO
-* TODO
+<div style="text-align:center">
+<img src="/collections/images/cotracker/results-comparison-sota.jpg" width=700></div>
+<p style="text-align: center;font-style:italic">Table 2 - State of the art comparison. CoTracker was compared to the best trackers available on TAP-Vid-DAVIS as well as on Dynamic Replica.</p>
 
-## TODO
+&nbsp;
 
-* TODO
-* TODO
+![](/collections/images/cotracker/davis_car.gif)
+![](/collections/images/cotracker/davis_libby.gif)
+![](/collections/images/cotracker/davis_soapbox.gif)
+
+<p style="text-align: center;font-style:italic">Figure 1 - State of the art comparison. First column: PIPs, second column: RAFT, third column: TAPIR, last column: CoTracker.</p>
+
+&nbsp;
+
+## Is unrolled training important ?
+
+<div style="text-align:center">
+<img src="/collections/images/cotracker/results-unrolled-training.jpg" width=350></div>
+<p style="text-align: center;font-style:italic">Table 3. Unrolled training. CoTracker is built for sliding window predictions. Using them during training is important.</p>
+
+&nbsp;
+
+## Do virtual tracks help CoTracker to scale ?
+
+<div style="text-align:center">
+<img src="/collections/images/cotracker/results-virtual-tracks.jpg" width=350></div>
+<p style="text-align: center;font-style:italic">Table 4. The virtual tracks allow CoTracker to scale. We report the maximum number of tracks that can fit on a 80 GB GPU.</p>
+
+&nbsp;
 
 # Conclusions
 
-* TODO
-* TODO
-* TODO
-* TODO
+* Joint tracking of points improves results
+* CoTracker is among the current best performing method for point tracking
+* Introduce several interesting concepts, such as occuracy flags and support points
 
 
