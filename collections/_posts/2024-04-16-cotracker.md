@@ -29,6 +29,11 @@ pdf: "https://arxiv.org/pdf/2307.07635.pdf"
 * Introduce the concept of support points to improve performance by jointly track additional points to reinforce contextualization
 * Introduce the concept of occlusion to track points for a long time even when they are occluded or leave the field of view
 
+<div style="text-align:center">
+<img src="/collections/images/cotracker/paragliding-launch.gif" width=300>
+<img src="/collections/images/cotracker/bmx-bumps.gif" width=300>
+</div>
+
 &nbsp;
 
 # Methodology
@@ -72,7 +77,7 @@ $$\left\{
 
 &nbsp;
 
-**_2) Track features_**
+**_2) Appearance features_**
 
 * $$Q_t^i \in \mathbb{R}^d$$ are appearance features of the **_tracks_** 
 
@@ -205,8 +210,44 @@ $$\mathcal{L}_2\left( \hat{\nu},\nu \right) = \sum_{j=1}^J CE\left( \hat{\nu}^{(
 
 # Experiments
 
-* TODO
-* TODO
+**_Datasets_**
+* TAP-Vid-Kubrik: synthetic dataset used for training. It consists of sequences of 24 frames showing 3D rigid objects falling to the ground truth under gravity and bouncing
+
+* TAP-Vid-DAVIS: real dataset used for evaluation. It contains 30 real sequences of about 100 frames. Points are queried non random objects at random times and evaluation assesses both predictions of positions and visibility flags
+
+* PointOdyssey: Synthetic dataset used for training and evaluation of long-term tracking. It contains 100 sequences of several thousand frames with objects and characters moving around the scene
+
+* Dynamic Replica: Synthetic dataset for 3D reconstruction used for training and evaluation of long-term tracking. It consists of 500 sequences of 300 frames of articulated models of people and animals used for training and evaluation of long-term tracking. 
+
+&nbsp;
+
+**_Metrics_**
+
+* OA ($$\uparrow$$) - Occlusion accuracy - accuracy of occlusion prediction treated as binary classification
+
+* $$\delta_{avg}^{vis} (\uparrow)$$ - fraction of visible points tracked within 1, 2, 4, 8 and 16 pixels, averaged over threshold
+
+* AJ ($$\uparrow$$) - Average Jaccard - measuring jointly geometric and occlusion prediction accuracy
+
+* Survival rate ($$\uparrow$$) - average fraction of video frames until the tracker fails (detected when tracking error exceeds 50 pixels)
+
+&nbsp;
+
+**_Implementaton details_**
+
+* 11,000 TAP-Vid-Kubric sequences of $$T'=24$$ frames were used for training using sliding window size $$T=8$$
+
+* 50,000 iterations during training using 32 A100 80 GB GPUs !
+
+* Batch size of 32
+
+* Learning rate of $$5e^{-4}$$ and a linear 1-cycle learning rate schedule, using the AdamW optimizer
+
+* Training tracks are sampled preferentially on objects
+
+* During training, construction of batches of 768 tracks out of 2048 among those that are visible either in the first or middle frames of the sequence to train
+
+* Train the model with $$M=4$$ iterative updates and evaluate it with $$M=6$$ 
 
 &nbsp;
 
@@ -233,11 +274,5 @@ $$\mathcal{L}_2\left( \hat{\nu},\nu \right) = \sum_{j=1}^J CE\left( \hat{\nu}^{(
 * TODO
 * TODO
 * TODO
-
-&nbsp;
-
-# References
-\[1\] TODO
-
 
 
