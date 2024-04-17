@@ -12,7 +12,7 @@ pdf: "https://arxiv.org/pdf/2307.07635.pdf"
 
 # Notes
 
-* The official webpage with paper/code/demo is available [here](https://co-tracker.github.io/) 
+* The [official webpage](https://co-tracker.github.io/) with paper/code/demo 
 
 &nbsp;
 
@@ -63,7 +63,7 @@ $$\left\{
 
 ## Information extaction
 
-**_Image features_**
+**_1) Image features_**
 
 * $$\phi(I_t) \in \mathbb{R}^{d \times \frac{H}{4} \times \frac{W}{4}}$$ are _d_-dimensional appearance features that are extracted from each video frame using a CNN which is trained end-to-end. 
 
@@ -77,7 +77,7 @@ $$\left\{
 
 &nbsp;
 
-**_Track features_**
+**_2) Track features_**
 
 * $$Q_t^i \in \mathbb{R}^d$$ are appearance features of the **_tracks_** 
 
@@ -89,12 +89,63 @@ $$\left\{
 
 ![](/collections/images/cotracker/track-features.jpg)
 
-## Transformer formulation
+&nbsp;
 
-* TODO
+**_3) Correlation features_**
+
+* $$C_t^i$$ are correlation features which are computed to facilitate the matching of the point tracks 
+
+* Each $$C_t^i$$ is obtained by comparing the track features $$Q_t^i$$ to the image features $$\phi_s\left(I_t\right)$$ around the current estimate $$\hat{P}_t^i$$ of the track's location
+
+* The vector $$C_t^i$$ is obtained by stacking the inner products $$\left<Q_t^i,\phi_s\left(I_t\right)\left[ \hat{P}_t^i /(4 \cdot s) + \delta \right] \right>$$ 
+
+* $$s \in \{1,\cdots,S\}$$ are the feature scales
+
+* $$d \in \mathbb{Z}^2$$, $$\|\delta\|_{\infty} \leq \Delta$$ are offsets
+
+* The image features $$\phi_s\left(I_t\right)$$ are sampled at non-integer locations by using bilinear interpolation and border padding
+
+* The dimension of $$C_t^i$$ is $$(2\Delta+1)^2S = 196$$ with $$S=4$$ and $$\Delta=3$$
 
 &nbsp;
 
+## Transformer formulation
+
+**_Overal framework_**
+
+* CoTracker is a transformer $$\Psi : G \rightarrow O$$ whose goal is to improve and initial estimate of tracks
+
+* The input $$G$$ corresponds to a grid of input tokens $$G_t^i$$, one for each point track $$i \in \{1, \cdots N \}$$ and $$t \in \{1,\cdots,T \}$$
+
+* The output $$O$$ is a grid of output tokens $$O_t^i$$ which are used to update the point tracks during iterations
+
+&nbsp;
+
+**_Input tokens_**
+
+* The input tokens $$G(\hat{P},\hat{\nu},\hat{Q})$$ code for position, visibility, appearance, and correlation of the point tracks and is given as:
+
+$$G_t^i = \left( \hat{P}_t^i - \hat{P}_1^i, \, \hat{\nu}_t^i, \, Q_t^i, \, C_t^i, \, \eta \left( \hat{P}_t^i - \hat{P}_1^i \right) \right) + \eta' \left( \hat{P}_t^1 \right) + \eta' \left( t \right) $$
+
+* $$\eta(\cdot)$$ is a positional encoding of the track location with respect to the initial location at time $$t=1$$
+
+* $$\eta'(\cdot)$$ is a positional encoding of the start position $$\hat{P}_1^i$$ and for time $$t$$, with appropriate dimensions
+
+* The estimates $$\hat{P}$$, $$\hat{\nu}$$ and $$Q$$ are initialized by broadcasting the initial values $$P_{t_i}^{i}$$ (the location of query point), $$1$$ (meaning visible) and $$\phi\left(I_t\right)[P_{t_i}^{i}/4]$$ (the appearance of the query point) to all time $$t \in \{1,\cdots,T\}$$
+
+![](/collections/images/cotracker/cotracker-initialization.jpg)
+
+&nbsp;
+
+**_Output tokens_**
+
+* The output tokens $$O\left( \Delta \hat{P}, \Delta Q \right)$$ contains updates for location and appareance, i.e. $$O_t^i = \left( \Delta \hat{P}_t^i, \Delta Q_t^i \right)$$
+
+&nbsp;
+
+**_Iterated transformer applications_**
+
+&nbsp;
 
 # Results
 
