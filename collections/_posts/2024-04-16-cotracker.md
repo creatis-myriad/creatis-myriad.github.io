@@ -83,7 +83,7 @@ $$\left\{
 
 * They are time dependent to accomodate changes in the track appearance
 
-* They are initialized by sampling iamge features at the starting locations
+* They are initialized by sampling image features $$\phi(I_t)$$ at the starting locations
 
 * They are updated by the transformer
 
@@ -111,11 +111,11 @@ $$\left\{
 
 ## Transformer formulation
 
-**_Overal framework_**
+**_General framework_**
 
-* CoTracker is a transformer $$\Psi : G \rightarrow O$$ whose goal is to improve and initial estimate of tracks
+* CoTracker is a transformer $$\Psi : G \rightarrow O$$ whose goal is to improve an initial estimate of tracks
 
-* The input $$G$$ corresponds to a grid of input tokens $$G_t^i$$, one for each point track $$i \in \{1, \cdots N \}$$ and $$t \in \{1,\cdots,T \}$$
+* The input $$G$$ corresponds to a grid of input tokens $$G_t^i$$, one for each point track $$i \in \{1, \cdots N \}$$ and time $$t \in \{1,\cdots,T \}$$
 
 * The output $$O$$ is a grid of output tokens $$O_t^i$$ which are used to update the point tracks during iterations
 
@@ -200,7 +200,7 @@ $$\mathcal{L}_2\left( \hat{\nu},\nu \right) = \sum_{j=1}^J CE\left( \hat{\nu}^{(
 
 * The author found it beneficial to tack additional _support points_ which are not explicitly requested by the user
 
-* The key idea is to reinforce contextual aspects through the joint tacking formulation
+* The key idea is to reinforce contextual aspects through the joint tracking formulation
 
 * Different configuration are tested, with global strategy (support points form a regular grid across the whole image), with local strategy (the grid of points is centered around the point we wish to track, allowing the model to focus on a neighbourhood of it), or with SIFT strategy (SIFT is used to detect support points)
 
@@ -237,7 +237,7 @@ $$\mathcal{L}_2\left( \hat{\nu},\nu \right) = \sum_{j=1}^J CE\left( \hat{\nu}^{(
 
 * 11,000 TAP-Vid-Kubric sequences of $$T'=24$$ frames were used for training using sliding window size $$T=8$$
 
-* 50,000 iterations during training using 32 A100 80 GB GPUs !
+* 50,000 iterations during training using 32 A100 80 GB GPUs !   ![image](/collections/images/cotracker/emoji-sub.jpg)
 
 * Batch size of 32
 
