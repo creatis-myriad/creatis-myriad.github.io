@@ -20,13 +20,13 @@ pdf: "https://arxiv.org/pdf/2307.07635.pdf"
 
 * Transformer-based model that tracks dense points in a frame jointly across a video sequence
 * Joint tracking results in a significantly higher tracking accuracy and robustness
-* Can track arbitrary points, selcted at any spatial location and time in the video 
+* Can track arbitrary points, selected at any spatial location and time in the video 
 * Operates causally on short windows (suitable for online tasks)
 * Trained by unrolling the windows across longer video sequences, which improves long-term tracking
 
 
 * Introduce the concept of virtual tracks to track more than 70k points jointly and simultaneously
-* Introduce the concept of support points to improve performance by jointly track additional points to reinforce contextualization
+* Introduce the concept of support points to improve performance by jointly tracking additional points to reinforce contextualization
 * Introduce the concept of occlusion to track points for a long time even when they are occluded or leave the field of view
 
 <div style="text-align:center">
@@ -81,7 +81,7 @@ $$\left\{
 
 * $$Q_t^i \in \mathbb{R}^d$$ are appearance features of the **_tracks_** 
 
-* They are time dependent to accomodate changes in the track appearance
+* They are time dependent to accommodate changes in the track appearance
 
 * They are initialized by sampling image features $$\phi(I_t)$$ at the starting locations
 
@@ -160,7 +160,7 @@ $$\left\{
 \end{aligned}
 \right.$$
 
-* The visibility mask $$\hat{\nu}$$ is not updated by the transformer but once after the last $$M$$ applications of the tansformer usign the appareance features as $$\hat{\nu}^{(M)} = \sigma\left(W Q^{(M)}\right)$$
+* The visibility mask $$\hat{\nu}$$ is not updated by the transformer but once after the last $$M$$ applications of the transformer using the appearance features as $$\hat{\nu}^{(M)} = \sigma\left(W Q^{(M)}\right)$$
 
 * The transformer $$\Psi$$ interleaves attention operators that operate across the _time_ and _point track_ dimensions, so to reduce the complexity from $$O( N^2 T^2)$$ to $$O( N^2 + T^2 )$$ 
 
@@ -176,7 +176,7 @@ $$\left\{
 
 ## Training process
 
-* Use of sliding window concept to handle with long videos of lenght $$T'>T$$, where $$T$$ is the maximum window length supported by the architecture
+* Use of sliding window concept to handle long videos of length $$T'>T$$, where $$T$$ is the maximum window length supported by the architecture
 
 * The videos are split in $$J = [2T'/T-1]$$ windows of length $$T$$, with an overlap of $$T/2$$ frames
 
@@ -300,6 +300,6 @@ $$\mathcal{L}_2\left( \hat{\nu},\nu \right) = \sum_{j=1}^J CE\left( \hat{\nu}^{(
 
 * Joint tracking of points improves results
 * CoTracker is among the current best performing method for point tracking
-* Introduce several interesting concepts, such as occuracy flags and support points
+* Introduce several interesting concepts, such as occlusion flags and support points
 
 
