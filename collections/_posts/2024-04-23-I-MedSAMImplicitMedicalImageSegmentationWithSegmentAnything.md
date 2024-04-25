@@ -20,11 +20,11 @@ pdf: "https://arxiv.org/pdf/2311.17081.pdf"
 # Introduction
 
 
-Sandard segmentation methods (nnUNet, Transformers and more recently SAM) achieve effective results for this task but their discrete nature can lead to challenges. They are notably limited in their spatial flexibility.
+Standard segmentation methods (nnUNet, Transformers and more recently SAM) achieve effective results for this task but their discrete nature can lead to challenges. They are notably limited in their spatial flexibility.
 
 Implicit Neural Representations (INRs) (or Neural Implicit Functions) are methods which learn a mapping from encoded image features and grid coordinates to the segmentation output. Those methods learn continuous representations and are therefore more flexible but they face challenges for domain transfer.
 
-The goal of I-MedSAM is to leverage benefits from SAM and INRs to improve generalization and boundary delineation.
+The goal of I-MedSAM is to leverage the benefits of SAM and INRs to improve generalization and boundary delineation.
 
 
 # Method
@@ -47,7 +47,7 @@ Similar to SAMed[^1], already presented in a previous post[^2], a Low-Rank Adapt
 **Frequency Adapter (FA)**
 
 - present for each transformer block 
-- applied to amplitude of the Fast Fourier Transform (FFT) of the image
+- applied to the amplitude of the Fast Fourier Transform (FFT) of the image
 - down-projection layer + GELU activation layer + up-projection layer
   
 
@@ -73,7 +73,7 @@ Two INRs networks with a MLP architecture are optimized simultaneously.
 2. Uncertainty Guided Sampling (UGS): based on MC-dropout (Monte-Carlo dropout)
     - dropout applied T times and gives T prediction results
     - uncertainty for each pixel is the variance of the predictions
-    - points with highest Top-K percentage are sampled = selected to be refined 
+    - points with the highest Top-K percentage are sampled = selected to be refined 
 3. fine/deeper INR: using the coarse features as input, this network produces the fine segmentation probabilities $$\hat{o}^f$$
 4. Coarse and fine probabilities are combined to get the final segmentation map.
 
@@ -83,7 +83,7 @@ Two INRs networks with a MLP architecture are optimized simultaneously.
 
 Loss:
 - pixel-wise segmentation loss: $$L_{seg} = 0.5\times L_{ce}(o,\hat{o})+0.5\times L_{dice}(o,\hat{o})$$
-- applied to supervised both coarse and fine segementation maps
+- applied to supervise both coarse and fine segmentation maps
 - during training, the weights for coarse supervision are slightly decreased until convergence
 
 
@@ -161,9 +161,9 @@ Using more points does not increase the dice results and requires more memory us
 
 # Conclusion
 
-- With I-MesSAM, SAM with FA helps learning better segmentation boundaries.
+- With I-MesSAM, SAM with FA helps to learn better segmentation boundaries.
 - Improvement of the method could be to develop an adapter to process different modalities.
 
 # References
 [^1]: [Zhang, K., & Liu, D. (2023). Customized segment anything model for medical image segmentation. arXiv preprint arXiv:2304.13785.](https://arxiv.org/pdf/2304.13785.pdf)
-[^2]: [Previous post revewing SAM-based methods for medical images.](https://creatis-myriad.github.io/2023/09/15/SAM_for_Medical.html)
+[^2]: [Previous post reviewing SAM-based methods for medical images.](https://creatis-myriad.github.io/2023/09/15/SAM_for_Medical.html)
