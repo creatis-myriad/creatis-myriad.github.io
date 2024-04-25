@@ -161,7 +161,7 @@ Using more points does not increase the dice results and requires more memory us
 
 # Conclusion
 
-- With I-MesSAM, SAM with FA helps to learn better segmentation boundaries.
+- With I-MedSAM, SAM with FA helps to learn better segmentation boundaries.
 - Improvement of the method could be to develop an adapter to process different modalities.
 
 # References
