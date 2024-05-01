@@ -19,11 +19,6 @@ pdf: "https://arxiv.org/pdf/2203.05482"
 * They gave various intuitions to explain why it works, the main justification being flat loss landscapes near optima of pretrained models,
 * It has been used a lot recently by authors finetuning LLMs (already 500+ citations).
 
-<div style="text-align:center">
-<img src="/collections/images/cotracker/paragliding-launch.gif" width=300>
-<img src="/collections/images/cotracker/bmx-bumps.gif" width=300>
-</div>
-
 &nbsp;
 
 # Methodology
@@ -55,7 +50,7 @@ pdf: "https://arxiv.org/pdf/2203.05482"
 **Error landscape vizualisation**
 
 <div style="text-align:center">
-<img src="/collections/images/model_soups/Model_soups_intuition.jpg" width=300>
+<img src="/collections/images/model_soups/Model_soups_intuition.jpg" width=500>
 </div>
 
 * Finetuned models seem to land on borders of the same loss basin **with small to medium learning rates**. Their average has a smaller validation loss.
@@ -74,7 +69,7 @@ pdf: "https://arxiv.org/pdf/2203.05482"
 **Comparison to ensembles**
 
 <div style="text-align:center">
-<img src="/collections/images/model_soups/Model_soups_ensemble_vs_soup.jpg" width=300>
+<img src="/collections/images/model_soups/Model_soups_ensemble_vs_soup.jpg" width=500>
 </div>
 
 * There is a clear correlation between ensemble and soup performances. 
@@ -86,7 +81,7 @@ pdf: "https://arxiv.org/pdf/2203.05482"
 
 
 <div style="text-align:center">
-<img src="/collections/images/model_soups/Model_soup_accuracy_1.jpg" width=300>
+<img src="/collections/images/model_soups/Model_soup_accuracy_1.jpg" width=400>
 <img src="/collections/images/model_soups/Model_soups_accuracy_2.jpg" width=300>
 </div>
 
@@ -95,7 +90,7 @@ pdf: "https://arxiv.org/pdf/2203.05482"
 &nbsp;
 
 <div style="text-align:center">
-<img src="/collections/images/model_soups/Model_soup_table_main.jpg" width=300>
+<img src="/collections/images/model_soups/Model_soup_table_main.jpg" width=500>
 </div>
 
 * They were (are?) state-of-the-art on ImageNet for a while.
@@ -103,7 +98,7 @@ pdf: "https://arxiv.org/pdf/2203.05482"
 &nbsp;
 
 <div style="text-align:center">
-<img src="/collections/images/model_soups/Model_soup_table_ablation.jpg" width=300>
+<img src="/collections/images/model_soups/Model_soup_table_ablation.jpg" width=400>
 </div>
 
 * Ensemble seems to remain better in domain, at the cost of higher inference times.
