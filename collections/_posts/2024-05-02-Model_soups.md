@@ -102,7 +102,7 @@ They first experiment with pairs of finetuned models from the same pretrained CL
 &nbsp;
 
 <div style="text-align:center">
-<img src="/collections/images/model_soups/Model_soup_table_main.jpg" width=500>
+<img src="/collections/images/model_soups/Model_soup_table_main.jpg" width=600>
 </div>
 
 * They were (are?) state-of-the-art on ImageNet for a while.
