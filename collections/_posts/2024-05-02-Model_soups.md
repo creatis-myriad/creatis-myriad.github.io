@@ -159,4 +159,4 @@ They first experiment with pairs of finetuned models from the same pretrained CL
 
 * Intringuigly simple idea of averaging finetuned models for better performance,
 * Already kind of popular,
-* One cannot say if it is really transposable to regular models pretrained on small datasets finetuned on even smaller datasets ...
+* One cannot say if it is really transposable to regular models pretrained on small datasets finetuned on even smaller datasets, as well as on other tasks (image segmentation, object detection, etc.)
