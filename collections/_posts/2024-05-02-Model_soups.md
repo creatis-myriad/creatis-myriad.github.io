@@ -71,7 +71,7 @@ They first experiment with pairs of finetuned models from the same pretrained CL
 &nbsp;
 
 <div style="text-align:center">
-<img src="/collections/images/model_soups/Model_soups_angle_correlation.jpg" width=500>
+<img src="/collections/images/model_soups/Model_soups_angle_correlation.jpg" width=600>
 </div>
 
 * The more the two finetuned models drift away from each other while staying in the same loss basin, the larger the performance gain by averaging their parameters.
