@@ -16,8 +16,8 @@ pdf: "https://arxiv.org/pdf/2203.05482"
 * A very simple and practical idea of averaging weights of multiple finetuned models for a significant gain,
 * They approach ensemble-like performance without increasing the inference time,
 * The number of experiments they have done is insane,
-* They gave various intuitions to explain why it works, the main justification being flat loss landscapes near optima of pretrained models,
-* It has been used a lot recently by authors finetuning LLMs (already 500+ citations).
+* They argue that finetuned models can land at different places of the same validation loss basin due to the flatness of the loss landscape near optimas of pretrained models,
+* It has been used recently by authors finetuning Vision-Language models *(already 500+ citations)*.
 
 &nbsp;
 
@@ -38,31 +38,43 @@ pdf: "https://arxiv.org/pdf/2203.05482"
 
 # Experiments
 
-* They finetune CLIP, ALIGN, BASIC and VIT-G/14 on image classification, and transformers for text classification.
-* They use the [LP-FT](https://openreview.net/pdf?id=UYneFzXSJWh) finetuning method, i.e. first training a linear head on top of pre-trained models (linear probe LP), and then finetune the whole model end-to-end (FT).
-* They finetune on ImageNet, and test on ImageNet (ID), and on five "out-of-distribution" datasets (OD): : ImageNetV2, ImageNet-R, ImageNetSketch, ObjectNet, and ImageNet-A.
-* No data leakage (?), they kept 2% of ImageNet training set for actual validation.
+## Experimental setup
+
+* *Pre-trained models*
+	- CLIP and ALIGN pre-trained contrastive image-text pairs loss,
+	- VIT-G/14 on JFT-3B (internal image classification Google dataset), 
+	- Transformers for text classification.
+* *They use the [LP-FT](https://openreview.net/pdf?id=UYneFzXSJWh) finetuning method*
+	- First train a linear head on top of pre-trained models *(linear probe LP)*, 
+	- Then finetune the whole model end-to-end *(finetune FT)*.
+* *They finetune on ImageNet,*
+* *They test on *
+	- ImageNet (In Domain ID), 
+	- Five "out-of-distribution" (OOD) datasets: ImageNetV2, ImageNet-R, ImageNetSketch, ObjectNet, and ImageNet-A.
+* *No data leakage (?)*, they kept 2% of ImageNet training set for actual validation.
 
 &nbsp;
 
 ## Intuition
 
+They first experiment with pairs of finetuned models from the same pretrained CLIP version.
+
 **Error landscape vizualisation**
 
 <div style="text-align:center">
-<img src="/collections/images/model_soups/Model_soups_intuition.jpg" width=500>
+<img src="/collections/images/model_soups/Model_soups_intuition.jpg" width=600>
 </div>
 
-* Finetuned models seem to land on borders of the same loss basin **with small to medium learning rates**. Their average has a smaller validation loss.
+* Finetuned models seem to land on borders of the same validation loss basin **with small to medium learning rates**. The average has a smaller validation loss.
 * They show in Appendix that it is not the case for larger learning rates.
 
 &nbsp;
 
 <div style="text-align:center">
-<img src="/collections/images/model_soups/Model_soups_angle_correlation.jpg" width=300>
+<img src="/collections/images/model_soups/Model_soups_angle_correlation.jpg" width=500>
 </div>
 
-* The more the two finetuned models drift away from each other while staying in the same loss bassin, the larger the performance gain by averaging their parameters.
+* The more the two finetuned models drift away from each other while staying in the same loss basin, the larger the performance gain by averaging their parameters.
 
 &nbsp;
 
@@ -82,7 +94,7 @@ pdf: "https://arxiv.org/pdf/2203.05482"
 
 <div style="text-align:center">
 <img src="/collections/images/model_soups/Model_soup_accuracy_1.jpg" width=400>
-<img src="/collections/images/model_soups/Model_soups_accuracy_2.jpg" width=300>
+<img src="/collections/images/model_soups/Model_soups_accuracy_2.jpg" width=400>
 </div>
 
 * Soups are better than selecting the best model on a validation set. Greedy soup is clearly better than uniform as it limits the influence of poor hyperparameters choices.
@@ -104,19 +116,47 @@ pdf: "https://arxiv.org/pdf/2203.05482"
 * Ensemble seems to remain better in domain, at the cost of higher inference times.
 * Greedy ensembles might be very interesting in practice.
 
+&nbsp;
+
 ## List of additional experiments
 
-* A **learned soup**, learning the aggregation of models of the soup (too expensive and not interesting),
-* Experiments with **the number of models in the soup**; more models only improve the accuracy of the soups,
-* Experiments with **large learning rates**; finetuned models do not remain in the same loss basin,
-* Experiments with **smaller models (VIT-B/32) pretrained on a smaller dataset (ImageNet 22k)**; results are not as convincing, but greedy soup is still better,
-* Relation with **calibration**; soups do not seem to improve calibration while ensembles do,
-* Soups of models finetuned **on different datasets**; it does things,
-* Relation with **Sharpness-Aware Minimization**; soups of models trained with and without SAM were better than only SAM or only standard optimization,
-* Relation with **Ensemble distillation**; soups are comparable or better.
+* A **learned soup**;
+	- *Learning the aggregation of models of the soup (too expensive and not interesting).*
+
+* Experiments with **individual hyperparameters**;
+	- *Too many results, see the paper.*
+
+* Experiments with **the number of models in the soup**; 
+	- *More models only improve the accuracy of the soups.*
+
+* Experiments with **large learning rates**; 
+	- *Finetuned models do not remain in the same loss basin.*
+
+* Experiments with **smaller models (VIT-B/32) pretrained on a smaller dataset (ImageNet 22k)**; 
+	- *Results are not as convincing, but greedy soup is still better.*
+
+* Relation with **calibration**; 
+	- *Soups do not seem to improve calibration while ensembles do.*
+
+* Soups of models finetuned **on different datasets**; 
+	- *It does things.*
+
+* Relation with **Sharpness-Aware Minimization**; 
+	- *Soups of models trained with and without SAM were better than only SAM or only standard optimization.*
+
+* Relation with **Exponential Moving Averaging** and **Stochastic Weight Averaging**;
+	- *Soups can be combined with EMA and SWA, even for VIT-B/32 pre-trained on ImageNet 22k.*
+
+* Relation with **Ensemble distillation**; 
+	- *Soups are comparable or better.*
+
+* Relation with **Wise Finetuning** (searching for the best linear interpolation between initialization and finetuned model);
+	- *Soups go beyond what Wise-FT can do.*
+
+&nbsp;
 
 # Conclusion
 
 * Intringuigly simple idea of averaging finetuned models for better performance,
-* Already popular,
+* Already kind of popular,
 * One cannot say if it is really transposable to regular models pretrained on small datasets finetuned on even smaller datasets ...
