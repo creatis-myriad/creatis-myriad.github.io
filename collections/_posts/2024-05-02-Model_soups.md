@@ -48,7 +48,7 @@ pdf: "https://arxiv.org/pdf/2203.05482"
 	- First train a linear head on top of pre-trained models *(linear probe LP)*, 
 	- Then finetune the whole model end-to-end *(finetune FT)*.
 * *They finetune on ImageNet,*
-* *They test on *
+* *They test on*
 	- ImageNet (In Domain ID), 
 	- Five "out-of-distribution" (OOD) datasets: ImageNetV2, ImageNet-R, ImageNetSketch, ObjectNet, and ImageNet-A.
 * *No data leakage (?)*, they kept 2% of ImageNet training set for actual validation.
