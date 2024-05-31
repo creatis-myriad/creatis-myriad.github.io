@@ -18,7 +18,7 @@ professors:
     university: 'INSA, University of Lyon'
     picture: 'oBernard.jpg'
     interests: "Cardiac imaging, deep learning, image simulation"
-    url: "https://www.creatis.insa-lyon.fr/~bernard/"
+    url: "https://olivier-bernard-creatis.github.io/"
     
   - firstname: 'Hugues'
     lastname: 'Benoit-Cattin'
@@ -265,15 +265,7 @@ phd_first:
     subject: 'Hyperspectral Single-pixel Image reconstruction using nonnegative matrix factorization and deep learning'
     interests: "Hyperspectral imaging, deep learning, Matrix factorization"
     supervisors: J. Cohen, D. Friboulet, N. Ducros    
-    
-  - firstname: 'Thierry'
-    lastname: 'Judge'
-    institution: 'INSA, University of Lyon'
-    picture: 'tJudge.jpg'
-    subject: 'Analysis of cardiac tissue deformation using deep learning from a very large-scale database'
-    interests: "Cardiac imaging, deep learning, image simulation"
-    supervisors: O. Bernard, N. Duchateau, P.M. Jodoin    
-    
+        
   - firstname: 'Robin'
     lastname: 'Trombetta'
     institution: 'INSA, University of Lyon'
@@ -299,7 +291,16 @@ phd_second:
     subject: 'What are the relationships between the cardiac wall multiscale-architecture and the ability of the water molecules to diffuse through the tissue?'
     interests: "Cardiac imaging, image simulation"
     supervisors: C. Frindel   
-    
+   
+  - firstname: 'Thierry'
+    lastname: 'Judge'
+    institution: 'INSA, University of Lyon'
+    picture: 'tJudge.jpg'
+    subject: 'Analysis of cardiac tissue deformation using deep learning from a very large-scale database'
+    interests: "Cardiac imaging, deep learning, image simulation"
+    supervisors: O. Bernard, N. Duchateau, P.M. Jodoin    
+
+   
   - firstname: 'Hugo'
     lastname: 'Lacombe'
     institution: 'University Lyon 1'
@@ -375,39 +376,7 @@ phd_third:
     interests: "Neuroimaging, vascular imaging, deep learning"      
     supervisors: N. Passat, O. Merveille   
    
-phd_fourth:
-    
-  - firstname: 'Sophie'
-    lastname: 'Carneiro Esteves'
-    institution: 'SPI, University of Clermont Ferrand'
-    picture: 'sCarneiro.jpg'
-    subject: 'Filtering and segmentation of blood vessels mixing deep learning and variational approaches'
-    interests: "Vascular imaging, deep learning, variational approaches"   
-    supervisors: O. Merveille       
-                
-  - firstname: 'Nathan'
-    lastname: 'Painchaud'
-    institution: 'INSA, University of Lyon'
-    picture: 'nPainchaud.jpg'
-    subject: 'Deep manifold learning for improved characterization of hypertension in echocardiographic imaging'
-    interests: "Cardiac imaging, deep learning"       
-    supervisors: O. Bernard, N. Duchateau, P.M. Jodoin              
-              
-  - firstname: 'Nicolas'
-    lastname: 'Pinon'
-    institution: 'INSA, University of Lyon'
-    picture: 'nPinon.jpg'
-    subject: 'Methodological contributions in unsupervised or weakly supervised learning for anomaly detection in neuroimaging'
-    interests: "Neuroimaging, deep learning"           
-    supervisors: C. Lartizien
-       
-  - firstname: 'Daria'
-    lastname: 'Zotova'
-    institution: 'INSA, University of Lyon'
-    picture: 'dZotova.jpg'
-    subject: 'Artificial intelligence for medical image analysis'
-    interests: "Neuroimaging, deep learning"         
-    supervisors: C. Lartizien          
+# phd_fourth:      
         
 alumni:
 
@@ -418,6 +387,14 @@ alumni:
     subject: 'Impact of multimodal MRI in the acute management of stroke'
     interests: "Neural imaging, MR imaging"    
     supervisors: Y. Berthezene, C. Frindel
+
+  - firstname: 'Sophie'
+    lastname: 'Carneiro Esteves'
+    institution: 'SPI, University of Clermont Ferrand'
+    picture: 'sCarneiro.jpg'
+    subject: 'Filtering and segmentation of blood vessels mixing deep learning and variational approaches'
+    interests: "Vascular imaging, deep learning, variational approaches"   
+    supervisors: O. Merveille
 
   - firstname: 'Méghane'
     lastname: 'Decroocq'
@@ -458,6 +435,14 @@ alumni:
     interests: "Cardiac imaging, deep learning"  
     supervisors: L. Boussel
 
+  - firstname: 'Nathan'
+    lastname: 'Painchaud'
+    institution: 'INSA, University of Lyon'
+    picture: 'nPainchaud.jpg'
+    subject: 'Deep manifold learning for improved characterization of hypertension in echocardiographic imaging'
+    interests: "Cardiac imaging, deep learning"       
+    supervisors: O. Bernard, N. Duchateau, P.M. Jodoin
+
   - firstname: 'Ludmilla'
     lastname: 'Penarrubia'
     institution: 'University Lyon 1'
@@ -465,6 +450,14 @@ alumni:
     subject: 'Quantification of pulmonary ventilation in patients with ARDS'
     interests: "Pulmonary imaging, deep learning"    
     supervisors: M. Orkisz, J.C. Richard, E. Roux
+            
+  - firstname: 'Nicolas'
+    lastname: 'Pinon'
+    institution: 'INSA, University of Lyon'
+    picture: 'nPinon.jpg'
+    subject: 'Methodological contributions in unsupervised or weakly supervised learning for anomaly detection in neuroimaging'
+    interests: "Neuroimaging, deep learning"           
+    supervisors: C. Lartizien            
             
   - firstname: 'Mehdi'
     lastname: 'Shekarnabi'
@@ -474,5 +467,12 @@ alumni:
     interests: "Pulmonary imaging, CT imaging, deep learning"
     supervisors: M. Orkisz
     
+  - firstname: 'Daria'
+    lastname: 'Zotova'
+    institution: 'INSA, University of Lyon'
+    picture: 'dZotova.jpg'
+    subject: 'Artificial intelligence for medical image analysis'
+    interests: "Neuroimaging, deep learning"         
+    supervisors: C. Lartizien        
 
     
