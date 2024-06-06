@@ -4,7 +4,7 @@ title: "Dehazing Ultrasound using Diffusion Models"
 tags: diffusion-models, ultrasound-imaging, denoising
 author: "Julia Puig"
 cite:
-    authors: "Tristan S.W. Stevens, Faik C. Meral, Jason Yu, Iason Z. Apostolakis Jean-Luc Robert and Ruud J.G. van Sloun"
+    authors: "Tristan S.W. Stevens, Faik C. Meral, Jason Yu, Iason Z. Apostolakis, Jean-Luc Robert and Ruud J.G. van Sloun"
     title:   "Dehazing Ultrasound using Diffusion Models"
     venue:   "IEEE Transactions on Medical Imaging (2023)"
 pdf: "http://arxiv.org/abs/2307.11204"
