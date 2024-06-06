@@ -19,7 +19,7 @@ During ultrasound acquisitions, phenomena such as aberration and reverberation p
 ![](/collections/images/DehazingDiffusion/echo_images.jpg){: width="500" }
 {:refdef}
 
-This phenomenon can highly **difficult diagnosis** both qualitative and quantitative.
+This phenomenon can **make diagnosis much more difficult**, both qualitative and quantitative.
 
 Existing dehazing techniques:
 - **Harmonic imaging** receives echoes at frequencies that are multiples of the original frequency. It produces higher quality images, as multipath scatterers have less energy and therefore generate fewer harmonics. However, it results in reduced penetration depth and image frame rate due to the additional pulse inversion transmits.
