@@ -136,7 +136,7 @@ and the second term corrupts it again to correct errors made in earlier sampling
 <br/>
 
 ## Proposed dehazing method
-The authors tailored several techniques used in deep learning and diffusion models to effciently apply them to ultrasound data.
+The authors tailored several techniques used in deep learning and diffusion models to efficiently apply them to ultrasound data.
 
 <u>Joint posterior sampling</u>
 
