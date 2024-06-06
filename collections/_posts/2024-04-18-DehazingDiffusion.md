@@ -36,7 +36,7 @@ The authors propose to perform dehazing as a post-processing step with **diffusi
 # Methods
 
 ## Formulation of the dehazing process
-Backscattered echoes are recieved by the ultrasound probe. The resulting ultrasound signal
+Backscattered echoes are received by the ultrasound probe. The resulting ultrasound signal
 $$y$$
 consists of the sum of received echoes from the tissue
 $$x$$
