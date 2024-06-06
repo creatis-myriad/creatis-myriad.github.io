@@ -110,7 +110,7 @@ The reversed process can be written as a reverse-time SDE:
 
 $$ dx_t = -\sigma^{2t} \underbrace{\nabla_{x_t} \log p(x_t)}_\text{score}dt + \sigma^t dw_t, $$
 
-where the score function needs to be estimated. It can be learnt by a neural network
+where the score function needs to be estimated. It can be learned by a neural network
 $$s_{\theta}(x_t,t)$$
 that can be optimized using the **denoising score-matching method (DSM)** with the following objective:
 
