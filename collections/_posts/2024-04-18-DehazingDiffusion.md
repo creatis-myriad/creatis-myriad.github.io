@@ -22,7 +22,7 @@ During ultrasound acquisitions, phenomena such as aberration and reverberation p
 This phenomenon can **make diagnosis much more difficult**, both qualitative and quantitative.
 
 Existing dehazing techniques:
-- **Harmonic imaging** receives echoes at frequencies that are multiples of the original frequency. It produces higher quality images, as multipath scatterers have less energy and therefore generate fewer harmonics. However, it results in reduced penetration depth and image frame rate due to the additional pulse inversion transmits.
+- **Harmonic imaging** receives echoes at frequencies that are multiples of the original frequency. It produces higher quality images, as multipath scatterers have less energy and therefore generate fewer harmonics. However, it results in reduced penetration depth.
 - **Clutter filtering methods.**
 	- Block-matching and 3D filtering algorithm (BM3D) works by grouping similar patches of the image and then stacking and filtering them. It needs assumptions on the noise distribution.
 	- Temporal decompositions (PCA, SVD) allow to separate data correspoding to rapidly moving events (tissue) from data corresponding to stationary events (clutter). This assumption is not always true, leading to mistakes.
@@ -186,7 +186,7 @@ $$ p(y|x_t,h_t) \approx p(\hat{y}_t|x_t,h_t) \sim N(x_t + h_t, \rho^2I). $$
 
 <u>Learning ultrasound priors</u>
 
-Usually, generative models are used for applications in the image domain. In the case of ultrasound signals, some considerations need to be made.
+Usually, generative models are used for applications in the image domain. In the case of ultrasound signals, some considerations need to be taken into account.
 
 In particular, ultrasound data has a high dynamic range compared to images that make activation functions to work suboptimally and can slow down the training process.
 {:refdef: style="text-align: center;"}
