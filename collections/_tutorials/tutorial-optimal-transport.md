@@ -48,38 +48,38 @@ Optimal transport is rather easily usable in Python with the help of two main li
 
 **Historical formulation by Monge**
 
-Let's start with a practical and historical motivation example. Consider a ensemble of $$m$$ iron mines and $$n$$ factories that use this iron as raw material. These entities can be seen as elements of the euclidian plane $$\mathbb{R}^2$$. Each mine has its own capacity of production and each factory need a certain amount of material. They can be seen as two discrete measures $$\mu \in \mathcal{X}$$ and $$\nu \in \mathcal{Y}$$. 
+Let's start with a practical and historical motivation example. Consider an ensemble of $$m$$ iron mines and $$n$$ factories that use this iron as raw material. These entities can be seen as elements of the euclidian plane $$\mathbb{R}^2$$. Each mine has its own capacity of production and each factory needs a certain amount of material. They can be seen as two discrete measures $$\mu$$ on $$\mathcal{X}$$ and $$\nu$$ on $$\mathcal{Y}$$. 
 
-Suppose first that a mine can only provide iron for one factory, i.e. that their is no split of the production of a mine. Moreover, let consider a *positive* function $$c : \mathcal{X} \rightarrow \mathcal{Y}$$ that represent the cost to transport iron from mine $$x$$ to mine $$y$$. Typically, this cost can be the L1 norm : $$c(x,y) = \vert x - y \vert$$ or an L2 norm : $$c(x,y) = \lVert x - y \rVert^2$$.
+Suppose first that a mine can only provide iron for one factory, i.e. that there is no split of the production of a mine. Moreover, let's consider a *positive* function $$c : \mathcal{X} \times \mathcal{Y} \rightarrow \mathbb{R}_+$$ that represent the cost to transport iron from mine $$x$$ to mine $$y$$. Typically, this cost can be the L1 norm : $$c(x,y) = \vert x - y \vert$$ or an L2 norm : $$c(x,y) = \lVert x - y \rVert^2$$.
 
 <div style="text-align:center">
 <img src="/collections/images/optimal_transport/mines_factories.jpg" width=500></div>
 <p style="text-align: center;font-style:italic">Figure 1. Illustration of Monge optimal transport.</p>
 
 
-The optimal transport problem is the idea to find a transport plan $$T$$ that is a bijection from $$\mathcal{X}$$ to $$\mathcal{Y}$$, that to say assignement so that each mine $$x \in \mathcal{X}$$ supply a unique factory $$y \in \mathcal{Y}$$, so that the **total transport cost is minimal**, where the transport cost $$c(T)$$ of a transport plan $$T$$ is defined as follows :
+The optimal transport problem is the idea to find a transport plan $$T$$ that is a bijection from $$\mathcal{X}$$ to $$\mathcal{Y}$$, that is to say an assignment so that each mine $$x \in \mathcal{X}$$ supplies a unique factory $$y \in \mathcal{Y}$$, so that the **total transport cost is minimal**, where the transport cost $$c(T)$$ of a transport plan $$T$$ is defined as follows :
 
 $$
 c(T) = \sum_{x \in \mathcal{X}} c(m, T(m))
 $$
 
-This is this initial optimal transport problem, illustrated in Figure 1, was imaginated by Gaspard Monge in 1781. It has one major mathematical limit and one major philosophical limit (that are in fact related):
-- It is not guaranteed that such optimal transport plan exists
+This is the initial optimal transport problem, illustrated in Figure 1, as formulated by Gaspard Monge in 1781. It has one major mathematical limit and one major philosophical limit (that are in fact related):
+- It is not guaranteed that such an optimal transport plan exists
 - One might want to relax the constraint that a mine can only provide a unique factory
 
 &nbsp;
 
 **Relaxation of the formulation by Kantorovich**
 
-In the 1940s, Leonid Kantorovich proposed the most significant advances since the original problem formulation by encompassing it in a more general one that has nicer mathematical properties. 
+In the 1940s, Leonid Kantorovich proposed the most significant advances since the original problem formulation by encompassing it in a more general framework that has nicer mathematical properties. 
 
-Let us define the transport cost matrix $$M_{XY} = [c(x_i,y_i)]_{ij}$$. The set of all admissible transport plans, also called *couplings* is :
+Let us define the transport cost matrix $$M_{XY} = [c(x_i,y_i)]_{ij}$$. The set of all admissible transport plans, also called *couplings*, is:
 
 $$
 U(\mu,\nu) = \{P \in \mathbb{R}_{+}^{m \times n} \vert P1_m=\mu, P^T 1_n = \nu \}
 $$
 
-This is the same kind of transport plan than in the Monge formulation in the sense that it aims to transport distribution mass $$\mu$$ to distribution $$\nu$$, except that it gets rid of the uniqueness in the "mine-to-factory" assignement.
+This is the same kind of transport plan than in the Monge formulation in the sense that it aims to transport distribution mass $$\mu$$ to distribution $$\nu$$, except that it gets rid of the uniqueness in the "mine-to-factory" assignment.
 
 > Note that the Monge formulation is equivalent to requiring the matrices to be permutation matrices
 
@@ -89,7 +89,7 @@ $$
 \min_{P \in U(\mu, \nu)} \sum_{i=1, j=1}^{m,n} P(i,j)c(x_i,y_j) = \min_{P \in U(\mu, \nu)} \langle P,M_{XY} \rangle
 $$
 
-where $$\langle \cdot, \cdot \rangle$$ designates the Frobenius norm.
+where $$\langle \cdot, \cdot \rangle$$ designates the Frobenius distance.
 
 <div style="text-align:center">
 <img src="/collections/images/optimal_transport/kantorovich_problem.jpg" width=600></div>
@@ -99,7 +99,7 @@ where $$\langle \cdot, \cdot \rangle$$ designates the Frobenius norm.
 
 ### Discrete vs continuous
 
-The Monge and Kantorovich formulation of optimal transport has been presented hereabove in the discrete case. One reason to that is that it is suited to computer-related problems. However, what is discussed here can be extended to continuous measures and even semi-continuous cases, as illustrated in Figure 3. In the continous case, the Monge and Kantorovich problems are the following :
+The Monge and Kantorovich formulations of optimal transport have been presented above in the discrete case. One reason for that is that it is well-suited to computer-related problems. However, what is discussed here can be extended to continuous measures and even semi-continuous cases, as illustrated in Figure 3. In the continous case, the Monge and Kantorovich problems are the following :
 
 $$
 \text{(M)} \qquad \underset{T_{\# \mu} = \nu}{\inf} \int_X c(x,T(x)) \mathrm{d} \mu(x)
@@ -119,13 +119,13 @@ where $$T$$ is a transport map from $$X$$ to $$Y$$ and $$\Gamma(\mu, \nu)$$ deno
 
 ### Wasserstein distance and barycenter
 
-For $$p \in [1, +\infty]$$ and $$d(\cdot, \cdot)$$ a distance, the following quantity define a distance between two distributions $$\mu$$ and $$\nu$$ :
+For $$p \in [1, +\infty]$$ and $$d(\cdot, \cdot)$$ a distance, the following quantity defines a distance between two distributions $$\mu$$ and $$\nu$$ :
 
 $$
 W_p(\mu, \nu) = (\underset{\gamma \in \Gamma(\mu, \nu)}{\inf} \int_X d^p(x,y) \mathrm{d} \gamma(x,y))^{\frac{1}{p}}
 $$
 
-Given a set of measure $$\{b_s\}_{s=1,...,S}$$, one way to define the barycenter of these measures is :
+Given a set of measures $$\{b_s\}_{s=1,...,S}$$, one way to define the barycenter of these measures is :
 
 $$
 \underset{a}{\min} \sum_{s=1}^{S} \lambda_s W_p^p(a,b_s)
@@ -137,12 +137,12 @@ where $$\lambda_1,...,\lambda_S$$ are the weights given to each distribution.
 
 ### **Limits for practical applications**
 
-Although properties of existence and uniqueness have been demonstrated for optimal transport for the formulation of Kantorovich, as well as equivalence between Monge and Kantorovich's formulation under certain conditions, there remains several major practical limitions for optimal transport to be directly applied in large dimension :
-- If the source and target distributions respectively have respectively $$m$$ and $$n$$ supports points, the solution of optimal transport can be found at best at cost $$O((n+m)nm\log(n+m))$$, which is way to expensive for large datasets.
+Although properties of existence and uniqueness have been demonstrated for optimal transport for the Kantorovich formulation, as well as equivalence between Monge and Kantorovich's formulations under certain conditions, there remains several major practical limitations for optimal transport to be directly applied in high dimensionality:
+- If the source and target distributions have respectively $$m$$ and $$n$$ supports points, the solution of optimal transport can be found at best at cost $$O((n+m)nm\log(n+m))$$, which is way to expensive for large datasets.
 - The optimal transport plan can be "noisy" or "irregular" with respect to inputs.
-- The optimal solution $$P^*$$ may not be unique and has no meaningful Jacobian with respect to inputs $$X$$ or $$Y$$, as illustrated if Figure 4.
-- The optimal transport plan is bound to the points that are given when its computed. One important question is what happens when a new point is given.
--  One may want to compute an optimal transport between distributions that don't live in the same space or that different mass (non equal to 1). It that possible and how to do it ?
+- The optimal solution $$P^*$$ may not be unique and has no meaningful Jacobian with respect to inputs $$X$$ or $$Y$$, as illustrated in Figure 4.
+- The optimal transport plan is bound to the points that are given when it is computed. One important unanswered question is what happens when a new point is given.
+-  One may want to compute an optimal transport between distributions that don't live in the same space or that have different masses (non equal to 1). Is that possible and how to do it?
 -  The computation of Wasserstein distance suffers from the curse of dimensionality.
 
 <div style="text-align:center">
@@ -150,7 +150,7 @@ Although properties of existence and uniqueness have been demonstrated for optim
 <p style="text-align: center;font-style:italic">Figure 4. Illustration of a limitation of optimal transport for modern applications.</p>
 
 
-All these questions are crucial for optimal transport to be applied for large dataset and in deep learning. It is because they have found satisfying answers that optimal transport is now applied for few years in these domains. The next section aims to present some solutions to the problems listed above.
+All these questions are crucial for optimal transport to be applied to large datasets and deep learning. It is because satisfying answers have been found that optimal transport has now been in use for a few years in these domains. The next section aims to present some solutions to the problems listed above.
 
 &nbsp;
 
@@ -158,14 +158,14 @@ All these questions are crucial for optimal transport to be applied for large da
 
 ### Simple 1D case and Sliced Wasserstein distance
 
-In the 1-dimension case with simple distance $$d(x,y) = \vert x - y \vert^p$$ with $$p \geq 1$$, the optimal tranport plan is trivial when the point $$x_i$$ and $$y_i$$ are orderer (see Figure 4). Hence, the optimal transport problem is solve in time $$O(n\log n + m \log m)$$ (time required to sort the sets of points), which is way more advantageous than the general case. 
+In the 1-dimension case with simple distance $$d(x,y) = \vert x - y \vert^p$$ with $$p \geq 1$$, the optimal tranport plan is trivial when the point $$x_i$$ and $$y_i$$ are orderer (see Figure 4). Hence, the optimal transport problem is solved in time $$O(n\log n + m \log m)$$ (time required to sort the sets of points), which is way more advantageous than the general case. 
 
 <div style="text-align:center">
 <img src="/collections/images/optimal_transport/1d_case.jpg" width=600></div>
 <p style="text-align: center;font-style:italic">Figure 5. 1D case for order points. The mass from source points are systematically assigned to target point at leftmost point that is not already filled.</p>
 
 
-From this property can be derived a strategy "in the philosophy" (in the sense that is does not hold the same properties than real optimal transport) of transport : given points in n-dimension, they are are projected to a random direction $$\epsilon \in \mathbb{R}^n$$ and the Wasserstein distance is computed on this 1D direction. By repeating this operation (Monte-Carlo method), the n-dimension optimal transport plan is approached.
+From this property can be derived a strategy "in the philosophy" (in the sense that is does not hold the same properties than real optimal transport) of transport : given points in n-dimension, they are projected to a random direction $$\epsilon \in \mathbb{R}^n$$ and the Wasserstein distance is computed on this 1D direction. By repeating this operation (Monte-Carlo method), the n-dimension optimal transport plan is approached.
 
 > Recent derivatives of this principle include spherical sliced Wassertein[^2] and convolution sliced Wasserstein[^3].
 
@@ -173,13 +173,13 @@ From this property can be derived a strategy "in the philosophy" (in the sense t
 
 ### Entropy regularization and Sinkhorn algorithm
 
-In 2013, Marco Cuturi introduced a simple method to regularize the classic optimal transport problem and speed up significantly the computation of such transport plan[^1]. It adds to the usual cost to minimize a term of entropy, as follows (Regularized Wasserstein distance) : 
+In 2013, Marco Cuturi introduced a simple method to regularize the classical optimal transport problem and speed up significantly the computation of such transport plan[^1]. It adds to the usual cost to minimize a term of entropy as follows (Regularized Wasserstein distance) : 
 
 $$
-W_\gamma(\mu, \nu) = \underset{P \in U(\mu, \nu)}{\langle P, M_{XY} \rangle} + \gamma E(P)
+W_\gamma(\mu, \nu) = \underset{P \in U(\mu, \nu)}{\langle P, M_{XY} \rangle} - \gamma E(P)
 $$
 
-where $$E(P) = - \sum_{i,j} P_{i,j}(\log P_{i,j} - 1)$$ and $$\gamma \geq 0$$ defines the amount of entropy regularization in the transport plan. The reformulation transform the problem from a linear programming to a convex problem, which makes its solution way easier to compute. In particular, **Sinkhorn algorithm** can be levarged. It states that it exists a unique $$u \in \mathbb{R}_+^n$$ and $$v \in \mathbb{R}_+^n$$ such that :
+where $$E(P) = - \sum_{i,j} P_{i,j}(\log P_{i,j} - 1)$$ and $$\gamma \geq 0$$ defines the amount of entropy regularization in the transport plan. The reformulation transform the problem from a linear programming to a convex problem, which makes its solution way easier to compute. In particular, **Sinkhorn algorithm** can be leveraged. It states that it exists a unique $$u \in \mathbb{R}_+^n$$ and $$v \in \mathbb{R}_+^n$$ such that :
 
 $$
 P_\gamma \overset{def}{=} \underset{P \in U(\mu, \nu)}{\textrm{arg min }} \langle P, M_{XY} \rangle - \gamma E(P) = \textrm{diag}(u)K\textrm{diag}(v) \qquad \textrm{with} \; K\overset{def}{=}\rm e^{-M_{XY}/\gamma}
@@ -207,13 +207,13 @@ The effect of regularization on the optimal transport plan is observable on the 
 
 ### Low-rank decomposition
 
-Computational efficiency can further be improved with by decomposing the coupling matrix into a matrix of (low) rank $$r$$ : 
+Computational efficiency can further be improved by decomposing the coupling matrix into a matrix of (low) rank $$r$$ : 
 
 $$
 P = QD(1/g)R^T
 $$
 
-with $$Q \in U(\mu, g)$$, $$R^T \in U(g, \nu)$$, $$g$$ is a new marginal of size $$r$$ and $$D(1/g)$$ is a diagonal matrix. This acts like if the transport transit through *r virtual anchors points*. It is in a sense like doing K-means simultaneously for two measures. The decomposition obviously affects the shape of the coupling matrix, which is now composed of blocks, as illustrated in Figure 8 and 9. There exists a modified Sinkhorn algorithm to handle this low-rank formulation.
+with $$Q \in U(\mu, g)$$, $$R^T \in U(g, \nu)$$, $$g$$ is a new marginal of size $$r$$ and $$D(1/g)$$ is a diagonal matrix. This acts like if the transport transited through *r virtual anchors points*. It is in a sense like doing K-means simultaneously for two measures. The decomposition obviously affects the shape of the coupling matrix, which is now composed of blocks, as illustrated in Figure 8 and 9. There exists a modified Sinkhorn algorithm to handle this low-rank formulation.
 
 <div style="text-align:center">
 <img src="/collections/images/optimal_transport/low_rank.jpg" width=800></div>
@@ -246,7 +246,7 @@ One way to solve this issue is to move from discrete formulation to continuous t
 
 ### (Fused) Gromov-Wasserstein Optimal Transport
 
-The Gromov-Wasserstein Optimal Transport extends the classical optimal transport problem to the case where the source and target points do not live in the same space. In that case, one can not directly define a cost function to link the points from $$X$$ and $$Y$$. To solve this, this idea is to build a kind of *isometric* mapping, where, if both spaces have a cost function, we want to preserve the distance between the points. The problem can be written as follows :
+The Gromov-Wasserstein Optimal Transport extends the classical optimal transport problem to the case where the source and target points do not live in the same space. In that case, one cannot directly define a cost function to link the points from $$X$$ and $$Y$$. To solve this, the idea is to build a kind of *isometric* mapping, where, if both spaces have a cost function, we want to preserve the distance between the points. The problem can be written as follows :
 
 $$
 P^* ⁼ \underset{P1_m=\mu, P^T 1_n=\nu}{\textrm{arg min }} \sum_{i, i', j, j'} P_{ij}P_{i', j'}(c_1(x_i, x_j) - c_2(y_{i'}, y_{j'})^2)
@@ -270,7 +270,7 @@ If each point in $$X$$ and $$Y$$ is embedded with a feature vector $$f \in \math
 
 Now that a lot of concepts of optimal transport have been introduced and that computational tricks have been proposed to adapt the inital optimal transport problem to large datasets, we can present several papers in the deep learning domain in which optimal transport have been directly used.
 
-* The most known one is maybe the Wassertein GAN[^6], where the authors have used Wasserstein distance as cost function instead of the typical discriminator to stabilize the training of the network, get rid of problems such as mode collapse and provide meaningful learning curves useful for debugging and hyperparameter searches.
+* The most known one is maybe the Wassertein GAN[^6], where the authors have used Wasserstein distance as a cost function instead of the typical discriminator to stabilize the training of the network, getting rid of problems such as mode collapse and providing meaningful learning curves useful for debugging and hyperparameter searches.
 
 &nbsp;
 
@@ -302,7 +302,7 @@ Now that a lot of concepts of optimal transport have been introduced and that co
 
 &nbsp;
 
-* Optimal transport can also been applied when prototypes/anchors are useful[^10] [^11].
+* Optimal transport has also been applied when prototypes/anchors are useful[^10] [^11].
 
 <div style="text-align:center">
 <img src="/collections/images/optimal_transport/anchor.jpg" width=400></div>
