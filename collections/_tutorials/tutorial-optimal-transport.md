@@ -99,7 +99,7 @@ where $$\langle \cdot, \cdot \rangle$$ designates the Frobenius distance.
 
 ### Discrete vs continuous
 
-The Monge and Kantorovich formulations of optimal transport have been presented above in the discrete case. One reason for that is that it is well-suited to computer-related problems. However, what is discussed here can be extended to continuous measures and even semi-continuous cases, as illustrated in Figure 3. In the continous case, the Monge and Kantorovich problems are the following :
+The Monge and Kantorovich formulations of optimal transport have been presented above in the discrete case. One reason for that is that it is well-suited to computer-related problems. However, what is discussed here can be extended to continuous measures and even semi-continuous cases, as illustrated in Figure 3. In the continuous case, the Monge and Kantorovich problems are the following :
 
 $$
 \text{(M)} \qquad \underset{T_{\# \mu} = \nu}{\inf} \int_X c(x,T(x)) \mathrm{d} \mu(x)
@@ -141,8 +141,8 @@ Although properties of existence and uniqueness have been demonstrated for optim
 - If the source and target distributions have respectively $$m$$ and $$n$$ supports points, the solution of optimal transport can be found at best at cost $$O((n+m)nm\log(n+m))$$, which is way to expensive for large datasets.
 - The optimal transport plan can be "noisy" or "irregular" with respect to inputs.
 - The optimal solution $$P^*$$ may not be unique and has no meaningful Jacobian with respect to inputs $$X$$ or $$Y$$, as illustrated in Figure 4.
-- The optimal transport plan is bound to the points that are given when it is computed. One important unanswered question is what happens when a new point is given.
--  One may want to compute an optimal transport between distributions that don't live in the same space or that have different masses (non equal to 1). Is that possible and how to do it?
+- The optimal transport plan is bounded to the points that are given when it is computed. One important unanswered question is what happens when a new point is given.
+-  One may want to compute an optimal transport between distributions that don't live in the same space or that differ in mass (non equal to 1). Is it possible and how to do it?
 -  The computation of Wasserstein distance suffers from the curse of dimensionality.
 
 <div style="text-align:center">
@@ -179,7 +179,7 @@ $$
 W_\gamma(\mu, \nu) = \underset{P \in U(\mu, \nu)}{\langle P, M_{XY} \rangle} - \gamma E(P)
 $$
 
-where $$E(P) = - \sum_{i,j} P_{i,j}(\log P_{i,j} - 1)$$ and $$\gamma \geq 0$$ defines the amount of entropy regularization in the transport plan. The reformulation transform the problem from a linear programming to a convex problem, which makes its solution way easier to compute. In particular, **Sinkhorn algorithm** can be leveraged. It states that it exists a unique $$u \in \mathbb{R}_+^n$$ and $$v \in \mathbb{R}_+^n$$ such that :
+where $$E(P) = - \sum_{i,j} P_{i,j}(\log P_{i,j} - 1)$$ and $$\gamma \geq 0$$ defines the amount of entropy regularization in the transport plan. This reformulation transforms the problem from a linear programming to a convex problem, which makes its solution way easier to compute. In particular, **Sinkhorn algorithm** can be leveraged. It states that there exists a unique $$u \in \mathbb{R}_+^n$$ and $$v \in \mathbb{R}_+^n$$ such that :
 
 $$
 P_\gamma \overset{def}{=} \underset{P \in U(\mu, \nu)}{\textrm{arg min }} \langle P, M_{XY} \rangle - \gamma E(P) = \textrm{diag}(u)K\textrm{diag}(v) \qquad \textrm{with} \; K\overset{def}{=}\rm e^{-M_{XY}/\gamma}
@@ -207,7 +207,7 @@ The effect of regularization on the optimal transport plan is observable on the 
 
 ### Low-rank decomposition
 
-Computational efficiency can further be improved by decomposing the coupling matrix into a matrix of (low) rank $$r$$ : 
+Computational efficiency can be further improved by decomposing the coupling matrix into a matrix of (low) rank $$r$$ : 
 
 $$
 P = QD(1/g)R^T
