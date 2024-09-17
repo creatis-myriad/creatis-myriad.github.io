@@ -19,26 +19,26 @@ pdf: "https://openaccess.thecvf.com/content/CVPR2023/papers/Assran_Self-Supervis
 
 # Introduction
 
-Self-supervised learning is a method of representation learning where the model attempts to understand the relationships between its inputs. 
+Self-supervised learning is a method of representation learning where the model attempts to understand the relationships between its inputs.
 Currently, there are two main approaches:
 
 * Invariance-based pretraining (DINO[^1], SimCLR v2[^2]) can provide high-level semantic representations but may lead to decreased performance in certain downstream tasks 
-or with new data distributions.
+(like segmentation) or with new data distributions.
+* Generative pretraining (MAE[^3],iBOT[^4], SimMIM[^5]) requires less prior knowledge and offers greater generalizability but results in lower semantic-level representations 
+and underperforms in off-the-shelf evaluations.
 
-* Generative pretraining (MAE[^3],iBOT[^4], SimMIM[^5]) requires less prior knowledge and offers greater generalizability, but it results in lower semantic-level representations and 
-underperforms in off-the-shelf evaluations.
+Some recent methods are hybrid (MSN[^6], data2vec[^7]), using mask generation and contrastive loss. 
+However, most of the methods rely on hand-crafted image transformations.
 
-Some recent methods are hybrid (MSN[^6], data2vec[^7]), using mask generation and contrastive loss. Moreover most of the methods rely on hand-crafted image transformations.
-
-The goal of the authors is to enhance the semantic quality of self-supervised representations while ensuring applicability to a broader range of tasks. 
+The goal of the authors is to enhance the semantic quality of self-supervised representations while ensuring applicability to a broader range of tasks.
 I-JEPA does not rely on additional prior knowledge encoded through image transformations, thereby reducing bias.
 
 &nbsp;
 
 # Methodology
 
-Similar to the generative masked autoencoders (MAE) method, with two main differences:
-- I-JEPA is non-generative: it focuses only on predicting the representations of target blocks from context blocks.
+I-JEPA is similar to the generative masked autoencoders (MAE) method, with two main differences:
+- I-JEPA is non-generative: it focuses only on predicting the representations of target blocks from context blocks, rather than reconstructing the original data.
 - Predictions are made in an abstract representation space (or feature space) rather than directly in the pixel or token space.
 
 <div style="text-align:center">
@@ -130,7 +130,7 @@ generative model decoding the output of the pretrained I-JEPA predictor, conditi
 
 *  In contrast to view-invariance-based methods, I-JEPA learns semantic image representations without relying on hand-crafted data augmentations. 
 *  By predicting in representation space, the model converges faster than pixel reconstruction methods and achieves high-level semantic representations.
-* 
+
 &nbsp;
 
 # References
