@@ -25,6 +25,7 @@ pdf: "https://www.nature.com/articles/s41746-023-00853-4"
 <img src="/collections/images/PINN_espresso/tomo_bos_seq.jpg" width=600>
 </div>
 
+* Historically, the term "PINN" was attributed to Neural Networks used for optimization and equation resolution (as a solver)
 ## PINNs for blood pressure estimation?
 * The today paper tackles the translation of PINNs to a medical application : the blood pressure estimation. 
 * We can already measure blood pressure with a cuff around the arm but can be inconvenient for continuous measure. We would like to be able to determine blood pressure from a more convenient device such as bioimpedance electrodes:
@@ -75,15 +76,18 @@ As a ground truth, we have blood pressure measures associated to bioimpedance cy
 
 
 * Inputs:
-    * BioImpendance $BioZ$
-    * Bioimpedance extracted features $u_1$, $u_2$ and $u_3$
+    * BioImpendance $\ BioZ$
+    * Bioimpedance extracted features $\ u_1$, $\ u_2$ and $\ u_3$
 * Outputs:
-    * Blood pressure (diastolic $DBP$, systolic $SBP$, pulpe pressure $PP$)
+    * Blood pressure (diastolic $\ DBP$, systolic $\ SBP$, pulpe pressure $\ PP$)
 * Loss
-    * $\mathcal{L}_{supervised} = \Sigma_{i=1}^{s} (y_{i, meas}-y_{i, pred})²$ 
-    * $\mathcal{L}_{physics} = \frac{1}{R-1}\Sigma_{i=1}^{R-1}\Sigma_{k=1}{3}(y_{i+1, NN}-(y_{i, NN} + \frac{\partial y_{i, NN}}{\partial u_{i}^{k}}(u_{i+1}^{k}-u_{i}^{k})))^2$ 
-    inspired by the Taylor approximation
-    * $\mathcal{L}_{total} = \alpha \mathcal{L}_{supervised} + \beta \mathcal{L}_{physics}$ with $\alpha = 1$ and $\beta = 10$
+    $$\mathcal{L}_{supervised} = \Sigma_{i=1}^{s} (y_{i, meas}-y_{i, pred})²$$ with $\ S$ being the total of ground truth measured blood pressure
+
+    $$\mathcal{L}_{physics} = \frac{1}{R-1}\Sigma_{i=1}^{R-1}\Sigma_{k=1}^{3}(y_{i+1, NN}-(y_{i, NN} + \frac{\partial y_{i, NN}}{\partial u_{i}^{k}}(u_{i+1}^{k}-u_{i}^{k})))^2$$ with $\ R$ being the number of cycles for one participant
+    inspired by the Taylor approximation : $\ y_{i+1} = y_i +  \frac{\partial y_{i}}{\partial u_i}(u_{i+1}-u_{i})$
+
+    $$\mathcal{L}_{PINN} = \mathcal{L}_{supervised} + 10* \mathcal{L}_{physics}$$ 
+    $$\mathcal{L}_{CNN} = \mathcal{L}_{supervised} $$
 
 # Results and conclusion
 
@@ -93,7 +97,7 @@ As a ground truth, we have blood pressure measures associated to bioimpedance cy
 </div>
 
 * Prediction is continuous and more accurate 
-* Feature extraction : relevant if chosen features are significant. Here $u_1$, $u_2$ and $u_3$ are descriptors related to cardiovascular characteristics
+* Feature extraction : relevant if chosen features are significant. Here $\ u_1$, $\ u_2$ and $\ u_3$ are descriptors related to cardiovascular characteristics
 * Taylor approximation : provides representation of input/ouput relation
 * Good results with minimal training data, outperforms state-of-the-art models with minimal training data
 
@@ -103,5 +107,6 @@ As a ground truth, we have blood pressure measures associated to bioimpedance cy
 
 # Discussion
 
-* The aspect "physics-informed" is in the Taylor Approximation and in the feature extraction, which both required some prior knowledge and inform the network. That is being said, we can regret the absence of a physical equation. The term "physics-informed" seem abusive whereas "Theory-Trained Neural Networks" seem more appropriate. 
-* The contribution is more about a Proof of Concept, the experience being conducted on a small amount of participant (15 participants, including 1 woman)
+* The aspect "physics-informed" is in the Taylor Approximation and in the feature extraction, which both required some prior knowledge and inform the network. That is being said, we can regret the absence of a physical equation. The term "physics-informed" seem abusive whereas "Theory-Trained Neural Networks" seem more appropriate.
+* An ablation study to determine the importance of the features and of the time serie BioImpedance could be a interesting additionnal contribution.
+* The contribution is more about a Proof of Concept, the experience being conducted on a small amount of young and healthy participants (15 participants, including 1 woman)
