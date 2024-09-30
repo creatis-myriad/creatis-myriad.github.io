@@ -12,21 +12,48 @@ pdf: "https://openaccess.thecvf.com/content/CVPR2024/html/Tong_Eyes_Wide_Shut_Ex
 
 # Highlights
 
-* 
 
-# Introduction
+# Introduction : Is vision good enough for language? 
+
+Multimodal Large Language Models (MLLMs) integrate images into LLMs and show remarkable capabilities in tasks such as image understanding and visual question answering.
+
+Howver they still exhibit visual shortcomings, some of which are surprisingly elementary and evident (Figure 1). 
+
+Where do these problems originate? Is it a deficiency in visual modality, language understanding, or their alignment?
+
+A natural hypothesis is that any limitation in the pretrained vision models can cascade into the downstream MLLMs that use them.
 
 <div style="text-align:center"><img src="/collections/images/EWS/EWS1.jpg" width=1500></div>
-<p style="text-align: center;font-style:italic">Figure 1. </p>
+<p style="text-align: center;font-style:italic">Figure 1. MLLMs (here GPT-4V) struggle with seemingly simple questions due to inaccurate visual grounding. red is an incorrect response, green is an hallucinated explanations.</p>
+
+# Identifying failure examples
+
+They exploit the *erroneous agreements* in the embedding space. If two visually different images are encoded similarly by CLIP, then at least one of the images is likely ambiguously encoded. 
+They call such a pair of images a *CLIP-blind* pair.
+
+They use the corpus datasets, ImageNet and LAIONAesthetics, to collect these CLIP-blind pairs.
+For each pair they compute the embeddings using CLIP-ViT-L-14 and DINOv2-ViT-L-14. 
+They return pairs such that the cosine similarity exceeds 0.95 for CLIP embeddings and less than 0.6 for DINOv2 embeddings.
+
+Using these CLIP-blind pairs they build the Multimodal Visual Patterns (MMVP) benchmark.
 
 <div style="text-align:center"><img src="/collections/images/EWS/EWS2.jpg" width=1500></div>
-<p style="text-align: center;font-style:italic">Figure 2. </p>
+<p style="text-align: center;font-style:italic">Figure 2. Constructing MMVP benchmark via CLIP-blind pairs.</p>
+
+# Multimodal Visual Patterns (MMVP) benchmark
+
+For each CLIP-blind pair of images, they manually pinpoint the visual details that the CLIP vision encoder overlooks and craft questions that probe these visual details, for example “Is the dog facing left or right?”.
+The benchmark is made of 150 pairs with 300 questions.
+
+Human performance is evaluated through a user study where users are presented with 300 questions in a randomized sequence. 
+
+They consider a pair of images to be correctly answered if both the questions associated with the pair are answered accurately.
 
 <div style="text-align:center"><img src="/collections/images/EWS/EWS3.jpg" width=1500></div>
-<p style="text-align: center;font-style:italic">Figure 3. </p>
+<p style="text-align: center;font-style:italic">Figure 3. Examples of Questions in the MMVP benchmark.</p>
 
 <div style="text-align:center"><img src="/collections/images/EWS/EWS4.jpg" width=1500></div>
-<p style="text-align: center;font-style:italic">Figure 4. </p>
+<p style="text-align: center;font-style:italic">Figure 4. Benchmark results of current SOTA MLLM models and humans.</p>
 
 <div style="text-align:center"><img src="/collections/images/EWS/EWS5.jpg" width=1500></div>
 <p style="text-align: center;font-style:italic">Figure 5. </p>
