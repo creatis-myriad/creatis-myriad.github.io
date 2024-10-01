@@ -16,7 +16,7 @@ pdf: "https://openaccess.thecvf.com/content/CVPR2024/html/Tong_Eyes_Wide_Shut_Ex
 * They identify *CLIP-blind* pairs and construct the Multimodal Visual Patterns (MMVP) benchmark.
 * MLLMs have difficulty answering simple questions about nine visual patterns.
 * These errors stem mainly from the pre-trained vision encoder and scaling alone may not be the solution. 
-* They propose a MoF approach that can reduce these visual limitations.
+* They propose a Mixture-of-Features (MoF) approach that can reduce these visual limitations.
 
 # Introduction : Is vision good enough for language? 
 
