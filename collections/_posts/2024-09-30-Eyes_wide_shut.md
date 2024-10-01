@@ -98,7 +98,7 @@ $$F_{A-MoF} = \alpha*F_{DINOv2} + (1-\alpha)*F_{CLIP}$$
 
 They evaluate the model’s visual grounding ability with MMVP and instruction-following capability with the LLaVA benchmark. 
 
-<div style="text-align:center"><img src="/collections/images/EWS/EWS_T2.jpg" width=600></div>
+<div style="text-align:center"><img src="/collections/images/EWS/EWS_T3.jpg" width=600></div>
 <p style="text-align: center;font-style:italic">Table 2. Empirical Results of Additive MoF. </p>
 
 There is a trade-off, increasing $$\alpha$$ improve visual grounding abilities but reduces instruction-following capability. 
@@ -107,7 +107,7 @@ There is a trade-off, increasing $$\alpha$$ improve visual grounding abilities b
 
 They try another method in which features of CLIP and DINOv2 are interleaved while maintaining their spatial order.
 
-<div style="text-align:center"><img src="/collections/images/EWS/EWS_T3.jpg" width=500></div>
+<div style="text-align:center"><img src="/collections/images/EWS/EWS_T2.jpg" width=500></div>
 <p style="text-align: center;font-style:italic">Table 3. Empirical Results of Interleaved MoF.</p>
 
 It increases visual grounding abilities without compromising the ability to follow instructions. 
