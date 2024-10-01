@@ -112,3 +112,11 @@ They try another method in which features of CLIP and DINOv2 are interleaved whi
 
 It increases visual grounding abilities without compromising the ability to follow instructions. 
 
+
+# To go further
+
+[Pooyan Rahmanzadehgervi, Logan Bolton, Mohammad Reza Taesiri, Anh Totti Nguyen (2024) Vision language models are blind. arXiv preprint arXiv:2407.06581](https://arxiv.org/abs/2407.06581) [\[blog\]](https://vlmsareblind.github.io/)
+
+
+
+
