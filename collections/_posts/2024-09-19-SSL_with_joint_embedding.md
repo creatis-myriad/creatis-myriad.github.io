@@ -53,7 +53,7 @@ $$B_i$$ is the mask of the block i and $$s_y(i)=\{s_{y_j}\}_{j \in B_i}$$ is its
 * **Context:** Sample a single block x from the image y and remove overlapping regions with target blocks. 
 Then use context-encoder $$f_{\theta}$$ to get the context representation. $$B_x$$ is the mask of the block x and $$s_x=\{s_{x_j}\}_{j \in B_x}$$ is its representation.
 
-* **Predictions:** For each target $$s_y(i)$$ use output of the context encoder $$s_x$$ along with a mask token for each patch of the target. 
+* **Predictions:** For each target $$s_y(i)$$, use the output of the context encoder $$s_x$$ along with a mask token for each patch of the target. 
 The predictor $$g_{\Phi}$$ generates patch-level predictions $$s_{\hat{y}(i)}=\{s_{\hat{y}_j}\}_{j \in B_i}$$. 
 
 * **Loss:** $$\mathcal{L} = \frac{1}{M} \sum_{i=1}^{M} \mathcal{D}(s_{\hat{y}(i)},s_y(i)) =  \frac{1}{M} \sum_{i=1}^{M} \sum_{j \in B_i} \lVert s_{\hat{y}(j)} - s_y(j) \lVert_2^2$$
