@@ -122,7 +122,7 @@ compute than previous methods to achieve strong performance.</p>
 <img src="/collections/images/SSL_with_joint_embedding/performance_vizualizationRepresentations.jpg" width=800></div>
 <p style="text-align: center;font-style:italic">Figure 10. Visualization of I-JEPA predictor representations. For each image: first column contains the original image; second column
 contains the context image, which is processed by a pretrained I-JEPA ViT-H/14 encoder. Green bounding boxes in subsequent columns contain samples from a 
-generative model decoding the output of the pretrained I-JEPA predictor, conditioned on positional mask tokens corresponding to the location of the green bounding box.</p>
+generative model. The generative model decodes the output of the predictor, conditioned on positional mask tokens corresponding to the location of the green bounding box.</p>
 
 &nbsp;
 
