@@ -17,25 +17,25 @@ pdf: "https://www.nature.com/articles/s41746-023-00853-4"
 # Context
 ## Flow around a expresso cup
 
-* PINNs, abreviation for physics-informed neural networks, were presented by Hang Jung two years ago with his post on "Espresso Cup"
-* PINN are neural networks that embed into the loss function the knowledge of any theorical laws, such as physical law (eg Navier-Stockes). It can be seen as a regularization term that limits the space of admissible solutions
-* In the espresso cup paper, the purpose is to perform an regression task with the estimation of **pressure**, **temperature** and **velocity** around a espresso cup. The loss in this paper is informed with residuals of Navier-Stockes and heat equation that we try and minimize.
+* PINNs, abreviation for physics-informed neural networks, were presented by Hang Jung two years ago with his post on "Espresso Cup".
+* PINN are neural networks that embed into the loss function the knowledge of any theoretical laws, such as physical law (eg Navier-Stokes). It can be seen as a regularization term that limits the space of admissible solutions.
+* In the espresso cup paper, the purpose is to perform a regression task with the estimation of **pressure**, **temperature** and **velocity** around a espresso cup. The loss in this paper is informed with residuals of Navier-Stockes and heat equation that we try to minimize.
 
 <div style="text-align:center">
 <img src="/collections/images/PINN_espresso/tomo_bos_seq.jpg" width=600>
 </div>
 
-* Historically, the term "PINN" was attributed to Neural Networks used for optimization and equation resolution (as a solver)
+* Historically, the term "PINN" was attributed to Neural Networks used for optimization and equation resolution (as a solver).
 ## PINNs for blood pressure estimation?
-* The today paper tackles the translation of PINNs to a medical application : the blood pressure estimation. 
-* We can already measure blood pressure with a cuff around the arm but can be inconvenient for continuous measure. We would like to be able to determine blood pressure from a more convenient device such as bioimpedance electrodes:
+* The today's paper tackles the translation of PINNs to a medical application : the blood pressure estimation. 
+* We can already measure blood pressure with a cuff around the arm but it can be inconvenient for continuous measure. We would like to be able to determine blood pressure from a more convenient device such as bioimpedance electrodes:
 
 <div style="text-align:center">
 <img src="/collections/images/medical_PINN/supp figure 1 bioZ.jpg" width=600>
 <h5 style="font-weight: normal;"><u>Figure 2</u>: Bioimpedance measure with electrodes on wrist or finger</h5>
 </div>
 
-* The objectives of this paper is to establish a method for blood pressure estimation with PINN using bioimpedance data and limited amount of ground truth blood pressure measures.
+* The objective of this paper is to establish a method for blood pressure estimation with PINN using bioimpedance data and limited amount of ground truth blood pressure measures.
 
 # Methodology
 
@@ -79,7 +79,7 @@ As a ground truth, we have blood pressure measures associated to bioimpedance cy
     * BioImpendance $\ BioZ$
     * Bioimpedance extracted features $\ u_1$, $\ u_2$ and $\ u_3$
 * Outputs:
-    * Blood pressure (diastolic $\ DBP$, systolic $\ SBP$, pulpe pressure $\ PP$)
+    * Blood pressure (diastolic $\ DBP$, systolic $\ SBP$,pulse pressure $\ PP$)
 * Loss
     $$\mathcal{L}_{supervised} = \Sigma_{i=1}^{s} (y_{i, meas}-y_{i, pred})²$$ with $\ S$ being the total of ground truth measured blood pressure
 
@@ -96,10 +96,10 @@ As a ground truth, we have blood pressure measures associated to bioimpedance cy
 <h5 style="font-weight: normal;"><u>Figure 7</u>: Comparison results of PINN vs CNN </h5>
 </div>
 
-* Prediction is continuous and more accurate 
-* Feature extraction : relevant if chosen features are significant. Here $\ u_1$, $\ u_2$ and $\ u_3$ are descriptors related to cardiovascular characteristics
-* Taylor approximation : provides representation of input/ouput relation
-* Good results with minimal training data, outperforms state-of-the-art models with minimal training data
+* Prediction is continuous and more accurate .
+* Feature extraction : relevant if chosen features are significant. Here $\ u_1$, $\ u_2$ and $\ u_3$ are descriptors related to cardiovascular characteristics.
+* Taylor approximation : provides representation of input/ouput relation.
+* Good results with minimal training data, outperforms state-of-the-art models with minimal training data.
 
 <div style="text-align:center">
 <img src="/collections/images/medical_PINN/supp figure 8 results.jpg" width=600>
@@ -107,6 +107,6 @@ As a ground truth, we have blood pressure measures associated to bioimpedance cy
 
 # Discussion
 
-* The aspect "physics-informed" is in the Taylor Approximation and in the feature extraction, which both required some prior knowledge and inform the network. That is being said, we can regret the absence of a physical equation. The term "physics-informed" seem abusive whereas "Theory-Trained Neural Networks" seem more appropriate.
-* An ablation study to determine the importance of the features and of the time serie BioImpedance could be a interesting additionnal contribution.
-* The contribution is more about a Proof of Concept, the experience being conducted on a small amount of young and healthy participants (15 participants, including 1 woman)
+* The aspect "physics-informed" is in the Taylor Approximation and in the feature extraction, which both required some prior knowledge and inform the network. That being said, we can regret the absence of a physical equation. The term "physics-informed" seems abusive whereas "Theory-Trained Neural Networks" seems more appropriate.
+* An ablation study to determine the importance of the features and of the time serie BioImpedance could be a interesting additional contribution.
+* The contribution is more about a Proof of Concept, the experience being conducted on a small amount of young and healthy participants (15 participants, including 1 woman).
