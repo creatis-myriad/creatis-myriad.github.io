@@ -199,7 +199,7 @@ In conclusion, this paper demonstrates the potential of leveraging DPMs for repr
 
 # References
 
-[1] [Song, J., Meng, C., Ermon, S. (2020). Denoising diffusion implicit models. arXiv](https://arxiv.org/pdf/2010.02502)
+[1] [Song, J., Meng, C., Ermon, S. (ICLR 2021). Denoising diffusion implicit models.](https://arxiv.org/pdf/2010.02502)
 
-[2] [Dhariwal, P., & Nichol, A. (2021). Diffusion models beat gans on image synthesis. Advances in neural information processing systems](https://proceedings.neurips.cc/paper_files/paper/2021/file/49ad23d1ec9fa4bd8d77d02681df5cfa-Paper.pdf)
+[2] [Dhariwal, P., & Nichol, A. (NeurIPS 2021). Diffusion models beat GANs on image synthesis.](https://proceedings.neurips.cc/paper_files/paper/2021/file/49ad23d1ec9fa4bd8d77d02681df5cfa-Paper.pdf)
 
