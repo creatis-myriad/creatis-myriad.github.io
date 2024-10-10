@@ -130,7 +130,7 @@ $$ \mathbf{x}_{t+1} = \sqrt{\alpha_{t+1}} f_\theta(\mathbf{x}_t, t, z_{\text{sem
 Due to the conditioning of the decoder on  $$ z_{\text{sem}} $$, diffusion autoencoders no longer function as generative models. 
 To address this, the authors introduced a mechanism for sampling $$ z_{\text{sem}} \in  \mathbb{R}^{d} $$ from the latent distribution.
 
-They choosed to fit another DDIM (called latent DDIM): 
+They chose to fit another DDIM (called latent DDIM): 
 $$ p_{\omega}(z_{\text{sem}, t-1} | z_{\text{sem}, t}) $$
 
 to the latent distribution of $$ z_{\text{sem}} = \text{Enc}_{\phi}(x_0), \quad x_0 \sim p(x_0) $$
@@ -180,7 +180,7 @@ These directions are found thanks to a linear classifier.
 <div style="text-align:center"><img src="/collections/images/DiffusionAutoencoders/Fig5.jpg" width=1500></div>
 
 
-## Qualitative results
+## Quantitative results
 
 Evaluation of the reconstruction quality:
 
@@ -192,14 +192,14 @@ They also evaluate the effects of varying the dimension of $$ z_{\text{sem}} $$:
 <div style="text-align:center"><img src="/collections/images/DiffusionAutoencoders/Tab2.jpg" width=1500></div>
 
 
-# Conlusion
+# Conclusion
 
-In conclusion, this paper demonstrates the potential of leveraging DPMs for representation learning, aiming to extract meaningful and decodable representations of input images through an autoencoding framework.
+In conclusion, this paper demonstrates the potential of leveraging DPMs for representation learning, aiming to extract meaningful and decodable representations of input images through an autoencoder framework.
 
 
 # References
 
-[1] [Song, J., Meng, C., Ermon, S. (2020). Denoising diffusion implicit models. arXiv](https://arxiv.org/pdf/2010.02502)
+[1] [Song, J., Meng, C., Ermon, S. (ICLR 2021). Denoising diffusion implicit models.](https://arxiv.org/pdf/2010.02502)
 
-[2] [Dhariwal, P., & Nichol, A. (2021). Diffusion models beat gans on image synthesis. Advances in neural information processing systems](https://proceedings.neurips.cc/paper_files/paper/2021/file/49ad23d1ec9fa4bd8d77d02681df5cfa-Paper.pdf)
+[2] [Dhariwal, P., & Nichol, A. (NeurIPS 2021). Diffusion models beat GANs on image synthesis.](https://proceedings.neurips.cc/paper_files/paper/2021/file/49ad23d1ec9fa4bd8d77d02681df5cfa-Paper.pdf)
 
