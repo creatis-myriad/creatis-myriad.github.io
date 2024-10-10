@@ -152,7 +152,7 @@ Then, they trained the latent DDIM ($$\omega$$) with the semantic encoder fixed.
 
 # Results
 
-## high-level semantics and low-level stochastic variations
+## High-level semantics and low-level stochastic variations
 
 The figure below shows the variations when varying $$ x_T $$ with the same $$ z_{\text{sem}} $$ and the variations from different $$ z_{\text{sem}} $$ .
 
