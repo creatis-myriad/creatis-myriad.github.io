@@ -23,13 +23,13 @@ pdf: "https://openaccess.thecvf.com/content/CVPR2022/html/Preechakul_Diffusion_A
 
 * Autoencoders are useful for learning representations. On the contrary, DPM models can transform an input image into a latent variable yet they lack key features like semantics and disentanglement.
 
-* Their proposed approach uses a learnable encoder to capture high-level semantics and a DPM for decoding and modeling variations.
+* The proposed approach uses a learnable encoder to capture high-level semantics and a DPM for decoding and modeling variations.
 
-* Unlike other DPMs, DDIM introduces a non-Markovian forward process while preserving DPM training objectives, enabling deterministic encoding.
+* Unlike other DPMs, DDIM introduces a non-Markovian reverse process while preserving DPM training objectives.
 
 * Conditioning DDIM on semantic information improves denoising efficiency and produces a linear, decodable, semantically meaningful representation. Also, due to the conditioning, the denoising becomes easier and faster.
 
-* To generate synthetic data, the authors used another DPM for the semantic subcode distribution.
+* To generate unconditional synthetic data, the authors used another DPM for the semantic subcode distribution.
 
 
 # Methods
@@ -81,6 +81,8 @@ The conditional DDIM decoder proposed by the authors takes as input the pair $$ 
 to generate the output image. 
 This decoder models $$ p_{\theta}(x_{t-1} | x_t, z_{\text{sem}}) $$ to approximate the inference distribution $$ q(x_{t-1} | x_t, x_0) $$ using the following reverse generative process:
 
+* Decoder:
+
 $$ p_\theta(x_{0:T} | z_{\text{sem}}) = p(x_T) \prod_{t=1}^{T} p_\theta(x_{t-1} | x_t, z_{\text{sem}}) $$
 
 $$ 
@@ -92,6 +94,8 @@ q(x_{t-1} | x_t, f_\theta(x_t, t, z_{\text{sem}})) & \text{otherwise}
 $$
 
 $$ f_\theta(x_t, t, z_{\text{sem}}) = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \sqrt{1 - \alpha_t} \epsilon_\theta(x_t, t, z_{\text{sem}}) \right) $$
+
+* Training objective:
 
 $$ L_{\text{simple}} = \sum_{t=1}^{T} \mathbb{E}_{x_0, \epsilon_t} \left[ \left\| \epsilon_\theta(x_t, t, z_{\text{sem}}) - \epsilon_t \right\|_2^2 \right] $$
 
@@ -108,13 +112,13 @@ where $$ z_s \in \mathbb{R}^c = \text{Affine}(z_{\text{sem}}) $$
 and $$ (t_s, t_b) \in \mathbb{R}^{2 \times c} = \text{MLP}(\psi(t)) $$ is the output of a multilayer perceptron with a sinusoidal encoding function $$ \psi $$. 
 
 
-## Stochastic encoder
+<!-- ## Stochastic encoder
 
 Using their conditional DDIM, they can encode an input image $$ x_0 $$ into the stochastic subcode $$ x_T $$ by reversing the deterministic generative process with the following equation:
 
 $$ \mathbf{x}_{t+1} = \sqrt{\alpha_{t+1}} f_\theta(\mathbf{x}_t, t, z_{\text{sem}}) + \sqrt{1 - \alpha_{t+1}} \epsilon_\theta(\mathbf{x}_t, t, z_{\text{sem}}) $$
 
-> Note that the stochastic encoder is not used during training and is used to compute $$ x_T $$ for tasks that require exact reconstruction or inversion, such as real-image manipulation.
+> Note that the stochastic encoder is not used during training and is used to compute $$ x_T $$ for tasks that require exact reconstruction or inversion, such as real-image manipulation. -->
 
 <div style="text-align:center"><img src="/collections/images/DiffusionAutoencoders/Fig2.jpg" width=1500></div>
 
