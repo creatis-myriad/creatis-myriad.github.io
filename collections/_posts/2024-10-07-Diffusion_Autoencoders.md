@@ -130,7 +130,7 @@ $$ \mathbf{x}_{t+1} = \sqrt{\alpha_{t+1}} f_\theta(\mathbf{x}_t, t, z_{\text{sem
 Due to the conditioning of the decoder on  $$ z_{\text{sem}} $$, diffusion autoencoders no longer function as generative models. 
 To address this, the authors introduced a mechanism for sampling $$ z_{\text{sem}} \in  \mathbb{R}^{d} $$ from the latent distribution.
 
-They choosed to fit another DDIM (called latent DDIM): 
+They chose to fit another DDIM (called latent DDIM): 
 $$ p_{\omega}(z_{\text{sem}, t-1} | z_{\text{sem}, t}) $$
 
 to the latent distribution of $$ z_{\text{sem}} = \text{Enc}_{\phi}(x_0), \quad x_0 \sim p(x_0) $$
@@ -192,9 +192,9 @@ They also evaluate the effects of varying the dimension of $$ z_{\text{sem}} $$:
 <div style="text-align:center"><img src="/collections/images/DiffusionAutoencoders/Tab2.jpg" width=1500></div>
 
 
-# Conlusion
+# Conclusion
 
-In conclusion, this paper demonstrates the potential of leveraging DPMs for representation learning, aiming to extract meaningful and decodable representations of input images through an autoencoding framework.
+In conclusion, this paper demonstrates the potential of leveraging DPMs for representation learning, aiming to extract meaningful and decodable representations of input images through an autoencoder framework.
 
 
 # References
