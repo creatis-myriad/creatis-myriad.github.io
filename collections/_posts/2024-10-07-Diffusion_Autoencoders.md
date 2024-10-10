@@ -36,8 +36,10 @@ pdf: "https://openaccess.thecvf.com/content/CVPR2022/html/Preechakul_Diffusion_A
 
 ## Difference between DDPM and DDIM
 
-DDPM relies on a Markovian reverse process, meaning the generation of an image from noise depends on a probabilistic transition, where each step is conditioned on the previous one. 
-The reverse diffusion process is parameterized to model the transition from noise to data.
+DDPM and DDIM are both generative models **with an identical forward process**, leading them to share the same objective function. **The difference between them is in the reverse process.**.
+
+In DDPM, the reverse process is **stochastic**. 
+The goal is to model the reverse diffusion process, starting from pure noise and progressively denoising it to generate a sample that resembles the original data.
 
 1\. **Forward Process in DDPM:**
 
@@ -47,7 +49,7 @@ $$ q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t I) $$
 
 $$ p_\theta(x_{t-1} | x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma_\theta(x_t, t)) $$
 
-DDIM [\[1\]](#references) introduces a non-Markovian modification to the reverse process, enabling deterministic sampling while preserving the training objective of DDPM. 
+DDIM [\[1\]](#references) introduces a non-Markovian modification to the reverse process, enabling **deterministic** sampling while preserving the training objective of DDPM. 
 
 1\. **Forward Process in DDIM:**
 
