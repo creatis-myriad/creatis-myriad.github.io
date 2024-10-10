@@ -180,7 +180,7 @@ These directions are found thanks to a linear classifier.
 <div style="text-align:center"><img src="/collections/images/DiffusionAutoencoders/Fig5.jpg" width=1500></div>
 
 
-## Qualitative results
+## Quantitative results
 
 Evaluation of the reconstruction quality:
 
