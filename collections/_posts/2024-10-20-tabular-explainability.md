@@ -22,10 +22,6 @@ pdf: "https://arxiv.org/pdf/2302.14278"
 * Propose a graph-oriented explainability method based on the set of single head attention matrices
 * Compare this approach to attention-, gradient-, and perturbation-based explainability methods
 
-* TODO: Highlight 1
-* TODO: Highlight 2
-* TODO: Highlight 3
-
 &nbsp;
 
 # Introduction
@@ -34,7 +30,10 @@ pdf: "https://arxiv.org/pdf/2302.14278"
 * XAI algorithms for DL can be organized into three major groups: perturbation-based, gradient-based, and, more recently, attention-based
 * Transformers posses a built-in capability to provide explanations for its results via the analysis of attention matrices
 
-![](/collections/images/tabular_explainability/tab_exp_1.jpg)
+<div style="text-align:center">
+<img src="/collections/images/tabular_explainability/tab_exp_1.jpg" width=700></div>
+
+&nbsp;
 
 * A standard transformer encoder is composed of $$N \times h$$ attention matrices, with $$N$$ the number of blocs and $$h$$ the number of heads per bloc
 
@@ -47,16 +46,17 @@ See [the tutorial on transformers](https://creatis-myriad.github.io/tutorials/20
 ## Groups of features
 
 * ***Hypothesis 1***: features within tabular data can often be grouped intuitively and naturally based on factors such as their source (e.g. sensors, monitoring systems, surveys) and type (e.g demographic, ordinal, or geospatial data)
-* ***Hypothesis 2***: given that TD does not provide sequential information, positional encoding is disabled
+* ***Hypothesis 2***: given that tabular data does not provide sequential information, positional encoding is disabled
 
-![](/collections/images/tabular_explainability/tokenization.jpg)
+<div style="text-align:center">
+<img src="/collections/images/tabular_explainability/tokenization.jpg" width=600></div>
 
 &nbsp;
 
 ## Knowledge distillation
 
 * A full-capacity transformer ($$N$$ blocs, $$h$$ heads) is first trained for a classification task. This transformers is seen as a ***master transformer*** 
-* A ***student transformer*** is then trained to reproduce the same prediction as the ones from the master but using single heads ($$h=1$$) with more blocs ($$M>N$$)
+* A ***student transformer*** is then trained to reproduce the same predictions as the ones from the master but using single heads ($$h=1$$) with more blocs ($$M>N$$)
 * The following student's loss function is used
 
 $$\mathcal{L}= - \sum_{i=1}^{n} y_i \log \left( \hat{y}_i \right) \, + \, \lambda \sum_{l=1}^{M} \sum_{j,k=1}^{m} a^{l}_{j,k} \log \left( a^{l}_{j,k} \right)$$
@@ -73,7 +73,9 @@ $$\mathcal{L}= - \sum_{i=1}^{n} y_i \log \left( \hat{y}_i \right) \, + \, \lambd
 * The vertices $$V= \bigcup_{l=0}^{M}  \{ v^l_c \}$$ correspond to groups of features, where $$c \in \{1,\cdots,m\}$$
 * The arcs $$\left( v^{l-1}_{\hat{c}}, v^{l}_{\tilde{c}}\right) \in A$$ correspond to attention values $$a^l_{\hat{c},\tilde{c}}$$, where $$\hat{c}, \tilde{c} \in \{1,\cdots,m\}$$
 
-![](/collections/images/tabular_explainability/from_attention_to_graph.jpg)
+<div style="text-align:center">
+<img src="/collections/images/tabular_explainability/from_attention_to_graph.jpg" width=600></div>
+&nbsp;
 
 * The maximum probability path $$p$$ is found using Dijkstra’s algorithm and is of the form $$p=\{ v^{0}_{i_0}, v^{1}_{i_1}, \cdots, v^{M}_{i_M} \}$$ 
 * The arc cost is $$- \log\left( a^l_{j,k} \right)$$ for $$a^l_{j,k} > 0$$, yielding path cost $$- \log\left( \prod_{l=1}^{M} a^l_{i_{l-1},i_{l}} \right)$$
@@ -90,116 +92,108 @@ task, i.e. the group $$c=i_0$$ corresponding to the first vertex $$v^0_{i_0}$$ o
 
 # Results
 
-* 6 different kinds of image generation: text-to-Image, Layout-to-Image, Class-Label-to-Image, Super resolution, Inpainting, Semantic-Map-to-Image 
-* Latent space with 2 different regularization strategies: *KL-reg* and *VQ-reg*
-* Latent space with different degrees of downsampling
-* LDM-KL-8 means latent diffusion model with KL-reg and a downsampling of 8 to generate the latent space 
-* DDIM is used during inference (with different number of iterations) as an optimal sampling procedure
-* FID (Fréchet Inception Distance): captures the similarity of generated images to real ones better than the more conventional Inception Score
+## Classification datasets
+
+* ***CT - Forest CoverType Dataset*** - Predict the most common cover type (3 class problem) for each 30m by 30m patch of forest. 425,000 samples were used for training and 53,000 for validation. 5 groups of features (general, distances, hillshades, wild areas, soil types) were used
+* ***NI - Network Intrusion Dataset*** - Classification between bad connections (intrusions or attacks) and good connections. 1,000,000 samples were used for training and 75,000 for validation. 4 groups of features (basic, content, traffic, host) were used
+* ***RW - Real-World Dataset*** - Binary classification problem. Tens of thousands of samples were used for training and validation. 8 groups of features were used. They had limited access to this private dataset and were unable to produce the same set of experiments as for the CT and NI dataset
 
 &nbsp;
 
-## Perceptual compression tradeoffs
+## Implementations
 
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-perceptual-compression.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 3. Analyzing the training of class-conditional LDMs with
-different downsampling factors f over 2M train steps on the ImageNet dataset.</p>
-
-* LDM-1 corresponds to DM without any latent representation
-* LDM-4, LDM-8 and LDM-16 appear to be the most efficient
-* LDM-32 shows limitations due to high downsampling effects
+* ***Teacher network***: $$N=2$$ (number of blocs), $$h=4$$ (number of heads per bloc), $$d=64$$ (token size)
+* ***Student network***: $$M=4$$ (number of blocs), $$h=1$$ (number of heads per bloc), $$d=64$$ (token size)
+* Batch size of 128 and Adam optimizer
+* $$\lambda_{CT} = 0.005$$, $$\lambda_{NI} = 0.01$$, and $$\lambda_{RW} = 0.9$$
+* Each experiment was repeated five times for each CT and NI student and ten times for each RW student
 
 &nbsp;
 
-## Hyperparameters overview
+## Teacher/student classification performances
 
+* Comparaison with two standard machine learning methods: LightGBM and XGBoost
+* Conceptual transformer is the student network
+* The main goal is not to obtain the most performant model, but rather a comparable model that is better suited for explainability purposes
 
 <div style="text-align:center">
-<img src="/collections/images/latent-DM/results-hyperparameters-unconditioned-cases.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Table 1. Hyperparameters for the unconditional LDMs producing the numbers shown in Tab. 3. All models trained on a single NVIDIA A100.</p>
+<img src="/collections/images/tabular_explainability/results_teacher_performances.jpg" width=500></div>
+<p style="text-align: center;font-style:italic">Table 1: Validation F1</p>
+
+* The performance of the student network has been validated as satisfactory and the multi-layer attention-based explanations are extracted for analysis
+
+&nbsp;
+
+## Explanation SOTA methods
+
+* ***Attention-based: Last-layer explainability (LL)*** The last layer’s self-attention head of the student’s encoder was analyzed. The best concept group to explain a given
+prediction was defined as that which corresponds to the highest attention value
+
+* ***Gradient-based: Saliency explainability (SA)*** The gradients of the loss function with respect to the input (concept groups) were computed. The best concept group to explain a given prediction was defined as that which yields the largest mean absolute value
+
+* ***Perturbation-based: Shapley additive explanations (SH)*** The SHAP value of each feature was computed. The best concept group was defined as that with the largest mean absolute SHAP value
+
+* ***Attention head aggregation by averaging (AVG)*** This approach employs the teacher network instead of the distilled student and aggregates the heads from each layer by averaging them. The best concept group to explain a given prediction was defined as in our proposed MLA model (graph + Dijkstra algorithm)
+
+&nbsp;
+
+## Explanation distributions
+
+<div style="text-align:center">
+<img src="/collections/images/tabular_explainability/explanation_distribution.jpg" width=700></div>
+<p style="text-align: center;font-style:italic">Figure 4 - Best concept group distribution per method</p>
+
+* For each method, the proportion of samples who considered each concept group to be the best is indicated
+* For each dataset, the number of incorrectly classified samples is less than 5%, which has no impact in the overall distributions
+* MLA appears to take more groups than SA and SH into account when identifying differences among samples
 
 &nbsp;
 
 <div style="text-align:center">
-<img src="/collections/images/latent-DM/results-hyperparameters-conditioned-cases.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Table 2. Hyperparameters for the conditional LDMs trained on the ImageNet dataset. All models trained on a single NVIDIA A100.</p>
+<img src="/collections/images/tabular_explainability/explanation_distribution_2.jpg" width=450></div>
+<p style="text-align: center;font-style:italic">Figure 5 - CT’s best group of features per method by class</p>
+
+* Analysis of the proportion of samples who considered each concept group to be the best for CT and segmented by predicted class
+* AVG demonstrates minimal to no alteration in its distribution according to the class, which sounds strange
+* MLA assigns explainability to three different concept groups for each class, with varying proportion depending on the class
+* Strong alignment between LL and MLA behaviors
+* Soil type seems to be a discriminating factor only for the LL and MLA methods
 
 &nbsp;
 
-## Unconditional image synthesis
-
 <div style="text-align:center">
-<img src="/collections/images/latent-DM/results-image-generation-uncondition.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Table 3. Evaluation metrics for unconditional image synthesis. N-s refers to N sampling steps with the DDIM sampler. ∗: trained in KL-regularized latent space</p>
+<img src="/collections/images/tabular_explainability/explanation_distribution_3.jpg" width=650></div>
+<p style="text-align: center;font-style:italic">Figure 6 - CT’s Exploratory Data Analysis</p>
 
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-image-generation-uncondition-CelebA-HQ.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 4. Random samples of the best performing model LDM-4 on the CelebA-HQ dataset. Sampled with 500 DDIM steps (FID = 5.15)</p>
-
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-image-generation-uncondition-bedrooms.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 5. Random samples of the best performing model LDM-4 on the LSUN-Bedrooms dataset. Sampled with 200 DDIM steps (FID = 2.95)</p>
+* An Exploratory Data Analysis (EDA) was conducted on CT as a means to validate which features are most relevant for each class
+* Soil Type does provide a clear differentiation between classes. All samples from Class 2 have soil types in {0, ..., 9}, whereas samples from Class 0 do not have
+soil types lower than 9
+* Even though the EDA clearly shows Soil Type concept group’s relevance for the classification task, only LL and MLA methods capture this information
 
 &nbsp;
 
-## Class-conditional image synthesis
+## Stability analysis
+
+* The stability of the explanations is analyzed by quantifying the percentage of distinct runs that agree on the same explanation for each sample for MLA and LL methods
 
 <div style="text-align:center">
-<img src="/collections/images/latent-DM/results-image-generation-condition-ImageNet.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Table 4. Comparison of a class-conditional ImageNet LDM with
-recent state-of-the-art methods for class-conditional image generation on ImageNet. c.f.g. denotes classifier-free guidance with a scale s</p>
+<img src="/collections/images/tabular_explainability/stability_analysis.jpg" width=650></div>
+<p style="text-align: center;font-style:italic">Figure 7 - Percentage of runs that agree on the best (1B) and two best (2B) context groups per method</p>
 
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-class-conditional-image-synthesis.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 6. Random samples from LDM-4 trained on the ImageNet dataset. Sampled with classifier-free guidance scale s = 5.0 and 200 DDIM steps</p>
-
-&nbsp;
-
-## Text-conditional image synthesis
-
-* a LDM with 1.45B parameters is trained using KL-regularized conditioned on language prompts on LAION-400M
-* use of the BERT-tokenizer
-* $$\tau_{\theta}$$ is implemented as a transformer to infer a latent code which is mapped into the UNet via (multi-head) cross-attention
-
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-text-conditional-image-synthesis.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Table 5. Evaluation of text-conditional image synthesis on the
-256×256-sized MS-COCO dataset: with 250 DDIM steps</p>
-
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-text-conditional-image-synthesis-2.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 7. Illustration of the text-conditional image synthesis. Sampled with 250 DDIM steps</p>
-
-&nbsp;
-
-## Semantic-map-to-image synthesis
-
-* Use of images of landscapes paired with semantic maps 
-* Downsampled versions of the semantic maps are simply concatenated with the latent image representation of a LDM-4 model with VQ-reg.
-* No cross-attention scheme is used here
-* The model is trained on an input resolution of 256x256 but the authors find that the model generalizes to larger resolutions and can generate images up to the megapixel regime
-
-
-<div style="text-align:center">
-<img src="/collections/images/latent-DM/results-semantic-synthesis.jpg" width=400></div>
-<p style="text-align: center;font-style:italic">Figure 8. When provided a semantic map as conditioning, the LDMs generalize to substantially larger resolutions than those seen during training. Although this model was trained on inputs of size 256x256 it can be used to create high-resolution samples as the ones shown here, which are of resolution 1024×384</p>
-
-
+* No real conclusion can be formulated from the 1B concept groups: for CT, we observe a better performance of MLA but larger variability than LL. On the other hand, the exact opposite can be said for RW, whereas both distributions seem to be identical for NI
+* The use of 2B concept improves stability with averages of over 60% of agreement across runs, which remains relatively low !
+* In the 2B concept case, the average model-to-model comparison seems to be dataset-dependant. However, MLA consistently shows lower variability than LL, making it more reliable and prone to provide robust and reliable explanations
 
 &nbsp;
 
 # Conclusions
 
-* Latent diffusion model allows to synthesize high quality images with efficient computational times.
-* The key resides in the use of an efficient latent representation of images which is perceptually equivalent but with reduced computational complexity
+* This paper presents a novel explainability method for tabular data that leverages transformer models and incorporates knowledge from the graph structure of attention matrices
+* A method is proposed to identify the concept groups of input features that provide the model with the most relevant information to make a prediction
+* A comparison with existing models is performed
 
-&nbsp;
-
-# References
-\[1\] P. Esser, R. Rombach, B. Ommer, *Taming transformers for high-resolution image synthesis*, CoRR 2022, [\[link to paper\]](https://arxiv.org/pdf/2012.09841.pdf)
-
-\[2\] A. van den Oord, O. Vinyals, and K. Kavukcuoglu, *Neural discrete representation learning*, In NIPS, 2017 [\[link to paper\]](https://arxiv.org/pdf/1711.00937.pdf)
-
+* Results show the interest of the graph method performed on the student network compared to the average method performed on the master network
+* Unfortunately, no clear conclusions can be drawn from this paper
+* The process of selecting the best group of features to make a predicition seems relatively simple
 
 
