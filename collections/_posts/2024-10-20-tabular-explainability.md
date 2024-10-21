@@ -36,7 +36,7 @@ pdf: "https://arxiv.org/pdf/2302.14278"
 
 ![](/collections/images/tabular_explainability/tab_exp_1.jpg)
 
-* There exists a total of $$N \times h$$ attention matrices for a standart transformer encoder composed by $$N$$ blocs and $$h$$ heads
+* A standard transformer encoder is composed of $$N \times h$$ attention matrices, with $$N$$ the number of blocs and $$h$$ the number of heads per bloc
 
 See [the tutorial on transformers](https://creatis-myriad.github.io/tutorials/2022-06-20-tutorial_transformer.html) for more details.
 
@@ -61,7 +61,7 @@ See [the tutorial on transformers](https://creatis-myriad.github.io/tutorials/20
 
 $$\mathcal{L}= - \sum_{i=1}^{n} y_i \log \left( \hat{y}_i \right) \, + \, \lambda \sum_{l=1}^{M} \sum_{j,k=1}^{m} a^{l}_{j,k} \log \left( a^{l}_{j,k} \right)$$
 
-* The first term forces the student prediction ($$\hat{y}_i$$) to be close to the one of the master ($$y_i$$)
+* The first term forces the student prediction $$\hat{y}_i$$ to be close to the one of the master $$y_i$$
 * The second term forces the entropy of each attention matrix to be low => it forces the information contained in each attention matrix to be concentrated on few cells => it forces the attention matrices to be sparse !
 
 &nbsp;
@@ -70,20 +70,20 @@ $$\mathcal{L}= - \sum_{i=1}^{n} y_i \log \left( \hat{y}_i \right) \, + \, \lambd
 
 * Maps the attention matrices across encoder layers into a directed acyclic graph (DAG)
 * The DAG is defined as $$D=(V,A)$$, where $$V$$ and $$A$$ are the set of vertices and arcs that compose the graph $$D$$
-* The vertices $$V= \bigcup_{l=0}^{M}  \{ v^l_c \}$$ correspond to groups of features 
-* The arcs $$\left( v^{l-1}_{\hat{c}}, v^{l}_{\tilde{c}}\right) \in A$$ correspond to attention values $$a^l_{\hat{c},\tilde{c}}$$, where $$\hat{c}, \tilde{c} \in {1,\cdots,m}$$
+* The vertices $$V= \bigcup_{l=0}^{M}  \{ v^l_c \}$$ correspond to groups of features, where $$c \in \{1,\cdots,m\}$$
+* The arcs $$\left( v^{l-1}_{\hat{c}}, v^{l}_{\tilde{c}}\right) \in A$$ correspond to attention values $$a^l_{\hat{c},\tilde{c}}$$, where $$\hat{c}, \tilde{c} \in \{1,\cdots,m\}$$
 
 ![](/collections/images/tabular_explainability/from_attention_to_graph.jpg)
 
 * The maximum probability path $$p$$ is found using Dijkstra’s algorithm and is of the form $$p=\{ v^{0}_{i_0}, v^{1}_{i_1}, \cdots, v^{M}_{i_M} \}$$ 
 * The arc cost is $$- \log\left( a^l_{j,k} \right)$$ for $$a^l_{j,k} > 0$$, yielding path cost $$- \log\left( \prod_{l=1}^{M} a^l_{i_{l-1},i_{l}} \right)$$
-* The authors focus on the group corresponding to the most relevant input for the final prediction, i.e. group $$c=i_0$$
+* The authors focus on the group of features corresponding to the most relevant input for the final prediction, i.e. group of features $$c=i_0$$
 
-> Explanations to the student’s predictions are provided by finding the most relevant group for the classification
+> Explanations to the student’s predictions are provided by finding the most relevant group of features for the classification
 task, i.e. the group $$c=i_0$$ corresponding to the first vertex $$v^0_{i_0}$$ of the maximum probability path $$p$$ in graph $$D$$
 
-* A single group does not always provide all the relevant information to make a prediction 
-* Additional groups are ranked iteratively, i.e. in each iteration the starting point $$v^0_{i_0}$$ of the previously found highest probability path is eliminated from the graph and then search for the respective next highest probability path in $$D$$
+* A single group of features does not always provide all the relevant information to make a prediction 
+* Additional groups of features are ranked iteratively, i.e. in each iteration the starting point $$v^0_{i_0}$$ of the previously found highest probability path is eliminated from the graph and then search for the respective next highest probability path in $$D$$
 * In the experiments, two best groups were used as most to explain predictions
 
 &nbsp;
