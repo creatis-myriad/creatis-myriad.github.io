@@ -133,7 +133,7 @@ prediction was defined as that which corresponds to the highest attention value
 
 * ***Perturbation-based: Shapley additive explanations (SH)*** The SHAP value of each feature was computed. The best concept group was defined as that with the largest mean absolute SHAP value
 
-* ***Attention head aggregation by averaging (AVG)*** This approach employs the teacher network instead of the distilled student and aggregates the heads from each layer by averaging them. The best concept group to explain a given prediction was defined as in our proposed MLA model (graph + Dijkstra algorithm)
+* ***Attention head aggregation by averaging (AVG)*** This approach employs the teacher network instead of the distilled student and aggregates the heads from each layer by averaging them. The best concept group to explain a given prediction was defined as in the proposed MLA model (graph + Dijkstra algorithm)
 
 &nbsp;
 
