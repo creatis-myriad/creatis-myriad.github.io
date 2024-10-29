@@ -114,7 +114,7 @@ task, i.e. the group $$c=i_0$$ corresponding to the first vertex $$v^0_{i_0}$$ o
 
 * Comparison with two standard machine learning methods: LightGBM and XGBoost
 * Conceptual transformer is the student network
-* The main goal is not to obtain the most performant model, but rather a comparable model that is better suited for explainability purposes
+* The main goal is not to obtain the best performing model, but rather a competitive model that is better suited for explainability purposes
 
 <div style="text-align:center">
 <img src="/collections/images/tabular_explainability/results_teacher_performances.jpg" width=500></div>
