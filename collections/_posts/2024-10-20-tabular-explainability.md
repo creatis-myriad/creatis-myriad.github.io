@@ -18,7 +18,7 @@ pdf: "https://arxiv.org/pdf/2302.14278"
 # Highlights
 
 * Investigate explainable models based on transformers for tabular data
-* Use of knowledge distillation (master/student) to train a single head but multi-layers (blocs) transformer to facilitate explicability analysis
+* Use of knowledge distillation (master/student) to train a single head but multi-layers (blocks) transformer to facilitate explicability analysis
 * Propose a graph-oriented explainability method based on the set of single head attention matrices
 * Compare this approach to attention-, gradient-, and perturbation-based explainability methods
 
