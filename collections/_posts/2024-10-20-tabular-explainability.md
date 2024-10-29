@@ -55,8 +55,8 @@ See [the tutorial on transformers](https://creatis-myriad.github.io/tutorials/20
 
 ## Knowledge distillation
 
-* A full-capacity transformer ($$N$$ blocs, $$h$$ heads) is first trained for a classification task. This transformers is seen as a ***master transformer*** 
-* A ***student transformer*** is then trained to reproduce the same predictions as the ones from the master but using single heads ($$h=1$$) with more blocs ($$M>N$$)
+* A full-capacity transformer ($$N$$ blocks, $$h$$ heads) is first trained for a classification task. This transformer is seen as a ***master transformer*** 
+* A ***student transformer*** is then trained to reproduce the same predictions as the ones from the master but using single heads ($$h=1$$) with more blocks ($$M>N$$)
 * The following student's loss function is used
 
 $$\mathcal{L}= - \sum_{i=1}^{n} y_i \log \left( \hat{y}_i \right) \, + \, \lambda \sum_{l=1}^{M} \sum_{j,k=1}^{m} a^{l}_{j,k} \log \left( a^{l}_{j,k} \right)$$
