@@ -129,7 +129,7 @@ task, i.e. the group $$c=i_0$$ corresponding to the first vertex $$v^0_{i_0}$$ o
 * ***Attention-based: Last-layer explainability (LL)*** The last layer’s self-attention head of the student’s encoder was analyzed. The best concept group to explain a given
 prediction was defined as that which corresponds to the highest attention value
 
-* ***Gradient-based: Saliency explainability (SA)*** The gradients of the loss function with respect to the input (concept groups) were computed. The best concept group to explain a given prediction was defined as that which yields the largest mean absolute value
+* ***Gradient-based: Saliency explainability (SA)*** The gradients of the loss function with respect to the input (concept groups) were computed. The best concept group to explain a given prediction was defined as the one that yields the largest mean absolute value
 
 * ***Perturbation-based: Shapley additive explanations (SH)*** The SHAP value of each feature was computed. The best concept group was defined as that with the largest mean absolute SHAP value
 
