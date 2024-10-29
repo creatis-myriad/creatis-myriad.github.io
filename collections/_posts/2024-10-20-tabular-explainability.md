@@ -153,7 +153,7 @@ prediction was defined as that which corresponds to the highest attention value
 <img src="/collections/images/tabular_explainability/explanation_distribution_2.jpg" width=450></div>
 <p style="text-align: center;font-style:italic">Figure 5 - CT’s best group of features per method by class</p>
 
-* Analysis of the proportion of samples who considered each concept group to be the best for CT and segmented by predicted class
+* Analysis of the proportion of samples that considered each concept group to be the best for CT, for each predicted class
 * AVG demonstrates minimal to no alteration in its distribution according to the class, which seems strange
 * MLA assigns explainability to three different concept groups for each class, with varying proportions depending on the class
 * Strong alignment between LL and MLA behaviors
