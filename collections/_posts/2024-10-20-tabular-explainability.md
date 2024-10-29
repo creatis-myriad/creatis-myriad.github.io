@@ -35,7 +35,7 @@ pdf: "https://arxiv.org/pdf/2302.14278"
 
 &nbsp;
 
-* A standard transformer encoder is composed of $$N \times h$$ attention matrices, with $$N$$ the number of blocs and $$h$$ the number of heads per bloc
+* A standard transformer encoder is composed of $$N \times h$$ attention matrices, with $$N$$ the number of blocks and $$h$$ the number of heads per block
 
 See [the tutorial on transformers](https://creatis-myriad.github.io/tutorials/2022-06-20-tutorial_transformer.html) for more details.
 
