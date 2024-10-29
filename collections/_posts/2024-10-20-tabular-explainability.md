@@ -86,7 +86,7 @@ task, i.e. the group $$c=i_0$$ corresponding to the first vertex $$v^0_{i_0}$$ o
 
 * A single group of features does not always provide all the relevant information to make a prediction 
 * Additional groups of features are ranked iteratively, i.e. in each iteration the starting point $$v^0_{i_0}$$ of the previously found highest probability path is eliminated from the graph and Dijkstra's algorithm is run again to search for the next highest probability path in $$D$$
-* In the experiments, two best groups were used as most to explain predictions
+* The best group is used most of the time in the experiments
 
 &nbsp;
 
