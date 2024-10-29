@@ -189,7 +189,7 @@ soil types lower than 9
 # Conclusions
 
 * This paper presents a novel explainability method for tabular data that leverages transformer models and incorporates knowledge from the graph structure of attention matrices
-* A method is proposed to identify the concept groups of input features that provide the model with the most relevant information to make a prediction
+* A method is proposed to identify the concept groups of input features that provide the most relevant information to make predictions
 * A comparison with existing models is performed
 
 * Results show the interest of the graph method performed on the student network compared to the average method performed on the master network
