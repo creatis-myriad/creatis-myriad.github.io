@@ -85,7 +85,7 @@ $$\mathcal{L}= - \sum_{i=1}^{n} y_i \log \left( \hat{y}_i \right) \, + \, \lambd
 task, i.e. the group $$c=i_0$$ corresponding to the first vertex $$v^0_{i_0}$$ of the maximum probability path $$p$$ in graph $$D$$
 
 * A single group of features does not always provide all the relevant information to make a prediction 
-* Additional groups of features are ranked iteratively, i.e. in each iteration the starting point $$v^0_{i_0}$$ of the previously found highest probability path is eliminated from the graph and then search for the respective next highest probability path in $$D$$
+* Additional groups of features are ranked iteratively, i.e. in each iteration the starting point $$v^0_{i_0}$$ of the previously found highest probability path is eliminated from the graph and Dijkstra's algorithm is run again to search for the next highest probability path in $$D$$
 * In the experiments, two best groups were used as most to explain predictions
 
 &nbsp;
