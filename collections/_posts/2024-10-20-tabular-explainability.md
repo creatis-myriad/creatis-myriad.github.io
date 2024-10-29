@@ -155,7 +155,7 @@ prediction was defined as that which corresponds to the highest attention value
 
 * Analysis of the proportion of samples who considered each concept group to be the best for CT and segmented by predicted class
 * AVG demonstrates minimal to no alteration in its distribution according to the class, which seems strange
-* MLA assigns explainability to three different concept groups for each class, with varying proportion depending on the class
+* MLA assigns explainability to three different concept groups for each class, with varying proportions depending on the class
 * Strong alignment between LL and MLA behaviors
 * Soil type seems to be a discriminating factor only for the LL and MLA methods
 
