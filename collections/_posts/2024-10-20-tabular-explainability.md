@@ -28,7 +28,7 @@ pdf: "https://arxiv.org/pdf/2302.14278"
 
 * The field of explainable Artificial Intelligence is named XAI and has received increasing interest over the past decade
 * XAI algorithms for DL can be organized into three major groups: perturbation-based, gradient-based, and, more recently, attention-based
-* Transformers posses a built-in capability to provide explanations for its results via the analysis of attention matrices
+* Transformers possess a built-in capability to provide explanations for their results via the analysis of attention matrices
 
 <div style="text-align:center">
 <img src="/collections/images/tabular_explainability/tab_exp_1.jpg" width=700></div>
