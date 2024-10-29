@@ -61,7 +61,7 @@ See [the tutorial on transformers](https://creatis-myriad.github.io/tutorials/20
 
 $$\mathcal{L}= - \sum_{i=1}^{n} y_i \log \left( \hat{y}_i \right) \, + \, \lambda \sum_{l=1}^{M} \sum_{j,k=1}^{m} a^{l}_{j,k} \log \left( a^{l}_{j,k} \right)$$
 
-* The first term forces the student prediction $$\hat{y}_i$$ to be close to the one of the master $$y_i$$
+* The first term forces the student prediction $$\hat{y}_i$$ to be close to the master's $$y_i$$
 * The second term forces the entropy of each attention matrix to be low => it forces the information contained in each attention matrix to be concentrated on few cells => it forces the attention matrices to be sparse !
 
 &nbsp;
