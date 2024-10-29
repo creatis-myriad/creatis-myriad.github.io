@@ -143,7 +143,7 @@ prediction was defined as that which corresponds to the highest attention value
 <img src="/collections/images/tabular_explainability/explanation_distribution.jpg" width=700></div>
 <p style="text-align: center;font-style:italic">Figure 4 - Best concept group distribution per method</p>
 
-* For each method, the proportion of samples who considered each concept group to be the best is indicated
+* For each method, the proportion of samples that considered each concept group to be the best is indicated
 * For each dataset, the number of incorrectly classified samples is less than 5%, which has no impact in the overall distributions
 * MLA appears to take more groups than SA and SH into account when identifying differences among samples
 
