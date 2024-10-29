@@ -182,7 +182,7 @@ soil types lower than 9
 
 * No real conclusion can be formulated from the 1B concept groups: for CT, we observe a better performance of MLA but larger variability than LL. On the other hand, the exact opposite can be said for RW, whereas both distributions seem to be identical for NI
 * The use of 2B concept improves stability with averages of over 60% of agreement across runs, which remains relatively low !
-* In the 2B concept case, the average model-to-model comparison seems to be dataset-dependant. However, MLA consistently shows lower variability than LL, making it more reliable and prone to provide robust and reliable explanations
+* In the 2B concept case, the average model-to-model comparison seems to be dataset-dependent. However, MLA consistently shows lower variability than LL, making it more reliable and prone to provide robust and reliable explanations
 
 &nbsp;
 
