@@ -82,4 +82,4 @@ Retiring statistical significance isn’t a perfect solution. While it will redu
 # References
 [^1]: M. Schmidt, C.F. Christiansen, F. Mehnert, K.J. Rothman, H.T. Sørensen. Non-steroidal anti-inflammatory drug use and risk of atrial fibrillation or flutter: population based case-control study. BMJ, 343 (2011), p. d3450
 [^2]: T.-F. Chao, C.-J. Liu, S.-J. Chen, K.-L. Wang, Y.-J. Lin, S.-L. Chang, _et al._ The association between the use of non-steroidal anti-inflammatory drugs and atrial fibrillation: a nationwide case–control study. Int J Cardiol, 168 (2013), pp. 312-316
-[^3]: Morten Schmidt, Kenneth J. Rothman. Mistaken inference caused by reliance on and misinterpretation of a significancetest, International Journal of Cardiology, Volume 177, Issue 3, 2014, Pages 1089-1090, ISSN 0167-5273, https://doi.org/10.1016/j.ijcard.2014.09.205.
+[^3]: Morten Schmidt, Kenneth J. Rothman. Mistaken inference caused by reliance on and misinterpretation of a significance test, International Journal of Cardiology, Volume 177, Issue 3, 2014, Pages 1089-1090, ISSN 0167-5273, https://doi.org/10.1016/j.ijcard.2014.09.205.
