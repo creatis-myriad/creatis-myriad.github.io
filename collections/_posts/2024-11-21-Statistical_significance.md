@@ -58,7 +58,7 @@ The problem with assigning results into 'statistically significant' or 'statisti
 
 The paper advocates to stop using the concept of statistical significance. They do not advocate to ban the P-value, but rather to stop using the conventional dichotomous way to take the decision if a results refutes or supports an hypothesis. 
 # A call for better science practice 
-They propose that the **pre-registration of studies** and the **commitment to publish all analyses and results** it a solution to reduce the to present issue on the reliance of 'significance'. There still can be bias that can occur even with the best intention, but it is still better than to ignore the issue. Also we should Interpret results broadly. It’s fine to suggest reasons for findings, but we should discuss multiple explanations, not just preferred ones. Focusing on factors like study design, data quality, and mechanisms, often matter more than P values or intervals.
+They propose that the **pre-registration of studies** and the **commitment to publish all analyses and results** as a solution to reduce the reliance on 'significance'. There still can be bias that can occur even with the best intention, but it is still better than to ignore the issue. Also we should interpret results broadly. It’s fine to suggest reasons for findings, but we should discuss multiple explanations, not just preferred ones. Focusing on factors like study design, data quality, and mechanisms, often matter more than P values or intervals.
 
 > An example of platform to register studies : [https://osf.io/](https://osf.io/)
 
