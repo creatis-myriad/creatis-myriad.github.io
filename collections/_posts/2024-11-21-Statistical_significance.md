@@ -27,7 +27,7 @@ The significant p-value is often misunderstood and misinterpreted. The starting 
 - a statistically significant result does not prove some other hypothesis.
 
 # P-value 
-The **null hypothesis** is generally that there is **no effect** or no difference between groups. The **alternative** hypothesis is that there is a **difference**, this is the effect we are investigating.The p-value is based on the assumption that the null hypothesis is true. It tells us the probability of observing our data under that assumption. 
+The **null hypothesis** is generally that there is **no effect** or no difference between groups. The **alternative** hypothesis is that there is a **difference**, this is the effect we are investigating. The p-value is based on the assumption that the null hypothesis is true. It tells us the probability of observing our data under that assumption. 
 
 The **p-value** is a **probability** and we can be wrong with the statement used. The p-value depends on the data and the assumptions of the test, it can lead to false conclusions. 
 
