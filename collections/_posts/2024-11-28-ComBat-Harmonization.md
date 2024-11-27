@@ -232,6 +232,7 @@ This part aims to investigate the robustness of the different harmonization tech
 
 To evaluate the robustness of the different harmonization methods in the presences of statistical confounding between imaging site and age (that is when age is unbalanced with respect to site), the authors selected different subsets of the data to create confounding scenarios.
 
+<div style="text-align:center">
 <img src="/collections/images/comBat/fig5.jpg" width=800></div>
 
 * For illustration purpose, Figure 5 shows only one voxel in the right thalamus for which the association between FA and age is high.
