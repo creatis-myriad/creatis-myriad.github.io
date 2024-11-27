@@ -25,6 +25,7 @@
 * The authors show that the DTI measurements are highly site-specifics highlighting the need to correct for site effects before performing downstream statistical analyses. The process of correcting these site-effects is usually call **harmonization**.
 * ComBat is a popular batch-effect correction tool used in genomics.
 * The authors use age as a biological phenotype of interest and show that ComBat both preserves biological variability and removes the unwanted variation introduced by site. The method can be extended to more than one phenotype of interest.
+* An extensive evaluation and comparison of several methods is carefully conducted.
 
 # Methodology
 
