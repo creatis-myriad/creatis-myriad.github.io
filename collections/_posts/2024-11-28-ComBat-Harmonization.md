@@ -189,7 +189,7 @@ Figure 4a shows a t-statistic at each voxel to measure the association of the DT
 
 <div style="text-align:center">
 <img src="/collections/images/comBat/twoSampleTstatistics.jpg" width=800></div>
-<p style="text-align: center;font-style:italic">Figure A3 - Process for computing two-sample t-statistics / p-values on two databases from Site 1 and Site 2 at voxel level.</p>
+<p style="text-align: center;font-style:italic">Figure A3 - Process for computing two-sample t-statistics / p-values on two databases from Site 1 and Site 2 at voxel level. This helps to calculate the percentage of voxels associated with site.</p>
 
 
 * Most voxels are associated with site in the absence of harmonization (raw data). And all harmonization methods reduce the number of voxels associated with site for both FA and MD maps at different degree. 
@@ -243,7 +243,6 @@ To evaluate the robustness of the different harmonization methods in the presenc
 
 ## ComBat improves the replicability of the voxels associated with age
 
-The authors create two silver-datasets ...
 <!-- explain what are the silver datasets -->
 
 They evaluate *replicability* which is defined as the chance that an independent experiment will produce a similar set of results and is a strong indication that a set of results is biologically meaningful.
