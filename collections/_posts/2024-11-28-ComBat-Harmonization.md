@@ -19,7 +19,7 @@
 * A software implementing the ComBat methodology to imaging data is available in both R and Matlab on GitHub (https://github.com/Jfortin1/ComBatHarmonization).
 * An extensive evaluation and comparison of several methods is carefully conducted.
 
- # Introduction
+# Introduction
 
 * Diffusion tensor imaging (DTI) is a well-established Magnetic Resonance Imaging (MRI) technique used for studying microstructural changes in the white matter. It has been shown that DTI metrics (FA, MD, ...) can be used to study both brain development and pathology (Alzheimer, Parkinson, Sclerosis ...) [^1].
 * As with many other imaging modalities, DTI images suffer from technical between-scanner variation that hinders comparisons of images across imaging sites, scanners and over time.
