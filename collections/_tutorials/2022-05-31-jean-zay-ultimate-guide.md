@@ -6,7 +6,7 @@ date:   2022-05-31
 categories: JeanZay, Guide
 ---
 
-(Updated on 18 May 2024)
+(Updated on 11 July 2024)
 
 - [**Introduction**](#introduction)
 - [**Jean Zay account application**](#jean-zay-account-application)
@@ -80,6 +80,9 @@ the supercomputer.
 
 > ⚠️ Don't forget to validate your information by clicking on click on *"Valider la saisie des informations"*! 
 > <img src="/collections/images/Jean_Zay_Guide/computing-account-validate.jpg" alt="computing-account-validate" width="50%"/>
+
+> ⚠️ If after validating your information eDARI asks for a non-electronic signature, ask the secretariat (if possible) to add you to the Reseda database.
+>Once this has been done, wait a day or so to cancel your account opening request and reopen another one. You should then be able to sign electronically.
 
 After submitting the application form, you will soon receive an email to fill another online questionnaire and upload your CV.
 

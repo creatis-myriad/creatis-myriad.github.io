@@ -33,7 +33,7 @@ categories: score-based models
 ## **Introduction**
 
 The main existing generative models can be divided in two categories :
-* **likelihood-based models**, which goal is to learn directly the probability density function. Examples of these models are autoregressive models, [normalizing flow](http://127.0.0.1:4000/tutorials/2023-01-05-tutorial_normalizing_flow.html) or [variational auto-encoders](http://127.0.0.1:4000/tutorials/2022-09-12-tutorial-vae.html). 
+* **likelihood-based models**, which goal is to learn directly the probability density function. Examples of these models are autoregressive models, [normalizing flow](https://creatis-myriad.github.io/tutorials/2023-01-05-tutorial_normalizing_flow.html) or [variational auto-encoders](https://creatis-myriad.github.io/tutorials/2022-09-12-tutorial-vae.html).
 * **implicit generative models**, for which the density distribution is implicitly learnt by the model during sampling process. This is typically GANs, which have dominated the field of image generation during several years.
 
 Such models each have their specific limitations. Likelihood-based models either have strong restrictions on the model architecture to make sure the normalizing constant of the distribution is tractable and VAEs rely on a substitutes of the likelihood the training. GANs have been historically the state-of-the-art of deep learning generative models in terms of visual quality but they do not allow density estimation and rely on adversarial learning, which is known to be particularly unstable.
