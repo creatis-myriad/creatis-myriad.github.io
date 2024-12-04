@@ -136,7 +136,7 @@ A harmonization method is considered to be successful if:
 
 *NB: both conditions have to be tested at the same time, otherwise it is useless to remove or not the site-effects.*
 
-To evaluate (1), the authors calcule two-sample t-tests on the DTI intensities, testing for a difference between Site 1 and Site 2 measurements. They perform the analysis at both voxel and ROI level.
+To evaluate (1), the authors calculate two-sample t-tests on the DTI intensities, testing for a difference between Site 1 and Site 2 measurements. They perform the analysis at both voxel and ROI level.
 <!-- *A harmonization technique that successfully removes site effect will result in non-significant tests, after possibily correcting for multiple comparisons*. -->
 <!-- to be explained further -->
 
