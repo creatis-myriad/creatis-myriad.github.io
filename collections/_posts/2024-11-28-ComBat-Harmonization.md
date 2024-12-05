@@ -1,13 +1,13 @@
 ---
- layout: review
- title: ComBat, Harmonization of multi-site diffusion tensor imaging data
- tags: statistics ComBat harmonization diffusion medical DTI multi-site inter-scanner
- cite:
-     authors: "Jean-Philippe Fortin and Drew Parker and Birkan Tunç and Takanori Watanabe and Mark A. Elliott and Kosha Ruparel and David R. Roalf and Theodore D. Satterthwaite and Ruben C. Gur and Raquel E. Gur and Robert T. Schultz and Ragini Verma and Russell T. Shinohara"
-     title:   "Harmonization of multi-site diffusion tensor imaging data"
-     venue:   "article from NeuroImage"
- pdf: "https://www.biorxiv.org/content/10.1101/116541v3.full.pdf"
- ---
+layout: review
+title: ComBat, Harmonization of multi-site diffusion tensor imaging data
+tags: statistics ComBat harmonization diffusion medical DTI multi-site inter-scanner
+cite:
+    authors: "Jean-Philippe Fortin and Drew Parker and Birkan Tunç and Takanori Watanabe and Mark A. Elliott and Kosha Ruparel and David R. Roalf and Theodore D. Satterthwaite and Ruben C. Gur and Raquel E. Gur and Robert T. Schultz and Ragini Verma and Russell T. Shinohara"
+    title:   "Harmonization of multi-site diffusion tensor imaging data"
+    venue:   "article from NeuroImage"
+pdf: "https://www.biorxiv.org/content/10.1101/116541v3.full.pdf"
+---
 
 # Highlights
 
@@ -19,7 +19,7 @@
 * A software implementing the ComBat methodology to imaging data is available in both R and Matlab on GitHub (https://github.com/Jfortin1/ComBatHarmonization).
 * An extensive evaluation and comparison of several methods is carefully conducted.
 
- # Introduction
+# Introduction
 
 * Diffusion tensor imaging (DTI) is a well-established Magnetic Resonance Imaging (MRI) technique used for studying microstructural changes in the white matter. It has been shown that DTI metrics (FA, MD, ...) can be used to study both brain development and pathology (Alzheimer, Parkinson, Sclerosis ...) [^1].
 * As with many other imaging modalities, DTI images suffer from technical between-scanner variation that hinders comparisons of images across imaging sites, scanners and over time.
@@ -57,12 +57,13 @@ For benchmarking the different harmonization procedures, they use two additional
 
 
 ### Image processing
-1) Quality control on diffusion weighted images was performed manually. For each DWI volume, the authors removed weighted gradient images exhibiting signal dropout likely caused by subject moving and pulsating flow, ghosting artefacts and image stripping. DWI volumes with more than 10% of the weighted images removed, or with a *compromised* b0 image were excluded.
-2) DWI data were denoised using a joint anisotropic LMMSE filter for Rician Noise.
-3) b0 was extracted and skull-stripped using FSL's BET tool, and DTI model was fit within the brain mask using an unweighted linear least-squares method.
-4) FA, MD, AD and RD maps were calculated from the resultant tensor image.
-5) The four scalar metrics were co-registered to the T1-w image using FSL's flirt tool, and then non-linearly registered to the Eve template using DRAMMS for the next step. (These two registrations were done in the end applying a single warp to the scalar DTI maps).
-6) A 3-tissue class T1-w segmentation was performed using FSL's FAST tool in order to obtain Grey Matter (GM), White Matter (WM) and Cerebrospinal Fluid (CSF) labels. *3-tissue* means that signal fractions $T_{WM}$, $T_{GM}$ and $T_{CSP}$ are extracted for each volume unit.
+
+1. Quality control on diffusion weighted images was performed manually. For each DWI volume, the authors removed weighted gradient images exhibiting signal dropout likely caused by subject moving and pulsating flow, ghosting artefacts and image stripping. DWI volumes with more than 10% of the weighted images removed, or with a *compromised* b0 image were excluded.
+2. DWI data were denoised using a joint anisotropic LMMSE filter for Rician Noise.
+3. b0 was extracted and skull-stripped using FSL's BET tool, and DTI model was fit within the brain mask using an unweighted linear least-squares method.
+4. FA, MD, AD and RD maps were calculated from the resultant tensor image.
+5. The four scalar metrics were co-registered to the T1-w image using FSL's flirt tool, and then non-linearly registered to the Eve template using DRAMMS for the next step. (These two registrations were done in the end applying a single warp to the scalar DTI maps).
+6. A 3-tissue class T1-w segmentation was performed using FSL's FAST tool in order to obtain Grey Matter (GM), White Matter (WM) and Cerebrospinal Fluid (CSF) labels. *3-tissue* means that signal fractions $$T_{WM}$$, $$T_{GM}$$ and $$T_{CSP}$$ are extracted for each volume unit.
 
 
 ## Evidence of the need for harmonization
@@ -97,25 +98,25 @@ The SVA algorithm estimates latent factors of unwanted variation, called surroga
 ### ComBat
 ComBat model was introduced in the context of gene expression analysis by Johnson et al. [2007] [^6] as an improvement of location/scale models for studies with small sample size.
 The ComBat model is reformulated in the context of DTI images.
-Let $m$ the number of imaging sites, containing $n_i$ for $i=1,2,...,m$ volume scans.
-For voxel $\nu=1,2,...,p$, let $y_{ij\nu}$ represents the diffusion metric measure (FA for e.g.) at voxel $\nu$ for the scan $j$ at site $i$. ComBat posits the following location and scale (L/S) adjustement model:
+Let $$m$$ the number of imaging sites, containing $$n_i$$ for $$i=1,2,...,m$$ volume scans.
+For voxel $$\nu=1,2,...,p $$, let $$y_{ij\nu}$$ represents the diffusion metric measure (FA for e.g.) at voxel $$\nu$$ for the scan $$j$$ at site $$i$$. ComBat posits the following location and scale (L/S) adjustement model:
 
 $$ y_{ij\nu} = \alpha_{\nu} + X_{ij}\beta_{\nu} + \gamma_{i\nu} + \delta_{i\nu}\epsilon_{ij\nu} \qquad (1)$$
 
-where $\alpha_\nu$ is the overall diffusion metric measure for voxel $\nu$, X is a design matrix for the covariates of interest (e.g. gender, age), and $\beta_\nu$ is the voxel-specific vector of regression coefficients corresponding to X. One can assume that the error terms $e_{ij\nu}$ follow a normal distribution with mean zero and variance $\sigma_\nu^2$. The terms $y_{i\nu}$ and $\delta_{iv}$ represent the additive and multiplicative site effects of site $i$ for voxel $\nu$ respectively.
+where $$ \alpha_\nu $$ is the overall diffusion metric measure for voxel $$\nu $$, X is a design matrix for the covariates of interest (e.g. gender, age), and $$\beta_\nu $$ is the voxel-specific vector of regression coefficients corresponding to X. One can assume that the error terms $$e_{ij\nu}$$ follow a normal distribution with mean zero and variance $$\sigma_\nu^2 $$. The terms $$y_{i\nu}$$ and $$\delta_{iv} $$ represent the additive and multiplicative site effects of site $$i$$ for voxel $$\nu$$ respectively.
 
-**One wants to remove these site-effects, preserving the covariates effect. The modelisation can be seen as a simple linear regression at voxel $\nu$ at site $i$.**
+**One wants to remove these site-effects, preserving the covariates effect. The modelisation can be seen as a simple linear regression at voxel $$\nu$$ at site $$i$$.**
 
-When it is possible to compute $\gamma_{i\nu}$ and $\delta_{i\nu}$, the harmonization process is then quite straightforward as the final ComBat-harmonized diffusion metric values would be defined as:
+When it is possible to compute $$ \gamma_{i\nu} $$ and $$\delta_{i\nu} $$, the harmonization process is then quite straightforward as the final ComBat-harmonized diffusion metric values would be defined as:
 
 $$ y_{ij\nu}^{ComBat} = \frac{y_{ij\nu}-\alpha_{\nu} - X_{ij}\beta_{\nu}-\gamma_{i\nu}}{\delta_{i\nu}} + \alpha_\nu + X_{ij}\beta_\nu \qquad (2)$$
 
-Howether, $\gamma_{i\nu}$ and $\delta_{i\nu}$ often have to be estimated. ComBat uses an empirical Bayes (EB) framework to improve the variance of the parameter estimates $\hat\gamma_{i\nu}$ and $\hat\delta_{i\nu}$. It estimates an empirical statistical distribution for each of those parameters by assuming that all voxels share the same common distribution. In that sense information from all voxels is used to inform the statistical properties of the site effects.
+Howether, $$\gamma_{i\nu}$$ and $$\delta_{i\nu}$$ often have to be estimated. ComBat uses an empirical Bayes (EB) framework to improve the variance of the parameter estimates $$\hat\gamma_{i\nu}$$ and $$\hat\delta_{i\nu}$$. It estimates an empirical statistical distribution for each of those parameters by assuming that all voxels share the same common distribution. In that sense information from all voxels is used to inform the statistical properties of the site effects.
 More specifically, the site effects parameters are assumed to have the parametric prior distributions:
 
 $$ \gamma_{i\nu}\sim \mathcal{N}(\gamma_i, \tau_i^2) \qquad and \qquad \delta_{i\nu}^2 \sim InverseGamma(\lambda_i,\theta_i) \qquad (3) $$
 
-The hyperparameters $\gamma_i$, $\tau_i^2$, $\lambda_i$, $\theta_i$ are estimated empirically from the data as described in [^6]. The ComBat estimates $\gamma_{i\nu}^*$ and $\delta_{i\nu}^*$ of the site effect parameters are computed using conditional posterior means.
+The hyperparameters $$\gamma_i$$, $$\tau_i^2$$, $$\lambda_i$$, $$\theta_i$$ are estimated empirically from the data as described in [^6]. The ComBat estimates $$\gamma_{i\nu}^*$$ and $$\delta_{i\nu}^*$$ of the site effect parameters are computed using conditional posterior means.
 
 The final ComBat-harmonized diffusion metric values are defined as:
 
@@ -129,14 +130,16 @@ Another bibliography session ?
 
 ## Evaluation framework
 A harmonization method is considered to be successful if:
-1) It removes the unwanted variation induced by site, scanner or differences in imaging protocols.
-2) It preserves between-subject biological variability.
 
-NB: both conditions have to be tested at the same time, otherwise it is useless to remove or not the site-effects.
+1. **It removes the unwanted variation induced by site, scanner or differences in imaging protocols.**
+2. **It preserves between-subject biological variability.**
 
-To evaluate (1), the authors calcule two-sample t-tests on the DTI intensities, testing for a difference between Site 1 and Site 2 measurements. They perform the analysis at both voxel and ROI level.
+*NB: both conditions have to be tested at the same time, otherwise it is useless to remove or not the site-effects.*
+
+To evaluate (1), the authors calculate two-sample t-tests on the DTI intensities, testing for a difference between Site 1 and Site 2 measurements. They perform the analysis at both voxel and ROI level.
 <!-- *A harmonization technique that successfully removes site effect will result in non-significant tests, after possibily correcting for multiple comparisons*. -->
 <!-- to be explained further -->
+
 The evaluation of (2) is based on the replicability and validity of voxels associated with biological variation, using age as the biological factor of interest.
 *Replicability is defined as the chance that an independent experiment will produce a similar set of results*, and is a strong indication that a set of results is biologically meaningful.
 Associations with age are measured using usual Wald t-statistics from linear regression. They test the replicability of the voxels associated with age using a discovery-validation scheme.
@@ -146,15 +149,17 @@ Associations with age are measured using usual Wald t-statistics from linear reg
 ## Creation of silver-standards
 
 To further evaluate the performance of the different harmonization methods, two sets of silver-standards per site were created:
-1) A silver-standard for voxels that are truly associated with age (signal silver-standard).
-2) A silver-standard for voxels that are not associated with age (null silver-standard).
+
+1. A silver-standard for voxels that are truly associated with age (signal silver-standard).
+
+2. A silver-standard for voxels that are not associated with age (null silver-standard).
 
 For each silver-standard two different sets are created since previous studies have shown that some brain regions are more specific in changes for FA and others for MD.
 
 To estimate them, the authors use a meta-analytic approach: 
-1) for each site separatly, at each voxel in the WM, they apply a linear regression model to obtain a t-statistic measuring the association of FA with age.
-2) For each site, they define the site-specific signal silver-standard to be the k=5000 voxels with the highest t-statistics in magnitude.
-3) Then, they define the signal-silver standard to be the intersection of the two site specific signal silver-standards.
+1. for each site separatly, at each voxel in the WM, they apply a linear regression model to obtain a t-statistic measuring the association of FA with age.
+2. For each site, they define the site-specific signal silver-standard to be the k=5000 voxels with the highest t-statistics in magnitude.
+3. Then, they define the signal-silver standard to be the intersection of the two site specific signal silver-standards.
 
 This process ensures that the resulting voxels are not only voxels highly associated with age within a study, but also replicated across the two sites. Voxels obtained are consistent with the litterature.
 
@@ -212,6 +217,7 @@ For each site, the authors computed t-statistics for association with age before
 
 <!-- For computing t-statistics : take one site, one voxel, and consider the vector of pair (age, FA_value) for all patients. Compute a linear regression y =ax+b, then t-statistic (t = a/SEP with SEP = sum |y_i-\hat y_i| (mean square error on the slope or standard error))  -->
 The authors obtained the following Spearman correlations:
+
 | | Scaling| Funorm | RAVEL | SVA | ComBat |
 |:--:|:--:|:--:|:--:|:--:|:--:|
 |Spearman correlation|0.997|0.997|0.981|0.893|0.994|
@@ -252,9 +258,9 @@ They test the replicability of voxels associated with age following a discovery-
 <div style="text-align:center">
 <img src="/collections/images/comBat/figB2.jpg" width=800></div>
 
-1) They consider the harmonized dataset as a discovery cohort and two independent datasets as validation cohorts.
-2) They peform a mass-univariate analysis testing for association with age separatly for each cohort.
-3) They use Concordance At Top (CAT) curves to measure the replicability of the results between the discovery and validation cohorts.
+1. They consider the harmonized dataset as a discovery cohort and two independent datasets as validation cohorts.
+2. They peform a mass-univariate analysis testing for association with age separatly for each cohort.
+3. They use Concordance At Top (CAT) curves to measure the replicability of the results between the discovery and validation cohorts.
 
 This evaluates the performance of the different harmonization methods at replicating the voxels associated with age across independent datasets.
 
@@ -271,7 +277,7 @@ These experiences, added to the experiences in figure 6b., show that ComBat is a
 
 ## ComBat successfully recovers the true effect sizes
 
-In this section, the authors evaluate the bias in the estimated changes in FA associated with age ($\hat\Delta_{age}FA$) for each harmonization procedure, for the different confounding scenarios. They refer to $\hat\Delta_{age}FA(\nu)$ as the estimated "effect size" for voxel $\nu$.
+In this section, the authors evaluate the bias in the estimated changes in FA associated with age ($$\hat\Delta_{age}FA$$) for each harmonization procedure, for the different confounding scenarios. They refer to $$\hat\Delta_{age}FA(\nu)$$ as the estimated "effect size" for voxel $$\nu$$.
 The "effect size" can be estimated using linear regression (slope coefficient associated with age) for each voxel.
 To assess unbiasedness without knowing the true effect sizes, the authors curcumvent by estimating the effect sizes on the signal silver-standard (in practice, they compute for each voxel the mean of the slopes they obtain for each site in the silver-standard).
 
@@ -346,7 +352,7 @@ The authors investigated the stability of the ComBat harmonization parameters by
 To be continued ...
 
 
- # References
+# References
 
 [^1]: (Alexander, Andrew L., Lee, Jee Eun, Lazar, Mariana, Field, Aaron S. Diffusion tensor imaging of the brain. Neurotherapeutics. 2007; 4(3):316–329. [PubMed: 17599699])
 [^2]: Fortin, Jean-Philippe, Labbe, Aurelie, Lemire, Mathieu, Zanke, Brent, Hudson, Thomas, Fertig, Elana, Greenwood, Celia, Hansen, Kasper D. Functional normalization of 450k methylation array data improves replication in large cancer studies. Genome Biology. 2014; 15(11):503.doi: 10.1186/ s13059-014-0503-2 [PubMed: 25599564]
