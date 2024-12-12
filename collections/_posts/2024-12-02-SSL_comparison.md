@@ -19,11 +19,11 @@ pdf: "https://arxiv.org/pdf/2307.08919"
 
 # Note
 
-Code is available here: https://github.com/tufts-ml/SSL-vs-SSL-benchmark
+Code is available here: [https://github.com/tufts-ml/SSL-vs-SSL-benchmark](https://github.com/tufts-ml/SSL-vs-SSL-benchmark)
 
 # Introduction
 
-In the medical domain there is often a lack of annotated data for deep learning model training while there is a lot of unlabeled data in data health records. Semi-supervised and self-supervised learning are methods developed to take advantage of these unlabeled images to improve classification accuracy. The first one trains classifiers jointly with two loss terms, while the second is a two-stage approach, the first to learn deep representation and the second to fine-tune the classifier. However, the two methods are rarely compared. The first question they try to answer is: **Which recent semi- or self-supervised methods are likely to be most effective?** \
+In the medical domain there is often a lack of annotated data for deep learning model training while there is a lot of unlabeled data in health records. Semi-supervised and self-supervised learning are methods developed to take advantage of these unlabeled images to improve classification accuracy. The first one trains classifiers jointly with two loss terms, while the second is a two-stage approach, the first to learn deep representation and the second to fine-tune the classifier. However, the two methods are rarely compared. The first question they try to answer is: **Which recent semi- or self-supervised methods are likely to be most effective?** \
 But those methods are very sensitive to hyperparameters, and benchmarks often don't consider realistic hyperparameters tuning (either no hyperparameters tuning or tuning with a huge labeled validation set, bigger than the training set, which is not realistic). In this paper, they try to take that in account by answering the question: **Given limited available labeled data and limited compute, is hyperparameter tuning worthwhile?**
 
 # Methods
@@ -40,13 +40,13 @@ where $$l^L$$ and $$l^U$$ are the loss functions linked to the labeled and unlab
 |-----------------|-----------------------------------|-------------------------------------|
 | Supervised      | 1                                 | 0                                   |
 | Semi-supervised | >0                                | >0                                  |
-| Self-supervised | pretraining 0() --> finetuning (1)  pretraining (1) --> finetuning (0)  |
+| Self-supervised | pretraining (0) --> finetuning (1)| pretraining (1) --> finetuning (0)  |
 
 ## Compared methods
 
 **Supervised learning**
 
-Three supervised methods are used as reference to compare with SSL, those trainings only use the labeled $$(L)$$ dataset.
+Three supervised methods are used as reference to compare with SSL. These supervised methods only use the labeled $$(L)$$ dataset.
 
 * Sup: to denote a classifier trained with classical multiclass cross entropy loss.
 * MixUp: also multiclass cross entropy, but with mixup data augmentation (by linearly combining two training samples and their corresponding labels).
