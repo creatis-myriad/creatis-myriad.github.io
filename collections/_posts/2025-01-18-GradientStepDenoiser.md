@@ -144,7 +144,7 @@ This however **dramatically reduces performances**.
 
 # Gradient-Step denoiser
 
-To adress these issues and recover theoretical convergence guarantees the authors formulate a special denoizer:
+To address these issues and recover theoretical convergence guarantees the authors formulate a special denoizer:
 
 $$D_\sigma (x) = x - \tau \nabla_x \| x - N_\sigma(x)\|^2$$
 
