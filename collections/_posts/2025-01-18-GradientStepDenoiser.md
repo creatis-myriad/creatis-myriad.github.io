@@ -117,7 +117,7 @@ Let us consider an ill-posed linear inverse problem, for instance super-resoluti
 
 However reconstruction methods that use **only** neural networks also have a lot of drawbacks:
 - no data-fidelity constraints, meaning that we have no theoretical guarantees on their performances
-- very sensitive to domain-shift, so applying them to datas way out of their training distribution is risky
+- very sensitive to domain-shift, so applying them to data way out of their training distribution is risky
 - typically require to be re-trained as soon as the degradation operator $$A$$ changes
 
 What we really want is the best of both worlds:
