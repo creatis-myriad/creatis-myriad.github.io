@@ -86,7 +86,7 @@ Indeed this regularization promotes *piecewise constant* solutions, which descri
 ## Proximal operator
 
 How do we get around the non-differentiability of our objective function ?
-Well some very smart mathematicians have a developed a special tool in order to minimize non-smooth function.
+Well some very smart mathematicians have developed a special tool in order to minimize non-smooth function.
 This tool is called the *proximal map* or *proximal operator* and you can think of it as a sort of smooth projection.
 
 ![The moreau enveloppe of the L1 norm](/collections/images/GradientStep/moreau.jpg)
