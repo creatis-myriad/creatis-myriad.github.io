@@ -102,14 +102,15 @@ This is for instance the case of our previous example with the $$L_1$$ norm, but
 
 A typical algorithm to solve the previous minimization problem would then be the *Forward-Backward* splitting, or *Proximal Gradient Descent*.
 
-$$x^{n+1} = \text{prox}_{\tau g} \circ \left( \text{Id} - \tau \nabla f \right) (x^{n}) $$
+$$x^{n+1} = \text{prox}_{\tau g} \circ \left( \text{Id} - \tau \nabla f \right) (x^{n})$$
 
 As you can see it's just a regular gradient descent on the smooth data-fidelity term $$f$$ and a proximal step on the non-smooth regularization $$g$$.
 There are a lot of other algorithms using the proximal operator, but this is the most basic one.
-
----
+Interested readers can refer to the textbook [1] for a complete overview of these methods.
 
 # Plug-and-Play
+
+---
 
 Let us consider an ill-posed linear inverse problem, for instance super-resolution, deblurring or inpainting. TV regularization was good looking 15 years ago, but now the reconstructions look cartoonish when compared to what end-to-end deep learning approaches can achieve.
 
@@ -124,22 +125,22 @@ What we really want is the best of both worlds:
 - good reconstructions using neural networks
 - some constraints with respect to the observations
 
-Plug-and-Play methods are exactly this compromise. They use the traditionnal variational formulation of inverse problems and replace the hand-crafted regularization $$g$$ by a Gaussian denoiser $$D_\sigma$$.
+Plug-and-Play methods [2] are exactly this compromise. They use the traditionnal variational formulation of inverse problems and replace the hand-crafted regularization $$g$$ by a Gaussian denoiser $$D_\sigma$$.
 Let's take the forward-backward splitting: its Plug-and-Play version now simply becomes:
 
 $$x^{n+1} = D_\sigma \circ \left( \text{Id} - \tau \nabla f \right) (x^{n})$$
 
-These Plug-and-Play methods give very good reconstructions, with a natural robustness to domain-shift and less hallucinations than end-to-end methods.
+These Plug-and-Play methods give very good reconstructions [3], with a natural robustness to domain-shift and less hallucinations than end-to-end methods.
 
 ![Example of a PnP reconstruction](/collections/images/GradientStep/pnp.jpg)
 
-However there are still several issues with these methods. With state-of-the-art denoisers, we have no theoretical guarantees that these schemes converge to a fixed-point, let alone the minimum of our original optimization problem. 
+However there are still several issues with these methods. With state-of-the-art denoisers, we have no theoretical guarantees that these schemes converge to a fixed-point, let alone the minimum of our original optimization problem.
 
-In order to have some theoretical guarantees, we need **a lot** of assumptions on $$D_\sigma$$, the most restrictive one is that $$D_\sigma$$ needs to be *contractive*, meaning that:
+In order to have some theoretical guarantees, we need **a lot** of assumptions on $$D_\sigma$$ [4], the most restrictive one is that $$D_\sigma$$ needs to be *contractive*, meaning that:
 
 $$D_\sigma (x) \leq x$$
 
-This is **very hard** to impose during training, and most of the solutions to verify this condition rely on changes in the architectures of the networks. 
+This is **very hard** to impose during training, and most of the solutions to verify this condition rely on changes in the architectures of the networks [5].
 This however **dramatically reduces performances**.
 
 # Gradient-Step denoiser
@@ -180,13 +181,18 @@ I'll skip the details, but the important thing is that now we can devise a **con
 
 $$ x^{n+1} = \text{Prox}_{\tau f} \circ \left( \text{Id} - \tau \lambda \nabla g_\sigma \right) (x^{n})$$
 
+which is pretty similar to the standard Forward-Backward algorithm. 
+Replacing the gradient step on $$g_\sigma$$ by its formulation as a denoiser gives:
+
+$$ x^{n+1} = \text{Prox}_{\tau f} \circ D_\sigma (x^{n})$$
+
 This algorithm is then proven to explicitly decrease the objective function:
 
 $$F(x) = f(x) + g_\sigma (x)$$
 
 which was our initial objective.
 
-**REMARK**: you might notice that it is unusual to take a proximal step on $$f$$ and a gradient step on the regularization $$g$$. This algorithm needs to be formulated as such in order to write the convergence proof, but this is not ideal. In some cases $$f$$ does not admit a closed-form solution for its proximal operator. Subsequent work from the same authors partially fixes this issue.
+**REMARK**: you might notice that it is unusual to take a proximal step on $$f$$ and a gradient step on the regularization $$g$$. This algorithm needs to be formulated as such in order to write the convergence proof, but this is not ideal. In some cases $$f$$ does not admit a closed-form solution for its proximal operator. Subsequent work from the same authors partially fixes this issue [6-7].
 
 # Experiments
 
@@ -216,3 +222,19 @@ Why does this matter ?
 - no need to select the "best" iteration, or use early-stopping: the algorithm is convergent !
 - a new framework to easily design other convergent Plug-and-Play algorithms for inverse problems
 - opens up a lot of new research directions
+
+# References
+
+[1] First-Order Methods in Optimization, Amir Beck, 2017
+
+[2] Plug-and-Play priors for model based reconstruction, Venkatakrishnan et al., 2013
+
+[3] Plug-and-Play Image Restoration With Deep Denoiser Prior, Zhang et al., 2022
+
+[4] Plug-and-Play Methods Provably Converge with Properly Trained Denoisers, Ryu et al., 2019
+
+[5] Plug-and-Play Methods Provably Converge with Properly Trained Denoisers, Terris et al., 2020
+
+[6] Proximal denoiser for convergent plug-and-play optimization with nonconvex regularization, Hurault et al., 2022
+
+[7] Convergent Bregman Plug-and-Play Image Restoration for Poisson Inverse Problems, Hurault et al., 2023
