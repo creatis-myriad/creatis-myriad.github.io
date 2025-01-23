@@ -104,7 +104,7 @@ A typical algorithm to solve the previous minimization problem would then be the
 
 $$x^{n+1} = \text{prox}_{\tau g} \circ \left( \text{Id} - \tau \nabla f \right) (x^{n}) $$
 
-As you can see it's just a regular gradient descent on the smooth data-fidelity term $f$ and a proximal step on the non-smooth regularization $g$.
+As you can see it's just a regular gradient descent on the smooth data-fidelity term $$f$$ and a proximal step on the non-smooth regularization $$g$$.
 There are a lot of other algorithms using the proximal operator, but this is the most basic one.
 
 ---
