@@ -180,7 +180,7 @@ I'll skip the details, but the important thing is that now we can devise a **con
 
 $$ x^{n+1} = \text{Prox}_{\tau f} \circ \left( \text{Id} - \tau \lambda \nabla g_\sigma \right) (x^{n})$$
 
-This algorithm is then proven to explicitely decrease the objective function:
+This algorithm is then proven to explicitly decrease the objective function:
 
 $$F(x) = f(x) + g_\sigma (x)$$
 
