@@ -125,7 +125,7 @@ What we really want is the best of both worlds:
 - some constraints with respect to the observations
 
 Plug-and-Play methods are exactly this compromise. They use the traditionnal variational formulation of inverse problems and replace the hand-crafted regularization $$g$$ by a Gaussian denoiser $$D_\sigma$$.
-Let's take the forward-backward splitting: it's Plug-and-Play version now simply becomes:
+Let's take the forward-backward splitting: its Plug-and-Play version now simply becomes:
 
 $$x^{n+1} = D_\sigma \circ \left( \text{Id} - \tau \nabla f \right) (x^{n})$$
 
