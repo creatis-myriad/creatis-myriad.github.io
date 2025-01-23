@@ -111,7 +111,7 @@ There are a lot of other algorithms using the proximal operator, but this is the
 
 # Plug-and-Play
 
-Let us consider an ill-posed linear inverse problem, for instance super-resolution, deblurring or inpainting. TV regularization was good looking 15 years ago, but now the reconstructions look cartoonish when compared to what end-to-end deep learning approach can achieve.
+Let us consider an ill-posed linear inverse problem, for instance super-resolution, deblurring or inpainting. TV regularization was good looking 15 years ago, but now the reconstructions look cartoonish when compared to what end-to-end deep learning approaches can achieve.
 
 ![Example with TV regularization](/collections/images/GradientStep/tv.jpg)
 
