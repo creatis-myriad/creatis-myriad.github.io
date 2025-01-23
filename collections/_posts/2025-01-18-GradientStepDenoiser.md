@@ -131,7 +131,7 @@ $$x^{n+1} = D_\sigma \circ \left( \text{Id} - \tau \nabla f \right) (x^{n})$$
 
 These Plug-and-Play methods give very good reconstructions, with a natural robustness to domain-shift and less hallucinations than end-to-end methods.
 
-![Exampleof a PnP reconstruction](/collections/images/GradientStep/pnp.jpg)
+![Example of a PnP reconstruction](/collections/images/GradientStep/pnp.jpg)
 
 However there are still several issues with these methods. With state-of-the-art denoisers, we have no theoretical guarantees that these schemes converge to a fix-point, let alone the minimum of our original optimization problem. 
 
