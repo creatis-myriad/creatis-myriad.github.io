@@ -133,7 +133,7 @@ These Plug-and-Play methods give very good reconstructions, with a natural robus
 
 ![Example of a PnP reconstruction](/collections/images/GradientStep/pnp.jpg)
 
-However there are still several issues with these methods. With state-of-the-art denoisers, we have no theoretical guarantees that these schemes converge to a fix-point, let alone the minimum of our original optimization problem. 
+However there are still several issues with these methods. With state-of-the-art denoisers, we have no theoretical guarantees that these schemes converge to a fixed-point, let alone the minimum of our original optimization problem. 
 
 In order to have some theoretical guarantees, we need **a lot** of assumptions on $$D_\sigma$$, the most restrictive one is that $$D_\sigma$$ needs to be *contractive*, meaning that:
 
