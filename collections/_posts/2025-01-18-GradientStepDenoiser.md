@@ -95,7 +95,7 @@ Since applied mathematicians love optimization, this tool is itself formulated a
 
 $$\text{prox}_{\tau f} (x) = \arg \min_u f(u) + \frac{1}{2 \tau} \| x - u\|^2$$
 
-As you can see when computing the prox of a function, the goal is to minimize the function while staying close to a given point $x$.
+As you can see when computing the prox of a function, the goal is to minimize the function while staying close to a given point $$x$$.
 Long story short, there are closed form solutions for the proximal operators of a lot of usual functions.
 And more precisely, most usual non-smooth regularization function that one might use in inverse problems admit closed-form proximal operators.
 This is for instance the case of our previous example with the $$L_1$$ norm, but also the famous *Total Variation* regularization and others.
