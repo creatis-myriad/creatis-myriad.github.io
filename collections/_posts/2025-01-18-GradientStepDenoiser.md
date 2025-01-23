@@ -186,7 +186,7 @@ $$F(x) = f(x) + g_\sigma (x)$$
 
 which was our initial objective.
 
-**REMARK**: you might notice that it is unusual to take a proximal step on $$f$$ and a gradient step on the regularization $$g$$. This algorithm needs to be formulated as such in order to write the convergence proof, but this is not ideal. In some cases $$f$$ does not admit a closed-form solution for its proximal operator. Subsequent work from the same authors partially fix this issue.
+**REMARK**: you might notice that it is unusual to take a proximal step on $$f$$ and a gradient step on the regularization $$g$$. This algorithm needs to be formulated as such in order to write the convergence proof, but this is not ideal. In some cases $$f$$ does not admit a closed-form solution for its proximal operator. Subsequent work from the same authors partially fixes this issue.
 
 # Experiments
 
