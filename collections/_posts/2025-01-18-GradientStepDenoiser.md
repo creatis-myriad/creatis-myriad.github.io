@@ -229,6 +229,6 @@ Why does this matter ?
 [^2]: Plug-and-Play priors for model based reconstruction, Venkatakrishnan et al., 2013
 [^3]: Plug-and-Play Image Restoration With Deep Denoiser Prior, Zhang et al., 2022
 [^4]: Plug-and-Play Methods Provably Converge with Properly Trained Denoisers, Ryu et al., 2019
-[^5]: Plug-and-Play Methods Provably Converge with Properly Trained Denoisers, Terris et al., 2020
+[^5]: Building firmly nonexpansive convolutional neural networks, Terris et al., 2020
 [^6]: Proximal denoiser for convergent plug-and-play optimization with nonconvex regularization, Hurault et al., 2022
 [^7]: Convergent Bregman Plug-and-Play Image Restoration for Poisson Inverse Problems, Hurault et al., 2023
