@@ -65,7 +65,7 @@ In a supervised classification setting for example, a labelling error will alway
 
 ![Fig. 1 Error impacts on SCL](/collections/images/SCL_human_error/fig1_errors_impact.png)
 
-By grouping the cases described in the Figure 1, for a **given constant error rate $\tau$** and a number of classes $$C$$, a false positive rate $$P_{FP}$$ and a false negative rate $$P_{FN}$$ can be derived. **If $$\ŧau$$ is negligible :
+By grouping the cases described in the Figure 1, for a **given constant error rate $$\tau$$** and a number of classes $$C$$, a false positive rate $$P_{FP}$$ and a false negative rate $$P_{FN}$$ can be derived. **If $$\tau$$ is negligible** :
 
 $$P_{FP} \approx 2\tau$$
 
@@ -73,7 +73,7 @@ and:
 
 $$P_{FN} \approx \frac{2\tau}{C-1}$$
 
-Thus for a high number of classes, the rate of false positive is higher, for example for $\tau = 0.05$ and 200 classes, $$P_{FP}=9.75\%$$ and $$P_{FN}=0.05\%$$. An empirical evidence is also proposed on the CIFAR-100 dataset where 99.04% of incorrect signals come from positive pairs.
+Thus for a high number of classes, the rate of false positive is higher, for example for $$\tau = 0.05$$ and 200 classes, $$P_{FP}=9.75\%$$ and $$P_{FN}=0.05\%$$. An empirical evidence is also proposed on the CIFAR-100 dataset where 99.04% of incorrect signals come from positive pairs.
 
 **They choose to focus on positive pairs.**
 
@@ -89,13 +89,13 @@ A result is shown Figure 2.
 
 ![Fig. 2 Error distributions](/collections/images/SCL_human_error/fig2_errors_dist.png)
 
-The overlap between true positives and human errors is higher than between true positives and true negatives and higher than between true positives and synthetic errors. This is a clue that human errors are made between images that have **high visual similarities**. It also explain effectiveness of methods to **tackle synthetic noise** by giving more confidence to pairs closely aligned, and that they may be non effective for human errors.
+The overlap between true positives and human errors is higher than between true positives and true negatives. The overlap between true positives and human errors is also higher than between true positives and synthetic errors. This is a clue that human errors are made between images that have **high visual similarities**. It also explain effectiveness of methods to **tackle synthetic noise** by giving more confidence to pairs closely aligned, and that they may be non effective for human errors.
 
 They interpret it in the case of SCL by saying that **false positives will mostly be easy positives**.
 
 
 # New SCL objective: SCL-RHE
-Their new objective must satisfy two conditions :  (P1) ensuring that the latent class of positive samples match the anchor latent class (i.e. drawing true positives) and (P2) deprioritize easy positives.
+Their new objective must satisfy two conditions:  (P1) ensuring that the latent class of positive samples match the anchor latent class (i.e. drawing true positives) and (P2) deprioritize easy positives.
 
 They derive a new distribution from which the positive will be sampled:
 
@@ -131,7 +131,7 @@ They also evaluated on the corrected test splits: SCL-RHE has the best improveme
 They use the pre-trained weights of ImageNet-21k, and finetuned on smaller datasets CIFAR-100, CUB-200-2011, Caltech-256, Oxford 102 Flowers, Oxford-IIIT Pets, iNaturalist 2017, Places365, and ImageNet-1k. It also gave the best performances.
 
 ## 3. Robustness to synthetic noisy labels
-Existing methods to tackle synthetic labels errors have low computational efficiency : extra module for confidence, calculate graphs... They wanted to test their method in this setting. They trained the models on CIFAR dataset with a train dataset corrupted with synthetic errors. They used a ResNet-18.
+Existing methods to tackle synthetic labels errors have low computational efficiency: extra module for confidence, calculate graphs... They wanted to test their method in this setting. They trained the models on CIFAR dataset with a train dataset corrupted with synthetic errors. They used a ResNet-18.
 SCL-RHE is faster than other mitigation techniques, and have stable performance across error rates (see Table 3.), with the same order of magnitude than SupCon without synthetic errors.
 
 ![Table 3 Performances with synthetic errors](/collections/images/SCL_human_error/tab3_synthetic.png)
