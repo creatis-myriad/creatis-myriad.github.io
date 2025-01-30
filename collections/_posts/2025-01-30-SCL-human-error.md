@@ -29,7 +29,7 @@ Contrastive learning is often used for pretraining, as it structures the latent 
 Many unsupervised contrastive learning framework are known for pretraining: SimCLR (the reference framework), MoCo (adding momentum), BYOL (only positives)... In this framework, the positive set is formed of samples which are **data augmentations** of the anchor.
 
 ## Supervised contrastive learning (SCL)
-Contrastive learning can also be applied in a supervised fashion. The article which popularized supervised learning is [_P. Khosla et al., Supervised Contrastive Learning, NeurIPS 2020_](https://arxiv.org/abs/2004.11362). The positive set is the set of samples that have the **same label than the anchor**.
+Contrastive learning can also be applied in a supervised fashion. The article which popularized supervised learning is [_P. Khosla et al., Supervised Contrastive Learning, NeurIPS 2020_](https://arxiv.org/abs/2004.11362). The positive set is the set of samples that have the **same label as the anchor**.
 
 ## Contrastive learning drawbacks
 * Some contrastive losses can be null if the negative(s) is(are) already further from the anchor than the positive(s). A lot of techniques are developed to adapt the sampling strategy, for example by choosing **"hard negatives"**, i.e. negatives that are close to the anchor.
@@ -58,8 +58,7 @@ To answer this gap, the author proposes to:
 * **Easy negative** = a true negative that is far from the anchor, i.e the model finds it easy to separate these samples vs. **hard negative** = a sample that is close to the anchor in the latent space.
 
 ## Human-labelling error reference
-This paper mainly relies on the article [C.G. Northcutt et al., Pervasive label errors in test sets destabilize machine learning benchmarks, NeurIPS2024](https://arxiv.org/pdf/2103.14749) that identifies the label errors in ten  of the most commonly-used com-
-puter vision, natural language, and audio datasets. The visual datasets include MNIST, CIFAR-10, CIFAR-100, Caltech-256, ImageNet, QuickDraw. An API to run through label errors  is available [here](https://labelerrors.com/) with the associated [Github](https://github.com/cleanlab/label-errors) to load them.
+This paper mainly relies on the article [C.G. Northcutt et al., Pervasive label errors in test sets destabilize machine learning benchmarks, NeurIPS2024](https://arxiv.org/pdf/2103.14749) that identifies the label errors in ten  of the most commonly-used computer vision, natural language, and audio datasets. The visual datasets include MNIST, CIFAR-10, CIFAR-100, Caltech-256, ImageNet, QuickDraw. An API to run through label errors  is available [here](https://labelerrors.com/) with the associated [Github](https://github.com/cleanlab/label-errors) to load them.
 
 ## Labelling error impact on SCL
 In a supervised classification setting for example, a labelling error will alway have an adverse impact in the loss. However, in supervised contrastive learning, it is more complex as described Figure 1.
@@ -121,7 +120,7 @@ SCL is used for a pre-training task then a classification head is added to evalu
 
 ![Table 1 Training from scratch](/collections/images/SCL_human_error/tab1_scratch.png)
 
-The performances are better than classical supervised and classical Supervised CL (see Table 1). There are also better than Sel-CL and TCL, methods that mitigate synthetic errors, maybe because these methods discard some samples that may deteriorate their performances.
+The performances are better than classical supervised and classical Supervised CL (see Table 1). They are also better than Sel-CL and TCL, methods that mitigate synthetic errors, maybe because these methods discard some samples that may deteriorate their performances.
 Transformers models are less efficient for "small" datasets.
 
 They also evaluated on the corrected test splits: SCL-RHE has the best improvement (see Table 2), which may show that it is less overfitting on human errors. SCL-RHE is successful at less overfitting.
@@ -140,7 +139,7 @@ SCL-RHE is faster than other mitigation techniques, and have stable performance 
 # Conclusion
 The limitations are:
 * Determining a constant error rate, but a default value can be taken and they found some low sensitivity.
-* Not SOTA for synthetic labels, but stay performant.
+* Not SOTA for synthetic labels, but stays performant.
 * They chose a setting of low error rate and high number of classes
 
-They proposed a new objective that help improving performances by mitigating human-labelling errors.
+They proposed a new objective that helps performance by mitigating human-labelling errors.
