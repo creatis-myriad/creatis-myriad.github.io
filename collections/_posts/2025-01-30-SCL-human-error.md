@@ -58,7 +58,7 @@ To answer this gap, the author proposes to:
 * **Easy negative** = a true negative that is far from the anchor, i.e the model finds it easy to separate these samples vs. **hard negative** = a sample that is close to the anchor in the latent space.
 
 ## Human-labelling error reference
-This paper mainly relies on the article [C.G. Northcutt et al., Pervasive label errors in test sets destabilize machine learning benchmarks, NeurIPS2024](https://arxiv.org/pdf/2103.14749) that identifies the label errors in ten  of the most commonly-used computer vision, natural language, and audio datasets. The visual datasets include MNIST, CIFAR-10, CIFAR-100, Caltech-256, ImageNet, QuickDraw. An API to run through label errors  is available [here](https://labelerrors.com/) with the associated [Github](https://github.com/cleanlab/label-errors) to load them.
+This paper mainly relies on the article [C.G. Northcutt et al., Pervasive label errors in test sets destabilize machine learning benchmarks, NeurIPS2024](https://arxiv.org/pdf/2103.14749) that identifies the label errors in ten of the most commonly-used computer vision, natural language, and audio datasets. The visual datasets include MNIST, CIFAR-10, CIFAR-100, Caltech-256, ImageNet, QuickDraw. An API to run through label errors  is available [here](https://labelerrors.com/) with the associated [Github](https://github.com/cleanlab/label-errors) to load them.
 
 ## Labelling error impact on SCL
 In a supervised classification setting for example, a labelling error will alway have an adverse impact in the loss. However, in supervised contrastive learning, it is more complex as described Figure 1.
