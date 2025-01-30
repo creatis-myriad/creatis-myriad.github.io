@@ -66,7 +66,7 @@ In a supervised classification setting for example, a labelling error will alway
 
 ![Fig. 1 Error impacts on SCL](/collections/images/SCL_human_error/fig1_errors_impact.png)
 
-By grouping the cases described in the Figure 1, for a **given constant error rate $\tau$** and a number of classes $C$, a false positive rate $P_{FP}$ and a false negative rate $P_{FN}$ can be derived. **If $\ŧau$ is negligible :
+By grouping the cases described in the Figure 1, for a **given constant error rate $\tau$** and a number of classes $$C$$, a false positive rate $$P_{FP}$$ and a false negative rate $$P_{FN}$$ can be derived. **If $$\ŧau$$ is negligible :
 
 $$P_{FP} \approx 2\tau$$
 
@@ -74,7 +74,7 @@ and:
 
 $$P_{FN} \approx \frac{2\tau}{C-1}$$
 
-Thus for a high number of classes, the rate of false positive is higher, for example for $\tau = 0.05$ and 200 classes, $P_{FP}=9.75\%$ and $P_{FN}=0.05%$. An empirical evidence is also proposed on the CIFAR-100 dataset where 99.04% of incorrect signals come from positive pairs.
+Thus for a high number of classes, the rate of false positive is higher, for example for $\tau = 0.05$ and 200 classes, $$P_{FP}=9.75\%$$ and $$P_{FN}=0.05\%$$. An empirical evidence is also proposed on the CIFAR-100 dataset where 99.04% of incorrect signals come from positive pairs.
 
 **They choose to focus on positive pairs.**
 
@@ -93,3 +93,54 @@ A result is shown Figure 2.
 The overlap between true positives and human errors is higher than between true positives and true negatives and higher than between true positives and synthetic errors. This is a clue that human errors are made between images that have **high visual similarities**. It also explain effectiveness of methods to **tackle synthetic noise** by giving more confidence to pairs closely aligned, and that they may be non effective for human errors.
 
 They interpret it in the case of SCL by saying that **false positives will mostly be easy positives**.
+
+
+# New SCL objective: SCL-RHE
+Their new objective must satisfy (P1) ensuring that the latent class of positive samples match the anchor latent class (i.e. drawing true positives) and (P2) deprioritize easy positives.
+
+They derive a new distribution from which the positive will be sampled:
+
+![Equation 6 for positive distribution](/collections/images/SCL_human_error/eq6_pos_dist.png)
+
+which is formed by a coefficient that gives more weight to samples far from the anchor and a probability distribution which is the true positive distribution (unknown). This distribution is then derived using the perspective of Positive-Unlabeled learning and integrated in the loss. The expectations obtained in the loss are then approximated  and samples are drawn using a Monte Carlo importance sampling strategy. Please refer to the article and its supplementary material for more detailed explanation.
+
+Qualitatively, samples will be mostly drawn from the hard positives and sometimes in the negative set.
+
+They also use this method for negative pairing even if the impact is supposed to be less important.
+
+# Experiments
+Three setups are considered: 
+1. from scratch with human-labelling errors
+2. transfer learning with pretrained weights (with human-labelling error)
+3. pre-training with high levels of synthetic errors
+
+They use the official train-test splits, and different architectures (BEiT/ViT-based and ResNet-50).
+
+## 1. Training from scratch
+SCL is used for a pre-training task then a classification head is added to evaluate the classification performances with a frozen network. The datasets considered are CIFAR10, CIFAR100 and ImageNet-1k (error rate 5.85%).
+
+![Table 1 Training from scratch](/collections/images/SCL_human_error/tab1_scratch.png)
+
+The performances are better than classical supervised and classical Supervised CL (see Table 1). There are also better than Sel-CL and TCL, methods that mitigate synthetic errors, maybe because these methods discard some samples that may deteriorate their performances.
+Transformers models are less efficient for "small" datasets.
+
+They also evaluated on the corrected test splits: SCL-RHE has the best improvement (see Table 2), which may show that it is less overfitting on human errors. SCL-RHE is successful at less overfitting.
+
+![Table 2 with corrected test-sets](/collections/images/SCL_human_error/tab2_true_test.png)
+
+## 2. Transfer learning
+They use the pre-trained weights of ImageNet-21k, and finetuned on smaller datasets CIFAR-100, CUB-200-2011, Caltech-256, Oxford 102 Flowers, Oxford-IIIT Pets, iNaturalist 2017, Places365, and ImageNet-1k. It also gave the best performances.
+
+## 3. Robustness to synthetic noisy labels
+Existing methods to tackle synthetic labels errors have low computational efficiency : extra module for confidence, calculate graphs... They wanted to test their method in this setting. They trained the models on CIFAR dataset with a train dataset corrupted with synthetic errors. They used a ResNet-18.
+SCL-RHE is faster than other mitigation techniques, and have stable performance across error rates (see Table 3.), with the same order of magnitude than SupCon without synthetic errors.
+
+![Table 3 Performances with synthetic errors](/collections/images/SCL_human_error/tab3_synthetic.png)
+
+# Conclusion
+The limitations are:
+* Determining a constant error rate, ut a default value can be taken and they found some low sensitivity.
+* Not SOTA for synthetic labels, but stay performant.
+* They chose a setting of low error rate and high number of classes
+
+They proposed a new objective that help improving performances by mitigating human-labelling errors.
