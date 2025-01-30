@@ -26,7 +26,7 @@ Contrastive learning is often used for pretraining, as it structures the latent 
 
 
 ## Unsupervised contrastive learning
-Many unsupervised contrastive learning framework are known for pretraining: SimCLR (the reference framework), MoCo (adding momentum), BYOL (only positives)... In this framework, the positive set if formes of samples which are **data augmentations** of the anchor.
+Many unsupervised contrastive learning framework are known for pretraining: SimCLR (the reference framework), MoCo (adding momentum), BYOL (only positives)... In this framework, the positive set is formed of samples which are **data augmentations** of the anchor.
 
 ## Supervised contrastive learning (SCL)
 Contrastive learning can also be applied in a supervised fashion. The article which popularized supervised learning is [_P. Khosla et al., Supervised Contrastive Learning, NeurIPS 2020_](https://arxiv.org/abs/2004.11362). The positive set is the set of samples that have the **same label than the anchor**.
@@ -96,7 +96,7 @@ They interpret it in the case of SCL by saying that **false positives will mostl
 
 
 # New SCL objective: SCL-RHE
-Their new objective must satisfy (P1) ensuring that the latent class of positive samples match the anchor latent class (i.e. drawing true positives) and (P2) deprioritize easy positives.
+Their new objective must satisfy two conditions :  (P1) ensuring that the latent class of positive samples match the anchor latent class (i.e. drawing true positives) and (P2) deprioritize easy positives.
 
 They derive a new distribution from which the positive will be sampled:
 
@@ -139,7 +139,7 @@ SCL-RHE is faster than other mitigation techniques, and have stable performance 
 
 # Conclusion
 The limitations are:
-* Determining a constant error rate, ut a default value can be taken and they found some low sensitivity.
+* Determining a constant error rate, but a default value can be taken and they found some low sensitivity.
 * Not SOTA for synthetic labels, but stay performant.
 * They chose a setting of low error rate and high number of classes
 
