@@ -30,7 +30,7 @@ ControlNet is a neural network architecture that can add spatial control (e.g. e
 
 # Methods
 
-ControlNet is a neural network architecture designed to maintain the quality and robustness of a large pretrained model, specifically a text-to-image Stable Diffusion model [1].
+ControlNet is a neural network architecture designed to add more spatial control while maintaining the quality and robustness of a large pretrained model (specifically in the case of the text-to-image model from Stable Diffusion model [1]).
 
 To achieve this, the parameters of the original model are locked while a trainable copy of the encoding layers is created, leveraging Stable Diffusion as a strong backbone. The trainable copy is connected to the original locked model through zero convolution layers, where the weights are initialized to zero and gradually adapt during training. This design prevents the introduction of disruptive noise into the deep features of the diffusion model at the early training stages, thereby preserving the integrity of the pretrained backbone in the trainable copy.
 
@@ -40,7 +40,7 @@ They demonstrate that ControlNet effectively conditions Stable Diffusion using v
 <div style="text-align:center"><img src="/collections/images/ControlNet/Fig_1.jpg" width=1500></div>
 
 
-The complete ControlNet then computes:
+The complete ControlNet then computes (Fig. 2b):
 
 $$ y_c = \mathcal{F}(x; \Theta) + \mathcal{Z} \big( \mathcal{F} \big(x + \mathcal{Z}(c; \Theta_{z1}); \Theta_c \big); \Theta_{z2} \big) $$
 
@@ -52,10 +52,11 @@ $$ y_c = \mathcal{F}(x; \Theta) + \mathcal{Z} \big( \mathcal{F} \big(x + \mathca
 
 
 
-The objective function is:
+The objective function aims to minimize the original noise with the estimated noise by computing:
 
 $$ \mathcal{L} = \mathbb{E}_{z_0, t, c_t, c_f, \epsilon \sim \mathcal{N}(0,1)} \left[ \left\| \epsilon - \epsilon_{\theta} (z_t, t, c_t, c_f) \right\|_2^2 \right] $$
 
+* $$ \mathbb{E}_{z_0, t, c_t, c_f, \epsilon \sim \mathcal{N}(0,1)} $$ is the average over the distributions of the involved variables
 * $$ \epsilon $$ is the real noise sampled from a standard normal distribution
 * $$ \epsilon_{\theta} $$ is the noise predicted by the neural network, parameterized by $$ \theta $$
 * $$ z_t $$ is the feature map $$ z $$ at timestep $$ t $$
@@ -72,7 +73,7 @@ $$ \mathcal{L} = \mathbb{E}_{z_0, t, c_t, c_f, \epsilon \sim \mathcal{N}(0,1)} \
 <div style="text-align:center"><img src="/collections/images/ControlNet/Fig_2.jpg" width=1500></div>
 
 Classifier-free guidance was used in Stable Diffusion model to generate high quality images.
-It is formulated as:
+To generate these high quality images, they predicted a noise from a conditional and unconditional noise and add them using the formula below:
 
 $$ \epsilon_{\text{prd}} = \epsilon_{\text{uc}} + \beta_{\text{cfg}} (\epsilon_c - \epsilon_{\text{uc}}) $$ 
 
@@ -82,11 +83,11 @@ $$ \epsilon_{\text{prd}} = \epsilon_{\text{uc}} + \beta_{\text{cfg}} (\epsilon_c
 * $$ \beta_{\text{cfg}} $$ is user-specified weight.
 
 
-They had to change the original CFG (as shown in figure 5) by adding the conditioning image to $$ \epsilon_c $$ and multiply a weight $$ w_i $$ (based on the resolution of each block) to each connection between Stable Diffusion and ControlNet.
+They changed the original CFG (as shown in figure 5) by adding the conditioning image to $$ \epsilon_c $$ and multiply a weight $$ w_i $$ (based on the resolution of each block) to each connection between Stable Diffusion and ControlNet.
 
 $$ w_i = 64/h_i $$ where $$ h_i $$ is the $$ i^{th} $$ block. ($$ h_1 = 8 $$, $$ h_2 = 16 $$ ...)
 
-By doing so, they reduced the strengh of the CFG guidance and called their approch: CFG Resolution Weighting.
+By doing so, they reduced the guidance of the conditioning that is too strong and called their approch: CFG Resolution Weighting.
 
 
 ## Examples of spatial conditioning and Quantitative results
@@ -102,6 +103,8 @@ Quantitative results:
 
 
 ## Dataset size and Input interpretation
+
+The impact of the dataset size as well as an example of the network to interpret the content of an input conditioning with low context:
 
 <div style="text-align:center"><img src="/collections/images/ControlNet/Fig_4.jpg" width=1500></div>
 
