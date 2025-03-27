@@ -14,9 +14,9 @@ pdf: "https://openaccess.thecvf.com/content/ICCV2023/papers/Zhang_Adding_Conditi
 
 # Highlights
 
-* ControlNet is a method to spatially conditioned text-to-image Diffusion or Latent Diffusion models.
-* Used a lot in different context (even in medical field).
-* The method is not complex and already implemented on MONAI [here](https://github.com/Project-MONAI/GenerativeModels/blob/main/tutorials/generative/2d_controlnet/2d_controlnet.ipynb)
+* ControlNet is a method to spatially condition text-to-image Diffusion or Latent Diffusion models.
+* Used a lot in different context (even in the medical field).
+* The method is not complex and is already implemented on MONAI [here](https://github.com/Project-MONAI/GenerativeModels/blob/main/tutorials/generative/2d_controlnet/2d_controlnet.ipynb)
 
 
 # Introduction
@@ -44,7 +44,7 @@ The complete ControlNet then computes (Fig. 2b):
 
 $$ y_c = \mathcal{F}(x; \Theta) + \mathcal{Z} \big( \mathcal{F} \big(x + \mathcal{Z}(c; \Theta_{z1}); \Theta_c \big); \Theta_{z2} \big) $$
 
-* $$ \mathcal{Z}(.;.) $$ is a $$ 1 \times 1 $$ convolution layer with both weight and bias initialized to zeros.
+* $$ \mathcal{Z}(.;.) $$ is a $$ 1 \times 1 $$ convolution layer with both weights and biases initialized to zeros.
 * $$ \Theta_{z1} $$ and $$ \Theta_{z2} $$ are the parameters of the first and second *zero convolution* layer.
 
 
