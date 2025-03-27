@@ -48,6 +48,10 @@ $$ y_c = \mathcal{F}(x; \Theta) + \mathcal{Z} \big( \mathcal{F} \big(x + \mathca
 * $$ \Theta_{z1} $$ and $$ \Theta_{z2} $$ are the parameters of the first and second *zero convolution* layer.
 
 
+<div style="text-align:center"><img src="/collections/images/ControlNet/Fig_1bis.jpg" width=1500></div>
+
+
+
 The objective function is:
 
 $$ \mathcal{L} = \mathbb{E}_{z_0, t, c_t, c_f, \epsilon \sim \mathcal{N}(0,1)} \left[ \left\| \epsilon - \epsilon_{\theta} (z_t, t, c_t, c_f) \right\|_2^2 \right] $$
