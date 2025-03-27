@@ -14,9 +14,9 @@ pdf: "https://openaccess.thecvf.com/content/ICCV2023/papers/Zhang_Adding_Conditi
 
 # Highlights
 
-* ControlNet is a method to spatially conditioned text-to-image Diffusion or Latent Diffusion models.
-* Used a lot in different context (even in medical field).
-* The method is not complex and already implemented on MONAI [here](https://github.com/Project-MONAI/GenerativeModels/blob/main/tutorials/generative/2d_controlnet/2d_controlnet.ipynb)
+* ControlNet is a method to spatially condition text-to-image Diffusion or Latent Diffusion models.
+* Used a lot in different context (even in the medical field).
+* The method is not complex and is already implemented on MONAI [here](https://github.com/Project-MONAI/GenerativeModels/blob/main/tutorials/generative/2d_controlnet/2d_controlnet.ipynb)
 
 
 # Introduction
@@ -44,7 +44,7 @@ The complete ControlNet then computes:
 
 $$ y_c = \mathcal{F}(x; \Theta) + \mathcal{Z} \big( \mathcal{F} \big(x + \mathcal{Z}(c; \Theta_{z1}); \Theta_c \big); \Theta_{z2} \big) $$
 
-* $$ \mathcal{Z}(.;.) $$ is a $$ 1 \times 1 $$ convolution layer with both weight and bias initialized to zeros.
+* $$ \mathcal{Z}(.;.) $$ is a $$ 1 \times 1 $$ convolution layer with both weights and biases initialized to zeros.
 * $$ \Theta_{z1} $$ and $$ \Theta_{z2} $$ are the parameters of the first and second *zero convolution* layer.
 
 
@@ -86,7 +86,7 @@ They had to change the original CFG (as shown in figure 5) by adding the conditi
 
 $$ w_i = 64/h_i $$ where $$ h_i $$ is the $$ i^{th} $$ block. ($$ h_1 = 8 $$, $$ h_2 = 16 $$ ...)
 
-By doing so, they reduced the strengh of the CFG guidance and called their approch: CFG Resolution Weighting.
+By doing so, they reduced the strength of the CFG guidance and called their approach: CFG Resolution Weighting.
 
 
 ## Examples of spatial conditioning and Quantitative results
