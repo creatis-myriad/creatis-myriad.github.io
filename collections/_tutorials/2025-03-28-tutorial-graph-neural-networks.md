@@ -82,7 +82,7 @@ A graph is formally defined as $$G = (V, E)$$, where:
 
 In the case of a directed graph, each edge is an ordered pair $$(v_i, v_j)$$, where $$v_i$$ is the source node and
 $$v_j$$ is the target node. In contrast with an undirected graph, where the edge is an unordered pair 
-$$(v_i, v_j) = (v_j, v_i)$$ such as presented in *Figure 3*.
+$$(v_i, v_j) = (v_j, v_i)$$ as presented in *Figure 3*.
 
 <div style="margin-left:80px">
   <img src="/collections/images/gnn/directed_graph.jpg" width="680">
@@ -129,11 +129,11 @@ where $$d_e$$ is the number of features per edge.
 
 &nbsp;
 
-Through the layers of a GNN, these features are updated and aggregated and the denotation of node features at layer 
+Through the layers of a GNN, these features are updated and aggregated, the denotation of node features at layer 
 $$l$$ is $$h_i^{(l)} \in \mathbb{R}^{d_n^{(l)}}$$, where $$d_n^{(l)}$$ is the number of features per node at layer $$l$$.
 Concerning the edge features, the denotation remains generally unchanged through layers in the literature: 
 $$e_{ij}^{(l)} \in \mathbb{R}^{d_e^{(l)}}$$.
-Thus, we can generalize the denotation for matrix computation such as:
+Thus, we can generalize the denotation for matrix computation as:
 
 &nbsp;
 
@@ -323,7 +323,8 @@ a multi-layer perceptron (MLP) that outputs a probability distribution over the 
 
 &nbsp;
 
-The classification head typically consists of one or more fully connected layers, on each a non-linearity is applied.
+The classification head typically consists of one or more fully connected layers, on each of which a non-linearity 
+is applied.
 Formally, for layer $$l$$ in the MLP:
 
 $$
@@ -443,7 +444,7 @@ thereby faithfully reflecting the true structure of the graph.
 
 In a GNN, the graph encoder plays the main and more complex role by transforming input features, 
 such as node and edge attributes, into latent representations that can be used for prediction tasks.
-The below sections introduce three of the most used architectures and are directly inspired by the message passing 
+The sections below introduce three of the most used architectures and are directly inspired by the message passing 
 mechanism.
 
 &nbsp;
@@ -467,8 +468,8 @@ we augment $$A$$ with the identity matrix $$Id_N$$ to add self-connections ($$A_
 
 &nbsp;
 
-Next we compute the augmented degree matrix $$\tilde{D}$$, which represent the number of neighbors for each node
-(itself include in our case):
+Next we compute the augmented degree matrix $$\tilde{D}$$, which represents the number of neighbors for each node
+(itself included in our case):
 
 $$
 \tilde{D}_{ii} = \sum_{j=1}^{N} \tilde{A}_{ij}
@@ -485,7 +486,7 @@ $$
 $$
 
 Finally, the normalized adjacency matrix $$\hat{A}$$ is computed using $$\tilde{D}$$ based on the spectral graph 
-theory[^3]. This transformation allows to balance nodes influence with varying degrees since nodes with higher degrees 
+theory[^3]. This transformation allows balancing nodes' influence with varying degrees since nodes with higher degrees 
 can disproportionately influence computations.
 In addition, the normalization helps to stabilize the training process and, especially, to avoid vanishing or 
 exploding gradients.
@@ -533,7 +534,7 @@ The above formalism remains pretty simple, but below is the detailed computation
 
 The GAT architecture[^2] introduces the concept of self-attention to GNNs, this mechanism is inspired by the
 Transformer model[^5] that highlighted the importance in NLP to ponderer the importance of each token in a sequence.
-Here the same principle is applied to nodes in a graph, where the attention mechanism allows to weight the influence
+Here, the same principle is applied to nodes in a graph, where the attention mechanism allows to weight the influence
 of each neighbor in the aggregation process.
 
 &nbsp;
@@ -566,7 +567,7 @@ non-linearity.
 &nbsp;
 
 But the attention scores ($$a_{ij} \in \mathbb{R}$$)
-are not normalized yet, so as illustrated above, we apply the $$\text{softmax}$$ function to obtain the final 
+are not normalized yet, so, as illustrated above, we apply the $$\text{softmax}$$ function to obtain the final 
 attention distribution for the neighborhood of a specific node (itself included):
 
 $$
@@ -628,9 +629,9 @@ $$
 
 #### GATv2 improvements
 
-The main problem in the standard GAT scoring function is that the learnable parmaters $$W^{(l)}$$ and 
+The main problem in the standard GAT scoring function is that the learnable parameters $$W^{(l)}$$ and 
 $$\mathbf{a}^{(l)}$$ are applied consecutively, and thus can be collapsed into a single linear transformation layer.
-So the GATv2 architecture[^8] propose to apply the attention vector $$\mathbf{a}^{(l)}$$ after the 
+So the GATv2 architecture[^8] proposes to apply the attention vector $$\mathbf{a}^{(l)}$$ after the 
 $$\text{LeakyReLU}$$ function:
 
 $$
@@ -651,10 +652,10 @@ W^{(l)} \left[ h_i^{(l-1)} \parallel h_j^{(l-1)} \right] \right)
 \\
 $$
 
-Also, another difference with the proposed architecture consist in the use of a single linear transformation to project
-the concatenation of the node features and its neighbors features ($$h_i^{(l-1)} \parallel h_j^{(l-1)}$$).
+Also, another difference with the proposed architecture consists in the use of a single linear transformation to project
+the concatenation of the node features and its neighbors' features ($$h_i^{(l-1)} \parallel h_j^{(l-1)}$$).
 This change allows to not project one feature of the embedding $$h_i$$ in the same way as one feature of the embedding
-$$h_j$$. That contrast with the standard GAT where the same linear transformation $$W^{(l)}$$ is used to project both
+$$h_j$$. That contrasts with the standard GAT where the same linear transformation $$W^{(l)}$$ is used to project both
 features embeddings in the latent space.
 
 &nbsp;
@@ -663,7 +664,7 @@ features embeddings in the latent space.
 ### GIN (Graph Isomorphism Network)
 
 The GIN architecture[^6] was proposed to address the problem of isomorphism in the graph paradigm. In fact, most 
-of GNNs encoder layer are not able to ensure that two isomorphic graphs will have a different output representation.
+of GNNs encoder layers are not able to ensure that two isomorphic graphs will have a different output representation.
 This capability is essential in many applications such as molecular chemistry where the structure of a molecule is
 an important factor to predict its properties, or in social network analysis where forgetting the structure of a graph
 can lead to the loss of information about the communities to which nodes belong.
@@ -672,7 +673,7 @@ can lead to the loss of information about the communities to which nodes belong.
 
 #### What makes graphs isomorphic?
 
-In the below *Figure 19*, the two graphs are isomorphic, but the question to answer is how to know if two graphs are 
+In the *Figure 19* below, the two graphs are isomorphic, but the question to answer is how to know if two graphs are 
 isomorphic ($$\cong$$) or not. So, two graphs are isomorphic when, despite different names or representations of 
 vertices, they have exactly the same connection structure. In other words, if the node labels of one graph can be 
 reassigned to obtain exactly the same connections as in the other, then these graphs are structurally identical.
@@ -694,8 +695,8 @@ $$
 
 The WL test[^7] is a well-known method to determine if two graphs are isomorphic. 
 At the beginning, each node $$v_i \in V$$ is assigned a unique label $$\ell_i^{(0)}$$.
-Then, each node updates its label by aggregating the multiset of labels of its neighbors and its own label, to
-compute this, an injective function $$\text{Hash}$$ ensuring different inputs map to different outputs is used.
+Next, each node updates its label by aggregating the label multiset of its neighbors and its own label. To do this, 
+an injective $$text{Hash}$$ function is used, guaranteeing that different inputs map to different outputs.
 The process is repeated until a number $$k$$ of iterations is reached (or if we detect that the labels stopped 
 to change).
 
@@ -714,9 +715,9 @@ a few limitations[^9], it can be used as a good baseline of expressiveness for G
 #### Problem with some GNN architectures
 
 As mentioned [previously](#mathematical-formalism), GNNs follow an architecture based on the message passing mechanism.
-The $$\text{AGGREGATE}$$ and $$\text{UPDATE}$$ are respectively in charge of the aggregation of the neighborhood
-messages and the update this aggregation with the node features.
-However, the choice of these functions is crucial because depending on what is chosen, the GNN may not be able to
+The $$\text{AGGREGATE}$$ and $$\text{UPDATE}$$ functions are respectively in charge of the aggregation of 
+the neighborhood messages and the update this aggregation with the node features.
+However, the choice of these functions is crucial because, depending on what is chosen, the GNN may not be able to
 keep the information about the structure of the graph.
 
 For example, we can formulate the message passing mechanism of a GCN layer and a GraphSAGE[^10] layer as follows:
@@ -732,9 +733,9 @@ $$
 
 These two architectures use the $$\text{Mean}$$ and $$\text{Max}$$ functions to aggregate the neighborhood messages. 
 But the problem is that these functions are poorly injective in terms of keeping the structure of the graph. In fact, 
-the *Figure 20* below illustrates three cases in which the $$\text{Sum}$$ pass the test of injective, 
+the *Figure 20* below illustrates three cases in which the $$\text{Sum}$$ passes the test of injectivity, 
 but not the others.
-For each case, three isomorphic graphs are represented and each node color corresponds to a unique value. 
+For each case, three isomorphic graphs are represented, and each node color corresponds to a unique value. 
 If the function produces the same output for two or more graphs, then the function failed to distinguish 
 isomorphic graphs. The functions are only computed on the neighbors of the center node (the empty one).
 
@@ -746,10 +747,10 @@ isomorphic graphs. The functions are only computed on the neighbors of the cente
 
 &nbsp;
 
-This result don't mean that the $$\text{Sum}$$ is fully injective (it is not), but it allows to keep more information
-about the structure of graphs, and thus present a better expressiveness. Also, the same observation applies to the 
-[readout function](#focus-on-graph-level-classification), use $$\text{Sum}$$ is more recommended to keep the structure
-information from the GIN layers. 
+This result doesn't mean that the $$\text{Sum}$$ is fully injective (it is not), but it allows us to keep more 
+information about the structure of graphs, and thus present a better expressiveness. Also, the same observation applies 
+to the[readout function](#focus-on-graph-level-classification), using $$\text{Sum}$$ is more recommended to keep the 
+structure information from the GIN layers. 
 
 &nbsp;
 
