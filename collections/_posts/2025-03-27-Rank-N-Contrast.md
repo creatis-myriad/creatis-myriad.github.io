@@ -16,7 +16,7 @@ Code available on GitHub: [https://github.com/kaiwenzha/Rank-N-Contrast](https:/
 # Highlights
 
 - A new framework, Rank-N-Contrast (RNC), that learns continuous  representations for regression by contrasting samples
-against each other based on their rankings in the target space;
+against each other based on their rankings in the target space.
 
 - Experiments on five real-world regression datasets that highlight properties such as "better data efficiency,
 robustness to spurious targets and data corruptions, and generalization to distribution shifts".
