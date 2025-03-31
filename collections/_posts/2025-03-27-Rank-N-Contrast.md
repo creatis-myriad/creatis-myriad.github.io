@@ -72,7 +72,7 @@ S_{i,j} := \{ \mathbf{v}_k \mid k \ne i, d(\mathbf{\hat{y}}_i,\mathbf{\hat{y}}_k
 $$
 
 to denote the set of samples $$k$$ that are of **higher rank**, i.e. further away, than sample $$j$$ w.r.t. sample $$i$$,
-with $$d(\cdot,\cdot)$$ the distance between the labels (e.g. $$L_1$$ distance).
+with $$d(\cdot,\cdot)$$ the distance between labels $$\mathbf{\hat{y}}$$ (e.g. $$L_1$$ distance).
 
 Based on this ranking method, we can define a contrastive loss across a mini-batch of samples, which "align\[s\] the
 orders of features embeddings with their corresponding orders in the label space w.r.t. anchor $$i$$":
@@ -84,7 +84,9 @@ $$
  { \underbrace{\sum_{\mathbf{v}_k \in S_{i,j}} \exp(\text{sim}(\mathbf{v}_i,\mathbf{v}_k) / \tau)}_{\text{Push away samples of rank } \ge j} }.
 $$
 
-Here, $$\text{sim}(\cdot,\cdot)$$ is the similarity between the feature embeddings learned by the model (e.g. negative $$L_2$$ norm).
+Here, $$\mathbf{v}$$ represent the feature embeddings of samples learned by the model, $$\text{sim}(\cdot,\cdot)$$ is
+the similarity between these features embeddings (e.g. negative $$L_2$$ norm), and $$\tau$$ is the standard softmax
+temperature hyperparameter.
 
 > Notably, \[the\] framework is orthogonal to existing regression methods, allowing for the use of any regression method
 to map the learned representation to the final prediction values.
@@ -108,7 +110,7 @@ Intuitively, "fitting an ordered feature embedding reduces the  complexity of th
 generalization ability from training to testing. \[...\] Specifically, if not constrained, the learned feature embeddings
 could capture spurious or easy-to-learn features that are not generalizable to the real continuous targets."
 
-- **Impact of data augmentation:** In typical (self-supervised) contrastive learning techniques, obtained multiple views
+- **Impact of data augmentation:** In typical (self-supervised) contrastive learning techniques, obtaining multiple views
 through data augmentation is essential to the contrastive process. With RNC, other samples in the batch serve as anchors,
 i.e. positive pairs, so **data augmentation is optional**, just like for SupCon. It can help enhance model generalization,
 but it is no longer a critical component of the method.
