@@ -696,7 +696,7 @@ $$
 The WL test[^7] is a well-known method to determine if two graphs are isomorphic. 
 At the beginning, each node $$v_i \in V$$ is assigned a unique label $$\ell_i^{(0)}$$.
 Next, each node updates its label by aggregating the label multiset of its neighbors and its own label. To do this, 
-an injective $$text{Hash}$$ function is used, guaranteeing that different inputs map to different outputs.
+an injective $$\text{Hash}$$ function is used, guaranteeing that different inputs map to different outputs.
 The process is repeated until a number $$k$$ of iterations is reached (or if we detect that the labels stopped 
 to change).
 
