@@ -7,12 +7,14 @@ categories: gnn, graph, convolution, attention, isomorphism, deep learning
 ---
 
 # Note
-- This tutorial is a general introduction but more focus on graph-level classification tasks.
 - Model architectures presented are not exhaustive and are chosen for their popularity and relevance in the field.
   A comprehensive review[^11] was published in 2020 by J. Zhou, G. Cui et al. in which they present a heavy
-  list of GNN architectures and techniques.
+  list of GNN architectures and applications.
 - The article *A Gentle Introduction to Graph Neural Networks*[^4] can be a complement to understand GNNs in a more 
   general context with examples.
+- This tutorial is a general introduction but more focus on graph-level classification tasks.
+
+&nbsp;
 
 # Summary
 
@@ -23,12 +25,12 @@ categories: gnn, graph, convolution, attention, isomorphism, deep learning
     - [Graph-level vs Node-level vs Edge-level tasks](#graph-level-vs-node-level-vs-edge-level-tasks)
     - [Focus on graph-level classification](#focus-on-graph-level-classification)
 - [**Graph Deep Learning paradigm**](#graph-deep-learning-paradigm)
-    - [Message passing](#message-passing)
+    - [Message passing mechanism](#message-passing-mechanism)
     - [Permutation invariance and neighborhood aggregation](#permutation-invariance-and-neighborhood-aggregation)
 - [**Encoder architectures**](#encoder-architectures)
-    - [GCN (Graph Convolutional Network)](#gcn-graph-convolutional-network)
-    - [GAT (Graph Attention Network)](#gat-graph-attention-network)
-    - [GIN (Graph Isomorphism Network)](#gin-graph-isomorphism-network)
+    - [GCN • Graph Convolutional Network](#gcn--graph-convolutional-network)
+    - [GAT • Graph Attention Network](#gat--graph-attention-network)
+    - [GIN • Graph Isomorphism Network](#gin--graph-isomorphism-network)
 - [**References**](#references)
 
 &nbsp;
@@ -277,6 +279,7 @@ Below are some common readout functions:
 **Sum pooling:** Captures the total signal in the graph; sensitive to graph size.
 
 $$
+\,\\
 h_G = \sum_{v \in V} h_v^{(L)}
 \\
 \mathbb{R}^{d_n^{(L)}} \leftarrow \mathbb{R}^{N \times d_n^{(L)}}
@@ -286,6 +289,7 @@ $$
 **Mean pooling:** Normalizes the sum and makes the representation invariant to the number of nodes.
 
 $$
+\,\\
 h_G = \frac{1}{N} \sum_{v \in V} h_v^{(L)}
 \\
 \mathbb{R}^{d_n^{(L)}} \leftarrow \mathbb{R}^{N \times d_n^{(L)}}
@@ -295,18 +299,11 @@ $$
 **Max pooling:** Highlights the most prominent features across the graph.
 
 $$
+\,\\
 h_G = \max_{v \in V} h_v^{(L)} \quad \text{(element-wise)}
 \\
 \mathbb{R}^{d_n^{(L)}} \leftarrow \mathbb{R}^{N \times d_n^{(L)}}
 \\
-$$
-
-**Concatenation:** Combines the node embeddings into a single vector.
-
-$$
-h_G = \Big\Vert_{v \in V} h_v^{(L)}
-\\
-\mathbb{R}^{N \cdot d_n^{(L)}} \leftarrow \mathbb{R}^{N \times d_n^{(L)}}
 $$
 
 &nbsp;
@@ -449,7 +446,7 @@ mechanism.
 
 &nbsp;
 
-### GCN (Graph Convolutional Network)
+### GCN • Graph Convolutional Network
 
 The GCN architecture[^1] is directly inspired by Convolutional Neural Networks (CNNs) and utilizes the adjacency 
 matrix to perform the message passing mechanism through matrix computations. This approach allows for the 
@@ -510,8 +507,8 @@ The convolutional message passing, aggregating and updating steps are performed 
 a GCN layer:
 
 $$
-H^{(l)} = \sigma \left( \hat{A} \, H^{(l-1)} \, W^{(l)} \right)
-$$
+H^{(l)} = \sigma \left( \hat{A} \, H^{(l-1)} \, W^{(l)} \right) \; 
+$$ 
 
 Where:
 - $$H^{(l)} \in \mathbb{R}^{N \times d_n^{(l)}}$$ is the node features matrix at layer $$l$$.
@@ -528,9 +525,25 @@ The above formalism remains pretty simple, but below is the detailed computation
 
 &nbsp;
 
+The above matrix formula can be rewritten in a more explicit form at the node level:
+
+$$
+\,\\
+h_i^{(l)} = \sigma\left( \sum_{j \in \mathcal{N}_i \cup \{ i \}} 
+\frac{1}{\sqrt{\deg(i)} \sqrt{\deg(j)}} \, W^{(l)} \, h_j^{(l-1)} \right)
+$$
+
+Where:
+- $$h_i^{(l)} \in \mathbb{R}^{d_n^{(l)}}$$ is the node features at layer $$l$$.
+- $$W^{(l)} \in \mathbb{R}^{d_n^{(l)} \times d_n^{(l-1)}}$$ is the learnable linear transformation.
+- $$\deg(i)$$ is the degree of node $$v_i$$.
+- $$\sigma$$ is a non-linear function such as $$\text{ReLU}$$ or $$\text{LeakyReLU}$$.
+- $$\mathcal{N}_i \subset \mathbb{R}$$ denote the set of neighbors of $$v_i$$.
+
+&nbsp;
 
 
-### GAT (Graph Attention Network)
+### GAT • Graph Attention Network
 
 The GAT architecture[^2] introduces the concept of self-attention to GNNs, this mechanism is inspired by the
 Transformer model[^5] that highlighted the importance in NLP to ponderer the importance of each token in a sequence.
@@ -661,7 +674,7 @@ features embeddings in the latent space.
 &nbsp;
 
 
-### GIN (Graph Isomorphism Network)
+### GIN • Graph Isomorphism Network
 
 The GIN architecture[^6] was proposed to address the problem of isomorphism in the graph paradigm. In fact, most 
 of GNNs encoder layers are not able to ensure that two isomorphic graphs will have a different output representation.
@@ -733,8 +746,8 @@ $$
 
 These two architectures use the $$\text{Mean}$$ and $$\text{Max}$$ functions to aggregate the neighborhood messages. 
 But the problem is that these functions are poorly injective in terms of keeping the structure of the graph. In fact, 
-the *Figure 20* below illustrates three cases in which the $$\text{Sum}$$ passes the test of injectivity, 
-but not the others.
+the *Figure 20* below from the original paper[^6] illustrates three cases in which the $$\text{Sum}$$ 
+passes the test of injectivity, but not the others.
 For each case, three isomorphic graphs are represented, and each node color corresponds to a unique value. 
 If the function produces the same output for two or more graphs, then the function failed to distinguish 
 isomorphic graphs. The functions are only computed on the neighbors of the center node (the empty one).
@@ -749,7 +762,7 @@ isomorphic graphs. The functions are only computed on the neighbors of the cente
 
 This result doesn't mean that the $$\text{Sum}$$ is fully injective (it is not), but it allows us to keep more 
 information about the structure of graphs, and thus present a better expressiveness. Also, the same observation applies 
-to the[readout function](#focus-on-graph-level-classification), using $$\text{Sum}$$ is more recommended to keep the 
+to the [readout function](#focus-on-graph-level-classification), using $$\text{Sum}$$ is more recommended to keep the 
 structure information from the GIN layers. 
 
 &nbsp;
@@ -771,8 +784,7 @@ $$
 Where:
 - $$h_i^{(l)} \in \mathbb{R}^{d_n^{(l)}}$$ is the node features at layer $$l$$.
 - $$\epsilon^{(l)} \in \mathbb{R}$$ is the learnable hyperparameter to manage the attention focused on the node itself.
-- $$\mathrm{MLP}^{(l)}$$ is a learnable multi-layer perceptron 
-  (identical to the one détailed [here](#classification-head)).
+- $$\mathrm{MLP}^{(l)}$$ is a learnable multi-layer perceptron.
 - $$\mathcal{N}_i \subset \mathbb{R}$$ denote the set of neighbors of $$v_i$$.
 
 &nbsp;
@@ -782,8 +794,6 @@ Where:
 <p style="text-align: center;font-style:italic">Figure 21. GIN layer details.</p>
 
 &nbsp;
-
-
 
 # References
 
