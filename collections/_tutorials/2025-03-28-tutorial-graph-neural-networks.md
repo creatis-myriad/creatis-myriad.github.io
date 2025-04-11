@@ -7,12 +7,13 @@ categories: gnn, graph, convolution, attention, isomorphism, deep learning
 ---
 
 # Note
-- Model architectures presented are not exhaustive and are chosen for their popularity and relevance in the field.
-  A comprehensive review[^11] was published in 2020 by J. Zhou, G. Cui et al. in which they present a heavy
-  list of GNN architectures and applications.
-- The article *A Gentle Introduction to Graph Neural Networks*[^4] can be a complement to understand GNNs in a more 
+- This article[^4] published by Sanchez-Lengeling, et al. in 2021 can be a complement to understand GNNs in a more 
   general context with examples.
-- This tutorial is a general introduction but more focus on graph-level classification tasks.
+- Model architectures presented are not exhaustive and are chosen for their popularity and relevance in the field.
+  A comprehensive review[^11] was published by J. Zhou, G. Cui, et al. in 2020 providing a detailed overview of GNN
+  methods and their applications.
+- The benchmark study by Dwivedi, et al.[^15] in 2022 provides detailed insights into GNN design that are concerned
+  in this tutorial, including edges features and positional encodings.
 
 &nbsp;
 
@@ -50,8 +51,11 @@ of nodes, each carrying its own information, interconnected by edges that define
 &nbsp;
 
 The graph abstraction is particularly powerful for representing data where interactions and relationships are 
-non-Euclidean and irregular. Unlike the fixed, grid-like structure of images, graphs can capture arbitrary patterns of 
-connectivity, making them ideal for modeling social networks, transportation systems, molecular structures, and more.
+non-Euclidean and irregular. Unlike the Euclidean grid-like structure of images, graphs can capture arbitrary patterns 
+of connectivity, making them ideal for modeling social networks, transportation systems, molecular structures, and more.
+
+
+&nbsp;
 
 <div style="text-align:center">
 <img src="/collections/images/gnn/graph_application_example.jpg" width=600></div>
@@ -59,10 +63,10 @@ connectivity, making them ideal for modeling social networks, transportation sys
 
 &nbsp;
 
-While an image’s pixels follow a strict spatial arrangement (each pixel has fixed neighbors in a grid), a graph’s edges 
-represent flexible, possibly non-local relationships. Think of it as an image where the “neighboring” pixels aren’t 
-just those directly adjacent, but can be any pixels that share a meaningful connection, forming a network that captures 
-more complex and abstract interactions.
+Whereas a pixel in an image is defined in space in relation to its own coordinates, a node in a graph has no 
+coordinates, but is defined in space in a relational way in relation to which neighbor it is connected to. 
+Think of it as an image where the “neighboring” pixels aren’t just those directly adjacent, but can be any pixels 
+that share a meaningful connection, forming a network that captures more complex and abstract interactions.
 
 &nbsp;
 
@@ -96,8 +100,8 @@ $$(v_i, v_j) = (v_j, v_i)$$ as presented in *Figure 3*.
 #### Adjacency matrix
 
 One common representation of a graph $$G$$ is through its adjacency matrix $$ A \in \mathbb{R}^{N \times N}$$, where
-$$N = |V|$$ is the number of nodes. The adjacency matrix is a binary matrix that encodes the presence of edges between 
-nodes such as:
+$$N = |V|$$ is the number of nodes. The adjacency matrix is a binary matrix that encodes the presence of edges 
+between nodes such as:
 
 $$
 A_{ij} = 
@@ -120,8 +124,8 @@ In the case where $$G$$ is undirected, the adjacency matrix is symmetric: $$A = 
 #### Node and edge features
 
 The features of a node are denoted by $$x_i \in \mathbb{R}^{d_n}$$, where $$d_n$$ is the number of features per node.
-Similarly, the edge features of an edge $$(v_i, v_j)$$ (directed or not) are denoted by $$e_{ij} \in \mathbb{R}^{d_e}$$, 
-where $$d_e$$ is the number of features per edge.
+Similarly, the edge features of an edge $$(v_i, v_j)$$ (directed or not) are denoted by $$e_{ij} \in 
+\mathbb{R}^{d_e}$$, where $$d_e$$ is the number of features per edge.
 
 &nbsp;
 
@@ -132,7 +136,8 @@ where $$d_e$$ is the number of features per edge.
 &nbsp;
 
 Through the layers of a GNN, these features are updated and aggregated, the denotation of node features at layer 
-$$l$$ is $$h_i^{(l)} \in \mathbb{R}^{d_n^{(l)}}$$, where $$d_n^{(l)}$$ is the number of features per node at layer $$l$$.
+$$l$$ is $$h_i^{(l)} \in \mathbb{R}^{d_n^{(l)}}$$, where $$d_n^{(l)}$$ is the number of features per node at layer 
+$$l$$.
 Concerning the edge features, the denotation remains generally unchanged through layers in the literature: 
 $$e_{ij}^{(l)} \in \mathbb{R}^{d_e^{(l)}}$$.
 Thus, we can generalize the denotation for matrix computation as:
@@ -140,8 +145,8 @@ Thus, we can generalize the denotation for matrix computation as:
 &nbsp;
 
 $$
-H^{(l)} = \begin{bmatrix} h_1^{(l)} \\ h_2^{(l)} \\ \vdots \\ h_N^{(l)} \end{bmatrix} \in \mathbb{R}^{N \times d_n^{(l)}}
-\quad \text{with} \quad X = H^{(0)}
+H^{(l)} = \begin{bmatrix} h_1^{(l)} \\ h_2^{(l)} \\ \vdots \\ h_N^{(l)} \end{bmatrix} \in 
+\mathbb{R}^{N \times d_n^{(l)}} \quad \text{with} \quad X = H^{(0)}
 $$
 
 $$
@@ -169,14 +174,14 @@ These tasks fall into three main categories[^11]:
 
 #### Graph-level tasks
 
-These tasks involve predicting a property or label for the entire graph. To do this, node representations are typically 
-aggregated using a global pooling operation to produce an overall graph representation.
-The graph prediction $$y_G$$ can be formulated as:
+These tasks involve predicting a property or label for the entire graph. To do this, node representations are 
+typically aggregated using a global pooling operation to produce an overall graph representation.
+The graph prediction $$\hat{y_G}$$ can be formulated as:
 
 $$
 h_G = \text{readout}(H^{(L)})
 \\
-y_G = f_{\text{graph}}(h_G)
+\hat{y_G} = f_{\text{graph}}(h_G)
 $$
 
 **Examples:**
@@ -199,10 +204,10 @@ $$
 
 Here, the goal is to predict a label or value for each individual node, based on both the node's intrinsic features 
 and the information aggregated from its neighbors.
-The prediction for each node $$h_i$$ can be formulated as:
+The prediction for each node $$\hat{y_i}$$ can be formulated as:
 
 $$
-y_i = f_{\text{node}}(h_i^{(L)})
+\hat{y_i} = f_{\text{node}}(h_i^{(L)})
 $$
 
 **Examples:**
@@ -221,12 +226,12 @@ $$
 
 #### Edge-level tasks
 
-These tasks focus on the interactions between nodes and aim to predict the presence or nature of a connection between 
-two nodes. This often involves constructing an edge representation from the features of the connected nodes.
-The prediction for each edge $$y_{ij}$$ can be formulated as:
+These tasks focus on the interactions between nodes and aim to predict the presence or nature of a connection 
+between two nodes. This often involves constructing an edge representation from the features of the connected nodes.
+The prediction for each edge $$\hat{y_{ij}}$$ can be formulated as:
 
 $$
-y_{ij} = f_{\text{edge}}(h_i^{(L)}, h_j^{(L)}, e_{ij}^{(L)})
+\hat{y_{ij}} = f_{\text{edge}}(h_i^{(L)}, h_j^{(L)}, e_{ij}^{(L)})
 $$
 
 **Examples:**
@@ -280,7 +285,7 @@ Below are some common readout functions:
 
 $$
 \,\\
-h_G = \sum_{v \in V} h_v^{(L)}
+h_G = \sum_{v_i \in V} h_i^{(L)}
 \\
 \mathbb{R}^{d_n^{(L)}} \leftarrow \mathbb{R}^{N \times d_n^{(L)}}
 \\
@@ -290,7 +295,7 @@ $$
 
 $$
 \,\\
-h_G = \frac{1}{N} \sum_{v \in V} h_v^{(L)}
+h_G = \frac{1}{N} \sum_{v_i \in V} h_i^{(L)}
 \\
 \mathbb{R}^{d_n^{(L)}} \leftarrow \mathbb{R}^{N \times d_n^{(L)}}
 \\
@@ -300,7 +305,7 @@ $$
 
 $$
 \,\\
-h_G = \max_{v \in V} h_v^{(L)} \quad \text{(element-wise)}
+h_G = \max_{v_i \in V} h_i^{(L)} \quad \text{(element-wise)}
 \\
 \mathbb{R}^{d_n^{(L)}} \leftarrow \mathbb{R}^{N \times d_n^{(L)}}
 \\
@@ -311,8 +316,9 @@ $$
 #### Classification head
 
 After obtaining the final graph embedding $$h_G$$ through a chosen readout function, the next step is to perform 
-classification. As shown in the figure below, the embedding $$h_G \in \mathbb{R}^{d_{\text{readout}}}$$ is fed into 
-a multi-layer perceptron (MLP) that outputs a probability distribution over the target classes.
+classification. As shown in the figure below, we classically use a multi-layer perceptron (MLP) to transform
+the embedding $$h_G \in \mathbb{R}^{d_{\text{readout}}}$$ into a logit vector, which is then converted into a 
+probability distribution over the target classes.
 
 <div style="text-align:center">
 <img src="/collections/images/gnn/classif_head.jpg" width=700></div>
@@ -336,11 +342,11 @@ At the final layer of the MLP, the $$\text{softmax}$$ function is used as $$\sig
 probability distribution over the classes:
 
 $$
-y_G = h^{(L)} = \text{softmax} \bigl( W^{(L)} \, h^{(L-1)} + b^{(L)} \bigr)
+\hat{y_G} = h^{(L)} = \text{softmax} \bigl( W^{(L)} \, h^{(L-1)} + b^{(L)} \bigr)
 \\
 $$
 
-Finally, the output is the prediction $$y_G \in \mathbb{R}^C$$ where $$C$$ denotes the number of classes.
+Finally, the output is the prediction $$\hat{y_G} \in \mathbb{R}^C$$ where $$C$$ denotes the number of classes.
 
 &nbsp;
 
@@ -375,13 +381,14 @@ which is essential when dealing with graphs where the ordering of neighboring no
 
 <div style="text-align:center">
 <img src="/collections/images/gnn/forward_prop.jpg" width=650></div>
-<p style="text-align: center;font-style:italic">Figure 12. Forward propagation of a graph encoder through several message-passing layers.</p>
+<p style="text-align: center;font-style:italic">Figure 12. Forward propagation of a graph encoder using message-passing layers.</p>
 
 &nbsp;
 
 #### Mathematical formalism
 
-In each layer, every node $$v_i$$ updates its feature representation by aggregating messages from its neighbors such as:
+In each layer, every node $$v_i$$ updates its feature representation by aggregating messages from its neighbors 
+such as:
 
 $$
 h_i^{(l+1)} = \text{UPDATE}\Bigl( h_i^{(l)}, \; \text{AGGREGATE}\Bigl( \bigl\{ \text{MESSAGE}\bigl( h_j^{(l)}, 
@@ -450,8 +457,8 @@ mechanism.
 
 The GCN architecture[^1] is directly inspired by Convolutional Neural Networks (CNNs) and utilizes the adjacency 
 matrix to perform the message passing mechanism through matrix computations. This approach allows for the 
-generalization of convolution operations to graph-structured data, enabling the application of deep learning techniques 
-to non-Euclidean domains[^14].
+generalization of convolution operations to graph-structured data, enabling the application of deep learning 
+techniques to non-Euclidean domains[^14].
 
 #### Normalized augmented adjacency matrix
 
@@ -665,8 +672,8 @@ W^{(l)} \left[ h_i^{(l-1)} \parallel h_j^{(l-1)} \right] \right)
 \\
 $$
 
-Also, another difference with the proposed architecture consists in the use of a single linear transformation to project
-the concatenation of the node features and its neighbors' features ($$h_i^{(l-1)} \parallel h_j^{(l-1)}$$).
+Also, another difference with the proposed architecture consists in the use of a single linear transformation to 
+project the concatenation of the node features and its neighbors' features ($$h_i^{(l-1)} \parallel h_j^{(l-1)}$$).
 This change allows to not project one feature of the embedding $$h_i$$ in the same way as one feature of the embedding
 $$h_j$$. That contrasts with the standard GAT where the same linear transformation $$W^{(l)}$$ is used to project both
 features embeddings in the latent space.
@@ -739,14 +746,18 @@ $$
 \text{GCN:} \quad h_i^{(l)} = \text{ReLU} \left( W \cdot \text{Mean} \left\{ h_j^{(l-1)} \;\middle|\; 
 j \in \mathcal{N}_i \cup \{ i \} \right\} \right)
 \\
-\text{GraphSAGE:} \quad a_i^{(l)} = \text{Max} \left( \left\{ \text{ReLU} \left( W \cdot h_j^{(l-1)} \right) \;\middle|\; 
-j \in \mathcal{N}_i \right\} \right)
+\text{GraphSAGE:} \quad a_i^{(l)} = \text{Max} \left( \left\{ \text{ReLU} \left( W \cdot h_j^{(l-1)} \right) 
+\;\middle|\; j \in \mathcal{N}_i \right\} \right)
 \\
 $$
 
-These two architectures use the $$\text{Mean}$$ and $$\text{Max}$$ functions to aggregate the neighborhood messages. 
-But the problem is that these functions are poorly injective in terms of keeping the structure of the graph. In fact, 
-the *Figure 20* below from the original paper[^6] illustrates three cases in which the $$\text{Sum}$$ 
+These two architectures use the $$\text{Mean}$$ and $$\text{Max}$$ functions to aggregate and update the neighborhood 
+messages. 
+But the problem is that these functions are poorly injective in terms of keeping the structure of the graph.
+So the GIN architecture propose to use a combination of the $$\text{Sum}$$ function and an MLP
+ensuring a message passing mechanism as expressive as the WL test.
+
+Also, the *Figure 20* below from the original paper[^6] illustrates three cases in which the $$\text{Sum}$$ 
 passes the test of injectivity, but not the others.
 For each case, three isomorphic graphs are represented, and each node color corresponds to a unique value. 
 If the function produces the same output for two or more graphs, then the function failed to distinguish 
@@ -761,9 +772,9 @@ isomorphic graphs. The functions are only computed on the neighbors of the cente
 &nbsp;
 
 This result doesn't mean that the $$\text{Sum}$$ is fully injective (it is not), but it allows us to keep more 
-information about the structure of graphs, and thus present a better expressiveness. Also, the same observation applies 
-to the [readout function](#focus-on-graph-level-classification), using $$\text{Sum}$$ is more recommended to keep the 
-structure information from the GIN layers. 
+information about the structure of graphs, and thus present a better expressiveness. So, this property is 
+particularly important to ensure the [readout function](#focus-on-graph-level-classification) to keep the 
+structure information from the GIN layers by using the $$\text{Sum}$$ function.
 
 &nbsp;
 
@@ -778,7 +789,9 @@ layers of linear transformation, biases and non-linearity increasing the express
 $$
 \,\\
 h_i^{(l)} = \mathrm{MLP}^{(l)}\left( (1+\epsilon^{(l)}) h_i^{(l-1)} + \sum_{j \in \mathcal{N}_i} h_j^{(l-1)} \right)
-\\
+\,\\
+\,\\
+\text{with} \quad h_G = \text{readout}(H^{(L)}) = \sum_{v_i \in V} h_i^{(L)}
 $$
 
 Where:
@@ -811,3 +824,4 @@ Where:
 [^12]: K. Xu, C. Li, Y. Tian, T. Sonobe, K. Kawarabayashi, S. Jegelka. [Representation Learning on Graphs with Jumping Knowledge Networks](https://doi.org/10.48550/arXiv.1806.03536). ICML 2018.
 [^13]: J. Gilmer, S. S. Schoenholz, P. F. Riley, O. Vinyals, G. E. Dahl. [Neural message passing for quantum chemistry](https://doi.org/10.48550/arXiv.1704.01212). ICML 2017.
 [^14]: M. Defferrard, X. Bresson, P. Vandergheynst. [Convolutional Neural Networks on Graphs with Fast Localized Spectral Filtering](https://doi.org/10.48550/arXiv.1606.09375). NeurIPS 2016.
+[^15]: V. P. Dwivedi, C. K. Joshi, A. T. Luu, Y. Bengio, X. Bresson. [Benchmarking Graph Neural Networks](https://doi.org/10.48550/arXiv.2003.00982). JMLR 2022.
