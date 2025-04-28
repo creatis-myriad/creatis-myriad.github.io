@@ -10,7 +10,7 @@ categories: gnn, graph, convolution, attention, isomorphism, deep learning
 - This article[^4] published by Sanchez-Lengeling, et al. in 2021 can be a complement to understand GNNs in a more 
   general context with examples.
 - Model architectures presented are not exhaustive and are chosen for their popularity and relevance in the field.
-  A comprehensive review[^11] was published by J. Zhou, G. Cui, et al. in 2020 providing a detailed overview of GNN
+  A comprehensive review[^11] was published by Zhou, Cui, et al. in 2020 providing a detailed overview of GNN
   methods and their applications.
 - The benchmark study by Dwivedi, et al.[^15] in 2022 provides detailed insights into GNN design that are concerned
   in this tutorial, including edges features and positional encodings.
@@ -481,6 +481,11 @@ $$
 \Rightarrow
 \;\;
 \tilde{D}=\begin{bmatrix}
+\tilde{d_1}&0&0&0\\
+0&\tilde{d_2}&0&0\\
+0&0&\tilde{d_3}&0\\
+0&0&0&\tilde{d_4}
+\end{bmatrix} =\begin{bmatrix}
 2&0&0&0\\
 0&4&0&0\\
 0&0&3&0\\
@@ -537,13 +542,13 @@ The above matrix formula can be rewritten in a more explicit form at the node le
 $$
 \,\\
 h_i^{(l)} = \sigma\left( \sum_{j \in \mathcal{N}_i \cup \{ i \}} 
-\frac{1}{\sqrt{\deg(i)} \sqrt{\deg(j)}} \, W^{(l)} \, h_j^{(l-1)} \right)
+\frac{1}{\sqrt{\tilde{d_i}} \sqrt{\tilde{d_j}}} \, W^{(l)} \, h_j^{(l-1)} \right)
 $$
 
 Where:
 - $$h_i^{(l)} \in \mathbb{R}^{d_n^{(l)}}$$ is the node features at layer $$l$$.
 - $$W^{(l)} \in \mathbb{R}^{d_n^{(l)} \times d_n^{(l-1)}}$$ is the learnable linear transformation.
-- $$\deg(i)$$ is the degree of node $$v_i$$.
+- $$\tilde{d_i} \in \mathbb{N}$$ is the augmented degree of node $$v_i$$.
 - $$\sigma$$ is a non-linear function such as $$\text{ReLU}$$ or $$\text{LeakyReLU}$$.
 - $$\mathcal{N}_i \subset \mathbb{R}$$ denote the set of neighbors of $$v_i$$.
 
@@ -557,11 +562,9 @@ Transformer model[^5] that highlighted the importance in NLP to ponderer the imp
 Here, the same principle is applied to nodes in a graph, where the attention mechanism allows to weight the influence
 of each neighbor in the aggregation process.
 
-&nbsp;
-
 #### Self-attention mechanism
 
-Firstly, we compute the attention coefficients $$\alpha_{ij}$$ for all pairs of nodes $$(v_i, v_j)$$ where
+Firstly, we compute the attention scores $$a_{ij}$$ for all pairs of nodes $$(v_i, v_j)$$ where
 $$v_j$$ is in the neighborhood of $$v_i$$:
 
 $$
@@ -573,11 +576,13 @@ Where:
 - $$a_{ij}^{(l)} \in \mathbb{R}$$ is the attention score between nodes $$(v_i, v_j)$$.
 - $$\mathbf{a}^{(l)} \in \mathbb{R}^{2 \cdot d_n^{(l)}}$$ is a learnable attention vector.
 - $$W^{(l)} \in \mathbb{R}^{d_n^{(l)} \times d_n^{(l-1)}}$$ is a learnable linear transformation.
-- $$\parallel$$ denotes the concatenation operation.
+- $$\parallel$$ denotes the concatenation operator.
+
+&nbsp;
 
 We use the same linear transformation $$W^{(l)}$$ for both nodes to project their features into a shared latent space.
 Their features are then concatenated and passed through a single-layer feedforward network $$\mathbf{a}^{(l)}$$ to
-compute the attention score. At last, the $$\text{LeakyReLU}$$ activation function is applied to introduce 
+compute the score. At last, the $$\text{LeakyReLU}$$ activation function is applied to introduce 
 non-linearity.
 
 <div style="text-align:center">
@@ -596,6 +601,7 @@ $$
 
 Where:
 - $$\alpha_{ij} \in [0, 1]$$ is the attention coefficient between nodes $$(v_i, v_j)$$.
+- $$a_{ij}^{(l)} \in \mathbb{R}$$ is the attention score between nodes $$(v_i, v_j)$$.
 - $$\mathcal{N}_i \subset \mathbb{R}$$ denote the set of neighbors of $$v_i$$.
 
 <div style="text-align:center">
@@ -607,8 +613,8 @@ Where:
 #### Attention aggregation
 
 The final node embedding is computed by aggregating the features that are re-projected by $$W^{(l)}$$ in the 
-latent space in which the attention coefficients were computed. The process is really similar to the GCN layer
-even if below the matrix formalism is not used:
+latent space in which the attention coefficients were computed. The process is really similar to the GCN layer, 
+but with the attention mechanism replacing the degree normalization:
 
 $$
 \,\\
@@ -688,8 +694,6 @@ of GNNs encoder layers are not able to ensure that two isomorphic graphs will ha
 This capability is essential in many applications such as molecular chemistry where the structure of a molecule is
 an important factor to predict its properties, or in social network analysis where forgetting the structure of a graph
 can lead to the loss of information about the communities to which nodes belong.
-
-&nbsp;
 
 #### What makes graphs isomorphic?
 
