@@ -9,8 +9,8 @@ categories: gnn, graph, convolution, attention, isomorphism, deep learning
 # Additional References
 - This Distill paper[^4] published by Sanchez-Lengeling et al. in 2021 is another good introduction to GNNs in a more 
   general context, with lots of (interactive) examples.
-- Model architectures presented are not exhaustive and are chosen for their popularity and relevance in the field.
-  A comprehensive review[^11] was published by Zhou, Cui, et al. in 2020 providing a detailed overview of GNN
+- Model architectures presented are not exhaustive and were chosen for their popularity and relevance in the field.
+  A comprehensive review[^11], published by Zhou et al. in 2020, provides a taxonomy of many more GNN
   methods and their applications.
 - The benchmark study by Dwivedi, et al.[^15] in 2022 provides detailed insights into GNN design that are concerned
   in this tutorial, including edges features and positional encodings.
