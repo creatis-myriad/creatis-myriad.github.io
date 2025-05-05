@@ -5,6 +5,11 @@ author: 'Tristan Habémont'
 date:   2025-03-24
 categories: gnn, graph, convolution, attention, isomorphism, deep learning
 ---
+<style>
+  div.post-content p {
+    text-align: justify; /* helps the reading flow */
+  }
+</style>
 
 # Additional References
 - This Distill paper[^4] published by Sanchez-Lengeling et al. in 2021 is another good introduction to GNNs in a more 
