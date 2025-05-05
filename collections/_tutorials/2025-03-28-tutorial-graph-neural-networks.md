@@ -6,7 +6,7 @@ date:   2025-03-24
 categories: gnn, graph, convolution, attention, isomorphism, deep learning
 ---
 
-# Note
+# Additional References
 - This article[^4] published by Sanchez-Lengeling, et al. in 2021 can be a complement to understand GNNs in a more 
   general context with examples.
 - Model architectures presented are not exhaustive and are chosen for their popularity and relevance in the field.
