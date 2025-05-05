@@ -807,7 +807,7 @@ $$
 
 Where:
 - $$h_i^{(l)} \in \mathbb{R}^{d_n^{(l)}}$$ is the node features at layer $$l$$.
-- $$\epsilon^{(l)} \in \mathbb{R}$$ is the learnable hyperparameter to manage the attention focused on the node itself.
+- $$\epsilon^{(l)} \in \mathbb{R}$$ is the learnable hyperparameter for weighting the contribution of the node to its own aggregation/update.
 - $$\mathrm{MLP}^{(l)}$$ is a learnable multi-layer perceptron.
 - $$\mathcal{N}_i \subset \mathbb{R}$$ denote the set of neighbors of $$v_i$$.
 
