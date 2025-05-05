@@ -794,8 +794,8 @@ also possible to modify how the node itself is weighted in the aggregation with 
 implementations of GIN even propose to make $$\epsilon^{(l)}$$ learnable.
 
 Next, an MLP is used to project the aggregated features in a 
-latent space instead of the traditional linear transformation. In fact, the MLP acts to introduce several
-layers of linear transformation, biases and non-linearity increasing the expressiveness of the model:
+latent space, instead of the traditional linear transformation. In fact, the MLP introduces several
+layers of linear transformation, biases, and non-linearity, increasing the expressiveness of the model:
 
 $$
 \,\\
