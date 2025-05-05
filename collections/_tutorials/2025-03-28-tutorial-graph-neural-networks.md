@@ -789,9 +789,11 @@ structure information from the GIN layers by using the $$\text{Sum}$$ function.
 
 #### Graph isomorphic layer
 
-The proposed solution of the GIN architecture consists in summing the node features of the neighborhood, it is
-also possible to manage the attention focused on the node itself with the hyperparameter $$\epsilon^{(l)}$$, some
-implementations of GIN propose to make it learnable. Next, an MLP is used to project the aggregated features in a 
+The proposed solution of the GIN architecture consists in summing the node features of the neighborhood. It is
+also possible to modify how the node itself is weighted in the aggregation with the hyperparameter $$\epsilon^{(l)}$$. Some
+implementations of GIN even propose to make $$\epsilon^{(l)}$$ learnable.
+
+Next, an MLP is used to project the aggregated features in a 
 latent space instead of the traditional linear transformation. In fact, the MLP acts to introduce several
 layers of linear transformation, biases and non-linearity increasing the expressiveness of the model:
 
