@@ -353,8 +353,6 @@ probability distribution over the target classes.
 Message passing[^13] [^12] lies at the heart of GNN architectures, this step is computed by the 
 [graph encoder](#encoder-architectures), enabling to generate a latent graph on which each node (and sometimes edge) 
 owns an embedded features representation.
-The main idea is to employ iterative mechanisms, primarily message passing and permutation-invariant 
-aggregation, to learn robust representations of graph elements.
 
 ### Message passing mechanism
 
