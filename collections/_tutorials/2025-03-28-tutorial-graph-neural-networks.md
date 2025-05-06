@@ -518,7 +518,7 @@ Where:
 ### GAT • Graph Attention Network
 
 The GAT architecture[^2] popularized a formulation of self-attention for GNNs, inspired by the success of
-Transformers[^12] in NLP that highlighted the importance of dynamically pondering each token in a sequence.
+Transformers[^5] in NLP that highlighted the importance of dynamically pondering each token in a sequence.
 Here, the same principle is applied to nodes in a graph, where the attention mechanism allows to weight the influence
 of each neighbor in the aggregation process.
 
