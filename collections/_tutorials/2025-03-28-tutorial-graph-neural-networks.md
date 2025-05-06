@@ -91,8 +91,8 @@ A graph is formally defined as $$G = (V, E)$$, where:
 
 &nbsp;
 
-In the case of a directed graph, each edge is an ordered pair $$(v_i, v_j)$$, where $$v_i$$ is the source node and
-$$v_j$$ is the target node. In contrast with an undirected graph, where the edge is an unordered pair 
+In the case of directed graphs, each edge is an ordered pair $$(v_i, v_j)$$, where $$v_i$$ is the source node and
+$$v_j$$ is the target node. This contrast with undirected graphs, where an edge is an unordered pair 
 $$(v_i, v_j) = (v_j, v_i)$$ as presented in *Figure 3*.
 
 <div style="margin-left:80px">
