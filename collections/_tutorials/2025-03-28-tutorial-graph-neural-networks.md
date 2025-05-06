@@ -105,7 +105,7 @@ $$(v_i, v_j) = (v_j, v_i)$$ as presented in *Figure 3*.
 #### Adjacency matrix
 
 One common representation of a graph $$G$$ is through its adjacency matrix $$ A \in \mathbb{R}^{N \times N}$$, where
-$$N = |V|$$ is the number of nodes. The adjacency matrix is a binary matrix that encodes the presence of edges 
+$$N = |V|$$, i.e. the number of nodes. The adjacency matrix is a binary matrix that encodes the presence of edges 
 between nodes such as:
 
 $$
