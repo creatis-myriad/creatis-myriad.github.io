@@ -129,7 +129,7 @@ In the case where $$G$$ is undirected, the adjacency matrix is symmetric: $$A = 
 #### Node and edge features
 
 The features of a node are denoted by $$x_i \in \mathbb{R}^{d_n}$$, where $$d_n$$ is the number of features per node.
-Similarly, the edge features of an edge $$(v_i, v_j)$$ (directed or not) are denoted by $$e_{ij} \in 
+Similarly, the features of an edge $$(v_i, v_j)$$ (directed or not) are denoted by $$e_{ij} \in 
 \mathbb{R}^{d_e}$$, where $$d_e$$ is the number of features per edge.
 
 &nbsp;
