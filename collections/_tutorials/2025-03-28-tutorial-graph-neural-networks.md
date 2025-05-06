@@ -161,8 +161,8 @@ $$
 
 &nbsp;
 
-Also, as with the rest of ML models, we denote respectively $$Y$$ and $$\hat{Y}$$ the prediction target and 
-the predicted output.
+As is common in other machine learning domains, we denote respectively $$Y$$ and $$\hat{Y}$$ the prediction target 
+and the predicted output.
 
 &nbsp;
 
@@ -171,36 +171,8 @@ the predicted output.
 
 ### Graph-level vs Node-level vs Edge-level tasks
 
-In Graph Neural Networks, tasks are generally categorized based on the scale at which predictions are made. 
-These tasks fall into three main categories[^11]:
-
-&nbsp;
-
-#### Graph-level tasks
-
-These tasks involve predicting a property or label for the entire graph. To do this, node representations are 
-typically aggregated using a global pooling operation to produce an overall graph representation.
-The graph prediction $$\hat{y_G}$$ can be formulated as:
-
-$$
-h_G = \text{readout}(H^{(L)})
-\\
-\hat{y_G} = f_{\text{graph}}(h_G)
-$$
-
-**Examples:**
-- *Computational chemistry:* Predicting molecular properties (e.g., chemical activity) based on the molecular 
-  graph structure.
-- *Social network analysis:* Classifying an entire network to identify its type or activity level.
-
-**Methods:**
-- Global pooling techniques called [readout functions](#focus-on-graph-level-classification) such as summing, averaging, 
-  or taking the maximum of node features, or using attention-based pooling.
-- Readout networks that transform local node representations into a comprehensive global graph representation.
-
-<div style="text-align:center">
-<img src="/collections/images/gnn/graph_level_class.jpg" width=800></div>
-<p style="text-align: center;font-style:italic">Figure 7. Example of a graph-level pipeline.</p>
+In graph learning, tasks are generally categorized based on the level at which predictions are made. 
+Three main categories are typically considered[^11]:
 
 &nbsp;
 
@@ -255,11 +227,45 @@ $$
 
 &nbsp;
 
+#### Graph-level tasks
+
+These tasks involve predicting a property or label for the entire graph. To do this, node representations are 
+typically aggregated using a global pooling operation to produce an overall graph representation.
+The graph prediction $$\hat{y_G}$$ can be formulated as:
+
+$$
+h_G = \text{readout}(H^{(L)})
+\\
+\hat{y_G} = f_{\text{graph}}(h_G)
+$$
+
+**Examples:**
+- *Computational chemistry:* Predicting molecular properties (e.g., chemical activity) based on the molecular 
+  graph structure.
+- *Social network analysis:* Classifying an entire network to identify its type or activity level.
+
+**Methods:**
+- Multi-layer message passing to refine local node representations by incorporating contextual information from 
+  their neighborhoods. Finally, apply a readout function to aggregate node features into a single graph representation.
+
+**Pooling methods:**
+- Global pooling techniques called [readout functions](#focus-on-graph-level-classification) such as summing, averaging, 
+  or taking the maximum of node features, or using attention-based pooling.
+- Specific readouts like SortPool[^16] (learn a score per node, rank and select the top k embeddings, then concatenate
+  into a fixed-size graph vector) and GraphTrans[^17] (permutation-invariant Transformer with a global token for 
+  self-attention over node embeddings)
+
+<div style="text-align:center">
+<img src="/collections/images/gnn/graph_level_class.jpg" width=800></div>
+<p style="text-align: center;font-style:italic">Figure 7. Example of a graph-level pipeline.</p>
+
+&nbsp;
+
 
 ### Focus on graph-level classification
 
 In graph-level classification tasks, the objective is to predict a label for the entire graph $$G$$. This requires 
-condensing the information contained in all node embeddings into a single vector representation $$h_G$$ via a 
+combining the information contained in all node embeddings into a single vector representation $$h_G$$ via a 
 readout function. This graph embedding can then be used to make predictions about the graph as a whole.
 
 <div style="text-align:center">
@@ -330,30 +336,6 @@ probability distribution over the target classes.
 
 &nbsp;
 
-The classification head typically consists of one or more fully connected layers, on each of which a non-linearity 
-is applied.
-Formally, for layer $$l$$ in the MLP:
-
-$$
-h^{(l)} = \sigma \bigl( W^{(l)} \, h^{(l-1)} + b^{(l)} \bigr)
-\\
-$$
-
-Where $$h^{(0)} = h_G$$ is the graph embedding (readout result), $$W^{(l)}$$ and $$b^{(l)}$$ are learnable parameters, 
-and $$\sigma$$ is a non-linear activation function such as $$\text{ReLU}$$ or $$\text{LeakyReLU}$$.
-
-At the final layer of the MLP, the $$\text{softmax}$$ function is used as $$\sigma$$ to convert the output into a
-probability distribution over the classes:
-
-$$
-\hat{y_G} = h^{(L)} = \text{softmax} \bigl( W^{(L)} \, h^{(L-1)} + b^{(L)} \bigr)
-\\
-$$
-
-Finally, the output is the prediction $$\hat{y_G} \in \mathbb{R}^C$$ where $$C$$ denotes the number of classes.
-
-&nbsp;
-
 > Note: While $$h_G$$ is used here for graph-level classification, this principle can be extended to other tasks.
 
 - *Node-level classification:* Instead of a single graph embedding, each node $$v_i$$ has an embedding $$h_i$$. 
@@ -380,8 +362,8 @@ aggregation, to learn robust representations of graph elements.
 
 Every node $$i$$ sends a message to each of its neighbors $$j$$ and, in turn, receives messages from those neighbors. 
 This mechanism enables local information to be disseminated throughout the graph, allowing each node to incorporate 
-contextual information from its surroundings. The aggregation process also ensures permutation invariance, 
-which is essential when dealing with graphs where the ordering of neighboring nodes is arbitrary.
+contextual information from its surroundings. The aggregation process has to ensure permutation invariance, 
+since the ordering of neighboring nodes is arbitrary.
 
 <div style="text-align:center">
 <img src="/collections/images/gnn/forward_prop.jpg" width=650></div>
@@ -406,8 +388,6 @@ Where:
   - $$\text{AGGREGATE}$$: A permutation invariant function (e.g., sum, mean, or max) that consolidates messages from 
     all neighbors.
   - $$\text{UPDATE}$$: Merges the aggregated message with the current node state to produce the updated representation.
-  - $$h_i^{(l)} \in \mathbb{R}^{d_n^{(l)}}$$ denote the node features of $$v_i$$.
-  - $$e_{ij}^{(l)} \in \mathbb{R}^{d_e^{(l)}}$$ denote the edge features between $$v_i$$ and $$v_j$$ (if applicable).
   - $$\mathcal{N}_i \subset \mathbb{R} $$ denote the set of neighbors of $$v_i$$.
 
 > Note: $$\mathcal{N}_i$$ can sometimes includes $$i$$ itself, but it is not the convention used in this tutorial.
@@ -450,9 +430,9 @@ thereby faithfully reflecting the true structure of the graph.
 
 ## **Encoder architectures**  
 
-In a GNN, the graph encoder plays the main and more complex role by transforming input features, 
+In a GNN, the graph encoder plays the main role of transforming input features, 
 such as node and edge attributes, into latent representations that can be used for prediction tasks.
-The sections below introduce three of the most used architectures and are directly inspired by the message passing 
+The sections below introduce three of the most used architectures which fall under the message passing
 mechanism.
 
 &nbsp;
@@ -499,10 +479,11 @@ $$
 $$
 
 Finally, the normalized adjacency matrix $$\hat{A}$$ is computed using $$\tilde{D}$$ based on the spectral graph 
-theory[^3]. This transformation allows balancing nodes' influence with varying degrees since nodes with higher degrees 
-can disproportionately influence computations.
+theory[^3]. This transformation allows balancing the influence of nodes with varying degrees, since 
+their range of values could might not be normalized w.r.t. their degree, e.g. when using a sum aggregation function.
 In addition, the normalization helps to stabilize the training process and, especially, to avoid vanishing or 
 exploding gradients.
+
 
 $$
 \,\\
@@ -519,7 +500,7 @@ $$
 
 #### Graph convolutional layer
 
-The convolutional message passing, aggregating and updating steps are performed by the below matrix computation in
+The convolutional message passing, aggregating and updating steps are performed by the following matrix computation in
 a GCN layer:
 
 $$
@@ -553,7 +534,6 @@ Where:
 - $$h_i^{(l)} \in \mathbb{R}^{d_n^{(l)}}$$ is the node features at layer $$l$$.
 - $$W^{(l)} \in \mathbb{R}^{d_n^{(l)} \times d_n^{(l-1)}}$$ is the learnable linear transformation.
 - $$\tilde{d_i} \in \mathbb{N}$$ is the augmented degree of node $$v_i$$.
-- $$\sigma$$ is a non-linear function such as $$\text{ReLU}$$ or $$\text{LeakyReLU}$$.
 - $$\mathcal{N}_i \subset \mathbb{R}$$ denote the set of neighbors of $$v_i$$.
 
 &nbsp;
@@ -561,8 +541,8 @@ Where:
 
 ### GAT • Graph Attention Network
 
-The GAT architecture[^2] introduces the concept of self-attention to GNNs, this mechanism is inspired by the
-Transformer model[^5] that highlighted the importance in NLP to ponderer the importance of each token in a sequence.
+The GAT architecture[^2] popularized a formulation of self-attention for GNNs, inspired by the success of
+Transformers[^12] in NLP that highlighted the importance of dynamically pondering each token in a sequence.
 Here, the same principle is applied to nodes in a graph, where the attention mechanism allows to weight the influence
 of each neighbor in the aggregation process.
 
@@ -585,8 +565,8 @@ Where:
 &nbsp;
 
 We use the same linear transformation $$W^{(l)}$$ for both nodes to project their features into a shared latent space.
-Their features are then concatenated and passed through a single-layer feedforward network $$\mathbf{a}^{(l)}$$ to
-compute the score. At last, the $$\text{LeakyReLU}$$ activation function is applied to introduce 
+Their features are then concatenated and multiplied with a 1D vector $$\mathbf{a}^{(l)}$$ to
+compute the attention score. Next, the $$\text{LeakyReLU}$$ activation function is applied to introduce 
 non-linearity.
 
 <div style="text-align:center">
@@ -596,7 +576,7 @@ non-linearity.
 &nbsp;
 
 But the attention scores ($$a_{ij} \in \mathbb{R}$$)
-are not normalized yet, so, as illustrated above, we apply the $$\text{softmax}$$ function to obtain the final 
+are not normalized yet. As illustrated above, we apply the $$\text{softmax}$$ function to obtain the final 
 attention distribution for the neighborhood of a specific node (itself included):
 
 $$
@@ -629,7 +609,6 @@ Where:
 - $$h_i^{(l)} \in \mathbb{R}^{d_n^{(l)}}$$ is the node features at layer $$l$$.
 - $$\alpha_{ij}^{(l)} \in [0, 1]$$ is the attention coefficient between nodes $$(v_i, v_j)$$.
 - $$W^{(l)} \in \mathbb{R}^{d_n^{(l)} \times d_n^{(l-1)}}$$ is the learnable linear transformation.
-- $$\sigma$$ is a non-linear function such as $$\text{ReLU}$$ or $$\text{LeakyReLU}$$.
 
 <div style="text-align:center">
 <img src="/collections/images/gnn/att_aggregation.jpg" width=280></div>
@@ -659,7 +638,7 @@ $$
 
 #### GATv2 improvements
 
-The main problem in the standard GAT scoring function is that the learnable parameters $$W^{(l)}$$ and 
+The main problem in the standard GAT attention formulation is that the learnable parameters $$W^{(l)}$$ and 
 $$\mathbf{a}^{(l)}$$ are applied consecutively, and thus can be collapsed into a single linear transformation layer.
 So the GATv2 architecture[^8] proposes to apply the attention vector $$\mathbf{a}^{(l)}$$ after the 
 $$\text{LeakyReLU}$$ function:
@@ -682,11 +661,10 @@ W^{(l)} \left[ h_i^{(l-1)} \parallel h_j^{(l-1)} \right] \right)
 \\
 $$
 
-Also, another difference with the proposed architecture consists in the use of a single linear transformation to 
-project the concatenation of the node features and its neighbors' features ($$h_i^{(l-1)} \parallel h_j^{(l-1)}$$).
-This change allows to not project one feature of the embedding $$h_i$$ in the same way as one feature of the embedding
-$$h_j$$. That contrasts with the standard GAT where the same linear transformation $$W^{(l)}$$ is used to project both
-features embeddings in the latent space.
+The other difference with GAT concerns how the node features $$h_i^{(l-1)}$$ (and its neighbors' $$h_j^{(l-1)}$$) 
+are linearly projected.
+Standard GAT used the same linear transformation $$W^{(l)}$$ to project both features embeddings in the latent space.
+GATv2 uses different projection weights for the node and the neighbors.
 
 &nbsp;
 
@@ -694,17 +672,17 @@ features embeddings in the latent space.
 ### GIN • Graph Isomorphism Network
 
 The GIN architecture[^6] was proposed to address the problem of isomorphism in the graph paradigm. In fact, most 
-of GNNs encoder layers are not able to ensure that two isomorphic graphs will have a different output representation.
+GNNs encoder layers cannot ensure that two isomorphic graphs will have a different output representation.
 This capability is essential in many applications such as molecular chemistry where the structure of a molecule is
 an important factor to predict its properties, or in social network analysis where forgetting the structure of a graph
 can lead to the loss of information about the communities to which nodes belong.
 
 #### What makes graphs isomorphic?
 
-In the *Figure 19* below, the two graphs are isomorphic, but the question to answer is how to know if two graphs are 
-isomorphic ($$\cong$$) or not. So, two graphs are isomorphic when, despite different names or representations of 
-vertices, they have exactly the same connection structure. In other words, if the node labels of one graph can be 
-reassigned to obtain exactly the same connections as in the other, then these graphs are structurally identical.
+Two graphs are isomorphic ($$\cong$$), like in the *Figure 19* below, when, despite different names or 
+representations of vertices, they have exactly the same connection structure. In other words, if the node labels 
+of one graph can be reassigned to obtain exactly the same connections as in the other, then these graphs are 
+structurally identical.
 This can be formalized mathematically with a bijective function:
 
 $$
@@ -743,8 +721,8 @@ a few limitations[^9], it can be used as a good baseline of expressiveness for G
 #### Problem with some GNN architectures
 
 As mentioned [previously](#mathematical-formalism), GNNs follow an architecture based on the message passing mechanism.
-The $$\text{AGGREGATE}$$ and $$\text{UPDATE}$$ functions are respectively in charge of the aggregation of 
-the neighborhood messages and the update this aggregation with the node features.
+The $$\text{AGGREGATE}$$ and $$\text{UPDATE}$$ functions are respectively in charge of aggregating 
+the neighborhood messages and updating the node features based on the aggregated messages.
 However, the choice of these functions is crucial because, depending on what is chosen, the GNN may not be able to
 keep the information about the structure of the graph.
 
@@ -762,10 +740,10 @@ $$
 These two architectures use the $$\text{Mean}$$ and $$\text{Max}$$ functions to aggregate and update the neighborhood 
 messages. 
 But the problem is that these functions are poorly injective in terms of keeping the structure of the graph.
-So the GIN architecture propose to use a combination of the $$\text{Sum}$$ function and an MLP
-ensuring a message passing mechanism as expressive as the WL test.
+So the GIN architecture proposes to use a combination of the $$\text{Sum}$$ function and an MLP
+to ensure a message passing mechanism as expressive as the WL test
 
-Also, the *Figure 20* below from the original paper[^6] illustrates three cases in which the $$\text{Sum}$$ 
+Also, the *Figure 20* below from the GIN paper[^6] illustrates three cases in which the $$\text{Sum}$$ 
 passes the test of injectivity, but not the others.
 For each case, three isomorphic graphs are represented, and each node color corresponds to a unique value. 
 If the function produces the same output for two or more graphs, then the function failed to distinguish 
@@ -836,3 +814,5 @@ Where:
 [^13]: J. Gilmer, S. S. Schoenholz, P. F. Riley, O. Vinyals, G. E. Dahl. [Neural message passing for quantum chemistry](https://doi.org/10.48550/arXiv.1704.01212). ICML 2017.
 [^14]: M. Defferrard, X. Bresson, P. Vandergheynst. [Convolutional Neural Networks on Graphs with Fast Localized Spectral Filtering](https://doi.org/10.48550/arXiv.1606.09375). NeurIPS 2016.
 [^15]: V. P. Dwivedi, C. K. Joshi, A. T. Luu, Y. Bengio, X. Bresson. [Benchmarking Graph Neural Networks](https://doi.org/10.48550/arXiv.2003.00982). JMLR 2022.
+[^16]: Z. Wang, S. Ji. [Second-Order Pooling for Graph Neural Networks](https://doi.org/10.48550/arXiv.2007.10467). IEEE 2020.
+[^17]: Z. Wu, P. Jain, M. A. Wright, A. Mirhoseini, J. E. Gonzalez, I. Stoica. [Representing Long-Range Context for Graph Neural Networks with Global Attention](https://doi.org/10.48550/arXiv.2201.08821). NeurIPS 2021.
