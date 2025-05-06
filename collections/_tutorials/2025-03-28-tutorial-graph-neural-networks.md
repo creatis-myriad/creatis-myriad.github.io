@@ -361,7 +361,7 @@ since the ordering of neighboring nodes is arbitrary.
 &nbsp;
 
 <div style="text-align:center">
-<img src="/collections/images/gnn/fwrd_prop.jpg" width=1100></div>
+<img src="/collections/images/gnn/message_passing.jpg" width=1100></div>
 <p style="text-align: center;font-style:italic">Figure 12. Simple example of message passing (from Sanchez-Lengeling et al.).</p>
 
 &nbsp;
