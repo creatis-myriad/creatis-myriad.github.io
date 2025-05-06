@@ -17,7 +17,7 @@ categories: gnn, graph, convolution, attention, isomorphism, deep learning
 - Model architectures presented are not exhaustive and were chosen for their popularity and relevance in the field.
   A comprehensive review[^11], published by Zhou et al. in 2020, provides a taxonomy of many more GNN
   methods and their applications.
-- The benchmark study by Dwivedi _et al._[^15] in 2022 provides detailed insights into GNN design that are too advanced
+- The benchmark study by Dwivedi et al.[^15] in 2022 provides detailed insights into GNN design that are too advanced
   for this introductory tutorial, such as edge features and positional encodings.
 
 &nbsp;
@@ -247,13 +247,7 @@ $$
 **Methods:**
 - Multi-layer message passing to refine local node representations by incorporating contextual information from 
   their neighborhoods. Finally, apply a readout function to aggregate node features into a single graph representation.
-
-**Pooling methods:**
-- Global pooling techniques called [readout functions](#focus-on-graph-level-classification) such as summing, averaging, 
-  or taking the maximum of node features, or using attention-based pooling.
-- Specific readouts like SortPool[^16] (learn a score per node, rank and select the top k embeddings, then concatenate
-  into a fixed-size graph vector) and GraphTrans[^17] (permutation-invariant Transformer with a global token for 
-  self-attention over node embeddings)
+- Readout step that transforms local node representations into a comprehensive global graph representation.
 
 <div style="text-align:center">
 <img src="/collections/images/gnn/graph_level_class.jpg" width=800></div>
@@ -321,6 +315,10 @@ h_G = \max_{v_i \in V} h_i^{(L)} \quad \text{(element-wise)}
 \\
 $$
 
+More complex readout methods have also been studied, like SortPool[^16] (learn a score per node, rank and select 
+the top k embeddings, then concatenate into a fixed-size graph vector) and GraphTrans[^17] (permutation-invariant 
+Transformer with a global token for self-attention over node embeddings)
+
 &nbsp;
 
 #### Classification head
@@ -346,13 +344,12 @@ probability distribution over the target classes.
 &nbsp;
 
 
-
-
 ## **Graph Deep Learning paradigm**
 
-Message passing[^13] [^12] lies at the heart of GNN architectures, this step is computed by the 
-[graph encoder](#encoder-architectures), enabling to generate a latent graph on which each node (and sometimes edge) 
-owns an embedded features representation.
+Message passing[^13] [^12] is a building block of many popular GNN architectures.
+Like convolutions for deep vision models, it is a general framework to process and extract features from the data.
+Typical [graph encoders](#encoder-architectures) are designed by stacking multiple message passing steps one after 
+the other, to refine features representation on each node (and sometimes edge) in the graph.
 
 ### Message passing intuition
 
@@ -364,8 +361,8 @@ since the ordering of neighboring nodes is arbitrary.
 &nbsp;
 
 <div style="text-align:center">
-<img src="/collections/images/gnn/message_passing.jpg" width=1100></div>
-<p style="text-align: center;font-style:italic">Figure 12. Forward propagation of a graph encoder using a message-passing layer.</p>
+<img src="/collections/images/gnn/fwrd_prop.jpg" width=1100></div>
+<p style="text-align: center;font-style:italic">Figure 12. Simple example of message passing (from Sanchez-Lengeling et al.).</p>
 
 &nbsp;
 
