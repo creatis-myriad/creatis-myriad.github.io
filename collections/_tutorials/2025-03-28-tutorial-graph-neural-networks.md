@@ -467,8 +467,8 @@ techniques to non-Euclidean domains[^14].
 
 #### Normalized augmented adjacency matrix
 
-The problem with the adjacency matrix $$A$$, as described [previously](#adjacency-matrix), is that only the links of 
-its neighbors are contained. So firstly, in order to include the node itself in the aggregation process, 
+The problem with the adjacency matrix $$A$$, as defined [previously](#adjacency-matrix), is that only the links of 
+its neighbors are contained. So firstly, to include each node in its own aggregation process, 
 we augment $$A$$ with the identity matrix $$Id_N$$ to add self-connections ($$A_{ii} = 1$$):
 
 <div style="text-align:center">
