@@ -781,9 +781,10 @@ isomorphic graphs. The functions are only computed on the neighbors of the cente
 &nbsp;
 
 This result doesn't mean that the $$\text{Sum}$$ is fully injective (it is not). However, it allows us to keep more 
-information about the structure of graphs, and thus presents a better expressiveness. So, this property is 
-particularly important to ensure the [readout function](#focus-on-graph-level-classification) to keep the 
-structure information from the GIN layers by using the $$\text{Sum}$$ function.
+information about the structure of graphs, and thus presents a better expressiveness. 
+It is particularly beneficial to enforce this injectiveness property in the 
+[readout function](#focus-on-graph-level-classification), since it operates on the full graph, 
+and lots of structural information could be lost with poorly injective readout functions.
 
 &nbsp;
 
