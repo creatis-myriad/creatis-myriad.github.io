@@ -83,7 +83,7 @@ A graph is formally defined as $$G = (V, E)$$, where:
 - $$V$$ is a set of nodes (or vertices) 
 - $$E \subseteq V \times V$$ is a set of edges (or links)
 
-> Note: More general definitions also includes $$U$$ to represent global attributes (or master node)[^11] [^4].
+> Note: More general definitions also include $$U$$ to represent global attributes (or a master node)[^11] [^4].
 
 <div style="text-align:center">
 <img src="/collections/images/gnn/undirected_graph.jpg" width=600></div>
