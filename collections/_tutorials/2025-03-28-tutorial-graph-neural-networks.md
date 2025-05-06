@@ -140,12 +140,11 @@ Similarly, the features of an edge $$(v_i, v_j)$$ (directed or not) are denoted 
 
 &nbsp;
 
-Through the layers of a GNN, these features are updated and aggregated, the denotation of node features at layer 
-$$l$$ is $$h_i^{(l)} \in \mathbb{R}^{d_n^{(l)}}$$, where $$d_n^{(l)}$$ is the number of features per node at layer 
+In typical GNNs, node features will be aggregated and updated across neighbors along the model's layers. Thus, node features at layer are usually denoted as $$l$$ is $$h_i^{(l)} \in \mathbb{R}^{d_n^{(l)}}$$, where $$d_n^{(l)}$$ is the number of features per node at layer 
 $$l$$.
-Concerning the edge features, the denotation remains generally unchanged through layers in the literature: 
+As for the edge features, they are typically not updated through layers, so their notation is generally unchanged: 
 $$e_{ij}^{(l)} \in \mathbb{R}^{d_e^{(l)}}$$.
-Thus, we can generalize the denotation for matrix computation as:
+Thus, a general matrix notation is:
 
 &nbsp;
 
