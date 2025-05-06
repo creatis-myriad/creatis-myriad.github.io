@@ -31,8 +31,8 @@ categories: gnn, graph, convolution, attention, isomorphism, deep learning
     - [Graph-level vs Node-level vs Edge-level tasks](#graph-level-vs-node-level-vs-edge-level-tasks)
     - [Focus on graph-level classification](#focus-on-graph-level-classification)
 - [**Graph Deep Learning paradigm**](#graph-deep-learning-paradigm)
-    - [Message passing mechanism](#message-passing-mechanism)
-    - [Permutation invariance and neighborhood aggregation](#permutation-invariance-and-neighborhood-aggregation)
+    - [Message passing intuition](#message-passing-intuition)
+    - [Mathematical formalism](#mathematical-formalism)
 - [**Encoder architectures**](#encoder-architectures)
     - [GCN • Graph Convolutional Network](#gcn--graph-convolutional-network)
     - [GAT • Graph Attention Network](#gat--graph-attention-network)
@@ -354,74 +354,52 @@ Message passing[^13] [^12] lies at the heart of GNN architectures, this step is 
 [graph encoder](#encoder-architectures), enabling to generate a latent graph on which each node (and sometimes edge) 
 owns an embedded features representation.
 
-### Message passing mechanism
-
-#### Intuition
+### Message passing intuition
 
 Every node $$i$$ sends a message to each of its neighbors $$j$$ and, in turn, receives messages from those neighbors. 
 This mechanism enables local information to be disseminated throughout the graph, allowing each node to incorporate 
 contextual information from its surroundings. The aggregation process has to ensure permutation invariance, 
 since the ordering of neighboring nodes is arbitrary.
 
+&nbsp;
+
 <div style="text-align:center">
-<img src="/collections/images/gnn/forward_prop.jpg" width=650></div>
-<p style="text-align: center;font-style:italic">Figure 12. Forward propagation of a graph encoder using message-passing layers.</p>
+<img src="/collections/images/gnn/message_passing.jpg" width=1100></div>
+<p style="text-align: center;font-style:italic">Figure 12. Forward propagation of a graph encoder using a message-passing layer.</p>
 
 &nbsp;
 
-#### Mathematical formalism
+### Mathematical formalism
 
 In each layer, every node $$v_i$$ updates its feature representation by aggregating messages from its neighbors 
 such as:
 
 $$
+\,\\
 h_i^{(l+1)} = \text{UPDATE}\Bigl( h_i^{(l)}, \; \text{AGGREGATE}\Bigl( \bigl\{ \text{MESSAGE}\bigl( h_j^{(l)}, 
 \, h_i^{(l)}, \, e_{ij}^{(l)} \bigr) \mid j \in \mathcal{N}_i \bigr\} \Bigr) \Bigr)
+\\
+$$
+
+With the guarantee that the message passing mechanism is permutation invariant, 
+i.e. the order of messages does not matter.
+This means that the aggregation function must satisfy the following property to faithfully reflect the graph structure:
+
+$$
+\,\\
+\text{AGGREGATE}\left( \{a, b, c\} \right) = \text{AGGREGATE}\left( \{b, c, a\} \right) = \dots
 \\
 $$
 
 Where:
   - $$\text{MESSAGE}$$: Computes a message from a neighbor $$v_j$$ by combining its features $$h_j^{(l)}$$
     (and optionally the central node’s features $$h_i^{(l)}$$ and edge features $$e_{ij}^{(l)}$$).
-  - $$\text{AGGREGATE}$$: A permutation invariant function (e.g., sum, mean, or max) that consolidates messages from 
+  - $$\text{AGGREGATE}$$: A function (e.g., sum, mean, or max) that consolidates messages from 
     all neighbors.
   - $$\text{UPDATE}$$: Merges the aggregated message with the current node state to produce the updated representation.
   - $$\mathcal{N}_i \subset \mathbb{R} $$ denote the set of neighbors of $$v_i$$.
 
 > Note: $$\mathcal{N}_i$$ can sometimes includes $$i$$ itself, but it is not the convention used in this tutorial.
-
-&nbsp;
-
-### Permutation invariance and neighborhood aggregation
-
-A key challenge in processing graph data is that the neighbors of a node are unordered. 
-To ensure that the node representations are independent of the order in which neighbor messages are received, 
-the aggregation function must be permutation invariant.
-
-For a node $$v_i$$, the aggregated message is computed as:
-
-$$
-m_i^{(l)} = \text{AGGREGATE}\Bigl( \bigl\{ \text{MESSAGE}\bigl( h_j^{(l)}, e_{ij}^{(l)} \bigr) \mid j \in 
-\mathcal{N}_i \bigr\} \Bigr)
-\\
-$$
-
-Since functions like summation, averaging, or maximum are commutative and associative, they guarantee that:
-
-$$
-\text{AGGREGATE}\left( \{a, b, c\} \right) = \text{AGGREGATE}\left( \{b, c, a\} \right) = \dots
-\\
-$$
-
-The node update then becomes:
-
-$$
-h_i^{(l+1)} = \text{UPDATE}\bigl( h_i^{(l)}, m_i^{(l)} \bigr)
-\\
-$$
-
-This design ensures that the final node embedding is invariant to any permutation of its neighbors, 
-thereby faithfully reflecting the true structure of the graph.
 
 &nbsp;
 
