@@ -68,8 +68,8 @@ of connectivity, making them ideal for modeling social networks, transportation 
 
 &nbsp;
 
-Whereas a pixel in an image is defined in space in relation to its own coordinates, a node in a graph has no 
-coordinates, but is defined in space in a relational way in relation to which neighbor it is connected to. 
+Whereas a pixel in an image is defined in space by its own coordinates, a node in a graph has no 
+coordinates. Rather, it is defined in space only in relation to its neighbors. 
 Think of it as an image where the “neighboring” pixels aren’t just those directly adjacent, but can be any pixels 
 that share a meaningful connection, forming a network that captures more complex and abstract interactions.
 
