@@ -246,7 +246,7 @@ $$
 
 **Methods:**
 - Multi-layer message passing to refine local node representations by incorporating contextual information from 
-  their neighborhoods. Finally, apply a readout function to aggregate node features into a single graph representation.
+  their neighborhoods.
 - Readout step that transforms local node representations into a comprehensive global graph representation.
 
 <div style="text-align:center">
