@@ -80,7 +80,7 @@ And in practice, we see that denoisers indeed provide very good approximations o
 
 <div style="text-align:center">
 <img src="/collections/images/noise2score/estimated_score.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 2. On the left the exact score of the Gaussian mixture, and on the right the approximated version usign a 3-layer MLP. Note that the score is well approximated in high density regions, but is less precise in low density regions.</p>
+<p style="text-align: center;font-style:italic">Figure 2. On the left the exact score of the Gaussian mixture, and on the right the approximated version using a 3-layer MLP trained with the Gaussian denoising loss (MSE). Note that the score is well approximated in high density regions, but is less precise in low density regions.</p>
 
 Additional results [^3] show that the MSE training objective is actually equivalent to the score matching objective, which explicitely tries to match the score function with the output of the network.
 
@@ -93,7 +93,7 @@ So training our neural nets to remove Gaussian noise is indeed equivalent to lea
 A whole lot of other methods have already tried to tackle the self-supervised denoising problem. In the paper, the authors focus their comparisons with two families of methods:
 
 - **Noise2X**: the first family is about integrating additional degradation to images to create artificial pairs
-- **SURE**: the second one is based on Stein's Unbiased Risk Estimate, which doesn't require pairs are all
+- **SURE**: the second one is based on Stein's Unbiased Risk Estimate, which doesn't require pairs at all
 
 ## Noise2X methods
 
@@ -139,7 +139,7 @@ where $$\zeta$$ is an "artificial parameter" to control the strength of the Pois
 
 $$\mathbb{E} \left[ x \mid y \right] = \frac{\beta y}{(\alpha - 1) - y \nabla \log p(y)}$$
 
-where $$\alpha$$ and $$\beta$$ are the parameters of the Gamma distribution
+$$\alpha$$ and $$\beta$$ are the parameters of the Gamma distribution
 
 # Score estimation
 
@@ -151,7 +151,7 @@ $$\mathcal{L}_{DSM} = \| y - D_{\theta}(y + \sigma \epsilon) \|^2$$
 
 where $$\sigma$$ is the variance of the Gaussian noise and $$\epsilon \sim \mathcal{N}(0, 1)$$.
 
-To do this they, use a slightly modified version of a denoising autoencoder called an *Amortized Residual DAE* (AR-DAE).
+To do this, they use a slightly modified version of a denoising autoencoder called an *Amortized Residual DAE* (AR-DAE).
 It takes the specific form:
 
 $$D_{\theta} (x) = x + \sigma^2 R_{\theta} (x)$$
@@ -166,10 +166,17 @@ where again $$\sigma$$ is the variance of the Gaussian noise and $$\epsilon \sim
 
 So the same strategy can be used (same network, same training), no matter the noise distribution.
 But **you need to retrain for each noise distribution**.
+You also need to **know which type of noise** is present in your data, and it also needs to be **in the exponential family**.
+For instance in emission tomography, the noise is known to be Poisson, but in ultrasound and magnetic resonance imaging, the noise distribution is harder to model.
+Another such instance of complex noise modelisation is the single-pixel camera.
 
 # Results
 
-Basically the method performs really well, better than SURE and Noise2X methods, and almost as good as fully supervised neural networks.
+The authors simulate noisy observations by corrupting natural images with Gaussian, Poisson, or Gamma noise.
+Their method demonstrates strong performances, outperforming SURE and Noise2X, and approaching the results of fully supervised neural networks.
+In their experiments, the same network architecture is used across all training objectives, including the fully supervised setting where the model is trained with paired ground-truth and noisy images.
+As expected, the fully supervised setup yields the highest performance, which is confirmed empirically.
+However, as previously noted, acquiring clean ground-truth data for training is often difficult or infeasible in many real-world scenarios.
 
 <div style="text-align:center">
 <img src="/collections/images/noise2score/tab_results.jpg" width=800></div>
