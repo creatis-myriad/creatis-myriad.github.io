@@ -92,7 +92,7 @@ For Windows users, here is a quick guide to install Ruby environment. Please vis
 
 
 #### Download and install Ruby + Devkit
-1. Grab the latest version of RubyInstaller from [here](https://rubyinstaller.org/downloads/).
+1. Grab the version 3.1.2-1 of RubyInstaller from [here](https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-3.1.2-1/rubyinstaller-devkit-3.1.2-1-x86.exe).
 2. Opt for default installation. Dont forget to check the `ridk install` on the last stage of the installation wizard.
 
 
