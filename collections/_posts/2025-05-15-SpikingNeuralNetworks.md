@@ -29,9 +29,9 @@ To appropriately model neurons in a computer, a certain number of concepts must 
 - **Axon:** Cable-like structure that carries the neuron signal.
 - **Axon terminal:**  End of the neuron from which connections to other neurons are made (through neurotransmitter)
 
-<div style="text-align:center">
-<img src="/collections/images/spiking_neural_networks/Neuron.png" width=400></div>
-<p style="text-align: center;font-style:italic">Figure 1. Illustration of a Neuron [^1] .</p>
+<div style="text-align:left">
+<img src="/collections/images/spiking_neural_networks/Neuron.jpg" width=400></div>
+*Figure 1. Illustration of a Neuron [^1]*
 
 
 ### Membrane potential
@@ -42,13 +42,13 @@ At rest, the membrane potential is around -70 mV.
 
 The number of ions inside and outside the cell membrane defines the membrane potential. The main ions that affect the membrane potential are 
 
-- Potassium ($K^+$) : Positive ions, more prevalent inside the cell. 
-- Sodium ($Na^+$): Positive ions, more prevalent outside the cell. 
-- Calcium ($Cl^-$): Negative ions, more prevalent outside the cell. 
+- Potassium ($$K^+$$) : Positive ions, more prevalent inside the cell. 
+- Sodium ($$Na^+$$): Positive ions, more prevalent outside the cell. 
+- Calcium ($$Cl^-$$): Negative ions, more prevalent outside the cell. 
 
-<div style="text-align:center">
-<img src="/collections/images/spiking_neural_networks/Basis_of_Membrane_Potential2-en.png" width=300></div>
-<p style="text-align: center;font-style:italic">Figure 2. Illustration of a cell membrane [^2] .</p>
+<div style="text-align:left">
+<img src="/collections/images/spiking_neural_networks/Basis_of_Membrane_Potential2-en.jpg" width=300></div>
+*Figure 2. Illustration of a cell membrane [^2]*
 
 The membrane potential can be expressed mathematically with the  Goldman-Hodgkin-Katz (GHK) equation, 
 
@@ -57,9 +57,9 @@ v_m = \frac{RT}{F} ln \frac{P_K [ K^{+} ]_{out} + P_{Na} [ Na^{+} ]_{out} + P_{C
 $$
 
 where 
-* $P_{ion}$ is the permeability of the membrane for a given ion.
-* $\[ion\]_{out}$ is the concentration of an ion outside the neuron
-* $\[ion\]_{in}$ is the concentration of an ion inside the neuron.
+* $$P_{ion}$$ is the permeability of the membrane for a given ion.
+* $$[ion]_{out}$$ is the concentration of an ion outside the neuron
+* $$[ion]_{in}$$ is the concentration of an ion inside the neuron.
 
 ### Action potential
 
@@ -69,17 +69,20 @@ If the input stimulus is large enough causing the membrane potential to surpass 
 The increase in membrane voltage causes the permeability of sodium ions to increase leading to sodium ions rushing into the cell further increasing the membrane potential.
 At the peak of the action potential, the sodium permeability goes back down and the potassium permeability increases causing an outflux of potassium ions causing the membrane potential to fall, below the resting potential. 
 
-
+<!-- 
 <div style="display: flex; justify-content: center; gap: 2rem;">
   <figure style="margin: 0; text-align: center;">
-    <img src="/collections/images/spiking_neural_networks/Action_potential.png" width="250" alt="Neuron">
+    <img src="/collections/images/spiking_neural_networks/Action_potential.jpg" width="250" alt="Neuron">
     <figcaption style="font-style: italic;">Figure 3a. Membrane potential during action potential [^3]</figcaption>
   </figure>
   <figure style="margin: 0; text-align: center;">
     <img src="/collections/images/spiking_neural_networks/neuronal_action_potential_timecourse_of_pna_and_pk.jpg" width="400" alt="Synapse">
     <figcaption style="font-style: italic;">Figure 3b. Membrane permeability during action potential [^4]. </figcaption>
   </figure>
-</div>
+</div> -->
+<div style="text-align:left">
+<img src="/collections/images/spiking_neural_networks/action_potential_and_potential_timecourse.jpg" width=800></div>
+*Figure 3. (left) Membrane potential during action potential [^3]. (right) Membrane permeability during action potential [^4].*
 
 The action potential is followed by a refractory period. Two types of refractory periods exist:
 
@@ -106,9 +109,9 @@ Different paradigms of STDP exist but the most common is the following:
 * Synaptic weights decrease when the post-synaptic neuron spikes before the pre-synaptic neuron. 
 
 The size of the weight change is dependent on the time between the two spikes. 
-<div style="text-align:center">
+<div style="text-align:left">
 <img src="/collections/images/spiking_neural_networks/STDP.jpg" width=400></div>
-<p style="text-align: center;font-style:italic">Example of STDP [^5] .</p>
+*Figure 4. Example of STDP [^5].*
 
 
 # Modeling Spiking Neural networks
@@ -116,9 +119,9 @@ The size of the weight change is dependent on the time between the two spikes.
 ## Neuron models 
 Many mathematical models have been proposed to represent the behavior of a neuron. Often, these models have to balance biological plausibility and computational complexity. 
 
-<div style="text-align:center">
-<img src="/collections/images/spiking_neural_networks/models.png" width=400></div>
-<p style="text-align: center;font-style:italic">Figure 1. Neuron models and their relative complexities [^6] .</p>
+<div style="text-align:left">
+<img src="/collections/images/spiking_neural_networks/models.jpg" width=400></div>
+*Figure 5. Neuron models and their relative complexities [^6].*
 
 The most realistic, but also most complex, model is the Hodgkin–Huxley. The model is made of several differential equations representing the neuron potential according to inputs. 
 
@@ -131,9 +134,9 @@ To interact with mathematical models of neurons, we must transmit data to them. 
 - Time to spike coding: The neuron spikes once with a delay determined by the input amplitude.
 - Rate code: the neuron spikes at a frequency determined by the input amplitude (with optional stochasticity)
 
-<div style="text-align:center">
+<div style="text-align:left">
 <img src="/collections/images/spiking_neural_networks/encoding.jpg" width=500></div>
-<p style="text-align: center;font-style:italic">Example of input encodings.</p>
+*Figure 6. Example of input encodings.*
 
 
 ## Example of neuron function and interaction:
@@ -143,18 +146,18 @@ Different Python packages can be used to implement neuron models. The packages a
 Here are examples of neuron models using the Python package *Brain2* [^7].  All neurons have a threshold of 1V and a reset voltage of -0.5V. 
 
 The first neuron is a leaky integrate and fire. Due to its differential equations, the voltage increases and fires on its own. 
-<div style="text-align:center">
-<img src="/collections/images/spiking_neural_networks/brain_ex1.png" width=400></div>
+<div style="text-align:left">
+<img src="/collections/images/spiking_neural_networks/brain_ex1.jpg" width=400></div>
 
 We can add a second neuron with a synapse. When the pre-synaptic neuron (green) spikes, the voltage of the post-synaptic neuron increases by 0.2V.
 
-<div style="text-align:center">
-<img src="/collections/images/spiking_neural_networks/brain_ex2.png" width=400></div>
+<div style="text-align:left">
+<img src="/collections/images/spiking_neural_networks/brain_ex2.jpg" width=400></div>
 
 We can add a second neuron with a synapse. Here the red pre-synaptic neuron is connected to the blue neuron with an inhibitory synapse and reduces its voltage by 0.5V when it spikes. 
 
-<div style="text-align:center">
-<img src="/collections/images/spiking_neural_networks/brain_ex3.png" width=400></div>
+<div style="text-align:left">
+<img src="/collections/images/spiking_neural_networks/brain_ex3.jpg" width=400></div>
 
 ```python
 
@@ -220,19 +223,19 @@ $$
 
 where
 
-- $E_{rest}$ is the resting membrane potential.
-- $E_{exc}$ and $E_{inh}$ are the equilibrium potentials of excitatory and inhibitory synapses.
-- $g_e$ and $g_i$ are the conductances of excitatory and inhibitory synapses.
-- $\tau$ is a time constant 
+- $$E_{rest}$$ is the resting membrane potential.
+- $$E_{exc}$$ and $$E_{inh}$$ are the equilibrium potentials of excitatory and inhibitory synapses.
+- $$g_e$$ and $$g_i$$ are the conductances of excitatory and inhibitory synapses.
+- $$\tau$$ is a time constant 
 
-Each neuron has a threshold potential $v_{thresh}$ at which the neuron spikes and a reset potential $v_{reset}$ after the spike.
+Each neuron has a threshold potential $$v_{thresh}$$ at which the neuron spikes and a reset potential $$v_{reset}$$ after the spike.
 
 > The authors explain that they use biologically plausible ranges for almost all the parameters. They do not give these values in the code but direct readers to the code.
 > Unfortunately this means that some values are not explained. For example $$ E_{exc} $$ seems to be 0 according to the code without any explanation. 
 
 ### Synapse model
 
-Instead of directly modifying the potential of a cell, the synapse affects the conductance. Each synapse has a weight $w$ which is used to increase the post-synaptic neuron's conductance. 
+Instead of directly modifying the potential of a cell, the synapse affects the conductance. Each synapse has a weight $$w$$ which is used to increase the post-synaptic neuron's conductance. 
 If the synapse is excitatory, the excitatory conductance $$g_e$$ of the post-synaptic neuron is increased by $$w$$ when the pre-synaptic neuron fires. The same applies to the inhibitory synapse. 
 
 Both the excitatory and inhibitory conductances decay using the following equation 
@@ -240,7 +243,7 @@ $$
 \tau_{g} \frac{dg}{dt} = - g
 $$
 
-where $\tau_{g}$ is a time constant for the conductance (different for excitatory and inhibitory).
+where $$\tau_{g}$$ is a time constant for the conductance (different for excitatory and inhibitory).
 
 ### Network architecture 
 
@@ -256,9 +259,9 @@ The synapses in the neuron are shown in the following figure (network with 3 inp
 2. The excitatory neurons are connected to the inhibitory in a one-to-one fashion.
 3. The inhibitory neurons are connected to all excitatory except the one with which it already has a connection. 
 
-<div style="text-align:center">
-<img src="/collections/images/spiking_neural_networks/snn_architecture.png" width=500></div>
-<p style="text-align: center;font-style:italic">Network architecture</p>
+<div style="text-align:left">
+<img src="/collections/images/spiking_neural_networks/snn_architecture.jpg" width=500></div>
+*Figure 7. Network architecture*
 
 
 Connection all the excitatory neurons to inhibitory neurons will allow the first neuron to spike to suppress all the other excitatory neurons. This concept is called **lateral inhibition**. 
@@ -292,7 +295,7 @@ The threshold for each neuron is given by the following equation:
 
 $$v_t = v_{thresh} + \theta$$
 
-The value of $theta$ increases each time the neuron fires and decreases exponentially. The threshold is therefore higher if several discharges occur in succession and decreases again if the discharges are spaced apart.
+The value of $$theta$$ increases each time the neuron fires and decreases exponentially. The threshold is therefore higher if several discharges occur in succession and decreases again if the discharges are spaced apart.
 
 ## Inference
 
@@ -310,9 +313,9 @@ The best version of their method achieves an accuracy of 95% on the MNIST test s
 During training (and once it is complete), the weights of classification neurons for each class can be viewed in 28x28 pixel images showing their receptive field. 
 The final image was generated by training on a limited number of epochs with only 1000 training images. Training with the full dataset for a longer period would result in clearer numbers (see paper figures). 
 
-<div style="text-align:center">
+<div style="text-align:left">
 <img src="/collections/images/spiking_neural_networks/receptivefield.jpg" width=1000></div>
-<p style="text-align: center;font-style:italic">Receptive fields of classification neurons during training.</p>
+*Figure 8. Receptive fields of classification neurons during training.*
 
 
 ## Code 
@@ -330,7 +333,7 @@ A simpler version is provided in this [Google Colab](https://colab.research.goog
 3. Spiking neural networks have the potential to greatly reduce the computational cost of neural networks. But why ? 
 
 Imagine a single artificial neuron (dot product) and a spiking neuron both receiving the following input: $$x = [0, 0.1, 0.01, 0.02, 5, 100, 0.4]$$. 
-The artificial neuron will compute the dot product with a weight vector $w$. Even if many of the inputs will have little effect on the output, the computation is still required.
+The artificial neuron will compute the dot product with a weight vector $$w$$. Even if many of the inputs will have little effect on the output, the computation is still required.
 The spiking neuron, on the other hand, assuming it is preceded by other spiking neurons, will only compute the inputs for which a spike is generated. This means that small values in the input $$x$$ that do not generate a spike are not computed. 
 
 Therefore, spiking neural networks offer a sparse alternative to the dense computation of traditional artificial neural networks. 
@@ -339,11 +342,11 @@ Therefore, spiking neural networks offer a sparse alternative to the dense compu
 
 # References 
 
-[^1] https://commons.wikimedia.org/wiki/File:Neuron.svg
-[^2] https://commons.wikimedia.org/wiki/File:Basis_of_Membrane_Potential2-en.svg
-[^3] https://commons.wikimedia.org/wiki/File:Action_potential.svg
-[^4] https://www.physiologyweb.com/lecture_notes/neuronal_action_potential/figs/neuronal_action_potential_timecourse_of_pna_and_pk_jpg_zgn9dUl70MnJPf2CqaZ5uoL3BBD6r9fW.html
-[^5] https://commons.wikimedia.org/wiki/File:STDP-Fig1.jpg
-[^6] https://www.izhikevich.org/publications/whichmod.pdf
-[^7] https://brian2.readthedocs.io/en/stable/
+[^1]: https://commons.wikimedia.org/wiki/File:Neuron.svg
+[^2]: https://commons.wikimedia.org/wiki/File:Basis_of_Membrane_Potential2-en.svg
+[^3]: https://commons.wikimedia.org/wiki/File:Action_potential.svg
+[^4]: https://www.physiologyweb.com/lecture_notes/neuronal_action_potential/figs/neuronal_action_potential_timecourse_of_pna_and_pk_jpg_zgn9dUl70MnJPf2CqaZ5uoL3BBD6r9fW.html
+[^5]: https://commons.wikimedia.org/wiki/File:STDP-Fig1.jpg
+[^6]: https://www.izhikevich.org/publications/whichmod.pdf
+[^7]: https://brian2.readthedocs.io/en/stable/
 
