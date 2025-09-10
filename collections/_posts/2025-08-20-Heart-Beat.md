@@ -25,7 +25,7 @@ pdf: "https://arxiv.org/pdf/2406.14098"
 
 # Motivations
 
-* Generate controlled syntehtic ultrasound video to accelerate novice training and intelligent systeme developpement 
+* Generate controlled synthetic ultrasound videos to accelerate novice training and intelligent systems development
 * Solve data scarcity issue
 
 # Methodology
