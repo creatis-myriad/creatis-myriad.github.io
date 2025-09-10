@@ -123,8 +123,8 @@ be finetuned for each unique combination of multimodal conditions every time, en
 
 * Comparison with two other existing methods: VideoComposer and MoonShot
 * Three metrics were used to evaluate the performance  
-  ➔ Fréchet Inception Distance (FID) for image quality evaluation in feature level  
-  ➔ Fréchet Video Distance (FVD) for visual quality and temporal consistency assessment in video level  
+  ➔ Fréchet Inception Distance (FID) for image quality evaluation at the feature level  
+  ➔ Fréchet Video Distance (FVD) for visual quality and temporal consistency assessment at the video level  
   ➔ Structure Similarity Index (SSIM) score to assess the controllability  
 
 <div style="text-align:center">
