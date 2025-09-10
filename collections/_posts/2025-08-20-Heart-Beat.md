@@ -74,7 +74,7 @@ where: $$Q^T, Q^I \in \mathbb{R}^{B \times H \times W \times C}$$, $$K^T, K^I, V
 * All frames / slices were resized to $$256 \times 256$$
 * LDM was developed upon Stable Diffusion and initialized using the public pretrained weights
 * During finetuning, the spatial weights were frozen except for the newly added optical flow encoder and kept the temporal layers trainable
-* Batch size of 64 and 16 for first and second stage training
+* Batch sizes of 64 and 16 for the first and second stages of training
 
 > During whole training, all conditions were jointly used. In this way, the model was not required to
 be finetuned for each unique combination of multimodal conditions every time and enables flexibly dropping several conditions during inference
