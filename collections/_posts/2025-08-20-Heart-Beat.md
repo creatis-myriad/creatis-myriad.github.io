@@ -19,7 +19,7 @@ pdf: "https://arxiv.org/pdf/2406.14098"
 
 * Develop a diffusion-based framework for controllable and high fidelity echocardiography video synthesis
 * Integrate 7 different conditions simultaneously to guide controllable generation
-* Decouple the visual concepts and temporal dynamics learning using a two-stage training scheme for simplifying the model training
+* Decouple the visual concepts and temporal dynamics learning using a two-stage training scheme to simplify model training
 * Assess generalization capacity by training mask-guided cardiac MRI in few-shots
 * Evaluation from two public datasets: CAMUS (echocardiography) and M&Ms (cardiac MRI)
 
