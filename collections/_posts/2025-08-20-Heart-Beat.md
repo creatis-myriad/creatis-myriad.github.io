@@ -134,7 +134,7 @@ be finetuned for each unique combination of multimodal conditions every time, en
 
 # Conclusions
 
-* This paper presents a novel diffusion-based HeartBeat framework for controllable and flexible ECHO video synthesis
+* This paper presents a novel diffusion-based HeartBeat framework for controllable and flexible echocardiography video synthesis
 * Multimodal control information were integrated, including local and global conditions to separately provide fine- and coarse-grained guidance
 * Generalization was investigated from echocardiography 2D+t to 3D cardiac MRI image synthesis 
 * The interest of the integrated text condition ("An ECHO with 4/2-chamber view") appears to be limited but opens the door for more sophistigated conditionings 
