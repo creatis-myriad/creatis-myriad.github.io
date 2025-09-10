@@ -36,7 +36,7 @@ pdf: "https://arxiv.org/pdf/2406.14098"
 
 * ***Pretraining stage***  
   ➔ Train an LDM (Latent Diffusion Model) to learn visual concepts from 2D images  
-  ➔ A standard 2D UNet is employed as for the denoising network for controllable image generation  
+  ➔ A standard 2D UNet is used as the denoising network for controllable image generation
   ➔ UNet is composed of stacked blocks, where each contains a spatial convolution layer, a spatial self-attention layer, and a cross-attention layer that controls the synthesis by text and image  
   ➔ Two types of conditioning: local conditions for fine-grained control (<span style="color:blue">sketch</span>, <span style="color:blue">mask</span>, <span style="color:blue">mitral valve skeleton</span>) and global conditions for coarse-grained control (<span style="color:blue">image prior</span> encoded from a pretrained MedSAM image encoder and <span style="color:blue">text</span> from the pretrained CLIP text encoder)  
   ➔ Two conditioning scheme: summation + concatenation from the input noisy image for the local conditions and cross-attention for global conditions  
