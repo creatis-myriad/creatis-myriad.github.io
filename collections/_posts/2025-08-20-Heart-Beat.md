@@ -76,8 +76,8 @@ where: $$Q^T, Q^I \in \mathbb{R}^{B \times H \times W \times C}$$, $$K^T, K^I, V
 * During finetuning, the spatial weights were frozen except for the newly added optical flow encoder and kept the temporal layers trainable
 * Batch sizes of 64 and 16 for the first and second stages of training
 
-> During whole training, all conditions were jointly used. In this way, the model was not required to
-be finetuned for each unique combination of multimodal conditions every time and enables flexibly dropping several conditions during inference
+> During the whole training, all conditions were jointly used. This way, the model did not have to
+be finetuned for each unique combination of multimodal conditions every time, enabling the flexibility to drop several conditions during inference
 
 * The CMR synthesizer was merely conditioned on mask volumes, and initialized with US-trained HeartBeat.
 * The learning rate was initialized to 1e-4 after 500 steps of warm-up strategy and decayed by a cosine annealing scheduler
