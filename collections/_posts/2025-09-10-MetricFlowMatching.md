@@ -25,17 +25,17 @@ pdf: "https://arxiv.org/pdf/2405.14780"
 
 Let's consider a source distribution $$p_0$$ and a target distribution $$p_1$$. We are looking to find a map $$f$$ that pushes forward $$p_0$$ to $$p_1$$. More specifically,Flow Matching, in line with (continuous) Normalizing Flow and Diffusion Models, suppose that there exist a vector field $$u_t$$ that can generate the distribution $$p_1$$ starting at $$p_0$$. 
 
-However, $$u_t$$ is typically intractable and we need a workaround to estime it. Without going into technical details, we model the vector field by a neural network $$v_{t,\theta}$$, which is trained to minimize the following objective:
+However, $$u_t$$ is typically intractable and we need a workaround to estimate it. Without going into technical details, we model the vector field by a neural network $$v_{t,\theta}$$, which is trained to minimize the following objective:
 
 $$
-\mathcal{L}(\theta) = \mathbb{E}_{t, (x_0,x_1) \sim q} \lVert v_{t, \theta} (x_t) - \dot{x_t} \rVert ^2 = \mathbb{E}_{t, (x_0,x_1) \sim q} \lVert v_{t, \theta} (x_t) - (x_1 - x_2) \rVert ^2
+\mathcal{L}(\theta) = \mathbb{E}_{t, (x_0,x_1) \sim q} \lVert v_{t, \theta} (x_t) - \dot{x_t} \rVert ^2 = \mathbb{E}_{t, (x_0,x_1) \sim q} \lVert v_{t, \theta} (x_t) - (x_1 - x_0) \rVert ^2
 $$
 
 where $$x_t$$ are called the *interpolants* from $$x_0$$ to $$x_1$$. In practice, we use linear interpolants because we can compute their derivatives. If $$x_0$$ and $$x_1$$ are respectively drawn from $$p_0$$ and $$p_1$$, we compute their linear interpolation $$x_t = t x_1 + (1-t)x_0$$, pass it through the neural network and try to match its output with the vector $$u_t = x_1 - x_0$$. 
 
 Compared to related generative models, Flow Matching has several advantages:
 - It provides a solution to Conditional Normalizing Flows, which previously needed simulation for generating vector fields, with heavy computational cost, making it unscalable to large datasets and inputs.
-- The objective is simpler than DDPM and allows to find straighter paths for generation. Moreover, because of those straighter paths and the fact that , it allows easier accelerating sampling techniques. 
+- The objective is simpler than DDPM and allows to find straighter paths for generation. Moreover, because of those straighter paths and the fact that the target vectors $$u_t$$ are constant over time $$t$$, it allows easier accelerating sampling techniques. 
 - Finally, contrary to standard diffusion models, the formalism of Flow Matching is not bounded by a Gaussian target distribution and thus allows to find generative paths between any source and target distributions.
 
 &nbsp;
@@ -95,7 +95,7 @@ Once the RBF network has been trained on the empirical data to estimate its mani
 Now that we empirically know how to correct the straight trajectories to make them stay close to the data manifold, we can train our final network $$v_{t,\theta}$$ to estimate the vector field following the new trajectories, with the loss:
 
 $$
-\mathcal{L}_{\text{MFM}} = \mathbb{R}_{t, (x_0,x_1)\sim q} [ \lVert v_{t,\theta} (x_{t,\eta^*}) - \dot{x}_{t, \eta^*} \rVert^2 ]
+\mathcal{L}_{\text{MFM}} = \mathbb{E}_{t, (x_0,x_1)\sim q} [ \lVert v_{t,\theta} (x_{t,\eta^*}) - \dot{x}_{t, \eta^*} \rVert^2 ]
 $$
 
 > From a technical point of view, the function jvc from PyTorch is used to compute the time derivatives of the output of the networks, such as $$\dot{\psi_{t,\eta}}$$.
