@@ -42,7 +42,7 @@ pdf: "https://arxiv.org/pdf/2406.14098"
   ➔ Two conditioning scheme: summation + concatenation from the input noisy image for the local conditions and cross-attention for global conditions  
   ➔ Global condition injection method: two separate Query-Key-Value (QKV) projections are added and optimized for both conditions:    
   $$CrossAttention(Q^T, K^T, V^T) + CrossAttention(Q^I, K^I, V^I)$$    
-where: $$Q^T, Q^I \in \mathbb{R}^{B \times H \times W \times C}$$, $$K^T, K^I, V^T, V^I \in \mathbb{R}^{B \times N \times C}$$, with $$B$$ the batchsize, $$H$$ the height, $$W$$ the width, $$N$$ the token numbers of text ($$T$$) and image prior condition ($$I$$), and $$C$$ the hidden dimension  
+where: $$Q^T, Q^I \in \mathbb{R}^{B \times H \times W \times C}$$, $$K^T, K^I, V^T, V^I \in \mathbb{R}^{B \times N \times C}$$, with $$B$$ the batch size, $$H$$ the height, $$W$$ the width, $$N$$ the numbers of tokens from text ($$T$$) and image ($$I$$) prior conditions, and $$C$$ the hidden dimension  
   ➔ Learn a global adapter to align the global image prior embeddings and the text embeddings
 
 
@@ -73,7 +73,7 @@ where: $$Q^T, Q^I \in \mathbb{R}^{B \times H \times W \times C}$$, $$K^T, K^I, V
 * For few-shot generalization validation, the authors employed 50 CMR volumes from M&Ms Challenge as the training set
 * All frames / slices were resized to $$256 \times 256$$
 * LDM was developed upon Stable Diffusion and initialized using the public pretrained weights
-* During finetuning, the spatial weights were frozen except for the newly added optical flow encoder and kept the temporal layers trainable
+* During finetuning, the spatial weights were frozen except for the newly added optical flow encoder and the temporal layers which were also kept trainable
 * Batch sizes of 64 and 16 for the first and second stages of training
 
 > During the whole training, all conditions were jointly used. This way, the model did not have to
@@ -96,7 +96,7 @@ be finetuned for each unique combination of multimodal conditions every time, en
   ➔ Sketch-controlled echocardiography video synthesis  
   ➔ Mitral valve motion-controlled echocardiography video synthesis  
   ➔ Various conditions-controlled echocardiography video synthesis  
-  ➔ Generalize to 3D CMR synthesis
+  ➔ Generalization to 3D CMR synthesis
 
 <div style="text-align:center">
 <img src="/collections/images/heart-beat/heart-beat-results-part1-1.jpg" width=600></div>
