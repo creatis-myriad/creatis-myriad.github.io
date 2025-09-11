@@ -71,7 +71,7 @@ Metric Flow Matching is made of three main steps:
 
 The authors discuss two metrics, LAND and RBF, but we will focus solely on the latter, as it is the one that can be used in higher dimensional problems.
 
-The ??? define a metric of the form $$G_{\text{RBF}} = (\text{diag}(\tilde{h}(x)) + \epsilon I)^{-1}$$ with :
+They define a metric of the form $$G_{\text{RBF}} = (\text{diag}(\tilde{h}(x)) + \epsilon I)^{-1}$$ with :
 
 $$
 h_{\alpha}(x) = \sum_{k=1}^{K} \omega_{\alpha,k}(x) \exp{( - \frac{\lambda_{\alpha,k}}{2} \lVert x - \hat{x}_k \rVert^2)} 
