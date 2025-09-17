@@ -71,8 +71,8 @@ curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-doctor | 
 
 #### Install Ruby
 ```shell
-rbenv install -v 2.7.1
-rbenv global 2.7.1
+rbenv install -v 3.2.9
+rbenv local 3.2.9
 ```
 
 Make sure you have the right version installed and selected:
@@ -92,14 +92,18 @@ For Windows users, here is a quick guide to install Ruby environment. Please vis
 
 
 #### Download and install Ruby + Devkit
-1. Grab the latest version of RubyInstaller from [here](https://rubyinstaller.org/downloads/).
-2. Opt for default installation. Dont forget to check the `ridk install` on the last stage of the installation wizard.
+1. Grab the latest version of RubyInstaller (with Devkit) from [here](https://rubyinstaller.org/downloads/).
+2. Opt for default installation. Don't forget to check the `ridk install` on the last stage of the installation wizard.
 
 
 ### Install the project's dependencies
+
+> [!WARNING]
+> There is a known issue when installing the dependencies on a system with GCC 15 (see [issue here](https://github.com/gjtorikian/commonmarker/issues/394)).
+
 ```shell
 # Install `bundler` to manage dependencies
-gem install bundler:2.3.14
+gem install bundler:2.4.19
 
 # Install the dependencies
 bundle install
@@ -199,23 +203,23 @@ If that does not resolve your problem, you may have a tooling version mismatch. 
 should provide some information. Otherwise, do not hesitate to create an issue on Github to get some help.
 
 ### Running `bundle install` has modified `Gemfile.lock`
-This is likely happening because you don't have Ruby 2.7.1. Confirm by running `git diff`. If you see something like this:
+This is likely happening because you don't have Ruby 3.2.9. Confirm by running `git diff`. If you see something like this:
 ```diff
  RUBY VERSION
--   ruby 2.7.1
-+   ruby 2.4.0p0
+-   ruby 3.2.9
++   ruby 2.7.1
 ```
 it confirms that you need to upgrade Ruby. To do so, run the following commands:
 ```shell
 # Install the correct version of Ruby and set it as the global default
-rbenv install 2.7.1
-rbenv global 2.7.1
+rbenv install 3.2.9
+rbenv global 3.2.9
 
 # Uninstall the previous version of Ruby
-rbenv uninstall 2.4.0
+rbenv uninstall 2.7.1
 
 # Install the dependencies for the new Ruby version
-gem install bundler:2.3.14
+gem install bundler:2.4.19
 bundle install
 ```
 After this, there shouldn't be changes in `Gemfile.lock`.
