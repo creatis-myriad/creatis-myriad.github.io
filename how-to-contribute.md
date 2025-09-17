@@ -41,6 +41,7 @@ assume you are working from inside this repository**.
 
 ## Setup a Ruby environment
 Kindly refer to [Linux guide](how-to-contribute.md#linux-guide) for Linux users and [Windows guide](how-to-contribute.md#windows-guide) for Windows users.
+Working from a different OS, or just want to avoid installing dependencies? You can also run the site inside a [Docker](https://www.docker.com/) if you have it installed by following the [Docker guide](how-to-contribute.md#docker-guide).
 
 ### Ruby setup on **Linux** <a name="linux-guide"></a>
 We strongly encourage following the method described below to install Ruby, because it does not rely on a specific Linux
@@ -100,6 +101,7 @@ For Windows users, here is a quick guide to install Ruby environment. Please vis
 
 > [!WARNING]
 > There is a known issue when installing the dependencies on a system with GCC 15 (see [issue here](https://github.com/gjtorikian/commonmarker/issues/394)).
+> A possible workaround is to use the provided Docker until the above issue gets fixed.
 
 ```shell
 # Install `bundler` to manage dependencies
@@ -111,6 +113,17 @@ bundle install
 # Check if Jekyll has been installed properly
 jekyll -v
 ```
+
+### Ruby, Jekyll, and project dependencies setup on **Docker** <a name="docker-guide"></a>
+
+You can use the provided `Dockerfile` to build and execute a container that will run the site for you by running the following command in the repository:
+
+```bash
+chmod -R 777 .
+docker compose up
+```
+
+You should now be able to access the website from `http://localhost:4000`.
 
 Congratulations, you are done with setting up the Ruby environment for the MYRIAD website on your machine!
 
