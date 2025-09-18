@@ -2,6 +2,7 @@
 layout: review
 title: Understanding Contrastive Representation Learning through Alignment and Uniformity on the Hypersphere
 tags: Contrastive Representation Learning
+author: "Clémentine Lauvergne"
 cite:
     authors: "T. Wang, P. Isola"
     title:   "Understanding Contrastive Representation Learning through Alignment and Uniformity on the Hypersphere"
