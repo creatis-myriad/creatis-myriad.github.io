@@ -99,10 +99,6 @@ For Windows users, here is a quick guide to install Ruby environment. Please vis
 
 ### Install the project's dependencies
 
-> [!WARNING]
-> There is a known issue when installing the dependencies on a system with GCC 15 (see [issue here](https://github.com/gjtorikian/commonmarker/issues/394)).
-> A possible workaround is to use the provided Docker until the above issue gets fixed.
-
 ```shell
 # Install `bundler` to manage dependencies
 gem install bundler:2.4.19
