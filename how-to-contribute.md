@@ -6,12 +6,12 @@ permalink: /contribute/
 ---
 
 ## Table of Contents
-1. [Introduction](how-to-contribute.md#introduction)
-2. [Install the repository](how-to-contribute.md#install-the-creatis-myriadgithubio-repository)
-3. [Setup a Ruby environment](how-to-contribute.md#setup-a-ruby-environment)
-5. [Add your own posts](how-to-contribute.md#add-your-own-posts)
-6. [Preview your posts](how-to-contribute.md#preview-your-posts-locally)
-7. [General troubleshooting](how-to-contribute.md#troubleshooting)
+1. [Introduction](#introduction)
+2. [Install the repository](#install-the-creatis-myriadgithubio-repository)
+3. [Setup a Ruby environment](#setup-a-ruby-environment)
+5. [Add your own posts](#add-your-own-posts)
+6. [Preview your posts](#preview-your-posts-locally)
+7. [General troubleshooting](#troubleshooting)
 
 &nbsp;
 
@@ -40,8 +40,8 @@ assume you are working from inside this repository**.
 &nbsp;
 
 ## Setup a Ruby environment
-Kindly refer to [Linux guide](how-to-contribute.md#linux-guide) for Linux users and [Windows guide](how-to-contribute.md#windows-guide) for Windows users.
-Working from a different OS, or just want to avoid installing dependencies? You can also run the site inside a [Docker](https://www.docker.com/) if you have it installed by following the [Docker guide](how-to-contribute.md#docker-guide).
+Kindly refer to [Linux guide](#linux-guide) for Linux users and [Windows guide](#windows-guide) for Windows users.
+Working from a different OS, or just want to avoid installing dependencies? You can also run the site inside a [Docker](https://www.docker.com/) if you have it installed by following the [Docker guide](#docker-guide).
 
 ### Ruby setup on **Linux** <a name="linux-guide"></a>
 We strongly encourage following the method described below to install Ruby, because it does not rely on a specific Linux
