@@ -75,6 +75,7 @@ curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-doctor | 
 rbenv install -v 3.2.9
 rbenv local 3.2.9
 ```
+> **Warning:** If `rbenv install -v ...` fails, checkout [this troubleshooting tip](#troubleshooting-rbenv-install).
 
 Make sure you have the right version installed and selected:
 ```shell
@@ -197,6 +198,14 @@ After the local Jekyll webserver is launched, you can access it at [http://local
 &nbsp;
 
 ## Troubleshooting
+
+### Installing Ruby with `rbenv install -v ...` does not work <a name="troubleshooting-rbenv-install"></a>
+Some Linux distributions require additional development dependencies to install and build Ruby using `rbenv`.
+If `rbenv install -v ...` fails, be sure to search system dependencies that might required by your Linux distribution to install Ruby.
+For example, on Fedora, these dependencies are listed [here](https://developer.fedoraproject.org/tech/languages/ruby/ruby-installation.html):
+```shell
+sudo dnf install -y git-core gcc rust patch make bzip2 openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel perl-FindBin perl-lib perl-File-Compare
+```
 
 ### Running `bundle install` or `bundle exec jekyll serve` does not work
 If you previously installed a version of this repo and it now does not work, you may have a version mismatch. To clean
