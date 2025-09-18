@@ -110,6 +110,7 @@ bundle install
 # Check if Jekyll has been installed properly
 jekyll -v
 ```
+> **Warning:** If the commands above fail, checkout [this troubleshooting tip](#troubleshooting-bundle-install).
 
 ### Ruby, Jekyll, and project dependencies setup on **Docker** <a name="docker-guide"></a>
 
@@ -207,7 +208,7 @@ For example, on Fedora, these dependencies are listed [here](https://developer.f
 sudo dnf install -y git-core gcc rust patch make bzip2 openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel perl-FindBin perl-lib perl-File-Compare
 ```
 
-### Running `bundle install` or `bundle exec jekyll serve` does not work
+### Running `bundle install` or `bundle exec jekyll serve` does not work <a name="troubleshooting-bundle-install"></a>
 If you previously installed a version of this repo and it now does not work, you may have a version mismatch. To clean
 and reinstall, try to comment all gems specification in `Gemfile` and then run:
 ```shell
