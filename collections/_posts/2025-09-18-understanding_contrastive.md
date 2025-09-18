@@ -32,7 +32,7 @@ $$
 
 **Motivation** : in practice, only maximizing Mutual Information (MI) between two views of the same image can lead to worse representations [^1].
 
-"What the contrastive loss exactly does remains largely a mystery. "
+> What the contrastive loss exactly does remains largely a mystery.
 
 To address this, the authors propose to analyze contrastive learning through two complementary properties: **alignment** and **uniformity**. They further validate these concepts empirically on standard representation learning benchmarks.
 
@@ -42,9 +42,9 @@ To address this, the authors propose to analyze contrastive learning through two
 
 - Alignement : two similar samples should have the same representations.
 
-- Uniformity : Empirically, normalizing features with an $l_2$ norm improves performance (e.g., in face recognition) and stabilizes training. Moreover, when class features are sufficiently well clustered, they become linearly separable from the rest of the feature spaceâa common criterion for evaluating representation quality.
+- Uniformity : Empirically, normalizing features with an $$l_2$$ norm improves performance (e.g., in face recognition) and stabilizes training. Moreover, when class features are sufficiently well clustered, they become linearly separable from the rest of the feature spacea common criterion for evaluating representation quality.
 
-"Intuitively, pushing all features away from each other should indeed cause them to be roughly uniformly distributed."
+> Intuitively, pushing all features away from each other should indeed cause them to be roughly uniformly distributed.
 
 # Quantifying alignment and uniformity
 
@@ -53,11 +53,11 @@ To quantify alignment, one can measure the distance between the representations 
 Quantifying uniformity is more subtle. The problem is related to the well-studied task of distributing points uniformly on the unit hypersphere, often formalized as minimizing the total pairwise potential with respect to a kernel function. Intuitively, this means we want the representations to be evenly spread out so that they balance each other, maintaining a sufficient distance to avoid collapse while covering the space effectively.
 
 
-To empirically verify this, they used three encoders share the same **AlexNet-based architecture** modified to map input images to 2-dimensional vectors in $\mathbb{S}^1$ on CIFAR-10 dataset:
+To empirically verify this, they used three encoders share the same **AlexNet-based architecture** modified to map input images to 2-dimensional vectors in $$\mathbb{S}^1$$ on CIFAR-10 dataset:
 
 - **Random initialization**.  
 - **Supervised predictive learning**: An encoder and a linear classifier are jointly trained from scratch with cross-entropy loss on supervised labels.  
-- **Unsupervised contrastive learning**: An encoder is trained w.r.t. $\mathcal{L}_{\text{contrastive}}$ with $\tau = 0.5$ and $M = 256$.  
+- **Unsupervised contrastive learning**: An encoder is trained w.r.t. $$\mathcal{L}_{\text{contrastive}}$$ with $$\tau = 0.5$$ and $$M = 256$$.  
 
 
 ![AU](/collections/images/understanding-contrastive/results1.jpg)
@@ -91,17 +91,17 @@ $$
 
 
 **Proposition.**  
-For $M(S^d)$, the set of Borel probability measures on $S^d$, $\sigma_d$ (e.g. normalized surface area measure on $S^d$) is the unique solution of:
+For $$M(S^d)$$, the set of Borel probability measures on $$S^d$$, $$\sigma_d$$ (e.g. normalized surface area measure on $$S^d$$) is the unique solution of:
 
 $$
 \sigma_d = \underset{\mu \in M(S^d)}{\arg\min} \int_{u} \int_{v} G_t(u, v) \, d\mu(u) \, d\mu(v)
 $$
 
 
-As number of points goes to infinity, distributions of points minimizing the average pairwise potential **converge weak** to the uniform distribution. "Due to its pairwise nature, $L_{uniform}$ is much simpler in form and avoids the computationally expensive softmax operation in $L_{contrastive}$."
+As number of points goes to infinity, distributions of points minimizing the average pairwise potential **converge weak** to the uniform distribution. "Due to its pairwise nature, $$L_{\text{uniform}}$$ is much simpler in form and avoids the computationally expensive softmax operation in $$L_{\text{contrastive}}$$."
 
-**Theorem 1 (Asymptotics of $L_{\text{contrastive}}$).**  
-For fixed $\tau > 0$, as the number of negative samples $M \to \infty$, the (normalized) contrastive loss converges to  
+**Theorem 1 (Asymptotics of $$L_{\text{contrastive}}$$).**  
+For fixed $$\tau > 0$$, as the number of negative samples $$M \to \infty$$, the (normalized) contrastive loss converges to  
 
 $$
 \lim_{M \to \infty} \; L_{\text{contrastive}}(f; \tau, M) - \log M
@@ -114,9 +114,9 @@ $$
 
 We have the following results:
 
-1. The first term is minimized **iff** $f$ is perfectly aligned.  
+1. The first term is minimized **iff** $$f$$ is perfectly aligned.  
 2. If perfectly uniform encoders exist, they are the exact minimizers of the second term.  
-3. For the convergence in Equation (2), the absolute deviation from the limit decays as $\mathcal{O}(M^{-1/2})$.
+3. For the convergence in Equation (2), the absolute deviation from the limit decays as $$\mathcal{O}(M^{-1/2})$$.
 
 
 
@@ -139,12 +139,10 @@ chosen as neighboring sentences, following Quick-Thought Vectors).
 
 # Limitations
 
-"The trade-off between the Lalign and Luniform indicates that perfect alignment and perfect uniformity are likely hard to simultaneously achieve in practice. However, the inverted-U shaped accuracy curve confirms that both properties are indeed necessary for a good encoder."
+> The trade-off between the $$L_{\text{align}}$$ and $$L_{\text{uniform}}$$ indicates that perfect alignment and perfect uniformity are likely hard to simultaneously achieve in practice. However, the inverted-U shaped accuracy curve confirms that both properties are indeed necessary for a good encoder.
 
 ![Trade-off between the two](/collections/images/understanding-contrastive/results5.jpg)
 
 # References
 
-[^1]: Tschannen, M., Djolonga, J., Rubenstein, P. K., Gelly, S., and Lu-
-cic, M. On mutual information maximization for representation
-learning (2019). arXiv:1907.13625.
+[^1]: Tschannen, M., Djolonga, J., Rubenstein, P. K., Gelly, S., and Lucic, M. On mutual information maximization for representation learning (2019). arXiv:1907.13625.
