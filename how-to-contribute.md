@@ -6,12 +6,12 @@ permalink: /contribute/
 ---
 
 ## Table of Contents
-1. [Introduction](how-to-contribute.md#introduction)
-2. [Install the repository](how-to-contribute.md#install-the-creatis-myriadgithubio-repository)
-3. [Setup a Ruby environment](how-to-contribute.md#setup-a-ruby-environment)
-5. [Add your own posts](how-to-contribute.md#add-your-own-posts)
-6. [Preview your posts](how-to-contribute.md#preview-your-posts-locally)
-7. [General troubleshooting](how-to-contribute.md#troubleshooting)
+1. [Introduction](#introduction)
+2. [Install the repository](#install-the-creatis-myriadgithubio-repository)
+3. [Setup a Ruby environment](#setup-a-ruby-environment)
+5. [Add your own posts](#add-your-own-posts)
+6. [Preview your posts](#preview-your-posts-locally)
+7. [General troubleshooting](#troubleshooting)
 
 &nbsp;
 
@@ -40,7 +40,8 @@ assume you are working from inside this repository**.
 &nbsp;
 
 ## Setup a Ruby environment
-Kindly refer to [Linux guide](how-to-contribute.md#linux-guide) for Linux users and [Windows guide](how-to-contribute.md#windows-guide) for Windows users.
+Kindly refer to [Linux guide](#linux-guide) for Linux users and [Windows guide](#windows-guide) for Windows users.
+Working from a different OS, or just want to avoid installing dependencies? You can also run the site inside a [Docker](https://www.docker.com/) if you have it installed by following the [Docker guide](#docker-guide).
 
 ### Ruby setup on **Linux** <a name="linux-guide"></a>
 We strongly encourage following the method described below to install Ruby, because it does not rely on a specific Linux
@@ -71,9 +72,10 @@ curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-doctor | 
 
 #### Install Ruby
 ```shell
-rbenv install -v 2.7.1
-rbenv global 2.7.1
+rbenv install -v 3.2.9
+rbenv local 3.2.9
 ```
+> **Warning:** If `rbenv install -v ...` fails, checkout [this troubleshooting tip](#troubleshooting-rbenv-install).
 
 Make sure you have the right version installed and selected:
 ```shell
@@ -92,14 +94,15 @@ For Windows users, here is a quick guide to install Ruby environment. Please vis
 
 
 #### Download and install Ruby + Devkit
-1. Grab the latest version of RubyInstaller from [here](https://rubyinstaller.org/downloads/).
-2. Opt for default installation. Dont forget to check the `ridk install` on the last stage of the installation wizard.
+1. Grab version 3.2.9 of RubyInstaller (with Devkit) from [here](https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-3.2.9-1/rubyinstaller-devkit-3.2.9-1-x64.exe).
+2. Opt for default installation. Don't forget to check the `ridk install` on the last stage of the installation wizard.
 
 
 ### Install the project's dependencies
+
 ```shell
 # Install `bundler` to manage dependencies
-gem install bundler:2.3.14
+gem install bundler:2.4.19
 
 # Install the dependencies
 bundle install
@@ -107,6 +110,18 @@ bundle install
 # Check if Jekyll has been installed properly
 jekyll -v
 ```
+> **Warning:** If the commands above fail, checkout [this troubleshooting tip](#troubleshooting-bundle-install).
+
+### Ruby, Jekyll, and project dependencies setup on **Docker** <a name="docker-guide"></a>
+
+You can use the provided `Dockerfile` to build and execute a container that will run the site for you by running the following command in the repository:
+
+```bash
+chmod -R 777 .
+docker compose up
+```
+
+You should now be able to access the website from `http://localhost:4000`.
 
 Congratulations, you are done with setting up the Ruby environment for the MYRIAD website on your machine!
 
@@ -185,7 +200,15 @@ After the local Jekyll webserver is launched, you can access it at [http://local
 
 ## Troubleshooting
 
-### Running `bundle install` or `bundle exec jekyll serve` does not work
+### Installing Ruby with `rbenv install -v ...` does not work <a name="troubleshooting-rbenv-install"></a>
+Some Linux distributions require additional development dependencies to install and build Ruby using `rbenv`.
+If `rbenv install -v ...` fails, be sure to search system dependencies that might required by your Linux distribution to install Ruby.
+For example, on Fedora, these dependencies are listed [here](https://developer.fedoraproject.org/tech/languages/ruby/ruby-installation.html):
+```shell
+sudo dnf install -y git-core gcc rust patch make bzip2 openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel perl-FindBin perl-lib perl-File-Compare
+```
+
+### Running `bundle install` or `bundle exec jekyll serve` does not work <a name="troubleshooting-bundle-install"></a>
 If you previously installed a version of this repo and it now does not work, you may have a version mismatch. To clean
 and reinstall, try to comment all gems specification in `Gemfile` and then run:
 ```shell
@@ -199,23 +222,23 @@ If that does not resolve your problem, you may have a tooling version mismatch. 
 should provide some information. Otherwise, do not hesitate to create an issue on Github to get some help.
 
 ### Running `bundle install` has modified `Gemfile.lock`
-This is likely happening because you don't have Ruby 2.7.1. Confirm by running `git diff`. If you see something like this:
+This is likely happening because you don't have Ruby 3.2.9. Confirm by running `git diff`. If you see something like this:
 ```diff
  RUBY VERSION
--   ruby 2.7.1
-+   ruby 2.4.0p0
+-   ruby 3.2.9
++   ruby 2.7.1
 ```
 it confirms that you need to upgrade Ruby. To do so, run the following commands:
 ```shell
 # Install the correct version of Ruby and set it as the global default
-rbenv install 2.7.1
-rbenv global 2.7.1
+rbenv install 3.2.9
+rbenv global 3.2.9
 
 # Uninstall the previous version of Ruby
-rbenv uninstall 2.4.0
+rbenv uninstall 2.7.1
 
 # Install the dependencies for the new Ruby version
-gem install bundler:2.3.14
+gem install bundler:2.4.19
 bundle install
 ```
 After this, there shouldn't be changes in `Gemfile.lock`.
