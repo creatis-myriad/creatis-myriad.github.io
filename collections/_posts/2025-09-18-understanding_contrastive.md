@@ -2,7 +2,7 @@
 layout: review
 title: Understanding Contrastive Representation Learning through Alignment and Uniformity on the Hypersphere
 tags: Contrastive Representation Learning
-author: "Clémentine Lauvergne"
+author: Clémentine Lauvergne
 cite:
     authors: "T. Wang, P. Isola"
     title:   "Understanding Contrastive Representation Learning through Alignment and Uniformity on the Hypersphere"
@@ -36,7 +36,7 @@ $$
 
 To address this, the authors propose to analyze contrastive learning through two complementary properties: **alignment** and **uniformity**. They further validate these concepts empirically on standard representation learning benchmarks.
 
-![Wanted Properties](/collections/images/understanding_contrastive/properties.jpg)
+![Wnated Properties](/collections/images/understanding-contrastive/properties.jpg)
 
 **Intuition :**
 
@@ -60,7 +60,7 @@ To empirically verify this, they used three encoders share the same **AlexNet-ba
 - **Unsupervised contrastive learning**: An encoder is trained w.r.t. $\mathcal{L}_{\text{contrastive}}$ with $\tau = 0.5$ and $M = 256$.  
 
 
-![Experiments](/collections/images/understanding_contrastive/results1.jpg)
+![AU](/collections/images/understanding-contrastive/results1.jpg)
 
 # Alternative losses
 
@@ -123,21 +123,28 @@ We have the following results:
 # Experiments
 
 
+They conducted their experiments on multiple representation learning tasks :
 
 - STL-10 classification on AlexNet based encoder outputs or intermediate activations with a linear or k-nearest neighbor (k-NN) classifier.
 - NYU-DEPTH-V2 depth prediction on CNN encoder intermediate activations after convolution layers.
 - IMAGENET and IMAGENET-100 (random 100-class subset of IMAGENET) classification on CNN encoder penultimate layer activations with a linear classifier.
-- BOOKCORPUS RNN sentence encoder outputs used for Moview Review Sentence Polarity (MR) and Customer Product Review Sentiment (CR) binary classification tasks with logisitc classifiers
+- BOOKCORPUS RNN sentence encoder outputs used for Moview Review Sentence Polarity (MR) and Customer Product Review Sentiment (CR) binary classification tasks with logisitic classifiers (positive pairs are
+chosen as neighboring sentences, following Quick-Thought Vectors).
 
+![Results MSE](/collections/images/understanding-contrastive/results2.jpg)
 
+![Results STL-NYU](/collections/images/understanding-contrastive/results3.jpg)
 
+![Results ImageNet-BookCampus](/collections/images/understanding-contrastive/results4.jpg)
 
+# Limitations
 
+"The trade-off between the Lalign and Luniform indicates that perfect alignment and perfect uniformity are likely hard to simultaneously achieve in practice. However, the inverted-U shaped accuracy curve confirms that both properties are indeed necessary for a good encoder."
 
-
-
-
+![Trade-off between the two](/collections/images/understanding-contrastive/results5.jpg)
 
 # References
 
-[^1]: Tschannen, M., Djolonga, J., Rubenstein, P. K., Gelly, S., and Lucic, M. On mutual information maximization for representation learning (2019). arXiv:1907.13625.
+[^1]: Tschannen, M., Djolonga, J., Rubenstein, P. K., Gelly, S., and Lu-
+cic, M. On mutual information maximization for representation
+learning (2019). arXiv:1907.13625.
