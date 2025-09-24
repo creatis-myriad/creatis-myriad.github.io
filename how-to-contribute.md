@@ -209,16 +209,15 @@ sudo dnf install -y git-core gcc rust patch make bzip2 openssl-devel libyaml-dev
 ```
 
 ### Running `bundle install` or `bundle exec jekyll serve` does not work <a name="troubleshooting-bundle-install"></a>
-If you previously installed a version of this repo and it now does not work, you may have a version mismatch. To clean
-and reinstall, try to comment all gems specification in `Gemfile` and then run:
-```shell
-bundle clean --force
+If you previously installed a version of this repo and it now does not work, e.g. you get errors like
+```console
+Could not find github-pages-232, github-pages-health-check-1.18.2, [...] in any of the sources
 ```
-then uncomment your changes in `Gemfile` and run
-```shell
-bundle install
-```
-If that does not resolve your problem, you may have a tooling version mismatch. The error messages following `bundle install`
+you may have a version mismatch.
+
+To clean and reinstall, follow the instructions on [how to reinstall the Ruby environment](#uninstall-previous-ruby-version-and-reinstall-environment).
+
+If that does not resolve your problem, you may have a tooling version mismatch. The error messages following `bundle install` or `bundle exec jekyll serve`
 should provide some information. Otherwise, do not hesitate to create an issue on Github to get some help.
 
 ### Running `bundle install` has modified `Gemfile.lock`
@@ -228,17 +227,27 @@ This is likely happening because you don't have Ruby 3.2.9. Confirm by running `
 -   ruby 3.2.9
 +   ruby 2.7.1
 ```
-it confirms that you need to upgrade Ruby. To do so, run the following commands:
-```shell
-# Install the correct version of Ruby and set it as the global default
-rbenv install 3.2.9
-rbenv global 3.2.9
+it confirms that you need to upgrade Ruby. To do so follow the instructions on [how to reinstall the Ruby environment](#uninstall-previous-ruby-version-and-reinstall-environment).
 
-# Uninstall the previous version of Ruby
-rbenv uninstall 2.7.1
-
-# Install the dependencies for the new Ruby version
-gem install bundler:2.4.19
-bundle install
-```
 After this, there shouldn't be changes in `Gemfile.lock`.
+
+### Uninstall previous Ruby version and reinstall environment
+If you don't have the correct version of Ruby installed, you can uninstall your current environment and Ruby version by
+following the instructions below.
+
+To clean the packages in your current environment, comment the content of `Gemfile` and run the following command
+```shell
+# Uninstall gems not specified in the `Gemfile`
+bundle clean --force
+```
+You can then uncomment your `Gemfile` to make sure your environment will have the correct dependencies when you try
+to reinstall it.
+
+Next, to uninstall the Ruby version itself, run:
+```shell
+ruby -v     # Note the version number returned by this comment, e.g. 2.7.1
+rbenv uninstall <YOUR_RUBY_VERSION>   # Uninstall the version returned by the previous command, e.g. 2.7.1
+```
+
+When this is done, your previous Ruby version has been uninstalled, and you can follow the [instructions to install the project like new](#install-ruby),
+skipping the steps to install `rbenv` (as it remained installed).
