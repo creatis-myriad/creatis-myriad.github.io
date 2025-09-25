@@ -12,37 +12,37 @@ pdf: "https://arxiv.org/pdf/2005.10242"
 
 # Highlights
 
-- Understanding the constrastive loss effects, both experimentally and theoretically.
-- Proposes alternative losses that achieve the same performance on downstream tasks.
+- Understanding the asymptotical behavior of the constrastive loss : both experimentally and theoretically.
+- Proposes alternative losses that achieve the same or better performance on downstream tasks.
 
 # Introduction
 
-In the unsupervised contrastive learning context, positives pairs are defined as random transformations of the input images. The problem lies in understanding the asymptotical behavior of the general contrastive loss.
+In the context of unsupervised contrastive learning, positive pairs are defined as random transformations of the same input image. The objective is to bring these pairs closer in the representation space so that their embeddings become more similar. To achieve this, we rely on the contrastive loss, which encourages alignment of positive pairs while pushing apart negative ones. However, a central challenge lies in understanding the asymptotic behavior of the general contrastive loss.
 
 $$
 \mathcal{L}_{\text{contrastive}}(f;\tau,M) \triangleq
-\mathbb{E}_{(x,y)\sim p_{\text{pos}}}^{\{x_i\}_{i=1}^M \ \text{i.i.d.}\sim p_{\text{data}}}
-\left[
-  - \log
+\mathbb{E}_{\substack{ (x,y)\sim p_{\text{pos}} \\ \{x_i\}_{i=1}^M \ \text{i.i.d.}\sim p_{\text{data}}}}
+\left[\substack
   \frac{ e^{f(x)^\top f(y)/\tau} }
        { e^{f(x)^\top f(y)/\tau} + \sum_i e^{f(x_i^-)^\top f(y)/\tau} }
 \right],
 $$
 
 
-**Motivation** : in practice, only maximizing Mutual Information (MI) between two views of the same image can lead to worse representations [^1].
+**Motivation** : In practice, only maximizing the Mutual Information (MI) (Kullback–Leibler divergence between the joint and the product of the marginal) between two views of the same image can result in poorer representations compared to using the contrastive loss.[^1].
+
 
 > What the contrastive loss exactly does remains largely a mystery.
 
-To address this, the authors propose to analyze contrastive learning through two complementary properties: **alignment** and **uniformity**. They further validate these concepts empirically on standard representation learning benchmarks.
+To address this, the authors propose to analyze the contrastive learning loss through two complementary properties: **alignment** and **uniformity**. They further validate these concepts empirically on standard representation learning benchmarks.
 
 ![Wnated Properties](/collections/images/understanding-contrastive/properties.jpg)
 
 **Intuition :**
 
-- Alignement : two similar samples should have the same representations.
+- Alignment : two similar samples should have the same representations.
 
-- Uniformity : Empirically, normalizing features with an $$l_2$$ norm improves performance (e.g., in face recognition) and stabilizes training. Moreover, when class features are sufficiently well clustered, they become linearly separable from the rest of the feature spacea common criterion for evaluating representation quality.
+- Uniformity : Empirically, normalizing features with an $$l_2$$ norm improves performance (e.g., in face recognition) and stabilizes training. Moreover, when class features are sufficiently well clustered, they become linearly separable from the rest of the feature space.
 
 > Intuitively, pushing all features away from each other should indeed cause them to be roughly uniformly distributed.
 
