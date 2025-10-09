@@ -35,11 +35,9 @@ Given a coordinate (e.g., position or time), the network outputs the correspondi
 <p style="text-align: center;font-style:italic">Figure 1. Example of a simple neural implicit representation.</p>
 
 
-### NeRF
+### NeRF (Neural Radiance Fields)
 
-**NeRF (Neural Radiance Fields)**
-
-NerF is a model that learns a continuous 3D scene representation by mapping 3D coordinates and viewing directions to color and density using a neural network[^1].
+NerF is a model that learns a continuous 3D scene representation by mapping 3D coordinates and viewing directions to color and density using a neural network [^1].
 
 By integrating these values along camera rays, NeRF can render realistic novel views of a scene from any angle.
 
@@ -96,7 +94,7 @@ Each point $x_i^k$ is mapped to the canonical space $u^k = \mathcal{T}_i(x_i^k) 
 
 **3. NeRF color and density prediction** 
 
-Like in NeRF, the densities and colors of each of these canonical points $\{u^k\}$ are computed: $(\sigma_k, \mathbf{c}_k)  = F_\theta(u^k)$. $F_\theta$ is a MLP implemented as a Gabor network[^4].
+Like in NeRF, the densities and colors of each of these canonical points $\{u^k\}$ are computed: $(\sigma_k, \mathbf{c}_k)  = F_\theta(u^k)$. $F_\theta$ is a MLP implemented as a Gabor network [^4].
 
 **4. Inverse mapping** 
 
@@ -154,7 +152,7 @@ Using all pairwise optical flows gives the model lots of motion information, but
 
 # Results
 
-The results show that the method performs well on TAP-Vid benchmark[^4]. 
+The results show that the method performs well on TAP-Vid benchmark [^4]. 
 
 <div style="text-align:center">
 <img src="/collections/images/trackeverything/table1.jpg" width=800></div>
@@ -178,7 +176,7 @@ The method requires a long optimization for each video (8~9h on an A100 GPU and 
 <img src="/collections/images/trackeverything/robust.jpg" width=800></div>
 <p style="text-align: center;font-style:italic">Figure 5. Overview of Track Everything Everywhere Fast and Robustly..</p>
 
-An improved version of this method was presented at ECCV 2024: *Track Everything Everywhere Fast and Robustly*[^5]. They propose three key improvements:
+An improved version of this method was presented at ECCV 2024: *Track Everything Everywhere Fast and Robustly* [^5]. They propose three key improvements:
 
 1. The NeRF-like photometric loss is removed, and the depth estimation is replaced with a pre-trained depth estimation method (ZoeDepth). 
 2. A new and more expressive invertible neural network is proposed.
