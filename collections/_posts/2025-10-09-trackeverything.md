@@ -64,7 +64,7 @@ This is usually done by stacking multiple couple layers. Each coupling layer sep
 
 The goal of the method is to learn a 3D canonical volume $$G$$ that represents the motion. In this volume, points $$u$$ represent a time-independent representation of the point in the image space. 
 
-To map a 3D point $$x_i$$ in frame $$i$$ssssss to its 3D canonical coordinate $$u$$, a bijective mapping $$\mathcal{T}_i$$ is used. This allows the mapping of a point $$x_i$$ in frame $$i$$ to be mapped to a point $$x_j$$ in frame $$j$$ with the inverse mapping:
+To map a 3D point $$x_i$$ in frame $$i$$ to its 3D canonical coordinate $$u$$, a bijective mapping $$\mathcal{T}_i$$ is used. This allows the mapping of a point $$x_i$$ in frame $$i$$ to be mapped to a point $$x_j$$ in frame $$j$$ with the inverse mapping:
 
 $$
 x_j = \mathcal{T}^{-1}_j \circ \mathcal{T}_i(x_i)
@@ -152,7 +152,7 @@ Using all pairwise optical flows gives the model lots of motion information, but
 
 # Results
 
-The results show that the method performs well on TAP-Vid benchmark [^4]. The most important metric, $$\delta_{avg}^x$$, measures how accurately predicted points match their ground truth positions, averaged over five pixel-distance thresholds (1, 2, 4, 8, 16).
+The results show that the method performs well on TAP-Vid benchmark [^4]. The most important metric, $$<\delta_{avg}^x$$, measures how accurately predicted points match their ground truth positions, averaged over five pixel-distance thresholds (1, 2, 4, 8, 16).
 
 <div style="text-align:left">
 <img src="/collections/images/trackeverything/table1.jpg" width=800></div>
