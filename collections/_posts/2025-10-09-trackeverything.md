@@ -12,7 +12,7 @@ pdf: "https://arxiv.org/pdf/2306.05422"
 
 # Notes 
 
-Project page: https://omnimotion.github.io/
+Project page: [https://omnimotion.github.io/](https://omnimotion.github.io/)
 
 Github: [https://github.com/qianqianwang68/omnimotion](https://github.com/qianqianwang68/omnimotion)
 
