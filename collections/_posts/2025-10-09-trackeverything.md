@@ -152,7 +152,7 @@ Using all pairwise optical flows gives the model lots of motion information, but
 
 # Results
 
-The results show that the method performs well on TAP-Vid benchmark [^4]. 
+The results show that the method performs well on TAP-Vid benchmark [^4]. The more important metric, $$<\delta_{avg}^x$$, measures how accurately predicted points match their ground truth positions, averaged over five pixel-distance thresholds (1, 2, 4, 8, 16).
 
 <div style="text-align:center">
 <img src="/collections/images/trackeverything/table1.jpg" width=800></div>
@@ -164,11 +164,12 @@ The authors perform an ablation study with some important parameters:
 <img src="/collections/images/trackeverything/table2.jpg" width=400></div>
 <p style="text-align: center;font-style:italic">Table 2. Ablation study.</p>
 
+
 # Limitations
 
-The method struggles with rapid and highly non-rigid motion.
-The method is sensitive to initialization 
-The method requires a long optimization for each video (8~9h on an A100 GPU and 12-13h on RTX4090)
+1. The method struggles with rapid and highly non-rigid motion.
+2. The method is sensitive to initialization 
+3. The method requires a long optimization for each video (8~9h on an A100 GPU and 12-13h on RTX4090)
 
 # Improvements
 
