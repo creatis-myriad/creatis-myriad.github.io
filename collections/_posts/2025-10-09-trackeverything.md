@@ -19,11 +19,11 @@ Github: https://github.com/qianqianwang68/omnimotion
 
 # Introduction
 
-Method to estimate long range motion (point tracking) in a video by learning a canonical representation of the motion given noisy estimates. This method is a test-time optimization method as it does not train on a dataset containing multiple samples but rather performs optimization at test-time on a single sample. 
+Method to estimate long-range motion (point tracking) in a video by learning a canonical representation of the motion given noisy estimates. This method is a test-time optimization method as it does not train on a dataset containing multiple samples but rather performs optimization at test-time on a single sample. 
 
 # Preliminaries
 
-This work is built upon various different methods.  
+This work is built upon various methods.  
 
 ### Neural implicit representation
 
@@ -39,7 +39,7 @@ Given a coordinate (e.g., position or time), the network outputs the correspondi
 
 **NeRF (Neural Radiance Fields)**
 
-is a model that learns a continuous 3D scene representation by mapping 3D coordinates and viewing directions to color and density using a neural network.
+NerF is a model that learns a continuous 3D scene representation by mapping 3D coordinates and viewing directions to color and density using a neural network[^1].
 
 By integrating these values along camera rays, NeRF can render realistic novel views of a scene from any angle.
 
@@ -50,11 +50,11 @@ See [https://creatis-myriad.github.io/2023/01/31/NeRF.html](https://creatis-myri
 An invertible neural network (INN) is a model where every layer is designed to be mathematically reversible, so inputs can be exactly recovered from outputs.
 The network can therefore learn a bijective mapping between spaces. 
 
-This is usually done by stacking multiple couple layers. Each coupling layer separates its input in two. The first input is used to generate the parameters of a simple transform (ex scaling and addition) which is applied to the second input while the first input is preserved. The generation of the transformation parameters can be done with a complex function (neural network). To make an invertible neural network, multiple coupling layers are stacked, alternating which input is preserved and which input is transformed. 
+This is usually done by stacking multiple couple layers. Each coupling layer separates its input into two. The first input is used to generate the parameters of a simple transform (ex., scaling and addition) which is applied to the second input while the first input is preserved. The generation of the transformation parameters can be done with a complex function (neural network). To make an invertible neural network, multiple coupling layers are stacked, alternating which input is preserved and which is transformed. 
 
 <div style="text-align:center">
 <img src="/collections/images/trackeverything/invertible.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 2. Example of an invertible layer.</p>
+<p style="text-align: center;font-style:italic">Figure 2. Example of an invertible layer. Figure from [^2]</p>
 
 # Method
 
@@ -64,7 +64,7 @@ This is usually done by stacking multiple couple layers. Each coupling layer sep
 
 ## Canonical representation
 
-The goal of the method is to learn a 3D canonical volume $G$ that represents the motion. In this volume, points $u$ represent a time-independant representation of the point in the image space. 
+The goal of the method is to learn a 3D canonical volume $G$ that represents the motion. In this volume, points $u$ represent a time-independent representation of the point in the image space. 
 
 To map a 3D point $x_i$ in frame $i$ to its 3D canonical coordinate $u$, a bijective mapping $\mathcal{T}_i$ is used. This allows the mapping of a point $x_i$ in frame $i$ to be mapped to a point $x_j$ in frame $j$ with the inverse mapping: 
 
@@ -82,7 +82,7 @@ The following figure shows one layer (of six) of the invertible neural network u
 
 ## Frame to frame 2D motion
 
-To compute the motion of a 2D point (i.e. its position in another frame) it is first “lifted” into 3D by sampling along a ray. The 3D point in mapped into the canonical volume and unmapped back to a different frame, where it is projected back to 2D. 
+To compute the motion of a 2D point (i.e., its position in another frame), it is first “lifted” into 3D by sampling along a ray. The 3D point is mapped into the canonical volume and unmapped back to a different frame, where it is projected back to 2D. 
 
 More formally, this can be broken down into the following steps: 
 
@@ -96,13 +96,13 @@ Each point $x_i^k$ is mapped to the canonical space $u^k = \mathcal{T}_i(x_i^k) 
 
 **3. NeRF color and density prediction** 
 
-Like in NeRF, the densities and colors of each of these canonical points $\{u^k\}$ are computed: $(\sigma_k, \mathbf{c}_k)  = F_\theta(u^k)$. $F_\theta$ is a MLP. 
+Like in NeRF, the densities and colors of each of these canonical points $\{u^k\}$ are computed: $(\sigma_k, \mathbf{c}_k)  = F_\theta(u^k)$. $F_\theta$ is a MLP implemented as a Gabor network[^4].
 
 **4. Inverse mapping** 
 
 Each point $u^k$ is mapped back to 3D space at frame $j$:  $x_j^k = \mathcal{T}^{-1}_j(u^k)= M^{-1}_\theta(u^k; \psi_j)$.
 
-**5. Alpha compositing : point and color** 
+**5. Alpha compositing: point and color** 
 
 To find a single 3D point prediction in frame $j$, alpha compositing is used on all the points $x^k_j$:  
 
@@ -120,24 +120,24 @@ Given the predicted 3D point $\hat{x}_j$, the predicted pixel location  $\hat{p}
 
 ### Optimization
 
-The optimization process is done for each video. The input for the optimization is the video and a set of filtered pairwise noisy correspondence predictions obtained from another method (ex. RAFT). 
+The optimization process is done for each video. The input for the optimization is the video and a set of filtered pairwise noisy correspondence predictions obtained from another method (ex., RAFT). 
 
 The total loss function is a sum of three losses. The first is the flow loss between the predicted flow and the input flow:  
 
 $$
-\mathcal{L}_{flo} = \sum_{\mathbf{f}_{i \rightarrow j} \in \Omega_f} ||\hat{\mathbf{f}}_{i \rightarrow j} - \mathbf{f}_{i \rightarrow j} ||_1
+\mathcal{L}_{flo} = \sum_{\mathbf{f}_{i \rightarrow j} \in \Omega_f} ||\hat{\mathbf{f}}_{i \rightarrow j} - \mathbf{f}_{i \rightarrow j} ||_1,
 $$
 
 where $\Omega_f$ is the set of input flow pairs. The second is the photometric loss (like NeRF): 
 
 $$
-\mathcal{L}_{pho} = \sum_{(i,\mathbf{p}) \in \Omega_p} ||\hat{\mathbf{C}}_i(p) - \mathbf{C}_i(p) ||^2_2
+\mathcal{L}_{pho} = \sum_{(i,\mathbf{p}) \in \Omega_p} ||\hat{\mathbf{C}}_i(p) - \mathbf{C}_i(p) ||^2_2,
 $$
 
-where $\Omega_p$  is the set of all pixel locations over all frames. Finally a regularization term to penalizes large accelerations is added between consecutive triplets of 3D points. 
+where $\Omega_p$  is the set of all pixel locations over all frames. Finally a regularization term to penalize large accelerations is added between consecutive triplets of 3D points. 
 
 $$
-\mathcal{L}_{reg} = \sum_{(i,\mathbf{x}) \in \Omega_x} ||\mathbf{x}_{i+1} + \mathbf{x}_{i-1} - \mathbf{x}_i ||_1
+\mathcal{L}_{reg} = \sum_{(i,\mathbf{x}) \in \Omega_x} ||\mathbf{x}_{i+1} + \mathbf{x}_{i-1} - \mathbf{x}_i ||_1,
 $$
 
 where $\Omega_x$ is the union of local 3D spaces for all frames. The final loss function is given by :
@@ -154,7 +154,7 @@ Using all pairwise optical flows gives the model lots of motion information, but
 
 # Results
 
-The results show that the method performs well on TAP-Vid benchmark. 
+The results show that the method performs well on TAP-Vid benchmark[^4]. 
 
 <div style="text-align:center">
 <img src="/collections/images/trackeverything/table1.jpg" width=800></div>
@@ -168,10 +168,9 @@ The authors perform an ablation study with some important parameters:
 
 # Limitations
 
-The method struggles on rapid and highly non-rigid motion
-
-1. The method is sensitive to initialization 
-2. The method requires a long optimization for each video (8~9h on an A100 GPU and 12-13h on RTX4090)
+The method struggles with rapid and highly non-rigid motion.
+The method is sensitive to initialization 
+The method requires a long optimization for each video (8~9h on an A100 GPU and 12-13h on RTX4090)
 
 # Improvements
 
@@ -179,10 +178,18 @@ The method struggles on rapid and highly non-rigid motion
 <img src="/collections/images/trackeverything/robust.jpg" width=800></div>
 <p style="text-align: center;font-style:italic">Figure 5. Overview of Track Everything Everywhere Fast and Robustly..</p>
 
-An improved version of this method was presented at ECCV 2024: *Track Everything Everywhere Fast and Robustly.* They propose three key improvements:
+An improved version of this method was presented at ECCV 2024: *Track Everything Everywhere Fast and Robustly*[^5]. They propose three key improvements:
 
 1. The NeRF-like photometric loss is removed, and the depth estimation is replaced with a pre-trained depth estimation method (ZoeDepth). 
-2. A new and more expressive invertible neural network is proposed
+2. A new and more expressive invertible neural network is proposed.
 3. In addition to RAFT, DinoV2 is used to generate more long-term noisy estimates for the motion. 
 
 This improvement greatly improves the robustness to initialization and optimization speed.
+
+# References
+
+[^1] Mildenhall _et al._. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis. ECCV 2020.
+[^2] Dinh _et al._. Density estimation using Real NVP. ICLR 2017.
+[^3] Fathony _et al._. Multiplicative filter networks. ICLR 2021.
+[^4] Doersch _et al._. TAP-Vid: A Benchmark for Tracking Any Point in a Video. Neurips 2022.
+[^5] Song _et al._. Track Everything Everywhere Fast and Robustly. ECCV 2024. 
