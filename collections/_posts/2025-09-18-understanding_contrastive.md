@@ -21,8 +21,9 @@ In the context of unsupervised contrastive learning, positive pairs are defined 
 
 $$
 \mathcal{L}_{\text{contrastive}}(f;\tau,M) \triangleq
-\mathbb{E}_{\substack{ (x,y)\sim p_{\text{pos}} \\ \{x_i\}_{i=1}^M \ \text{i.i.d.}\sim p_{\text{data}}}}
-\left[\substack
+\underset{\substack{ (x,y)\sim p_{\text{pos}} \\ \{x_i^-\}_{i=1}^M \ \overset{\text{i.i.d.}}{\sim} p_{\text{data}} }}{\mathbb{E}}
+\left[
+  - \log
   \frac{ e^{f(x)^\top f(y)/\tau} }
        { e^{f(x)^\top f(y)/\tau} + \sum_i e^{f(x_i^-)^\top f(y)/\tau} }
 \right],
