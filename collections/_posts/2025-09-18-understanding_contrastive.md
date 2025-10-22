@@ -65,7 +65,7 @@ To empirically verify this, they used three encoders sharing the same **AlexNet-
 
 # Alternative losses
 
-The article introduces two alternative losses, one capturing alignment and the other uniformity. The authors show, from a theoretical perspective, that contrastive loss implicitly optimizes both properties, and they characterize its asymptotic behavior. Empirically, they demonstrate that training directly with these two objectives achieves comparable, and in some cases, superior performance to standard contrastive loss.
+The article introduces two alternative losses, one capturing alignment and the other uniformity. The authors show, from a theoretical perspective, that contrastive loss implicitly optimizes both properties, and they characterize its asymptotic behavior. Empirically, they demonstrate that training directly with these two objectives achieves comparable, and in some cases superior, performance to standard contrastive loss.
 
 
 **Alignment loss :**
@@ -117,7 +117,7 @@ We have the following results:
 
 1. The first term is minimized **iff** $$f$$ is perfectly aligned.  
 2. If perfectly uniform encoders exist, they are the exact minimizers of the second term.  
-3. For the convergence in Equation (2), the absolute deviation from the limit decays as $$\mathcal{O}(M^{-1/2})$$.
+3. For the convergence of the equation above, the absolute deviation from the limit decays as $$\mathcal{O}(M^{-1/2})$$.
 
 
 
