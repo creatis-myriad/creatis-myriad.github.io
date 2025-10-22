@@ -30,7 +30,7 @@ $$
 $$
 
 
-**Motivation** : In practice, only maximizing the Mutual Information (MI) (Kullback–Leibler divergence between the joint and the product of the marginal) between two views of the same image can result in poorer representations compared to using the contrastive loss.[^1].
+**Motivation** : In practice, only maximizing the Mutual Information (MI) (Kullback–Leibler divergence between the joint and the product of the marginal) between two views of the same image can result in poorer representations compared to using the contrastive loss [^1].
 
 
 > What the contrastive loss exactly does remains largely a mystery.
@@ -54,7 +54,7 @@ To quantify alignment, one can measure the distance between the representations 
 Quantifying uniformity is more subtle. The problem is related to the well-studied task of distributing points uniformly on the unit hypersphere, often formalized as minimizing the total pairwise potential with respect to a kernel function. Intuitively, this means we want the representations to be evenly spread out so that they balance each other, maintaining a sufficient distance to avoid collapse while covering the space effectively.
 
 
-To empirically verify this, they used three encoders share the same **AlexNet-based architecture** modified to map input images to 2-dimensional vectors in $$\mathbb{S}^1$$ on CIFAR-10 dataset:
+To empirically verify this, they used three encoders sharing the same **AlexNet-based architecture** modified to map input images to 2-dimensional vectors in $$\mathbb{S}^1$$ on CIFAR-10 dataset:
 
 - **Random initialization**.  
 - **Supervised predictive learning**: An encoder and a linear classifier are jointly trained from scratch with cross-entropy loss on supervised labels.  
@@ -65,7 +65,7 @@ To empirically verify this, they used three encoders share the same **AlexNet-ba
 
 # Alternative losses
 
-The article introduces two alternative losses, one capturing alignment and the other uniformity. The authors show, from a theoretical perspective, that contrastive loss implicitly optimizes both properties and characterize its asymptotic behavior. Empirically, they demonstrate that training directly with these two objectives achieves comparable, and in some cases superior, performance to standard contrastive loss.
+The article introduces two alternative losses, one capturing alignment and the other uniformity. The authors show, from a theoretical perspective, that contrastive loss implicitly optimizes both properties, and they characterize its asymptotic behavior. Empirically, they demonstrate that training directly with these two objectives achieves comparable, and in some cases, superior performance to standard contrastive loss.
 
 
 **Alignment loss :**
