@@ -47,7 +47,7 @@ The standard Universal Approximation Theorem, which justifies MLPs, itself strug
 3 hyperparameters :
 - n : polynome degrees
 - m+1 : number of node $$(t_0, ..t_m)$$ $$0 \leq t_0 \leq t_1 \leq \dots \leq t_m \leq 1$$ (call grid in KAN)
-- $P_i$ : control polynomial, the number of control points is equal to m-n
+- $$P_i$$ : control polynomial, the number of control points is equal to m-n
 
 The Bspline definition set: $$\mathbf{S} : [0, 1] \to \mathbb{R}^d $$
 
@@ -75,13 +75,13 @@ The KAN architecture generalizes the original Kolmogorov–Arnold representation
 
 ### KAN Architecture
 
-In a KAN, nodes perform a simple **summation of incoming signals** without applying any non-linearity. The activation of the $j$-th neuron in layer $l+1$, $x_{l+1,j}$, is defined as the sum of the post-activations of the univariate functions $\phi_{l,j,i}$ applied to the inputs $x_{l,i}$:
+In a KAN, nodes perform a simple **summation of incoming signals** without applying any non-linearity. The activation of the $$j$$-th neuron in layer $$l+1$$, $$x_{l+1,j}$$, is defined as the sum of the post-activations of the univariate functions $$\phi_{l,j,i}$$ applied to the inputs $$x_{l,i}$$:
 $$x_{l+1,j} = \sum_{i=1}^{n_l} \phi_{l,j,i}(x_{l,i})$$
 
 
-Each activation function $\phi(x)$ is parameterized as a sum of a basis function $b(x)$ and a [Bspline](https://fr.wikipedia.org/wiki/B-spline) function:
+Each activation function $$\phi(x)$$ is parameterized as a sum of a basis function $$b(x)$$ and a [Bspline](https://fr.wikipedia.org/wiki/B-spline) function:
 $$\phi(x) = w_b b(x) + w_s \text{spline}(x)$$
-where $b(x)$ is typically the SiLU function ($$b(x) = x / (1 + \exp^{-x})$$).  
+where $$b(x)$$ is typically the SiLU function ($$b(x) = x / (1 + \exp^{-x})$$).  
 $$w_b$$, $$w_s$$ et les points de controle des Bspline sont les paramètres appris durant l'entrainement.
 
 $$
@@ -124,7 +124,7 @@ $$
 
 
 ## Accuracy : Grid extension
-- have a finer grid from $\{t_0,t_1,...,t_{G_1}\}$ to $\{t_{-k},...,t_{-1},t_0,...,t_{G_1},t_{G_1+1},...,t_{G_1+k}\}$
+- have a finer grid from $$\{t_0,t_1,...,t_{G_1}\}$$ to $$\{t_{-k},...,t_{-1},t_0,...,t_{G_1},t_{G_1+1},...,t_{G_1+k}\}$$
 
 
 - KAN can start training with fewer parameter, then extend it 
@@ -146,8 +146,7 @@ size G. Bottom right: training time scales favorably with grid size G.</p>
 ![](/collections/images/Kolmogorov-Arnold-Networks/simplification.png)
 <p style="text-align: center;font-style:italic">Figure 4. An example of how to do symbolic regression with KAN.</p>
 
-1. Visualise: check magnitude of activation function $$ \| \phi \|_{1} \equiv \frac{1}{N_p} \sum_{s=1}^{N_p} \left| \phi(x^{(s)}) \right|$$
-
+1. Visualise: check magnitude of activation function $$\| \phi \|_{1} \equiv \frac{1}{N_p} \sum_{s=1}^{N_p} \| \phi(x^{(s)}) \|$$
 2. Prune: delete activation functions which less importance
 3. Symbolification: If the activation function resembles a known function, it can be replaced.(ex: y = cf(ax+b)+d)
 
