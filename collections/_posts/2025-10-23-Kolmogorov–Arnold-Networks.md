@@ -16,22 +16,22 @@ cite:
 *   Every weight parameter in a KAN is replaced by a **univariate function** parameterized as a spline, meaning activation functions are **learnable** and placed on the edges ("weights") instead of fixed on the nodes ("neurons").
 *   KANs offer **superior interpretability** compared to MLPs, particularly for small-scale AI + Science tasks, facilitating the (re)discovery of mathematical and physical laws.
 *   They demonstrate **better accuracy** and possess **faster neural scaling laws** (NSLs) than MLPs.
-*   The corresponding code is available on the official GitHub repository.
+*   The corresponding code is available on the official [GitHub repository](https://github.com/KindXiaoming/pykan).
 
 # Introduction
 
 ## Introduction and MLP Reminder
 
 ### Multi-Layer Perceptrons (MLPs)
-  - Positif Point : 
+  - Positive Point : 
     - MLP are the fundamental building blocks of most modern deep learning models, their expressive power guaranteed by the [**Universal Approximation Theorem**](https://en.wikipedia.org/wiki/Universal_approximation_theorem)
-  - Negatif Point : 
+  - Negative Point : 
     - less intepretable
     - need to retrain MLPs if it's not adapted to dataset
 
-### Kolmogorov-Arnold Netwrok
+### Kolmogorov-Arnold Network
   - Positif Point : 
-    - base on [**Kolmogorov-Arnold  Representation therom**](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Arnold_representation_theorem) that they established that if f is a multivariate continuous function, then f can be written as a finite composition of continuous functions of a single variable and the binary operation of addition.
+    - based on [**Kolmogorov-Arnold  Representation therom**](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Arnold_representation_theorem): they established that if f is a multivariate continuous function, then f can be written as a finite composition of continuous functions of a single variable and the binary operation of addition.
     - can change the finesse of the network after training 
     - typically require a much smaller computational graph (fewer neurons and layers) than MLPs.
 
@@ -41,30 +41,30 @@ KANs are designed to integrate the best qualities of both splines and MLPs.
 
 [**Splines**](https://fr.wikipedia.org/wiki/B-spline) are highly accurate for low-dimensional functions and offer local adjustability, but they suffer severely from the [**Curse of Dimensionality (COD)**](https://en.wikipedia.org/wiki/Curse_of_dimensionality) because they cannot exploit compositional structures. Conversely, **MLPs** are less affected by COD due to their feature learning capabilities, but they are often less accurate than splines when approximating simple univariate functions in low dimensions.
 
-The standard Universal Approximation Theorem, which justifies MLPs, itself struggles with COD, suggesting that the number of required neurons can grow exponentially with input dimension $d$. The authors show that KANs combine MLPs on the exterior (to learn compositional structure) and splines on the interior (to accurately approximate univariate functions). Theoretically, KANs can **beat the COD** if the target function admits a smooth Kolmogorov-Arnold representation.
+The standard Universal Approximation Theorem, which justifies MLPs, itself struggles with COD, suggesting that the number of required neurons can grow exponentially with input dimension $$d$$. The authors show that KANs combine MLPs on the exterior (to learn compositional structure) and splines on the interior (to accurately approximate univariate functions). Theoretically, KANs can **beat the COD** if the target function admits a smooth Kolmogorov-Arnold representation.
 
-## BSpline
+## B-Spline
 3 hyperparameters :
 - n : polynome degrees
 - m+1 : number of node $$(t_0, ..t_m)$$ $$0 \leq t_0 \leq t_1 \leq \dots \leq t_m \leq 1$$ (call grid in KAN)
 - $$P_i$$ : control polynomial, the number of control points is equal to m-n
 
-The Bspline definition set: $$\mathbf{S} : [0, 1] \to \mathbb{R}^d $$
+The B-spline definition sets: $$\mathbf{S} : [0, 1] \to \mathbb{R}^d $$
 
-The curve is defined by $$\mathbf{S}(t) = \sum_{i=0}^{m-n-1} b_{i,n}(t) \, \mathbf{P}_i, \quad t \in [t_n, t_{m-n}]$$
+The curve is defined by $$\mathbf{S}(t) = \sum_{i=0}^{m-n-1} b_{i,n}(t) \, \mathbf{P}_i, \quad t \in [t_n, t_{m-n}]$$.
 The m-n degree B-spline functions are defined by recurrence (Cox-de Boor recurrence) on the lower degree:
 $$b_{j,0}(t) := \begin{cases}
-1 & \text{si } t_j \leq t < t_{j+1} \\
-0 & \text{sinon}
+1 & \text{if } t_j \leq t < t_{j+1} \\
+0 & \text{else}
 \end{cases}
 $$
 
 $$b_{j,n}(t) := \frac{t - t_j}{t_{j+n} - t_j} b_{j,n-1}(t) + \frac{t_{j+n+1} - t}{t_{j+n+1} - t_{j+1}} b_{j+1,n-1}(t)$$
 
 ![](/collections/images/Kolmogorov-Arnold-Networks/BSpline1D_illustration.png)
-<p style="text-align: center;font-style:italic">Figure 1. BSpline 1D illustration .</p>
+<p style="text-align: center;font-style:italic">Figure 1. B-Spline 1D illustration .</p>
 
-[Small exemple for 2D BSpline](https://www.bibmath.net/dico/index.php?action=affiche&quoi=./b/bspline.html)
+[Small exemple for 2D B-Spline](https://www.bibmath.net/dico/index.php?action=affiche&quoi=./b/bspline.html)
 
 # Kolmogorov–Arnold Networks (KAN)
 
@@ -79,10 +79,10 @@ In a KAN, nodes perform a simple **summation of incoming signals** without apply
 $$x_{l+1,j} = \sum_{i=1}^{n_l} \phi_{l,j,i}(x_{l,i})$$
 
 
-Each activation function $$\phi(x)$$ is parameterized as a sum of a basis function $$b(x)$$ and a [Bspline](https://fr.wikipedia.org/wiki/B-spline) function:
+Each activation function $$\phi(x)$$ is parameterized as a sum of a basis function $$b(x)$$ and a [B-spline](https://fr.wikipedia.org/wiki/B-spline) function:
 $$\phi(x) = w_b b(x) + w_s \text{spline}(x)$$
 where $$b(x)$$ is typically the SiLU function ($$b(x) = x / (1 + \exp^{-x})$$).  
-$$w_b$$, $$w_s$$ et les points de controle des Bspline sont les paramètres appris durant l'entrainement.
+$$w_b$$, $$w_s$$ and B-spline control points are the **parameters that are learned during training**.
 
 $$
 \mathbf{x}_{l+1} =
@@ -109,7 +109,7 @@ $$
 ## Approximation Capabilities and Scaling Laws
 
 
-**Théorème (Approximation theory, Kolmogorov Anrnol Theorem).**
+**Theorem (Approximation theory, Kolmogorov Anrnol Theorem).**
 Let $$\mathbf{x} = (x_1, x_2, \dots, x_n)$$.
 Suppose that a function $$f(\mathbf{x})$$ admits a representation
 
@@ -130,7 +130,7 @@ $$
 - KAN can start training with fewer parameter, then extend it 
 
 
-- Small KAN generalize better
+- Small KAN generalizes better
 
 
 ![](/collections/images/Kolmogorov-Arnold-Networks/resultats.png)
@@ -147,8 +147,8 @@ size G. Bottom right: training time scales favorably with grid size G.</p>
 <p style="text-align: center;font-style:italic">Figure 4. An example of how to do symbolic regression with KAN.</p>
 
 1. Visualise: check magnitude of activation function $$\| \phi \|_{1} \equiv \frac{1}{N_p} \sum_{s=1}^{N_p} \| \phi(x^{(s)}) \|$$
-2. Prune: delete activation functions which less importance
-3. Symbolification: If the activation function resembles a known function, it can be replaced.(ex: y = cf(ax+b)+d)
+2. Prune: delete activation functions with less importance
+3. Symbolification: if the activation function resembles a known function, it can be replaced.(ex: y = cf(ax+b)+d)
 
 
 
@@ -157,7 +157,7 @@ size G. Bottom right: training time scales favorably with grid size G.</p>
 <p style="text-align: center;font-style:italic">Figure 5. Should I use KANs or MLPs?.</p>
 
 
-- BSpline is set only between 0 and 1. How did they handle it ?
+- B-Spline is set only between 0 and 1. How did they handle it ?
 
 
-[comment]: <> (les parties pas traiter : KAN accurate 6 pages, KAN interpretable 10 pages)
+[comment]: <> (les parties pas traitée : KAN accurate 6 pages, KAN interpretable 10 pages)
