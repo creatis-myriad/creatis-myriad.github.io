@@ -4,7 +4,7 @@ title: "KAN: Kolmogorov–Arnold Networks"
 tags: interpretable-ai neural-scaling-laws
 author: " Nathan Hutin"
 cite:
-  authors: "Ziming Liu, Yixuan Wang, Sachin Vaidya, Fabian Ruehle, James Halverson, Marin Soljaˇci´c, Thomas Y. Hou, Max Tegmark"
+  authors: "Ziming Liu, Yixuan Wang, Sachin Vaidya, Fabian Ruehle, James Halverson, Marin Soljačić, Thomas Y. Hou, Max Tegmark"
   title: "KAN: Kolmogorov–Arnold Networks"
   venue: "ICLR 2025"
   pdf: "https://arxiv.org/pdf/2404.19756"
@@ -31,7 +31,7 @@ cite:
 
 ### Kolmogorov-Arnold Network
   - Positif Point : 
-    - based on [**Kolmogorov-Arnold  Representation therom**](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Arnold_representation_theorem): they established that if f is a multivariate continuous function, then f can be written as a finite composition of continuous functions of a single variable and the binary operation of addition.
+    - based on [**Kolmogorov-Arnold  Representation theorem**](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Arnold_representation_theorem): they established that if f is a multivariate continuous function, then f can be written as a finite composition of continuous functions of a single variable and the binary operation of addition.
     - can change the finesse of the network after training 
     - typically require a much smaller computational graph (fewer neurons and layers) than MLPs.
 
@@ -46,7 +46,7 @@ The standard Universal Approximation Theorem, which justifies MLPs, itself strug
 ## B-Spline
 3 hyperparameters :
 - n : polynome degrees
-- m+1 : number of node $$(t_0, ..t_m)$$ $$0 \leq t_0 \leq t_1 \leq \dots \leq t_m \leq 1$$ (call grid in KAN)
+- m+1 : number of nodes $$(t_0, ..t_m)$$ $$0 \leq t_0 \leq t_1 \leq \dots \leq t_m \leq 1$$ (call grid in KAN)
 - $$P_i$$ : control polynomial, the number of control points is equal to m-n
 
 The B-spline definition sets: $$\mathbf{S} : [0, 1] \to \mathbb{R}^d $$
