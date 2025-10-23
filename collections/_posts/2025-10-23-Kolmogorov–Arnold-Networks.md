@@ -30,7 +30,7 @@ cite:
     - need to retrain MLPs if it's not adapted to dataset
 
 ### Kolmogorov-Arnold Network
-  - Positif Point : 
+  - Positive Point : 
     - based on [**Kolmogorov-Arnold  Representation theorem**](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Arnold_representation_theorem): they established that if f is a multivariate continuous function, then f can be written as a finite composition of continuous functions of a single variable and the binary operation of addition.
     - can change the finesse of the network after training 
     - typically require a much smaller computational graph (fewer neurons and layers) than MLPs.
@@ -109,7 +109,7 @@ $$
 ## Approximation Capabilities and Scaling Laws
 
 
-**Theorem (Approximation theory, Kolmogorov Anrnol Theorem).**
+**Theorem (Approximation theory, Kolmogorov-Arnold Theorem).**
 Let $$\mathbf{x} = (x_1, x_2, \dots, x_n)$$.
 Suppose that a function $$f(\mathbf{x})$$ admits a representation
 
