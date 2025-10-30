@@ -61,7 +61,7 @@ pdf: "https://ecmlpkdd-storage.s3.eu-central-1.amazonaws.com/preprints/2025/rese
 * A given sample traverses the tree from root $ \textbf{z}_0 $  to a leaf node $ \textbf{z}_l $ 
 * The decisions of moving to either child node are $ c_i $ for each non-leaf node $ \textit{i} $. They follow a Bernoulli distribution, where $ c_i = 0 $ corresponds to the left child
 * $ \mathcal{P}_l $ is the path or the sequence of nodes from the root to one leaf $ \textit{l} $
-* $ z_{\mathcal{P}_l} = \left\{ z_i | i \in \mathcal{P}_l \right\}$ is the set of latent embeddings for each node in the path $ \mathcal{P}_l $
+* $ z_{\mathcal{P}_l} = \left\{ z_i \mid i \in \mathcal{P}_l \right\}$ is the set of latent embeddings for each node in the path $ \mathcal{P}_l $
 
 * The generative model is defined by :
 
@@ -110,8 +110,8 @@ $$
 
 * Similar method than DiffuseVAE [1]
 * You take the output of a VAE-based model and you apply a diffusion model on it to get better reconstructed samples
-* You keep the reprensation of a VAE while improving the reconstruction part
-* TreeVAE + Diffusion is the same process: You take the reconstructed image from the decoder of one leaf  and you give it to a diffusion model to refine the reconstruction (In this case, there is no condition on any latent information from the hierarchical structure)
+* You keep the representation of a VAE while improving the reconstruction part
+* TreeVAE + Diffusion is the same process than DiffuseVAE: You take the reconstructed image from the decoder of one leaf and you give it to a diffusion model to refine the reconstruction (in this case, there is no condition on any latent information from the hierarchical structure)
 
 &nbsp;
 
@@ -127,7 +127,7 @@ $$
 <img src="/collections/images/TreeDiffusion/tab1.jpg" width=700></div>
 
 
-* For each generation, they sample the root embedding; then the path in the tree and the refined representations along the selected path iteratively until a leaf is reached
+* For each generation, they sample the root embedding, then select a path through the tree and refine the representations along this path until a leaf is reached
 * TreeDiffusion produces sharper images for all clusters but also generates a greater diversity of images
 
 <div style="text-align:center">
