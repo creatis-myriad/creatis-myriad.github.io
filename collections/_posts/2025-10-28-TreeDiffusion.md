@@ -97,6 +97,7 @@ $$
 
 * $$ f_{embed} $$ and $$ f_{node} $$ are implemented as projection blocks consisting of **two MLP layers** with a **SiLU activation in-between** (they are jointly trained with the diffusion model)
 * Link of the architecture [here](https://github.com/JoGo175/TreeDiffusion/blob/main/models/diffusion/unet_openai.py#L393)
+
 > For each node in the path, its embedding and corresponding node index are projected independently into the time embedding dimension of the U-Net decoder.
 
 > Currently, sampling is limited to paths originating from the root
