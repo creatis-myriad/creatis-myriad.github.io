@@ -154,9 +154,17 @@ $$ x_{0|\tau} = x_{0|\tau} - \nabla_{x_{\tau}} \log p(y | x_{0 | \tau})  $$
 <br/>
 
 ## Steps of the algorithm
+Obs:
+- Each sample is a video of shape
+$$ N \times M \times T $$
+- The denoising diffusion model is applied independently on channels of shape
+$$ N \times M $$
+- Other steps are applied on reshaped matrices
+$$ N \cdot M \times T $$
+
 {:refdef: style="text-align: center;"}
 ![](/collections/images/DiffusionBackgroundSupression/algorithm.jpg){: width="500" }
-{:refdef}
+{:refdef} 
 
 <br/>
 
