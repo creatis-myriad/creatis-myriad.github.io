@@ -13,7 +13,6 @@ pdf: "https://arxiv.org/abs/2509.20886"
 <br/>
 
 # Highlights
-
 - The authors propose to perform dehazing by combining the power of **Robust PCA** and **Diffusion Models**, which can model highly complex data distributions without having to rely on basic assumptions. 
 -
 -
@@ -26,7 +25,7 @@ pdf: "https://arxiv.org/abs/2509.20886"
 During ultrasound acquisitions, phenomena such as aberration and reverberation produce unwanted echoes that degrade the image quality. In particular, **haze** is an artifact that occurs due to multipath reflections and produces a white haze on the echo image.
 
 {:refdef: style="text-align: center;"}
-![](/collections/images/DehazingDiffusion/echo_images.jpg){: width="400" }
+![](/collections/images/DehazingDiffusion/echo_images.jpg){: width="500" }
 {:refdef}
 
 This phenomenon can **make diagnosis much more difficult**, both qualitative and quantitative.
@@ -88,7 +87,7 @@ $$ p(X) \propto \text{exp}(-\lambda ||X||_1). $$
 
 Then, taking the negative log-likelihood and finding the maximum a posteriori (MAP) estimate is equivalent to solving the original RPCA optimization problem up to some constants:
 
-$$ (L^*, X^*) = \argmax_{L,X}p(L, X | Y) = \argmin_{L,X} (- \log p(L, X | Y)), $$
+$$ (L^*, X^*) = \underset{L,X}{\operatorname{argmax}} \hspace{0.1cm} p(L, X | Y) = \underset{L,X}{\operatorname{argmin}} (- \log p(L, X | Y)), $$
 
 where
 
@@ -128,7 +127,7 @@ $$ y: $$
 $$ x_{0|\tau} := \text{E}[x_0 |x_{\tau}] = \frac{1}{\alpha_\tau} (x_{\tau} + \sigma_{\tau}^2 \nabla_{x_{\tau}} \log p(x_{\tau}) ), $$
 
 where
-$$ x_0 \sim p(x), \tau \in [0, \Tau], $$
+$$ x_0 \sim p(x), \tau \in [0, T], $$
 and
 $$ \alpha_{\tau}, \sigma_{\tau} $$
 are predefined noise schedules. The score
@@ -152,14 +151,14 @@ $$ x_{0|\tau} = x_{0|\tau} - \nabla_{x_{\tau}} \log p(y | x_{0 | \tau})  $$
 - Hybrid RPCA and diffusion framework that integrates the low-rank component for background with diffusion posterior sampling.
 
 {:refdef: style="text-align: center;"}
-![](/collections/images/DiffusionBackgroundSupression/comparison.jpg){: width="400" }
+![](/collections/images/DiffusionBackgroundSupression/comparison.jpg){: width="500" }
 {:refdef}
 
 <br/>
 
 ## Steps of the algorithm
 {:refdef: style="text-align: center;"}
-![](/collections/images/DiffusionBackgroundSupression/algorithm.jpg){: width="300" }
+![](/collections/images/DiffusionBackgroundSupression/algorithm.jpg){: width="500" }
 {:refdef}
 
 <br/>
@@ -183,25 +182,25 @@ $$ x_{0|\tau} = x_{0|\tau} - \nabla_{x_{\tau}} \log p(y | x_{0 | \tau})  $$
 
 # Results
 {:refdef: style="text-align: center;"}
-![](/collections/images/DiffusionBackgroundSupression/example.jpg){: width="300" }
+![](/collections/images/DiffusionBackgroundSupression/example.jpg){: width="500" }
 {:refdef}
  
 {:refdef: style="text-align: center;"}
-![](/collections/images/DiffusionBackgroundSupression/ks_statistic.jpg){: width="300" }
+![](/collections/images/DiffusionBackgroundSupression/ks_statistic.jpg){: width="500" }
 {:refdef}
 
 {:refdef: style="text-align: center;"}
-![](/collections/images/DiffusionBackgroundSupression/results.jpg){: width="500" }
+![](/collections/images/DiffusionBackgroundSupression/results.jpg){: width="700" }
 {:refdef}
 
 {:refdef: style="text-align: center;"}
-![](/collections/images/DiffusionBackgroundSupression/boxplot.jpg){: width="300" }
+![](/collections/images/DiffusionBackgroundSupression/boxplot.jpg){: width="500" }
 {:refdef}
 
 <br/>
 
 # Conclusions
-- The proposed method better separates dynamic tissue fromlow-rank background compared to RPCA.
+- The proposed method better separates dynamic tissue from low-rank background compared to RPCA.
 - The work shows the potential of combining classical low-rank priors with diffusion models for background supression in videos.
 
 
