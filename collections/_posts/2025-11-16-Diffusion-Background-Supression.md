@@ -13,9 +13,8 @@ pdf: "https://arxiv.org/abs/2509.20886"
 <br/>
 
 # Highlights
-- The authors propose to perform dehazing by combining the power of **Robust PCA** and **Diffusion Models**, which can model highly complex data distributions without having to rely on basic assumptions. 
--
--
+- The authors propose to perform background supression by combining the power of **Robust PCA** and **Diffusion Models**, which can model highly complex data distributions without having to rely on basic assumptions. 
+- They successfully apply this framework to dehazing of cardiac ultrasound images.
 
 <br/>
 
@@ -134,7 +133,7 @@ are predefined noise schedules. The score
 $$ \nabla_{x_{\tau}} \log p(x_{\tau}) $$
 is parametrized by a neural network.
 
-2. Guidance step: The solution is moved towards the measurements using the likelihood:
+2. Guidance step. The solution is moved towards the measurements using the likelihood:
 
 $$ x_{0|\tau} = x_{0|\tau} - \nabla_{x_{\tau}} \log p(y | x_{0 | \tau})  $$
 
