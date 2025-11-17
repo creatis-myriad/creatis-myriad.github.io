@@ -134,9 +134,7 @@ are predefined noise schedules. The score
 $$ \nabla_{x_{\tau}} \log p(x_{\tau}) $$
 is parametrized by a neural network.
 
-2. Guidance step
-
-The solution is moved towards the measurements using the likelihood:
+2. Guidance step: The solution is moved towards the measurements using the likelihood:
 
 $$ x_{0|\tau} = x_{0|\tau} - \nabla_{x_{\tau}} \log p(y | x_{0 | \tau})  $$
 
