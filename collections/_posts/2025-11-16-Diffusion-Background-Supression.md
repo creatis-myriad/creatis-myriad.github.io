@@ -116,26 +116,47 @@ $$ p(x|y). $$
 
 **Diffusion posterior sampling (DPS)** [[2]](https://arxiv.org/pdf/2209.14687) allows to sample from
 $$ p(x|y). $$
-The idea is to interleave typical score-based denoising updates of the prior
+The posterior can be written in terms of the prior and the likelihood using Bayes rule:
+
+$$ p(x|y) \propto p(x) p(y|x). $$
+
+Then, the idea of DPS is to represent the prior
 $$ p(x) $$
-and guidance steps towards the measurement
-$$ y: $$
+with a diffusion model and to interleave denoising updats of the prior with likelihood-guided steps that move samples towards the masurements
+$$ y. $$
 
-1. Denoising step:
+1. Denoising step. The forward diffusion process is defined as:
 
-    $$ x_{0|\tau} := \text{E}[x_0 |x_{\tau}] = \frac{1}{\alpha_\tau} (x_{\tau} + \sigma_{\tau}^2 \nabla_{x_{\tau}} \log p(x_{\tau}) ), $$
+    $$ x_{\tau} = \alpha_{\tau} x_0 + \sigma_{\tau} z, $$
 
     where
-    $$ x_0 \sim p(x), \tau \in [0, T], $$
+    $$ z \sim N(0, I), x_0 \sim p(x), \tau \in [0, T], $$
     and
     $$ \alpha_{\tau}, \sigma_{\tau} $$
-    are predefined noise schedules. The score
-    $$ \nabla_{x_{\tau}} \log p(x_{\tau}) $$
-    is parametrized by a neural network.
+    are predefined noise schedules.
 
-2. Guidance step. The solution is moved towards the measurements using the likelihood:
+    Then, given a noisy sample
+    $$ x_{\tau}, $$
+    the denoised estimate is given by:
+    
+    $$ x_{0|\tau} = \frac{1}{\alpha_\tau} (x_{\tau} - \sigma_{\tau} \epsilon_{\theta}(x_{\tau}, \tau) ), $$
 
-    $$ x_{0|\tau} = x_{0|\tau} - \nabla_{x_{\tau}} \log p(y | x_{0 | \tau})  $$
+    where
+    $$ \epsilon_{\theta}(x_{\tau}, \tau) $$
+    is a neural network trained to predict the Gaussian noise
+    $$z.$$
+
+2. Guidance step. The denoised estimate is moved towards the measurement using the likelihood:
+
+    $$ x_{0|\tau} = x_{0|\tau} + \eta \nabla_{x_0} \log p(y | x_0) \Big|_{x_0 = x_{0|\tau}}, $$
+
+    where 
+    $$ \eta $$
+    is a step size and
+    $$ x_{0|\tau} $$
+    is used as a proxy for
+    $$ x_0 $$
+    in the likelihood.
 
 <br/>
 
