@@ -71,7 +71,7 @@ Alternatively, the Bayesian version of this problem can be written. The joint di
 $$ p(Y, L, X) = p(Y | L, X) p(L) p(X). $$
 
 Considering Gaussian noise *N* of variance
-$\sigma^2$
+$$\sigma^2$$
 , the likelihood writes as:
 
 $$ p(Y | L, X) = N(Y; L + X, \sigma^2 I). $$
@@ -123,19 +123,19 @@ $$ y: $$
 
 1. Denoising step:
 
-$$ x_{0|\tau} := \text{E}[x_0 |x_{\tau}] = \frac{1}{\alpha_\tau} (x_{\tau} + \sigma_{\tau}^2 \nabla_{x_{\tau}} \log p(x_{\tau}) ), $$
+    $$ x_{0|\tau} := \text{E}[x_0 |x_{\tau}] = \frac{1}{\alpha_\tau} (x_{\tau} + \sigma_{\tau}^2 \nabla_{x_{\tau}} \log p(x_{\tau}) ), $$
 
-where
-$$ x_0 \sim p(x), \tau \in [0, T], $$
-and
-$$ \alpha_{\tau}, \sigma_{\tau} $$
-are predefined noise schedules. The score
-$$ \nabla_{x_{\tau}} \log p(x_{\tau}) $$
-is parametrized by a neural network.
+    where
+    $$ x_0 \sim p(x), \tau \in [0, T], $$
+    and
+    $$ \alpha_{\tau}, \sigma_{\tau} $$
+    are predefined noise schedules. The score
+    $$ \nabla_{x_{\tau}} \log p(x_{\tau}) $$
+    is parametrized by a neural network.
 
 2. Guidance step. The solution is moved towards the measurements using the likelihood:
 
-$$ x_{0|\tau} = x_{0|\tau} - \nabla_{x_{\tau}} \log p(y | x_{0 | \tau})  $$
+    $$ x_{0|\tau} = x_{0|\tau} - \nabla_{x_{\tau}} \log p(y | x_{0 | \tau})  $$
 
 <br/>
 
