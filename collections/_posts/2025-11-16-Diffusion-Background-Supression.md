@@ -197,7 +197,7 @@ $$ N \cdot M \times T $$
 
 ## Data
 - 4,376 clean samples from 75 easy-to-image subjects
-- 2,324 noisy samples from difficult-to-image subjects
+- 2,324 noisy samples from 40 difficult-to-image subjects
 - Size of one sample: 60 x 256 x 256
 
 {:refdef: style="text-align: center;"}
@@ -210,19 +210,24 @@ $$ N \cdot M \times T $$
 
 $$ \text{KS} = \underset{z}{\operatorname{sup}} | F_{\Omega_S(x)}(z) - F_{\Omega_S(y)}(z) |, $$
 
-where *F()* is the empirical CFD of the respective regions of interest.
+where
+$$ F(\cdot) $$
+is the empirical CFD of the respective regions of interest.
 
 <br/>
 
 # Results
+- RPCA appears to greater modify tissue distribution.
 {:refdef: style="text-align: center;"}
 ![](/collections/images/DiffusionBackgroundSupression/ks_statistic.jpg){: width="500" }
 {:refdef}
 
+- Both methods allow significant dehazing, but RPCA excessively attenuates tissue.
 {:refdef: style="text-align: center;"}
 ![](/collections/images/DiffusionBackgroundSupression/results.jpg){: width="700" }
 {:refdef}
 
+- Nuclear diffusion acheives a better contrast while better preserving tissue distribution. 
 {:refdef: style="text-align: center;"}
 ![](/collections/images/DiffusionBackgroundSupression/boxplot.jpg){: width="500" }
 {:refdef}
