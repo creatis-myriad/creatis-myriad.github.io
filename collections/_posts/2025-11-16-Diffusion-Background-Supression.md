@@ -166,7 +166,7 @@ $$ y. $$
 - The sparsity assumption of the RPCA model is too simple to properly model tissue.
 
 ## Idea
-- Hybrid RPCA and diffusion framework that integrates the low-rank component for background with diffusion posterior sampling.
+- Use a hybrid RPCA and diffusion framework that integrates the low-rank component for background with diffusion posterior sampling, thereby modeling tissue with a diffusion model.
 
 {:refdef: style="text-align: center;"}
 ![](/collections/images/DiffusionBackgroundSupression/comparison.jpg){: width="500" }
