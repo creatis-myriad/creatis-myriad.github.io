@@ -191,26 +191,30 @@ $$ N \cdot M \times T $$
 
 # Experiments
 
+## Configuration
+- A pretrained 2D diffusion model is used for the prior on *X*
+- 500 diffusion steps using SeqDiff [[3]](https://arxiv.org/html/2409.05399v1) (T=5000) with *Y* as the initialization
+
 ## Data
 - 4,376 clean samples from 75 easy-to-image subjects
 - 2,324 noisy samples from difficult-to-image subjects
 - Size of one sample: 60 x 256 x 256
 
-## Configuration
-- A pretrained 2D diffusion model is used for the prior on *X*
-- 500 diffusion steps using SeqDiff [[3]](https://arxiv.org/html/2409.05399v1) (T=5000) with *Y* as the initialization
+{:refdef: style="text-align: center;"}
+![](/collections/images/DiffusionBackgroundSupression/example.jpg){: width="500" }
+{:refdef}
 
 ## Metrics
-- Generalized contrast-to-noise ratio (gCNR)
-- Kolmogorov-Smirnov statistic (KS)
+- Generalized contrast-to-noise ratio (gCNR) between ventricle and myocardium regions.
+- Kolmogorov-Smirnov statistic (KS) to quantify agreement between the original *Y* and denoised *X* tissue distributions in the myocardial region.
+
+$$ \text{KS} = \underset{z}{\operatorname{sup}} | F_{\Omega_S(x)}(z) - F_{\Omega_S(y)}(z) |, $$
+
+where *F()* is the empirical CFD of the respective regions of interest.
 
 <br/>
 
 # Results
-{:refdef: style="text-align: center;"}
-![](/collections/images/DiffusionBackgroundSupression/example.jpg){: width="500" }
-{:refdef}
- 
 {:refdef: style="text-align: center;"}
 ![](/collections/images/DiffusionBackgroundSupression/ks_statistic.jpg){: width="500" }
 {:refdef}
