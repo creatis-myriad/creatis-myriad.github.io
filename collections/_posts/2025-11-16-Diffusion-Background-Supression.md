@@ -33,14 +33,14 @@ Existing dehazing techniques:
 - **Harmonic imaging** receives echoes at frequencies that are multiples of the original frequency. It produces higher quality images, as multipath scatterers have less energy and therefore generate fewer harmonics. However, it results in reduced penetration depth.
 - **Clutter filtering methods.**
 	- Block-matching and 3D filtering algorithm (BM3D) works by grouping similar patches of the image and then stacking and filtering them. It needs assumptions on the noise distribution.
-	- Temporal decompositions (PCA, SVD) allow to separate data correspoding to rapidly moving events (tissue) from data corresponding to stationary events (clutter). This assumption is not always true, leading to mistakes.
+	- Temporal decompositions (PCA, SVD) allow to separate data corresponding to rapidly moving events (tissue) from data corresponding to stationary events (clutter). This assumption is not always true, leading to mistakes.
 	- etc.
 - **Deep learning methods.** Supervised approaches have been implemented to supress reverberation haze. They require of a supervised dataset and may have difficulty to generalize across datasets.
 
 <br/>
 
 ## Robust PCA for background supression
-An ultrasound signal *Y* is acquired. where
+An ultrasound signal *Y* is acquired, where
 $$Y \in \mathbb{C}^{N \times M \times T}$$
 can be decomposed in three signals:
 
@@ -48,13 +48,13 @@ $$ Y = L + X + N, $$
 
 where *L* is the background signal, *X* is the tissue signal and *N* is the noise signal.
 
-In the context of contrast-enhanced ultrasound imaging, and if the matrices are reshaped as
+In the context of ultrasound imaging, and if the matrices are reshaped as
 $$N \cdot M \times T$$
 such that the columns carry the temporal information, some assumptions can be made about *L* and *S*:
 - *L* is low-rank because of the spatial coherence of background signal
 - *X* can be considered sparse because tissue is not everywhere in the sector
 
-The decomposition of a matrix in low-rank and sparse components is called **Robust Principal Component Analysis** (RPCA) [[1]](https://arxiv.org/abs/0912.3599) and *L* and *S* can be found solving a convex minimization problem.
+The decomposition of a matrix in low-rank and sparse components is called **Robust Principal Component Analysis** (RPCA) [[1]](https://arxiv.org/abs/0912.3599) and *L* and *X* can be found solving a convex minimization problem.
 
 To recover *L* and *X* the following minimization problem can be written, which promotes low-rank solutions for *L* and sparse solutions for *X*:
 
@@ -122,7 +122,7 @@ $$ p(x|y) \propto p(x) p(y|x). $$
 
 Then, the idea of DPS is to represent the prior
 $$ p(x) $$
-with a diffusion model and to interleave denoising updats of the prior with likelihood-guided steps that move samples towards the masurements
+with a diffusion model and to interleave denoising updates of the prior with likelihood-guided steps that move samples towards the measurements
 $$ y. $$
 
 1. Denoising step. The forward diffusion process is defined as:
@@ -227,7 +227,7 @@ is the empirical CFD of the respective regions of interest.
 ![](/collections/images/DiffusionBackgroundSupression/results.jpg){: width="700" }
 {:refdef}
 
-- Nuclear diffusion acheives a better contrast while better preserving tissue distribution. 
+- Nuclear diffusion achieves a better contrast while better preserving tissue distribution. 
 {:refdef: style="text-align: center;"}
 ![](/collections/images/DiffusionBackgroundSupression/boxplot.jpg){: width="500" }
 {:refdef}
