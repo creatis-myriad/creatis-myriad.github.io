@@ -39,7 +39,7 @@ During breathing, vessels and airways undergo displacements that are often large
 - **Sliding motion at anatomical boundaries**
 The lungs slide along the chest wall and between lobes. This breks the smooth and continuous motion assumptions of most regularization models and introduces physically incorrect constraints near the pleural surface.
 
-![Sliding motion](Sliding_motion.png)
+![Sliding motion](/collections/images/GraphRegNet/Sliding_motion.png)
 
 Figure 1: From left to right, inhalation, exhalation, and overlay. The overlay highlights sliding motion, mainly at the diaphragm-lung, inter-lobar and lung-pleural cavity interfaces [2].
 
@@ -64,7 +64,7 @@ These limitations motivated a **shift from dense voxel-based regression to spars
 
 The fixed image **$I_F$** and moving image **$I_M$** are defined as the inhale and exhale CT scans, respectively. The registration objective is to **calculate a displacement field** $D$:  $\mathbb{R}^3 \to \mathbb{R}$ that **best aligns the inhale and exhale images**.
 
-![GraphRegNet](GraphRegNet.png)
+![GraphRegNet](/collections/images/GraphRegNet/GraphRegNet.png)
 Figure 2: Overview of keypoint based deformable registration framework: **GraphRegNet**. Sparse keypoints are detected in $I_F$. MIND features are extracted from $I_F$ and $I_M$. Feature correlation across candidate displacements builds a cost tensor per keypoint. The model predicts displacements using a CNN encoder, a GCN for spatial regularization, and a CNN decoder. Sparse displacements are densified by trilinear extrapolation. Training is unsupervised using an MSE loss on fixed and warped MIND images [1].
 
 The registration is performed in two stages, a **main stage** that estimates the large scale respiratory motion and a **refinement stage** that increases keypoint density and reduces the displacement search range to improve local alignment.
@@ -163,7 +163,7 @@ $e_{ij} = h_\theta(f_i, f_j - f_i)$
 where $h_\theta$ is a fully connected layer.
 
 
-![Graph](gcn.png)
+![Graph](/collections/images/GraphRegNet/gcn.png)
 Figure 3: Edge convolutions. Left: Computing an edge feature, $e_ij$, from a point pair $(x_i, y_j)$. $h\theta()$ is instantiated using a fully connected layer, and the learnable parameters are its associated weights. Right: The EdgeConv operation. The output of EdgeConv is calculated by aggregating the edge features associated with all the edges coming from each connected vertex [5].
 
 These layers propagate information between neighboring keypoints and perform **learned spatial regularization** of the displacement embeddings.
@@ -200,17 +200,17 @@ Contains 10 inhale-exhale CT scans with large respiratory motion. It also provid
 
    - 25 additional lung CT scans from public datasets are included. All experiments are conducted using five-fold cross-validation. 
 
-![COPDGene](copd8-render.png)
+![COPDGene](/collections/images/GraphRegNet/copd8-render.png)
 Figure 4: 3D rendering of case 8: inspiratory and expiratory CT from the DIR-Lab COPDGene study. Landmark displacement vectors with colors indicating distances in millimeters are shown.
 
 # Results
 
 - Contains only about 33,000 trainable parameters. The total inference time including refinement is less than 2 seconds on a NVIDIA Titan RTX GPU, with a memory usage of less than 4GB. 11GB used for training. 
 
-![Figures-GraphRegNet](figures-graphregnet.png)
+![Figures-GraphRegNet](/collections/images/GraphRegNet/figures-graphregnet.png)
 Figure 5: Qualitative results of GraphRegNet on COPDGene scan pairs in sagittal view. From left to right: initial and final color overlays of inhale and exhale scans, two views of the predicted displacement field, and the Jacobian within the lung. 
 
-![Results-GraphRegNet](results_graphregnet.png)
+![Results-GraphRegNet](/collections/images/GraphRegNet/results_graphregnet.png)
 Figure 6: Registration results on the DIR-LAB 4D CT and COPDGene datasets. Mean landmark distance in mm per case. Baseline results are taken from SOTA. Statistical significance versus GraphRegNet is tested with the Wilcoxon signed-rank test over 3000 landmark pairs. Significance levels are * p < 0.05, ** p < 0.01, *** p < 0.001.
 
 
