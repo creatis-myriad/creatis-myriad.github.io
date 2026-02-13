@@ -169,7 +169,7 @@ Effectiveness in data-constrained settings on the Synapse dataset (from 3D Medic
 
 Explore the spatial sensitivity and resolution limits of the method.
 
-In the Location task, the same MNIST digit is embeded into two volumes, with varying lateral pixel (px) distances apart (64px to 8px). The authors test whether Raptor can distinguish the two.  
+In the Location task, the same MNIST digit is embedded in two volumes, at varying lateral pixel (px) distances (64px to 8px). The authors test whether Raptor can distinguish the two.  
 
 In the Size task, a MNIST digit of varying sizes (from 64px to 8px) is randomly inserted into the volumes. the authors test whether Raptor can detect the presence of the digit.  
 
