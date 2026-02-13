@@ -24,7 +24,7 @@ pdf: "https://arxiv.org/pdf/2507.08254"
 
 Understanding and processing volumetric data is essential in a variety of applications, including healthcare (e.g. brain MRIs, chest CT images).
 
-* Following the emergence of foundation models for natural images, such as DINO [1] and SAM [2], the development of analogous models for medical imaging has become a highly compelling research direction [3].
+* Following the emergence of foundation models for natural images, such as DINO [^1] and SAM [^2], the development of analogous models for medical imaging has become a highly compelling research direction [^3].
 
 * Current challenges stem from the computational complexity of training sota architectures in high dimensions and curating sufficiently large datasets of volumes.
 
