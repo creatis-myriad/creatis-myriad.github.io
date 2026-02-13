@@ -106,7 +106,7 @@ The authors compute two variants:
 - **Raptor-B (Base)** with $$K = 10$$
 
 
- Note: the random projection is chosen over other methods (e.g. PCA) for time complecity reasons. About the effectiveness of random projections, the Johnson–Lindenstrauss lemma states that distances between points (e.g., patch embeddings) are preserved up to a small distortion factor (1 ± $$\epsilon$$) with high probability when mapped into $$\mathbb{R}^K$$.
+ Note: the random projection is chosen over other methods (e.g. PCA) for time complexity reasons. About the effectiveness of random projections, the Johnson–Lindenstrauss lemma states that distances between points (e.g., patch embeddings) are preserved up to a small distortion factor (1 ± $$\epsilon$$) with high probability when mapped into $$\mathbb{R}^K$$.
 
 # Experiments
 
