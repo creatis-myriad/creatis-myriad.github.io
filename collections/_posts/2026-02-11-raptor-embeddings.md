@@ -6,7 +6,7 @@ author: "Pierre Falconnier"
 cite:
     authors: "Ulzee An, Moonseong Jeong, Simon A. Lee, Aditya Gorla, Yuzhe Yang, Sriram Sankararaman"
     title: "Raptor: Scalable Train-Free Embeddings for 3D Medical Volumes Leveraging  Pretrained 2D Foundation Models"
-    venue: "ICML 2025 spotlightposter"
+    venue: "ICML 2025 Spotlight Poster"
 pdf: "https://arxiv.org/pdf/2507.08254"
 ---
 
