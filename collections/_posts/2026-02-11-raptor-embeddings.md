@@ -110,7 +110,7 @@ The authors compute two variants:
 
 # Experiments
 
-The authors compare methods on classification (metrics: AUROC and accuracy) and regression (metrics: Pearson's $$r²$$) tasks. 
+The authors compare methods on classification (metrics: AUROC and accuracy) and regression (metrics: Pearson's $$r^2$$) tasks. 
 
 For Raptor embeddings, they train logistic regression models for classification tasks, and MLPs under an MSE loss for regression tasks.
 
