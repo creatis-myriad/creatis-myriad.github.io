@@ -86,7 +86,7 @@ Here, $$j$$ indexes slices along axis $$i$$. The size of Raptor embeddings scale
 
 ### Typical Settings
 
-The authors chose to use DINOv2-L encoder (304M parameters) which ViT trained on a curated dataset of 142M 2D natural images (LVD-142M) and 1.2B additional images crawled on the web. Keep in mind that method is agnostic of the model. In this settings:
+The authors chose to use DINOv2-L encoder (304M parameters) which trained ViT on a curated dataset of 142M 2D natural images (LVD-142M) and 1.2B additional images crawled on the web. Keep in mind that method is agnostic of the model. They used the following settings:
 
 * $$D =$$ 256
 * $$d =$$ 1024
