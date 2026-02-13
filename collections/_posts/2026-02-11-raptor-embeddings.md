@@ -122,7 +122,7 @@ The other methods are fully fine-tuned. For models which do not have a classific
 
 ### Datasets
 
-- **3D Medical MNIST**: includes 6 separated classification tasks on CT and MRI, from 2 to 11 classes, with dataset size lower than 1.3k images.
+- **3D Medical MNIST**: includes 6 separated classification tasks on CT and MRI, from 2 to 11 classes, with no more than 1.3k images per dataset.
 - **CC-CCII**: 2,471 chest CT scans, 3 classes. 
 - **CTRG**: 6,000 brain MRIs for 3 classes (CTRG-B) and 1,804 chest CTs for 4 classes (CTRG-C).
 - **UKBB Brain MRIs**: 1,476 MRIs, in conjunction 162 quantitative imaging-derived phenotypes (IDPs). IDPs are categorized into ten broad categories according to the major regions of the brain and used as regression targets.
