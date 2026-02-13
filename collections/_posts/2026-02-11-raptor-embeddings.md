@@ -180,7 +180,7 @@ For both tasks, binary classifiers are trained on top of the Raptor embeddings.
 # Conclusion
 
 - Raptor achieves sota performance across a range of medical imaging tasks.
-- Compress volumes into a representation space significantly smaller than those used in prior work.
+- Compress volumes into a representation space significantly smaller than those used in prior works.
 - Underscore the efficacy of Raptor as a paradigm-shifting framework for volumetric data analysis that overcomes major challenges in the field by leveraging pretrained 2D foundation models.
 - Scalable and generalizable solution for resource-constrained settings.
 - Domain-specific priors or refining the axial sampling strategy could further improve downstream results
