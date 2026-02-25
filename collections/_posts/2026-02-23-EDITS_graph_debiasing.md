@@ -18,10 +18,10 @@ pdf: "https://dl.acm.org/doi/pdf/10.1145/3485447.3512173"
 # Introduction
 
 + This post assumes that the reader is familiar with the basic concepts of graph neural networks and optimal transport. Both topics were covered in previous tutorials : [Introduction to Optimal Transport](https://creatis-myriad.github.io/tutorials/2024-05-13-tutorial-optimal-transport.html) and [Introduction to Graph Neural Networks](https://creatis-myriad.github.io/tutorials/2025-03-28-tutorial-graph-neural-networks.html) 
-+ Assuming that a biased graph dataset is used to train a GNN, a "sensitive information" refers to any data present in the dataset that could be used for the predictions, leading to an unwanted discrimination.
++ Assuming that a biased graph dataset is used to train a GNN, a "sensitive information" refers to any data present in the dataset that could be used for the predictions, leading to an unwanted discrimination
 + To introduce the issue, the authors generates a synthetic graph (for a node-classification context) modeling a social network. Nodes represent individuals, and edges represent any connexions between the nodes (you can think of a mutual follow on a social media).
-+ Here, we consider a task that does not require the gender of the individual (think of a recommendation algorithm). Thus in this context, the gender is considered as the sensitive information, and needs to be hidden to the GNN.
-+ On the figure below, the first row shows that biased attributes in an unbiased structure propagate biased attributes to the next layer of the GNN. The second row shows that unbiased attributes in a biased structure also propagate biased attributes to the next layer of the GNN.
++ Here, we consider a task that does not require the gender of the individual (think of a recommendation algorithm). Thus in this context, the gender is considered as the sensitive information, and needs to be hidden to the GNN
++ On the figure below, the first row shows that biased attributes in an unbiased structure propagate biased attributes to the next layer of the GNN. The second row shows that unbiased attributes in a biased structure also propagate biased attributes to the next layer of the GNN
 + Hence, the intuition of the paper is that a graph debiasing method needs to mitigate both the attribute bias of the nodes, but also the structure bias of the nodes
 
 ![](/collections/images/EDITS_graph_debiasing/illustration_fig.jpg)
@@ -89,9 +89,9 @@ Here $$b_{stru}$$ is defined very similarly to $$b_{attr}$$ except it uses the d
 The debiasing problem of $$G = (A, X)$$ then becomes to reduce $$b_{attr}$$ and $$b_{stru}$$ to obtain $$\tilde{G} = (A, X)$$, so that the bias of a GNN trained on $$\tilde{G}$$ is mitigated.
 
 In order to "clean" the input data, the framework is the following :
-+ Attribute debiasing module : It learns a function $$g_{\theta}$$ where $$\theta \in \mathbb{R}^M$$ to produce a debiased attribute matrix $$\tilde{X}$$, obtained with $$\tilde{X} = g_{\theta}(X)$$.
-+ Structure debiasing module : This module ouputs $$\tilde{A}$$ as the debiased $$A$$. $$\tilde{A}$$ is initialized as $$A$$ and then optimized via gradient descent with binarization.
-+ Wasserstein distance approximator : This module learns a function $$f$$ for each attribute dimension. It is used to estimate the Wasserstein distance between the attribution distrubution of the different groups.
++ Attribute debiasing module : It learns a function $$g_{\theta}$$ where $$\theta \in \mathbb{R}^M$$ to produce a debiased attribute matrix $$\tilde{X}$$, obtained with $$\tilde{X} = g_{\theta}(X)$$
++ Structure debiasing module : This module ouputs $$\tilde{A}$$ as the debiased $$A$$. $$\tilde{A}$$ is initialized as $$A$$ and then optimized via gradient descent with binarization
++ Wasserstein distance approximator : This module learns a function $$f$$ for each attribute dimension. It is used to estimate the Wasserstein distance between the attribution distrubution of the different groups
 
 ## Objective function
 
