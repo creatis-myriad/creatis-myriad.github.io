@@ -54,9 +54,9 @@ $$
 
 Here $$pdf(.)$$ is the probability density function for a set of values, and $$W(., .)$$ is the Wasserstein distance between two distributions. Intuitively, $$b_{attr}$$ represents the average Wasserstin-1 distance between attribute distributions of different groups.
 
-As illustrated in the introduction figure, to capture structural biases, the structural bias metrics needs to introduce an information propagation process.  Let $$P_{norm} = \alpha A_{norm} + (1 - \alpha)I$$. $$P_{norm}$$ can be seen as a normalized adjacency matrix with re-weighted self-loops, where $$\alpha \in [0, 1]$$ is a hyper-parameter.
+As illustrated in the introduction figure, to capture structural biases, the structural bias metrics needs to introduce an information propagation process.  Let $$P_{norm} = \alpha A_{norm} + (1 - \alpha)I$$.
 
-The propagation matrix $$M_H \in \mathbb{R}^{N \times N}$$ is defined as :
+$$P_{norm}$$ can be seen as a normalized adjacency matrix with re-weighted self-loops, where $$\alpha \in [0, 1]$$ is a hyper-parameter. The propagation matrix $$M_H \in \mathbb{R}^{N \times N}$$ is defined as :
 
 $$
 M_H = \beta_1 P_{norm} + \beta_2 P_{norm}^2 + ... + \beta_H P_{norm}^H
@@ -112,13 +112,13 @@ For each hop from $$1$$ to $$H$$, we can track the value distributions $$P_{0, m
 The idea is to combine all the debiased hop-states into a single $$(H+1)$$-dimensional vector for each group: 
 
 $$
-\mathbf{x}_{0, m} = [x_{0, m}^{(0)}, x_{0, m}^{(H)}, ..., x_{0, m}^{(H)}]
+\mathbf{x}_{0, m} = [x_{0, m}^{(0)}, x_{0, m}^{(1)}, ..., x_{0, m}^{(H)}]
 $$
 
 and
 
 $$
-\mathbf{x}_{1, m} = [x_{1, m}^{(0)}, x_{1, m}^{(H)}, ..., x_{1, m}^{(H)}]
+\mathbf{x}_{1, m} = [x_{1, m}^{(0)}, x_{1, m}^{(1)}, ..., x_{1, m}^{(H)}]
 $$
 
 following the joint distributions $$P_{0, m}^{joint}$$ and $$P_{1, m}^{joint}$$, the goal being to minimize the Wasserstein distance between the two.
