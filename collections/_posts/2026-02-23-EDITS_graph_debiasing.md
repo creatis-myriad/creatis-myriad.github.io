@@ -52,7 +52,7 @@ $$
 b_{attr} = \frac{1}{M} \sum_{m} W(pdf(\chi_m^0), pdf(\chi_m^1))
 $$
 
-Here $$pdf(.)$$ is the probability density function for a set of values, and $$W(., .)$$ is the Wasserstein distance between two distributions. Intuitively, $$b_{attr}$$ represents the average Wasserstin-1 distance between attribute distributions of different groups.
+Here $$pdf(.)$$ is the probability density function for a set of values, and $$W(., .)$$ is the Wasserstein distance between two distributions. Intuitively, $$b_{attr}$$ represents the average Wasserstein-1 distance between attribute distributions of different groups.
 
 As illustrated in the introduction figure, to capture structural biases, the structural bias metrics needs to introduce an information propagation process.  Let $$P_{norm} = \alpha A_{norm} + (1 - \alpha)I$$.
 
