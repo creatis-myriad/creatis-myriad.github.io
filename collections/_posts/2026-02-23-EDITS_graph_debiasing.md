@@ -42,17 +42,17 @@ For any attribute, if its value distribution between different demographic group
 
 Similarly, For the attribute values propagated by $$A$$, if their distributions between different demographic groups are different at any attribute dimension, then structural bias exists in $$G$$.
 
-## Bias metrics
+## Measuring attribute bias
 
-Let $$X_{norm} \in \mathbb{R}^{N \times M}$$ be the normalized attribute matrix. For the $$m$$-th attribute $$(1 \le m \le M)$$ we use $$\chi_m^0$$ and $$\chi_m^1$$ to denote the node sets with  $$s_i = 0$$ and  $$s_i = 1$$.
-
-Then, attribute of all nodes can be divided into tuples : $$\chi_{total} = \{(\chi_1^0, \chi_1^1), (\chi_2^0, \chi_2^1), ..., (\chi_M^0, \chi_M^1) \}$$. The attribute bias is measured with Wasserstein-1 distance between the distributions of the two groups :
+Let $$X_{norm} \in \mathbb{R}^{N \times M}$$ be the normalized attribute matrix. For the $$m$$-th attribute $$(1 \le m \le M)$$ we use $$\chi_m^0$$ and $$\chi_m^1$$ to denote the node sets with  $$s_i = 0$$ and  $$s_i = 1$$. The attribute bias is measured with Wasserstein-1 distance between the distributions of the two groups :
 
 $$
 b_{attr} = \frac{1}{M} \sum_{m} W(pdf(\chi_m^0), pdf(\chi_m^1))
 $$
 
 Here $$pdf(.)$$ is the probability density function for a set of values, and $$W(., .)$$ is the Wasserstein distance between two distributions. Intuitively, $$b_{attr}$$ represents the average Wasserstein-1 distance between attribute distributions of different groups.
+
+## Measuring structural bias
 
 As illustrated in the introduction figure, to capture structural biases, the structural bias metrics needs to introduce an information propagation process.  Let $$P_{norm} = \alpha A_{norm} + (1 - \alpha)I$$.
 
@@ -86,12 +86,12 @@ Here $$b_{stru}$$ is defined very similarly to $$b_{attr}$$ except it uses the d
 
 ## Framework
 
-The debiasing problem of $$G = (A, X)$$ then becomes to reduce $$b_{attr}$$ and $$b_{stru}$$ to obtain $$\tilde{G} = (A, X)$$, so that the bias of a GNN trained on $$\tilde{G}$$ is mitigated.
+The debiasing problem of $$G = (A, X)$$ then becomes to reduce $$b_{attr}$$ and $$b_{stru}$$ to obtain $$\tilde{G} = (\tilde{A}, \tilde{X})$$, so that the bias of a GNN trained on $$\tilde{G}$$ is mitigated.
 
 In order to "clean" the input data, the framework is the following :
 + Attribute debiasing module : It learns a function $$g_{\theta}$$ where $$\theta \in \mathbb{R}^M$$ to produce a debiased attribute matrix $$\tilde{X}$$, obtained with $$\tilde{X} = g_{\theta}(X)$$
 + Structure debiasing module : This module ouputs $$\tilde{A}$$ as the debiased $$A$$. $$\tilde{A}$$ is initialized as $$A$$ and then optimized via gradient descent with binarization
-+ Wasserstein distance approximator : This module learns a function $$f$$ for each attribute dimension. It is used to estimate the Wasserstein distance between the attribution distrubution of the different groups
++ Wasserstein distance approximator : This module learns a function $$f$$ for each attribute dimension. It is used to estimate the Wasserstein distance between the attribution distribution of the different groups
 
 ## Objective function
 
@@ -101,7 +101,7 @@ Let $$P_{0, m}$$ and $$P_{1, m}$$ represent the value distribution for the $$m$$
 
 The debiasing function $$g_{\theta m}$$ is applied to the random variables $$x_{0, m}$$ and $$x_{1, m}$$ from these distributions.
 
-It produces debiased variables $$x_{0, m}^{(0)}$$ and $$x_{1, m}^{(0)}$$. The superscript $$(0)$$ denotes that it represents the data state after 0 hops, meaning before any propagation.
+It produces debiased variables $$x_{0, m}^{(0)}$$ and $$x_{1, m}^{(0)}$$. The superscript $$(0)$$ denotes that it represents the data state after 0 hop, meaning before any propagation.
 
 Now for the structure bias, considering $$\tilde A$$ the debiased adjacency matrix, we can consider $$\tilde P_{norm}$$ the normalized version of $$\tilde A$$ with re-weighted self-loops.
 
@@ -134,12 +134,13 @@ $$
 ## Objective optimizations
 
 To transform the problem into a tractable, and end-to-end gradient-based optimization problem, the authors use a min-max optimization game :
-+ Instead of finding the infinimum of the objective function, the Wasserstein Distance Approximator is computed as a neural network, with clipped weights to satisfy a Lipschitz constraint, which makes the problem tractable
-+ The model uses a linear function to re-weight the features, to reduce the bias while trying to preserve the original information
++ Instead of finding the infinimum of the objective function, the Wasserstein Distance Approximator (WDA) is computed as a neural network, with clipped weights to satisfy a Lipschitz constraint, which makes the problem tractable
++ The attribute debiasing module uses a linear function to re-weight the features, to reduce the bias while trying to preserve the original information
++ The structure debiasing module also tries to stick as close as possible to the original information, as well as enforcing that $$\tilde{A}$$ is symmetric and sparse 
 + The adjacency matrix $$\tilde{A}$$ needs to remain symmetric and sparse
 + The framework trains the WDA via Stochastic Gradient Descent to compute the bias, and the Attribute and Structural modules via Proximal Gradient Descent to reduce the bias
 
-Once the main optimization is finished, two final-post-processing steps occur :
+Once the main optimization is finished, two final post-processing steps occur :
 + Attribute masking : It sets the $$z$$ smallest weights in the attribute matrix to zero, to remove the most biased attribute channels
 + Adjacency matrix binarization : A numerical threshold $$r$$ is used to convert the continuous values of the adjacency matrix into a binary graph
 
@@ -180,6 +181,12 @@ Utility and bias mitigation metrics on all the datasets :
 Ablation of the attribute debiasing module and the structure debiasing module :
 
 ![](/collections/images/EDITS_graph_debiasing/ablation.jpg)
+
+The ablation study involves removing one of the two bias correction modules (called “without structural bias correction” (w/o-SD) or “without attributive bias correction” (w/o-AD)). It shows that both modules contribute to reducing attributive and structural biases, with the reduction being much greater with the attributive bias correction module.
+
+The effects of the individual modules also depend heavily on the dataset.
+
+However, the authors emphasize that the structural bias removal module is essential for improving fairness performance (reduction in $$\Delta_{SP}$$).
 
 # Conclusion
 
