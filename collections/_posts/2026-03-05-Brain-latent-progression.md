@@ -48,15 +48,17 @@ The choice is directly driven by the complexity of the disease. Since structural
 
 To effectively generate future MRIs, the authors propose a pipeline comprising four main components: an LDM, a ControlNet, an auxiliary model, and the LAS algorithm.
 
-<div style="text-align:center">
-<img src="/collections/images/BrLP/brlp_schem.jpg" width=700></div>
+<figure style="text-align:center;">
+  <img src="/collections/images/BrLP/brlp_schem.jpg" width=700 alt="Overview of Brain Latent Progression training and inference process">
+  <figcaption><i>Overview of Brain Latent Progression training and inference process</i></figcaption>
+</figure>
 
 ## 1. Latent Diffusion Model (LDM)
  
 * Instead of applying diffusion in the high-dimensional pixel space, the authors train a variational autoencoder consisting of an encoder $$\mathcal{E}$$ and a decoder $$\mathcal{D}$$. The encoder compresses the 3D MRI $$x$$ into a smaller latent space: $$z = \mathcal{E}(x)$$.
-* To guide the generation process so the output matches a specific patient's profile, the model uses a combined set of conditioning variables, denoted as $$c$$. This vector concatenates two types of information:
-  * *Subject-specific metadata:* Age, sex, and cognitive status.
-  * *Progression-related metrics:* Volumes of specific brain regions strictly linked to Alzheimer's Disease progression (hippocampus, cerebral cortex, amygdala, cerebral white matter, and lateral ventricles).
+* To guide the generation process so the output matches a specific patient's profile, the model uses a combined set of conditioning variables, denoted as $$c=\langle s, v \rangle$$. This vector concatenates two types of information:
+  * *Subject-specific metadata:* Age, sex, and cognitive status noted $$s$$.
+  * *Progression-related metrics:* Volumes of specific brain regions strictly linked to Alzheimer's Disease progression (hippocampus, cerebral cortex, amygdala, cerebral white matter, and lateral ventricles) noted $$v$$.
 * A conditional UNet is trained to estimate and remove the noise $$\epsilon_\theta(z_{t},t,c)$$ added during the diffusion process in this latent space. The covariates $$c$$ are injected into this UNet via a cross-attention mechanism.
 
 ## 2. Structural Conditioning via ControlNet
@@ -68,9 +70,9 @@ An LDM guided only by covariates $$c$$ might generate a generic brain that match
 
 ## 3. Prior Knowledge via Auxiliary Model
 
-To predict a future MRI, the model needs to know the future covariates $$v$$ (the progression related metrics). Learning the evolution of AD-related regions only from an MRI database is notoriously hard and gives little control over what is going on, even with a large deep-learning spatiotemporal model such as the **ControlNet**.
+To predict a future MRI at age $$B$$, the model needs to know the future covariates $$v^{B}$$ (the volumes of the AD-related regions). Learning the evolution of AD-related regions only from an MRI database is notoriously hard and gives little control over what is going on, even with a large deep-learning spatiotemporal model such as the **ControlNet**.
 * The authors bypass this black-box limitation by using a dedicated **auxiliary model** $$f_{\psi}$$ to predict how the volumes of AD-related regions will evolve.
-    * If only one baseline scan is available, a linear regression model that minimimzes the Huber loss predicts the future volumes.
+    * If only one baseline scan is available, a linear regression model that minimizes the Huber loss predicts the future volumes.
     * If longitudinal data (past visits) is available, a Disease Course Mapping (DCM) [2] algorithm is fitted to the patient's history to predict a highly personalized volumetric trajectory.
 
 ## 4. Latent Average Stabilization
@@ -99,8 +101,8 @@ The process follows these exact steps:
 3. **Encoding:** The baseline MRI is encoded into the latent space to get $$z^{(A)} = \mathcal{E}(x^{(A)})$$.
 4. **Noise Sampling:** Gaussian noise $$z_T \sim \mathcal{N}(0, I)$$ is sampled.
 5. **Reverse Diffusion:** The unified LDM and ControlNet model predicts the noise to iteratively reverse the diffusion steps from $$T$$ down to $$0$$, explicitly conditioned on both the future covariates $$c^{(B)}$$ and the baseline anatomy $$z^{(A)}$$.
-6. **Latent Average Stabilization:** They repeat the inference process $$m$$ times and compute the average result $$\hat{\mu}^{(B)}$$
-6. **Decoding:** The final denoised latent $$\hat{\mu}^{(B)}$$ is passed through the decoder $$\mathcal{D}$$ to generate the predicted 3D MRI $$\hat{x}^{(B)}$$.
+6. **Latent Average Stabilization:** They repeat the inference process $$m$$ times and compute the average result $$\mu^{(B)}$$
+6. **Decoding:** The final denoised latent $$\mu^{(B)}$$ is passed through the decoder $$\mathcal{D}$$ to generate the predicted 3D MRI $$\hat{x}^{(B)}$$.
 
 
 
@@ -116,22 +118,26 @@ The process follows these exact steps:
 ## 2. Ablation Study: The Impact of AUX and LAS
 The authors isolated the contributions of the Auxiliary model (AUX) and the Latent Average Stabilization (LAS) algorithm:
 
+#### AUX
+* Introducing the AUX model alone led to a 16% reduction in volumetric errors.
+
+<figure style="text-align:center;">
+  <img src="/collections/images/BrLP/brlp_ablation.jpg" width=700 alt="Results from the ablation study">
+  <figcaption><i>Results from the ablation study</i></figcaption>
+</figure>
+
+<br/>
+
 #### LAS
 * **Tuning LAS ($$m$$):** Increasing the LAS hyperparameter $$m$$ from 2 to 64 steadily improved performance: MSE decreased by 7%, volumetric errors reduced by 3%, and SSIM improved by 0.68%. However, this introduces a direct trade-off with computation time.
 From now on, all the presented experiments are conducted with $$m=64$$
 * The LAS algorithm contributed an additional 4% reduction. Combined, they yield a 21% reduction in volumetric errors.
 * **Quantifying Uncertainty:** The standard deviation across the $$m$$ predictions acts as a reliable clinical uncertainty score. The authors proved statistically that higher model uncertainty correlates directly with higher MSE and lower SSIM, meaning the model "knows" when it is likely making a less accurate prediction.
 
-<div style="text-align:center">
-<img src="/collections/images/BrLP/brlp_m.jpg" width=700></div>
-
-<br/>
-
-#### AUX
-* Introducing the AUX model alone led to a 16% reduction in volumetric errors.
-
-<div style="text-align:center">
-<img src="/collections/images/BrLP/brlp_ablation.jpg" width=700></div>
+<figure style="text-align:center;">
+  <img src="/collections/images/BrLP/brlp_m.jpg" width=700 alt="Effect of varying the LAS parameter 𝑚 on different performance metrics and computation time">
+  <figcaption><i>Effect of varying the LAS parameter 𝑚 on different performance metrics and computation time</i></figcaption>
+</figure>
 
 <br/>
 
@@ -141,7 +147,7 @@ BrLP vastly outperformed all baselines on both image-based and volumetric metric
 * **External Test Set:** The model proved its out-of-distribution robustness by maintaining its lead, showing a 60.23% MSE reduction and a 22.84% SSIM increase over baselines.
 
 <figure style="text-align:center;">
-  <img src="/collections/images/BrLP/brlp_table_internal.jpg" width="700" alt="Results on external dataset">
+  <img src="/collections/images/BrLP/brlp_table_internal.jpg" width="700" alt="Results on internal dataset">
   <figcaption><i>Results on internal dataset</i></figcaption>
 </figure>
 
@@ -150,8 +156,10 @@ BrLP vastly outperformed all baselines on both image-based and volumetric metric
   <figcaption><i>Results on external dataset</i></figcaption>
 </figure>
 
-<div style="text-align:center">
-<img src="/collections/images/BrLP/brlp_result_1.jpg" width=700></div>
+<figure style="text-align:center;">
+  <img src="/collections/images/BrLP/brlp_result_1.jpg" width=700 alt="Comparison between the real progression of a subject and the predictions obtained by BrLP and baseline methods">
+  <figcaption><i>Comparison between the real progression of a subject and the predictions obtained by BrLP and baseline methods</i></figcaption>
+</figure>
 
 <br/>
 
@@ -159,7 +167,7 @@ BrLP vastly outperformed all baselines on both image-based and volumetric metric
 
 One major application is avoiding Type II errors in clinical trials. These errors occur when a study fails to prove a drug's efficacy because the selected patients progress too slowly to show a measurable effect within the trial's timeframe. 
 * To identify "fast progressors", the authors focus on hippocampal atrophy. BrLP generates the patient's predicted 3D MRI two years into the future, from which the predicted hippocampal volume is extracted. The top $$S$$ candidates with the largest predicted volume reductions are then selected for the trial.
-* BrLP was compared to a standard linear regression model (a Huber Regressor robust to outliers) that directly predicts future volumes from baseline tabular data without generating any image. 
+* BrLP was compared to a standard linear regression model (a Huber Regressor robust to outliers, the same one used to estimate volume progression in the Auxiliary model) that directly predicts future volumes from baseline tabular data without generating any image. 
 * While the highly-specialized regression model selected slightly more optimal patients on the internal dataset, BrLP showed superior robustness. The regression model suffered a 6.82% performance drop on the external dataset, whereas BrLP only dropped by 5.17%.
 
 <figure style="text-align:center;">
@@ -172,11 +180,12 @@ One major application is avoiding Type II errors in clinical trials. These error
 # Conclusions
 
 * BrLP establishes a new state-of-the-art for individual-based 3D brain MRI progression using Latent Diffusion.
-* By elegantly dividing the problem—using an auxiliary model for trajectory prediction and a conditioned diffusion model for anatomical generation—it ensures high biological fidelity.
+* By dividing the problem by using an auxiliary model for trajectory prediction and a conditioned diffusion model for anatomical generation they ensure high biological fidelity.
 * The Latent Average Stabilization (LAS) algorithm is a highly effective, simple mechanism to force temporal smoothness and extract prediction uncertainty.
 
 # References
 [1] [Zhang, L., Rao, A., Agrawala, M., 2023. Adding conditional control to text-to-image diffusion models, in: Proceedings of the IEEE/CVF
 International Conference on Computer Vision, pp. 3836–3847.](https://arxiv.org/abs/2302.05543)
+
 [2] [Schiratti, J.B., Allassonnière, S., Colliot, O., Durrleman, S., 2017. A bayesian mixed-effects model to learn trajectories of changes from repeated
 manifold-valued observations. The Journal of Machine Learning Research 18, 4840–4872](https://who.rocq.inria.fr/Stanley.Durrleman/MVA/Schiratti_JMLR_17.pdf)
