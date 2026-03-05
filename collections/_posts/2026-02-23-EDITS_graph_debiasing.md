@@ -40,7 +40,7 @@ Let's consider $$G = (A, X)$$, and a corresponding group indicator of the sensit
 
 For any attribute, if its value distribution between different demographic groups are different, then attribute bias exists in $$G$$.
 
-Similarly, For the attribute values propagated by $$A$$, if their distributions between different demographic groups are different at any attribute dimension, then structural bias exists in $$G$$.
+Similarly, for the attribute values propagated by $$A$$, if their distributions between different demographic groups are different at any attribute dimension, then structural bias exists in $$G$$.
 
 ## Bias metrics
 
