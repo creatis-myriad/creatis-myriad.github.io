@@ -36,11 +36,11 @@ pdf: "https://dl.acm.org/doi/pdf/10.1145/3485447.3512173"
 
 ## Bias modeling
 
-Let's consider $$G = (A, X)$$, and a corresponding group indicator of the sensitive attribute for each node $$s = [s_1, s_2, ..., s_N]$$ where $$s_i \in \{0, 1\}$$ $$(1 \le i \le N)$$ (e.g. $$s_i = 0$$ if node $$i$$ represents a male individual, $$s_i = 1$$ if node $$i$$ represents a female individual.
+Let's consider $$G = (A, X)$$, and a corresponding group indicator of the sensitive attribute for each node $$s = [s_1, s_2, ..., s_N]$$ where $$s_i \in \{0, 1\}$$ $$(1 \le i \le N)$$ (e.g. $$s_i = 0$$ if node $$i$$ represents a male individual, $$s_i = 1$$ if node $$i$$ represents a female individual).
 
 For any attribute, if its value distribution between different demographic groups are different, then attribute bias exists in $$G$$.
 
-Similarly, For the attribute values propagated by $$A$$, if their distributions between different demographic groups are different at any attribute dimension, then structural bias exists in $$G$$.
+Similarly, for the attribute values propagated by $$A$$, if their distributions between different demographic groups are different at any attribute dimension, then structural bias exists in $$G$$.
 
 ## Measuring attribute bias
 
