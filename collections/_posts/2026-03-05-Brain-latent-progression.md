@@ -64,7 +64,7 @@ To effectively generate future MRIs, the authors propose a pipeline comprising f
 ## 2. Structural Conditioning via ControlNet
 
 An LDM guided only by covariates $$c$$ might generate a generic brain that matches the volumes but doesn't look like the specific patient. It also cannot be conditionned on individual anatomical structures.
-* To solve this, the authors use a **ControlNet** trained in conjunction with the LDM [1].
+* To solve this, the authors use a **ControlNet** trained in conjunction with the LDM [^1].
 * The ControlNet is specifically trained using latent representations from pairs of MRIs of the *same* patient taken at two different ages, $$A$$ and $$B$$ (with $$A < B$$). The latent representation of the patient's baseline MRI, denoted $$z^{(A)}$$, is used as an additional spatial condition to encompass the target brain's structure during the generation process
 * This forces the generative process to preserve the unique anatomical identity and structure of the patient's brain across time.
 
@@ -73,7 +73,7 @@ An LDM guided only by covariates $$c$$ might generate a generic brain that match
 To predict a future MRI at age $$B$$, the model needs to know the future covariates $$v^{B}$$ (the volumes of the AD-related regions). Learning the evolution of AD-related regions only from an MRI database is notoriously hard and gives little control over what is going on, even with a large deep-learning spatiotemporal model such as the **ControlNet**.
 * The authors bypass this black-box limitation by using a dedicated **auxiliary model** $$f_{\psi}$$ to predict how the volumes of AD-related regions will evolve.
     * If only one baseline scan is available, a linear regression model that minimizes the Huber loss predicts the future volumes.
-    * If longitudinal data (past visits) is available, a Disease Course Mapping (DCM) [2] algorithm is fitted to the patient's history to predict a highly personalized volumetric trajectory.
+    * If longitudinal data (past visits) is available, a Disease Course Mapping (DCM) [^2] algorithm is fitted to the patient's history to predict a highly personalized volumetric trajectory.
 
 ## 4. Latent Average Stabilization
 Because the inference process starts from random Gaussian noise $$z_T$$ each time, running the process multiple times can yield slightly varying results, manifesting as irregular patterns or jittery transitions over multiple timesteps predictions.
@@ -112,7 +112,7 @@ The process follows these exact steps:
 * **Datasets:** The model was trained internally on 11,730 T1w MRIs from 2,805 subjects (combining ADNI, OASIS-3, and AIBL). To prove robust generalization, it was tested on an external dataset (NACC) comprising 2,257 MRIs from 962 subjects.
 * **Baselines:** BrLP was compared against existing generative approaches: DaniNet, CounterSynth, and Latent-SADM.
 * **Settings:** The models were evaluated in two scenarios: *Single-image* (predicting future progression from only one baseline scan) and *Sequence-aware* (using multiple past visits to predict the future).
-* **Evaluation Metrics:** They use MSE and SSIM to evaluate the similarity between scans and compute the MAE between the volumes of the generated scan and actual follow-up scan to assess the model's accuracy in tracking disease progression. Some regions (Cerebrospinal Fluid (CSF) and thalamus) are ecluded from covariates $$v$$ to evaluate the model predictions on unconditionned regions.
+* **Evaluation Metrics:** They use MSE and SSIM to evaluate the similarity between scans and compute the MAE between the volumes of the generated scan and actual follow-up scan to assess the model's accuracy in tracking disease progression. Some regions (Cerebrospinal Fluid (CSF) and thalamus) are excluded from covariates $$v$$ to evaluate the model predictions on unconditionned regions.
 
 
 ## 2. Ablation Study: The Impact of AUX and LAS
@@ -184,8 +184,8 @@ One major application is avoiding Type II errors in clinical trials. These error
 * The Latent Average Stabilization (LAS) algorithm is a highly effective, simple mechanism to force temporal smoothness and extract prediction uncertainty.
 
 # References
-[1] [Zhang, L., Rao, A., Agrawala, M., 2023. Adding conditional control to text-to-image diffusion models, in: Proceedings of the IEEE/CVF
+[^1] [Zhang, L., Rao, A., Agrawala, M., 2023. Adding conditional control to text-to-image diffusion models, in: Proceedings of the IEEE/CVF
 International Conference on Computer Vision, pp. 3836–3847.](https://arxiv.org/abs/2302.05543)
 
-[2] [Schiratti, J.B., Allassonnière, S., Colliot, O., Durrleman, S., 2017. A bayesian mixed-effects model to learn trajectories of changes from repeated
+[^2] [Schiratti, J.B., Allassonnière, S., Colliot, O., Durrleman, S., 2017. A bayesian mixed-effects model to learn trajectories of changes from repeated
 manifold-valued observations. The Journal of Machine Learning Research 18, 4840–4872](https://who.rocq.inria.fr/Stanley.Durrleman/MVA/Schiratti_JMLR_17.pdf)
