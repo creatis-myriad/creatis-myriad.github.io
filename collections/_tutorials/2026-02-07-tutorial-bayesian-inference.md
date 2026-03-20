@@ -18,19 +18,18 @@ categories: Bayesian, posterior, likelihood, prior, distribution
   - [What is a Bayesian inference?](#what-is-a-bayesian-inference)
 - [**Variational inference**](#variational-inference)
   - [Problem formulation](#problem-formulation)
-  - [Modeling](#vi-modeling)
-  - [Applications](#vi-applications)
+  - [Modeling](#modeling-vi)
+  - [VAE application](#vae-application)
 - [**Amortized simulation-based inference**](#amortized-simulation-based-inference)
-  - [Definition](#definition)
+  - [Definition](#definition-sbi)
   - [Problem formulation](#problem-formulation)
-  - [Modeling](#modeling)
+  - [Modeling](#modeling-sbi)
   - [tabPFN application](#tabpfn-application)
-  - [Results](#results)
 - [**References**](#references)
 
 &nbsp;
 
-## **Introduction**
+## **<span style="color:orange">Introduction</span>**
 
 ### What is a Bayesian method?
 
@@ -38,12 +37,12 @@ A Bayesian method is a statistical approach that relies on Bayes’ theorem to r
 
 #### Main idea
 
-We are not just trying to estimate an unknown value. Rather, we describe our uncertainty about this value using probabilities, and we update it as we observe data.
+In the Bayesian framework, inference does not reduce to the estimation of a single unknown quantity; rather, uncertainty is encoded via probability distributions and updated as new observations become available.
 
 The three key building blocks are:
-- <spam style="color:green">The prior probability (prior)</spam>: what we believe before seeing the data (prior knowledge, assumptions, domain expertise)
-- <spam style="color:blue">The likelihood</spam>: how compatible the observed data are with a given hypothesis
-- <spam style="color:red">The posterior probability (posterior)</spam>: what we believe after seeing the data
+- <span style="color:green">The prior probability (prior)</span>: what we believe before seeing the data (prior knowledge, assumptions, domain expertise)
+- <span style="color:blue">The likelihood</span>: how compatible the observed data are with a given hypothesis
+- <span style="color:red">The posterior probability (posterior)</span>: what we believe after seeing the data
 
 <div style="text-align:center">
 <img src="/collections/images/bayesian-inference/bayes_theorem.jpg" width=600></div>
@@ -123,7 +122,7 @@ the probability of actually being ill remains below $$10\%$$, due to the low pre
 
 Bayesian inference is the process of:
 - inferring unknown quantities from data
-- by modeling them as probability distributions
+- modeling them as probability distributions
 - updating them using Bayes’ theorem
 
 > Bayesian inference consists in computing the posterior distribution of parameters or latent variables given the observed data
@@ -165,41 +164,84 @@ With Bayesian inference, you can:
 
 #### And in practice (AI / imaging)
 
-In modern models:
 - the posterior is not analytically tractable
+  - due to the marginal likelihood $$p(x) = \int p(x \mid z) \, p(z) \, dz$$, which involves a high-dimensional integral
 - it is approximated using:
   - Markov Chain Monte Carlo
-  - variational inference
-  - amortized simulation-based inference
+  - Variational inference
+  - Amortized simulation-based inference
 
-## **Variational inference**
+## **<span style="color:orange">Variational inference</span>**
 
 ### Problem formulation
 
-### Modeling
+* Variational inference can be used in various applications, including the modeling of complex distributions $$p(x)$$.
 
-### Applications
+* A latent variable model is introduced, where a prior $$p(z)$$ and a likelihood $$p(x | z)$$ define a joint distribution over the data.
 
-## **Amortized simulation-based inference**
-
-### Definition
-
-The idea behind the amortized simulation-based inference is to model the ouput $$y$$ from a new input $$x$$ <spam style="color:blue">based on a supervised dataset</spam> $$D=(X_{\text{train}},y_{\text{train}})$$ of arbitrary size $$n$$. 
-
-The goal is therefore to model the posterior predictive distribution $$p(y | x, D)$$. Since we explicitly use a support dataset $$D$$ to predict $$y$$ from $$x$$, this model falls under <spam style="color:blue">in-context learning</spam>.
-
-Moreover, amortized simulation-based inference is based on the hypothesis that there exists a relationship between the inputs $$X$$ and the output labels $$y$$. This relationship can be modeled through a prior that can be used to generate synthetic datasets.
+* The marginal likelihood $$p(x)$$ is typically intractable, and variational inference introduces a tractable approximation $$q(z|x)$$ of the posterior distribution $$p(z|x)$$. 
 
 <div style="text-align:center">
-<img src="/collections/images/bayesian-inference/illustration-in-context-learning.jpg" width=500></div>
+<img src="/collections/images/bayesian-inference/variational-inference-2.jpg" width=500></div>
+<br>
 
-### Modeling
+
+### Modeling {#modeling-vi}
+
+#### Optimization process for modeling a complex distribution
+
+<div style="text-align:center">
+<img src="/collections/images/bayesian-inference/variational-inference-3.jpg" width=500></div>
+<br>
+
+#### Maximization of the Evidence Lower BOund (ELBO)
+
+<div style="text-align:center">
+<img src="/collections/images/bayesian-inference/variational-inference-4.jpg" width=500></div>
+<br>
+
+### VAE application
+
+#### Hypothesis
+
+<div style="text-align:center">
+<img src="/collections/images/bayesian-inference/variational-inference-5.jpg" width=500></div>
+<br>
+
+<div style="text-align:center">
+<img src="/collections/images/bayesian-inference/variational-inference-6.jpg" width=500></div>
+<br>
+
+<div style="text-align:center">
+<img src="/collections/images/bayesian-inference/variational-inference-7.jpg" width=500></div>
+<br>
+
+<div style="text-align:center">
+<img src="/collections/images/bayesian-inference/variational-inference-8.jpg" width=500></div>
+<br>
+
+## **<span style="color:orange">Amortized simulation-based inference</span>**
+
+### Definition {#definition-sbi}
+
+The idea behind the amortized simulation-based inference is to model the ouput $$y$$ from a new input $$x$$ <span style="color:blue; font-style:italic">based on a supervised dataset</span> $$D=(X_{\text{train}},y_{\text{train}})$$ of arbitrary size $$n$$. 
+
+The goal is therefore to model the posterior predictive distribution $$p(y | x, D)$$. Since we explicitly use a support dataset $$D$$ to predict $$y$$ from $$x$$, this model falls under <span style="color:blue; font-style:italic">in-context learning</span>.
+
+<div style="text-align:center">
+<img src="/collections/images/bayesian-inference/in-context-framework.jpg" width=500></div>
+<br>
+
+Moreover, amortized simulation-based inference is based on the hypothesis that there exists a relationship between the inputs $$X$$ and the output labels $$y$$. <span style="color:blue; font-style:italic">This relationship can be modeled through a prior that can be used to generate synthetic datasets.</span>
+
+
+### Modeling {#modeling-sbi}
 
 #### Modeling relationships in the data
 
 The prior defines a space of hypotheses $$\Phi$$ on the relationship of a set of inputs $$X$$ to the output labels $$y$$. Each hypothesis $$\phi \in \Phi$$ can be seen as a mechanism that generates a data distribution from which we can draw samples forming a dataset.
 
-> A prior is not just a law governing parameters: it is a distribution that defines the fundamental relationships between input and output data, allowing inductive bias to be introduced.
+> A prior is not merely a distribution over parameters; it encodes assumptions about the underlying data-generating process, thereby introducing an inductive bias
 
 <br>
 
@@ -222,7 +264,7 @@ Based on the hypothesis $$\Phi$$, one can implement an efficient prior sampling 
 
 $$p(D) = \int_{\phi} p(D | \phi) \, p(\phi) \, d\phi$$ 
 
-The generative mechanism is first sampled as $$\phi \sim p(\phi)$$ which encodes the relationships between $$X$$ and $$y$$. The synthetic dataset is then sampled as $$D\sim p(D | \phi)$$. 
+The generative mechanism is first sampled as $$\phi \sim p(\phi)$$ which encodes the relationships between $$X$$ and $$y$$. The synthetic dataset is then sampled as $$D\sim p(D | \phi)$$. This process is finally repeated for a large set of $$\phi$$ sampled from $$\Phi$$. 
 
 #### Learning process
 
@@ -232,7 +274,7 @@ The model $$q_{\theta}(\cdot)$$ is trained by minimiing the cross-entropy over s
 
 $$l_{\theta} = \mathbb{E}_{D \cup \{x,y\} \sim p(D)}\left[ - \log q_{\theta}(y |x,D) \right]$$
 
-where $$D \cup \{x,y\}$$ simply is a synthetic dataset of size $$|D|+1$$ sampled from $$p(D)$$.
+where $$D \cup \{x,y\}$$ denotes a synthetic dataset of size $$|D|+1$$, obtained by augmenting $$D \sim p(D)$$ with a pair $$\{x,y\}$$.
 
 > The proposed objective $$l_{\theta}$$ is equal to the expectation of the cross-entropy between the posterior predictive distribution $$p(y | x, D)$$ and its approximation $$q_{\theta}(y | x, D)$$ : $$l_{\theta} = \mathbb{E}_{x,D \sim p(D)}\left[ H\left(p(\cdot |x,D) , q_{\theta}(\cdot |x,D) \right) \right]$$
 
@@ -240,9 +282,19 @@ where $$D \cup \{x,y\}$$ simply is a synthetic dataset of size $$|D|+1$$ sampled
 
 <em><b>Proof.</b></em> The above can be shown with the following derivation.
 
-$$l_{\theta} = \textcolor{blue}{-\int_{D,x,y}p(x,y,D)} \, \log q_{\theta}(y|x,D) = \textcolor{blue}{-\int_{D,x}p(x,D) \, \int_{y} p(y|x,D)} \, \log q_{\theta}(y|x,D)$$
+$$l_{\theta} = \mathbb{E}_{D \cup \{x,y\} \sim p(D)}\left[ - \log q_{\theta}(y |x,D) \right]$$
 
-$$\quad = -\int_{D,x} p(x,D) \, \textcolor{blue}{H \left( p(\cdot|x,D) , q_{\theta}(\cdot|x,D) \right)} = \textcolor{blue}{\mathbb{E}_{x,D\sim p(D)}} \left[ H \left( p(\cdot|x,D) , q_{\theta}(\cdot|x,D) \right) \right]$$
+$$\quad = \mathbb{E}_{D,x,y} \left[ - \log q_{\theta}(y |x,D) \right]$$
+
+$$\quad = -\int_{D,x,y}p(x,y,D) \, \log q_{\theta}(y|x,D)$$
+
+$$\quad = -\int_{D,x,y} \textcolor{orange}{p(x,D) \, p(y \mid x,D)} \, \log q_{\theta}(y|x,D)$$
+
+$$\quad = -\int_{D,x}p(x,D) \, \int_{y} p(y|x,D) \, \log q_{\theta}(y|x,D)$$
+
+$$\quad = \int_{D,x} p(x,D) \, \textcolor{orange}{H \left( p(\cdot|x,D) , q_{\theta}(\cdot|x,D) \right)}$$
+
+$$\quad = \mathbb{E}_{x,D\sim p(D)} \left[ H \left( p(\cdot|x,D) , q_{\theta}(\cdot|x,D) \right) \right]$$
 
 <br>
 
@@ -258,7 +310,7 @@ $$\begin{aligned}
 
 where $$C$$ is a constant that does not depend on $$\theta$$.
 
-### tabPFN application
+### tabPFN[^1] application {#tabpfn-application}
 
 #### Prior modeling through Structural Causal Models (SCMs)
 
@@ -267,13 +319,19 @@ Tabular data can be seen as the result of several simple mechanisms interacting 
 - each column corresponds to a measurement, decision, or attribute produced by a real process
 - the label represents a consequence (diagnosis, defect, class, etc.)
 
-> Tabular data result from chains of decisions, mechanisms, and constraints. Even if the exact causal structure is unknown, tabular data are almost always causal in essence
+<div style="text-align:center">
+<img src="/collections/images/bayesian-inference/table-representation.jpg" width=500></div>
+<br>
 
-Structural Causal Models (SCMs) are thus used as the prior to model the implicit structure of tabular data. 
+> Tabular data result from chains of decisions, mechanisms, and constraints. Even if the exact causal structure is unknown, tabular data are almost always causal in essence.
 
-SCMs impose a “reasonable” structure without being rigid. 
+> Causality refers to the fact that variables are linked through cause–effect relationships, even if their exact structure is unknown.
+
+<br>
+Structural Causal Models (SCMs) are thus used as the prior to model the implicit structure of tabular data. They impose a “reasonable” structure without being rigid. 
 
 They model:
+
 - nonlinear dependencies
 - interactions
 - noise
@@ -287,17 +345,17 @@ They allows:
 #### Synthetic dataset generation
 
 To generate a synthetic dataset, TabPFN essentially follows the following pipeline:
-- Sample a causal structure (a DAG)
-- Sample causal functions along each edge
-- Sample noise terms
-- Generate the features
-- Generate the label
-- Apply realistic transformations
-- Sample a small dataset (few-shot regime)
+1. Sample a causal structure (DAG)
+2. Sample the causal mechanisms
+3. Sample noise terms
+4. Generate the features
+5. Generate the label
+6. Apply realistic transformations
+7. Sample a small dataset (few-shot regime)
 
 Each dataset corresponds to a task for which TabPFN learns to perform Bayesian inference.
 
-##### 1- Sampling the causal structure (DAG)
+##### 1- Sample a causal structure (DAG)
 
 - Number of variables: randomly sampled within a range (e.g., 5 to 100)
 - Graph structure
@@ -307,7 +365,7 @@ Each dataset corresponds to a task for which TabPFN learns to perform Bayesian i
   
 > The intuition beind this sampling scheme is that real-world tabular variables rarely exhibit global dependencies across all columns
 
-##### 2- Sampling the causal mechanisms (structural Functions)
+##### 2- Sample the causal mechanisms
 
 The following relation is defined for each variable $$X_i$$ with parents $$Pa(X_i)$$:
 $$X_i = f_i \left( Pa(X_i) \right) + \epsilon_i$$
@@ -323,12 +381,12 @@ But with:
 - low complexity
 - simple activations
 
-##### 3- Sampling the noise
+##### 3- Sample noise terms
 
 Each variable has its own noise term $$\epsilon_i \sim N(0,\sigma_i^2)$$. 
-The variance $$\sigma$$ is sampled randomly.
+The variance $$\sigma_i$$ is sampled randomly.
 
-##### 4- Feature generation (propagation through the DAG)
+##### 4- Generate the features (propagation through the DAG)
 Once we have:
 - the graph
 - the structural functions
@@ -341,40 +399,43 @@ data are generated according to the causal ordering:
 
 A set of features are then randomly selected from the graph
 
-##### 5- Label generation $$y$$
+##### 5- Generate the label $$y$$
 
-The label is treated as a final causal variable:
+The label is treated as a final causal variable.
+
+A value of $$y$$ is first randomly selected from the graph and then updated according to the following equation:
+
 $$y = g \left( Pa(y) \right) + \epsilon_y$$
 
 where:
 - $$g$$ is sampled as a simple function
-- sometimes depends on few variables
-- sometimes depends indirectly on many through the DAG
+- $$y$$ sometimes depends on few variables
+- $$y$$ sometimes depends indirectly on many through the DAG
 
 For classification:
 - $$g$$ produces a latent score
 - passed through a sigmoid or softmax
 - then the class is sampled
 
-Here again, y is randomly selected from the graph. The figure below shows an example of SCMs sampled from the prior. The grey nodes correspond to the sampled inputs $$X$$ and output $$y$$.
+The figure below shows an example of SCMs sampled from the prior. The grey nodes correspond to the sampled inputs $$X$$ and output $$y$$.
 
 <div style="text-align:center">
 <img src="/collections/images/bayesian-inference/scms.jpg" width=600></div>
 
-##### 6- "Realistic” Transformations
+##### 6- Apply realistic transformations
 
 Before feeding the dataset to the model, TabPFN applies:
 - random normalization
 - column permutation
 - different scalings per feature
-- sometimes monotonic transformations
+- monotonic transformations
 - introduction of class imbalance
 
 These steps prevent the model from “cheating” by recognizing the generator.
 
-##### 7- Sampling in the Few-Shot Regime
+##### 7- Sample a small dataset (few-shot regime)
 Finally:
-- a small number of samples $$𝑛$$ is drawn (often $$<100$$)
+- a small number of samples $$𝑛$$ is drawn (often $$<1000$$)
 - train/test split is created
 - everything is provided in-context to the transformer
 
@@ -425,4 +486,54 @@ During training, each batch is populated with a dataset sampled from the SCM dis
 <div style="text-align:center">
 <img src="/collections/images/bayesian-inference/tabpfn-training.jpg" width=700></div>
 
+#### Implementation
+
+- TabPFN was trained for approximately 2,000,000 steps with a batch size of 64 datasets
+- That means TabPFN is trained on around 130,000,000 synthetically generated datasets !
+- One training run requires around 2 weeks on one node with eight Nvidia RTX 2080 Ti GPUs
+- The number of training samples was sampled for each dataset uniformly up to 2,048 and use a fixed validation set size of 128
+- The number of features was sampled using a beta distribution that was linearly scaled to the range 1–160
+- To avoid peaks in memory usage, the total size of each table was restricted to be below 75,000 cells by decreasing the number of samples for large numbers of features
+
+
+#### Experiments
+
+- TabPFN was compared against state-of-the-art baselines, including tree-based methods (random forest, XGBoost (XGB), CatBoost, LightGBM), linear models, support vector machines (SVMs) and MLPs
+- TabPFN was evaluated on two dataset collections: `AutoML Benchmark` and `OpenML-CTR23`. These benchmarks comprise diverse real-world tabular datasets, curated for complexity, relevance and domain diversity 
+- From these benchmarks, the authors used 29 classification datasets and 28 regression datasets that have up to 10,000 samples, 500 features and 10 classes 
+- Evaluation metrics include ROC AUC and accuracy for classification, and R2 and negative RMSE for regression
+- Scores were normalized per dataset, with 1.0 representing the best and 0.0 the worst performance with respect to all baselines
+- Hyperparameters were tuned using random search with five-fold cross-validation, with time budgets ranging from 30 s to 4 h
+- All methods were evaluated in inference using eight CPU cores, with TabPFN additionally using one GPU (RTX 2080 Ti)
+
 #### Results
+
+##### 1- Comparison with state-of-the-art baselines
+
+<div style="text-align:center">
+<img src="/collections/images/bayesian-inference/tabpfn-result-1.jpg" width=800></div>
+
+##### 2- Evaluating diverse data attributes
+
+The figure below provides an analysis of the performance of TabPFN across various dataset types: 
+- add uninformative features (randomly shuffled features from the original dataset)
+- add outliers (multiply each cell with 2% probability with a random number between 0 and the outlier factor)
+- remove/drop samples
+- remove/drop features
+
+<div style="text-align:center">
+<img src="/collections/images/bayesian-inference/tabpfn-result-2.jpg" width=500></div>
+
+The figure below provides an analysis of the performance of TabPFN on different subgroups: 
+- presence of missing values
+- presence of categorical features
+- number of samples
+- number of features
+
+<div style="text-align:center">
+<img src="/collections/images/bayesian-inference/tabpfn-result-3.jpg" width=500></div>
+
+## **References**
+
+[^1]: Hollmann N. et al. [Accurate predictions on small data with a tabular foundation model.](https://www.nature.com/articles/s41586-024-08328-6), Nature 2025
+
