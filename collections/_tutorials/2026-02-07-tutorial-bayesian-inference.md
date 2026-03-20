@@ -282,21 +282,17 @@ where $$D \cup \{x,y\}$$ denotes a synthetic dataset of size $$|D|+1$$, obtained
 
 <em><b>Proof.</b></em> The above can be shown with the following derivation.
 
-$$l_{\theta} = \mathbb{E}_{D \cup \{x,y\} \sim p(D)}\left[ - \log q_{\theta}(y |x,D) \right]$$
-
-$$\quad = \mathbb{E}_{D,x,y} \left[ - \log q_{\theta}(y |x,D) \right]$$
-
-$$\quad = -\int_{D,x,y}p(x,y,D) \, \log q_{\theta}(y|x,D)$$
-
-$$\quad = -\int_{D,x,y} \textcolor{orange}{p(x,D) \, p(y \mid x,D)} \, \log q_{\theta}(y|x,D)$$
-
-$$\quad = -\int_{D,x}p(x,D) \, \int_{y} p(y|x,D) \, \log q_{\theta}(y|x,D)$$
-
-$$\quad = \int_{D,x} p(x,D) \, \textcolor{orange}{H \left( p(\cdot|x,D) , q_{\theta}(\cdot|x,D) \right)}$$
-
-$$\quad = \mathbb{E}_{x,D\sim p(D)} \left[ H \left( p(\cdot|x,D) , q_{\theta}(\cdot|x,D) \right) \right]$$
-
+$$\begin{aligned}
+l_{\theta} & = \mathbb{E}_{D \cup \{x,y\} \sim p(D)}\left[ - \log q_{\theta}(y |x,D) \right] \\
+& = \mathbb{E}_{D,x,y} \left[ - \log q_{\theta}(y |x,D) \right] \\
+& = -\int_{D,x,y}p(x,y,D) \, \log q_{\theta}(y|x,D) \\
+& = -\int_{D,x,y} \textcolor{orange}{p(x,D) \, p(y \mid x,D)} \, \log q_{\theta}(y|x,D) \\
+& = -\int_{D,x}p(x,D) \, \int_{y} p(y|x,D) \, \log q_{\theta}(y|x,D) \\
+& = \int_{D,x} p(x,D) \, \textcolor{orange}{H \left( p(\cdot|x,D) , q_{\theta}(\cdot|x,D) \right)} \\
+& = \mathbb{E}_{x,D\sim p(D)} \left[ H \left( p(\cdot|x,D) , q_{\theta}(\cdot|x,D) \right) \right]
+\end{aligned}$$
 <br>
+
 
 <em><b>Corollary.</b></em> The loss $$l_{\theta}$$ equals the expected KL-Divergence $$\mathbb{E}_{D,x}\left[ KL\left( p(\cdot|x,D) , q_{\theta}(\cdot|x,D) \right) \right]$$ between $$p(\cdot|x,D)$$ and $$q_{\theta}(\cdot|x,D)$$ over prior data $$x, D$$, up to an additive constant.
 
