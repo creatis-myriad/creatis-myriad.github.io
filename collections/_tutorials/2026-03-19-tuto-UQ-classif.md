@@ -351,18 +351,32 @@ We want to answer the question: does the uncertainty quantification method has d
 There is a claim to enforce model evaluation by diversifying what is evaluated. For instance, [^2] proposed an evaluation with 9 metrics, and they were able to compare methods and highlight their strengths and weaknesses on other metrics than pure task performance.
 
 ## **References**
-[^1] W. He, Z. Jiang, T. Xiao, Z. Xu, and Y. Li, “A Survey on Uncertainty Quantification Methods for Deep Learning,” ACM Comput. Surv., vol. 58, no. 7, p. 179:1-179:35, Feb. 2026, doi: 10.1145/3786319.
-[^2] R. Hesse, D. Bağcı, B. Schiele, S. Schaub-Meyer, and S. Roth, “Beyond Accuracy: What Matters in Designing Well-Behaved Image Classification Models?,” Transactions on Machine Learning Research, Aug. 2025. Available: https://openreview.net/forum?id=E7HDtLCoT6
-[^3] T. Löhr, M. Ingrisch, and E. Hüllermeier, “Towards Aleatoric and Epistemic Uncertainty in Medical Image Classification,” in Artificial Intelligence in Medicine, J. Finkelstein, R. Moskovitch, and E. Parimbelli, Eds., Cham: Springer Nature Switzerland, 2024, pp. 145–155. doi: 10.1007/978-3-031-66535-6_17.
-[^4] B. Lambert, F. Forbes, S. Doyle, H. Dehaene, and M. Dojat, “Trustworthy clinical AI solutions: A unified review of uncertainty quantification in Deep Learning models for medical image analysis,” Artificial Intelligence in Medicine, vol. 150, p. 102830, Apr. 2024, doi: 10.1016/j.artmed.2024.102830.
-[^5] A. N. Angelopoulos and S. Bates, “A Gentle Introduction to Conformal Prediction and Distribution-Free Uncertainty Quantification,” Dec. 07, 2022, arXiv: arXiv:2107.07511. doi: 10.48550/arXiv.2107.07511.
-[^6] E. Hüllermeier and W. Waegeman, “Aleatoric and epistemic uncertainty in machine learning: an introduction to concepts and methods,” Mach Learn, vol. 110, no. 3, pp. 457–506, Mar. 2021, doi: 10.1007/s10994-021-05946-3.
-[^7] G. Wang, W. Li, M. Aertsen, J. Deprest, S. Ourselin, and T. Vercauteren, “Aleatoric uncertainty estimation with test-time augmentation for medical image segmentation with convolutional neural networks,” Neurocomputing, vol. 338, pp. 34–45, Apr. 2019, doi: 10.1016/j.neucom.2019.01.103.
-[^8] D. Hendrycks, K. Lee, and M. Mazeika, “Using Pre-Training Can Improve Model Robustness and Uncertainty,” in Proceedings of the 36 th International Conference on Machine Learning, Long Beach, California, 2019, pp. 1–10.
-[^9] M. Sensoy, L. Kaplan, and M. Kandemir, “Evidential Deep Learning to Quantify Classification Uncertainty,” in Advances in Neural Information Processing Systems, Curran Associates, Inc., 2018. Available: https://proceedings.neurips.cc/paper/2018/hash/a981f2b708044d6fb4a71a1463242520-Abstract.html
-[^10] M. S. Ayhan and P. Berens, “Test-time Data Augmentation for Estimation of Heteroscedastic Aleatoric Uncertainty in Deep Neural Networks,” in 1st Conference on Medical Imaging with Deep Learning, Amsterdam, The Netherlands, 2018.
-[^11] B. Lakshminarayanan, A. Pritzel, and C. Blundell, “Simple and Scalable Predictive Uncertainty Estimation using Deep Ensembles,” in Advances in Neural Information Processing Systems, Curran Associates, Inc., 2017. Available: https://proceedings.neurips.cc/paper_files/paper/2017/hash/9ef2ed4b7fd2c810847ffa5fa85bce38-Abstract.html
-[^12] A. Kendall and Y. Gal, “What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision?,” in Advances in Neural Information Processing Systems, Curran Associates, Inc., 2017. Available: https://proceedings.neurips.cc/paper/2017/hash/2650d6089a6d640c5e85b2b88265dc2b-Abstract.html
-[^13] C. Guo, G. Pleiss, Y. Sun, and K. Q. Weinberger, “On Calibration of Modern Neural Networks,” in Proceedings of the 34th International Conference on Machine Learning, PMLR, Jul. 2017, pp. 1321–1330. Available: https://proceedings.mlr.press/v70/guo17a.html
-[^14] Y. Gal and Z. Ghahramani, “Dropout as a bayesian approximation: Representing model uncertainty in deep learning,” in international conference on machine learning, PMLR, 2016, pp. 1050–1059. Available: https://proceedings.mlr.press/v48/gal16.html?trk=public_post_comment-text
-[^15] C. Blundell, J. Cornebise, K. Kavukcuoglu, and D. Wierstra, “Weight Uncertainty in Neural Network,” in Proceedings of the 32nd International Conference on Machine Learning, PMLR, Jun. 2015, pp. 1613–1622. Accessed: Mar. 24, 2026. [Online]. Available: https://proceedings.mlr.press/v37/blundell15.html
+[^1]: W. He, Z. Jiang, T. Xiao, Z. Xu, and Y. Li, “A Survey on Uncertainty Quantification Methods for Deep Learning,” ACM Comput. Surv., vol. 58, no. 7, p. 179:1-179:35, Feb. 2026, doi: 10.1145/3786319.
+
+[^2]: R. Hesse, D. Bağcı, B. Schiele, S. Schaub-Meyer, and S. Roth, “Beyond Accuracy: What Matters in Designing Well-Behaved Image Classification Models?,” Transactions on Machine Learning Research, Aug. 2025. Available: https://openreview.net/forum?id=E7HDtLCoT6
+
+[^3]: T. Löhr, M. Ingrisch, and E. Hüllermeier, “Towards Aleatoric and Epistemic Uncertainty in Medical Image Classification,” in Artificial Intelligence in Medicine, J. Finkelstein, R. Moskovitch, and E. Parimbelli, Eds., Cham: Springer Nature Switzerland, 2024, pp. 145–155. doi: 10.1007/978-3-031-66535-6_17.
+
+[^4]: B. Lambert, F. Forbes, S. Doyle, H. Dehaene, and M. Dojat, “Trustworthy clinical AI solutions: A unified review of uncertainty quantification in Deep Learning models for medical image analysis,” Artificial Intelligence in Medicine, vol. 150, p. 102830, Apr. 2024, doi: 10.1016/j.artmed.2024.102830.
+
+[^5]: A. N. Angelopoulos and S. Bates, “A Gentle Introduction to Conformal Prediction and Distribution-Free Uncertainty Quantification,” Dec. 07, 2022, arXiv: arXiv:2107.07511. doi: 10.48550/arXiv.2107.07511.
+
+[^6]: E. Hüllermeier and W. Waegeman, “Aleatoric and epistemic uncertainty in machine learning: an introduction to concepts and methods,” Mach Learn, vol. 110, no. 3, pp. 457–506, Mar. 2021, doi: 10.1007/s10994-021-05946-3.
+
+[^7]: G. Wang, W. Li, M. Aertsen, J. Deprest, S. Ourselin, and T. Vercauteren, “Aleatoric uncertainty estimation with test-time augmentation for medical image segmentation with convolutional neural networks,” Neurocomputing, vol. 338, pp. 34–45, Apr. 2019, doi: 10.1016/j.neucom.2019.01.103.
+
+[^8]: D. Hendrycks, K. Lee, and M. Mazeika, “Using Pre-Training Can Improve Model Robustness and Uncertainty,” in Proceedings of the 36 th International Conference on Machine Learning, Long Beach, California, 2019, pp. 1–10.
+
+[^9]: M. Sensoy, L. Kaplan, and M. Kandemir, “Evidential Deep Learning to Quantify Classification Uncertainty,” in Advances in Neural Information Processing Systems, Curran Associates, Inc., 2018. Available: https://proceedings.neurips.cc/paper/2018/hash/a981f2b708044d6fb4a71a1463242520-Abstract.html
+
+[^10]: M. S. Ayhan and P. Berens, “Test-time Data Augmentation for Estimation of Heteroscedastic Aleatoric Uncertainty in Deep Neural Networks,” in 1st Conference on Medical Imaging with Deep Learning, Amsterdam, The Netherlands, 2018.
+
+[^11]: B. Lakshminarayanan, A. Pritzel, and C. Blundell, “Simple and Scalable Predictive Uncertainty Estimation using Deep Ensembles,” in Advances in Neural Information Processing Systems, Curran Associates, Inc., 2017. Available: https://proceedings.neurips.cc/paper_files/paper/2017/hash/9ef2ed4b7fd2c810847ffa5fa85bce38-Abstract.html
+
+[^12]: A. Kendall and Y. Gal, “What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision?,” in Advances in Neural Information Processing Systems, Curran Associates, Inc., 2017. Available: https://proceedings.neurips.cc/paper/2017/hash/2650d6089a6d640c5e85b2b88265dc2b-Abstract.html
+
+[^13]: C. Guo, G. Pleiss, Y. Sun, and K. Q. Weinberger, “On Calibration of Modern Neural Networks,” in Proceedings of the 34th International Conference on Machine Learning, PMLR, Jul. 2017, pp. 1321–1330. Available: https://proceedings.mlr.press/v70/guo17a.html
+
+[^14]: Y. Gal and Z. Ghahramani, “Dropout as a bayesian approximation: Representing model uncertainty in deep learning,” in international conference on machine learning, PMLR, 2016, pp. 1050–1059. Available: https://proceedings.mlr.press/v48/gal16.html?trk=public_post_comment-text
+
+[^15]: C. Blundell, J. Cornebise, K. Kavukcuoglu, and D. Wierstra, “Weight Uncertainty in Neural Network,” in Proceedings of the 32nd International Conference on Machine Learning, PMLR, Jun. 2015, pp. 1613–1622. Accessed: Mar. 24, 2026. [Online]. Available: https://proceedings.mlr.press/v37/blundell15.html
