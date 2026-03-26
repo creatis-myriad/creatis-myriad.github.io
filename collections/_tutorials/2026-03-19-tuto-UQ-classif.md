@@ -286,7 +286,7 @@ Evidential learning models predict parameters of a probability distribution over
 <p style="text-align: center;font-style:italic">Figure 14. Example of Dirichlet distribution for 3 classes. The model will predict the parameters of a Dirichlet distribution, which gives a distribution over possible distribution for the point prediction. [He et al., 2026]</p>
 
 <div style="text-align:center">
-<img src="/collections/images/UQ_classif/BNN_Lambertetal.jpg" width=600></div>
+<img src="/collections/images/UQ_classif/evidential_Lambertetal.jpg" width=600></div>
 <p style="text-align: center;font-style:italic">Figure 15. Illustration of UQ based on evidential learning [Lambert et al., 2024]</p>
 
 #### Uncertainty type
@@ -330,7 +330,7 @@ Typically AU, but can reflect both depending on the model and setup
 
 ### Overview of uncertainty quantification methods used in medical imaging
 <div style="text-align:center">
-<img src="/collections/images/UQ_classif/dirichlet_Heetal.jpg" width=600></div>
+<img src="/collections/images/UQ_classif/littDist_Lambertetal.jpg" width=600></div>
 <p style="text-align: center;font-style:italic">Figure 17. Distribution of UQ methods used for medical images between 2015 and 2023 (218 papers) [Lambert et al., 2024]</p>
 
 ## **Evaluating uncertainty**
@@ -349,6 +349,10 @@ We want to answer the question: does the uncertainty quantification method has d
 
 ### Adding evaluation of reliability
 There is a claim to enforce model evaluation by diversifying what is evaluated. For instance, [^2] proposed an evaluation with 9 metrics, and they were able to compare methods and highlight their strengths and weaknesses on other metrics than pure task performance.
+
+<div style="text-align:center">
+<img src="/collections/images/UQ_classif/beyondAccuracy_Hesseetal.jpg" width=600></div>
+<p style="text-align: center;font-style:italic">Figure 17. Distribution of UQ methods used for medical images between 2015 and 2023 (218 papers) [Lambert et al., 2024]</p>
 
 ## **References**
 [^1]: W. He, Z. Jiang, T. Xiao, Z. Xu, and Y. Li, “A Survey on Uncertainty Quantification Methods for Deep Learning,” ACM Comput. Surv., vol. 58, no. 7, p. 179:1-179:35, Feb. 2026, doi: 10.1145/3786319.
@@ -379,4 +383,4 @@ There is a claim to enforce model evaluation by diversifying what is evaluated. 
 
 [^14]: Y. Gal and Z. Ghahramani, “Dropout as a bayesian approximation: Representing model uncertainty in deep learning,” in international conference on machine learning, PMLR, 2016, pp. 1050–1059. Available: https://proceedings.mlr.press/v48/gal16.html?trk=public_post_comment-text
 
-[^15]: C. Blundell, J. Cornebise, K. Kavukcuoglu, and D. Wierstra, “Weight Uncertainty in Neural Network,” in Proceedings of the 32nd International Conference on Machine Learning, PMLR, Jun. 2015, pp. 1613–1622. Accessed: Mar. 24, 2026. [Online]. Available: https://proceedings.mlr.press/v37/blundell15.html
+[^15]: C. Blundell, J. Cornebise, K. Kavukcuoglu, and D. Wierstra, “Weight Uncertainty in Neural Network,” in Proceedings of the 32nd International Conference on Machine Learning, PMLR, Jun. 2015, pp. 1613–1622. Available: https://proceedings.mlr.press/v37/blundell15.html
