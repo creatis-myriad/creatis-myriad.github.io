@@ -14,7 +14,7 @@ categories: classification, uncertainty quantification, deep learning
 # Objectives and key references
 * This tutorial is aimed at giving a global overview of uncertainty quantification. Examples and methods are mainly oriented towards deep learning, classification and medical image processing. It does not give the tools to handle uncertainty quantification in practice, but the concepts to understand what is manipulated and how to evaluate it.
 
-* The introduction and modeling parts are strongly inspired by Hüllermeier et al. article, 2021 [^6] and the methods for quantification and evaluation are based on Lambert et al., 2024 [^4].
+* The introduction and modeling parts are strongly inspired by Hüllermeier et al. article, 2021 [^6] and the methods for quantification and evaluation are based on Lambert et al., 2024 [^4]. Note that there is a recent review (2026) on uncertainty quantification methods for deep learning [^1].
 
 
 # Summary
@@ -252,10 +252,11 @@ With Monte Carlo Dropout, Ensemble methods, Test-time Augmentations and BNNs, yo
 $$
 \bar{p}(y|x) = \frac{1}{T} \sum_{t=1}^T p_t(y| x)
 $$
- Then, there is two main methods to obtain quantities reflecting uncertainty.
- * Entropy decomposition: the entropy of this predictive mean reflects the total uncertainty. This uncertainty can be decomposed in two terms:
 
- $$ H\big(\bar{p}\big) = \underbrace{\mathbb{E}[H(p_t)]}_{\text{AU}} + \underbrace{\mathrm{MI}}_{\text{EU}} $$
+Then, there is two main methods to obtain quantities reflecting uncertainty.
+* Entropy decomposition: the entropy of this predictive mean reflects the total uncertainty. This uncertainty can be decomposed in two terms:
+
+$$ H\big(\bar{p}\big) = \underbrace{\mathbb{E}[H(p_t)]}_{\text{AU}} + \underbrace{\mathrm{MI}}_{\text{EU}} $$
 
 where the mutual information is defined as:
 
@@ -337,9 +338,9 @@ Typically AU, but can reflect both depending on the model and setup
 We want to answer the question: does the uncertainty quantification method has desirable properties in practice ? These properties can be different depending on the context.
 
 ### Metrics
-* **Qualitative evaluation**: the expert observes most uncertain and certain sample to sse if its consistent with its intuition.
+* **Qualitative evaluation**: the expert observes most uncertain and certain sample to see if its consistent with its intuition.
 
-* **Calibration** [^13]: a calibrated model is a model for which a prediction with an uncertainty score of $$c$$ means that the probability of error is $$c$$$. To evaluate the calibration of a model, we group (either quantiles or fixed intervals) the predictions of the test set by their uncertainty scores and observe the error ratios in each group. The Expected Calibration Error (ECE) is the distance of this curve to the ideal curve. Note there exists also the Negative Log-Likelihood score.
+* **Calibration** [^13]: a calibrated model is a model for which a prediction with an uncertainty score of $$c$$ means that the probability of error is $$c$$. To evaluate the calibration of a model, we group (either quantiles or fixed intervals) the predictions of the test set by their uncertainty scores and observe the error ratios in each group. The Expected Calibration Error (ECE) is the distance of this curve to the ideal curve. Note there exists also the Negative Log-Likelihood score.
 
 * **Coverage error**: estimating the difference between the empirical coverage of the test set and the desired coverage, for methods that fix a coverage (like CP).
 
@@ -348,11 +349,11 @@ We want to answer the question: does the uncertainty quantification method has d
 * **Error detection**: as uncertainty is often used to support decision-making by identifying predictions to dismiss, this scenario is simulated by removing the samples sorted by decreasing uncertainty and observing if the task performances are improving.
 
 ### Adding evaluation of reliability
-There is a claim to enforce model evaluation by diversifying what is evaluated. For instance, [^2] proposed an evaluation with 9 metrics, and they were able to compare methods and highlight their strengths and weaknesses on other metrics than pure task performance.
+There is a claim to enforce model evaluation by diversifying what is evaluated. For instance, Hesse et al. [^2] proposed an evaluation with 9 metrics, and they were able to compare methods and highlight their strengths and weaknesses on other metrics than pure task performance.
 
 <div style="text-align:center">
 <img src="/collections/images/UQ_classif/beyondAccuracy_Hesseetal.jpg" width=600></div>
-<p style="text-align: center;font-style:italic">Figure 17. Distribution of UQ methods used for medical images between 2015 and 2023 (218 papers) [Lambert et al., 2024]</p>
+<p style="text-align: center;font-style:italic">Figure 17. Evaluation of groups of models according to 9 evaluation criteria [Hesse et al., 2025]</p>
 
 ## **References**
 [^1]: W. He, Z. Jiang, T. Xiao, Z. Xu, and Y. Li, “A Survey on Uncertainty Quantification Methods for Deep Learning,” ACM Comput. Surv., vol. 58, no. 7, p. 179:1-179:35, Feb. 2026, doi: 10.1145/3786319.
