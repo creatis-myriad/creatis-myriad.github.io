@@ -2,7 +2,7 @@
 layout: post
 title:  "Introduction to Uncertainty Quantification for Deep Learning Models"
 author: 'Mathilde Dupouy'
-date:   2026-03-19
+date:   2026-03-26
 categories: classification, uncertainty quantification, deep learning
 ---
 <style>
@@ -307,7 +307,7 @@ Both AU and EU
 CP provides prediction sets (or intervals) with guaranteed coverage under minimal assumptions [^5]. Several methods exists but the main one for classification uses calibration data to quantify uncertainty without modifying the underlying model (split CP). The uncertainty is expressed as prediction regions rather than probabilities.
 
 <div style="text-align:center">
-<img src="/collections/images/UQ_classif/BNN_Lambertetal.jpg" width=600></div>
+<img src="/collections/images/UQ_classif/CP_Lambertetal.jpg" width=600></div>
 <p style="text-align: center;font-style:italic">Figure 16. Illustration of UQ based on conformal prediction [Lambert et al., 2024]</p>
 
 #### Uncertainty type
@@ -349,7 +349,7 @@ We want to answer the question: does the uncertainty quantification method has d
 * **Error detection**: as uncertainty is often used to support decision-making by identifying predictions to dismiss, this scenario is simulated by removing the samples sorted by decreasing uncertainty and observing if the task performances are improving.
 
 ### Adding evaluation of reliability
-There is a claim to enforce model evaluation by diversifying what is evaluated. For instance, Hesse et al. [^2] proposed an evaluation with 9 metrics, and they were able to compare methods and highlight their strengths and weaknesses on other metrics than pure task performance.
+There is a claim to enforce model evaluation by diversifying what is evaluated. For instance, Hesse et al. [^2] proposed an evaluation with 9 metrics, and they were able to compare methods and highlight their strengths and weaknesses on other metrics than pure task performance. Hedrycks et al. [^8] have corroborated that pre-training can improve model robustness and uncertainty.
 
 <div style="text-align:center">
 <img src="/collections/images/UQ_classif/beyondAccuracy_Hesseetal.jpg" width=600></div>
