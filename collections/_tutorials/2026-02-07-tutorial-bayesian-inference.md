@@ -274,7 +274,7 @@ The model $$q_{\theta}(\cdot)$$ is trained by minimiing the cross-entropy over s
 
 $$l_{\theta} = \mathbb{E}_{D \cup \{x,y\} \sim p(D)}\left[ - \log q_{\theta}(y \mid x,D) \right]$$
 
-where $$D \cup \{x,y\}$$ denotes a synthetic dataset of size $$\left|D\right|+1$$, obtained by augmenting $$D \sim p(D)$$ with a pair $$\{x,y\}$$.
+where $$D \cup \{x,y\}$$ denotes a synthetic dataset of size $$\lvert D \rvert +1$$, obtained by augmenting $$D \sim p(D)$$ with a pair $$\{x,y\}$$.
 
 > The proposed objective $$l_{\theta}$$ is equal to the expectation of the cross-entropy between the posterior predictive distribution $$p(y \mid x, D)$$ and its approximation $$q_{\theta}(y \mid x, D)$$ : $$l_{\theta} = \mathbb{E}_{x,D \sim p(D)}\left[ H\left(p(\cdot \mid x,D) , q_{\theta}(\cdot \mid x,D) \right) \right]$$
 
