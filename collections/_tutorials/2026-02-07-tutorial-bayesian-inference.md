@@ -220,7 +220,7 @@ With Bayesian inference, you can:
 <img src="/collections/images/bayesian-inference/variational-inference-8.jpg" width=500></div>
 <br>
 
-## **<span style="color:orange">Amortized simulation-based inference</span>**{#amortized-simulation-based-inference}
+## **<span style="color:orange">Amortized simulation-based inference</span>** {#amortized-simulation-based-inference}
 
 ### Definition {#definition-sbi}
 
@@ -286,9 +286,9 @@ $$\begin{aligned}
 l_{\theta} & = \mathbb{E}_{D \cup \{x,y\} \sim p(D)}\left[ - \log q_{\theta}(y \mid x,D) \right] \\
 & = \mathbb{E}_{D,x,y} \left[ - \log q_{\theta}(y \mid x,D) \right] \\
 & = -\int_{D,x,y}p(x,y,D) \, \log q_{\theta}(y \mid x,D) \\
-& = -\int_{D,x,y} \textcolor{orange}{p(x,D) \, p(y \mid x,D)} \, \log q_{\theta}(y \mid x,D) \\
+& = -\int_{D,x,y} \color{orange}{p(x,D) \, p(y \mid x,D)} \, \log q_{\theta}(y \mid x,D) \\
 & = -\int_{D,x}p(x,D) \, \int_{y} p(y \mid x,D) \, \log q_{\theta}(y \mid x,D) \\
-& = \int_{D,x} p(x,D) \, \textcolor{orange}{H \left( p(\cdot \mid x,D) , q_{\theta}(\cdot \mid x,D) \right)} \\
+& = \int_{D,x} p(x,D) \, \color{orange}{H \left( p(\cdot \mid x,D) , q_{\theta}(\cdot \mid x,D) \right)} \\
 & = \mathbb{E}_{x,D\sim p(D)} \left[ H \left( p(\cdot \mid x,D) , q_{\theta}(\cdot \mid x,D) \right) \right]
 \end{aligned}$$
 <br>
