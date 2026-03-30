@@ -171,15 +171,15 @@ With Bayesian inference, you can:
   - Variational inference
   - Amortized simulation-based inference
 
-## **<span style="color:orange">Variational inference</span>**
+## **<span style="color:orange">Variational inference</span>** {#variational-inference}
 
 ### Problem formulation
 
 * Variational inference can be used in various applications, including the modeling of complex distributions $$p(x)$$.
 
-* A latent variable model is introduced, where a prior $$p(z)$$ and a likelihood $$p(x | z)$$ define a joint distribution over the data.
+* A latent variable model is introduced, where a prior $$p(z)$$ and a likelihood $$p(x \mid z)$$ define a joint distribution over the data.
 
-* The marginal likelihood $$p(x)$$ is typically intractable, and variational inference introduces a tractable approximation $$q(z|x)$$ of the posterior distribution $$p(z|x)$$. 
+* The marginal likelihood $$p(x)$$ is typically intractable, and variational inference introduces a tractable approximation $$q(z \mid x)$$ of the posterior distribution $$p(z \mid x)$$. 
 
 <div style="text-align:center">
 <img src="/collections/images/bayesian-inference/variational-inference-2.jpg" width=500></div>
@@ -220,13 +220,13 @@ With Bayesian inference, you can:
 <img src="/collections/images/bayesian-inference/variational-inference-8.jpg" width=500></div>
 <br>
 
-## **<span style="color:orange">Amortized simulation-based inference</span>**
+## **<span style="color:orange">Amortized simulation-based inference</span>**{#amortized-simulation-based-inference}
 
 ### Definition {#definition-sbi}
 
 The idea behind the amortized simulation-based inference is to model the ouput $$y$$ from a new input $$x$$ <span style="color:blue; font-style:italic">based on a supervised dataset</span> $$D=(X_{\text{train}},y_{\text{train}})$$ of arbitrary size $$n$$. 
 
-The goal is therefore to model the posterior predictive distribution $$p(y | x, D)$$. Since we explicitly use a support dataset $$D$$ to predict $$y$$ from $$x$$, this model falls under <span style="color:blue; font-style:italic">in-context learning</span>.
+The goal is therefore to model the posterior predictive distribution $$p(y \mid x, D)$$. Since we explicitly use a support dataset $$D$$ to predict $$y$$ from $$x$$, this model falls under <span style="color:blue; font-style:italic">in-context learning</span>.
 
 <div style="text-align:center">
 <img src="/collections/images/bayesian-inference/in-context-framework.jpg" width=500></div>
@@ -262,45 +262,45 @@ $$p(y | x, D) \propto \int_{\phi}p(y | x, \phi) \, p(D | \phi) \, p(\phi) \, d\p
 
 Based on the hypothesis $$\Phi$$, one can implement an efficient prior sampling scheme of the form: 
 
-$$p(D) = \int_{\phi} p(D | \phi) \, p(\phi) \, d\phi$$ 
+$$p(D) = \int_{\phi} p(D \mid \phi) \, p(\phi) \, d\phi$$ 
 
-The generative mechanism is first sampled as $$\phi \sim p(\phi)$$ which encodes the relationships between $$X$$ and $$y$$. The synthetic dataset is then sampled as $$D\sim p(D | \phi)$$. This process is finally repeated for a large set of $$\phi$$ sampled from $$\Phi$$. 
+The generative mechanism is first sampled as $$\phi \sim p(\phi)$$ which encodes the relationships between $$X$$ and $$y$$. The synthetic dataset is then sampled as $$D\sim p(D \mid \phi)$$. This process is finally repeated for a large set of $$\phi$$ sampled from $$\Phi$$. 
 
 #### Learning process
 
-The posterior predictive distribution $$p(y | x, D)$$ is approximated through a parametrized function $$q_{\theta}(y | x, D)$$
+The posterior predictive distribution $$p(y \mid x, D)$$ is approximated through a parametrized function $$q_{\theta}(y \mid x, D)$$
 
 The model $$q_{\theta}(\cdot)$$ is trained by minimiing the cross-entropy over samples drawn from the prior:
 
-$$l_{\theta} = \mathbb{E}_{D \cup \{x,y\} \sim p(D)}\left[ - \log q_{\theta}(y |x,D) \right]$$
+$$l_{\theta} = \mathbb{E}_{D \cup \{x,y\} \sim p(D)}\left[ - \log q_{\theta}(y \mid x,D) \right]$$
 
-where $$D \cup \{x,y\}$$ denotes a synthetic dataset of size $$|D|+1$$, obtained by augmenting $$D \sim p(D)$$ with a pair $$\{x,y\}$$.
+where $$D \cup \{x,y\}$$ denotes a synthetic dataset of size $$\left|D\right|+1$$, obtained by augmenting $$D \sim p(D)$$ with a pair $$\{x,y\}$$.
 
-> The proposed objective $$l_{\theta}$$ is equal to the expectation of the cross-entropy between the posterior predictive distribution $$p(y | x, D)$$ and its approximation $$q_{\theta}(y | x, D)$$ : $$l_{\theta} = \mathbb{E}_{x,D \sim p(D)}\left[ H\left(p(\cdot |x,D) , q_{\theta}(\cdot |x,D) \right) \right]$$
+> The proposed objective $$l_{\theta}$$ is equal to the expectation of the cross-entropy between the posterior predictive distribution $$p(y \mid x, D)$$ and its approximation $$q_{\theta}(y \mid x, D)$$ : $$l_{\theta} = \mathbb{E}_{x,D \sim p(D)}\left[ H\left(p(\cdot \mid x,D) , q_{\theta}(\cdot \mid x,D) \right) \right]$$
 
 <br>
 
 <em><b>Proof.</b></em> The above can be shown with the following derivation.
 
 $$\begin{aligned}
-l_{\theta} & = \mathbb{E}_{D \cup \{x,y\} \sim p(D)}\left[ - \log q_{\theta}(y |x,D) \right] \\
-& = \mathbb{E}_{D,x,y} \left[ - \log q_{\theta}(y |x,D) \right] \\
-& = -\int_{D,x,y}p(x,y,D) \, \log q_{\theta}(y|x,D) \\
-& = -\int_{D,x,y} \textcolor{orange}{p(x,D) \, p(y \mid x,D)} \, \log q_{\theta}(y|x,D) \\
-& = -\int_{D,x}p(x,D) \, \int_{y} p(y|x,D) \, \log q_{\theta}(y|x,D) \\
-& = \int_{D,x} p(x,D) \, \textcolor{orange}{H \left( p(\cdot|x,D) , q_{\theta}(\cdot|x,D) \right)} \\
-& = \mathbb{E}_{x,D\sim p(D)} \left[ H \left( p(\cdot|x,D) , q_{\theta}(\cdot|x,D) \right) \right]
+l_{\theta} & = \mathbb{E}_{D \cup \{x,y\} \sim p(D)}\left[ - \log q_{\theta}(y \mid x,D) \right] \\
+& = \mathbb{E}_{D,x,y} \left[ - \log q_{\theta}(y \mid x,D) \right] \\
+& = -\int_{D,x,y}p(x,y,D) \, \log q_{\theta}(y \mid x,D) \\
+& = -\int_{D,x,y} \textcolor{orange}{p(x,D) \, p(y \mid x,D)} \, \log q_{\theta}(y \mid x,D) \\
+& = -\int_{D,x}p(x,D) \, \int_{y} p(y \mid x,D) \, \log q_{\theta}(y \mid x,D) \\
+& = \int_{D,x} p(x,D) \, \textcolor{orange}{H \left( p(\cdot \mid x,D) , q_{\theta}(\cdot \mid x,D) \right)} \\
+& = \mathbb{E}_{x,D\sim p(D)} \left[ H \left( p(\cdot \mid x,D) , q_{\theta}(\cdot \mid x,D) \right) \right]
 \end{aligned}$$
 <br>
 
 
-<em><b>Corollary.</b></em> The loss $$l_{\theta}$$ equals the expected KL-Divergence $$\mathbb{E}_{D,x}\left[ KL\left( p(\cdot|x,D) , q_{\theta}(\cdot|x,D) \right) \right]$$ between $$p(\cdot|x,D)$$ and $$q_{\theta}(\cdot|x,D)$$ over prior data $$x, D$$, up to an additive constant.
+<em><b>Corollary.</b></em> The loss $$l_{\theta}$$ equals the expected KL-Divergence $$\mathbb{E}_{D,x}\left[ KL\left( p(\cdot \mid x,D) , q_{\theta}(\cdot \mid x,D) \right) \right]$$ between $$p(\cdot \mid x,D)$$ and $$q_{\theta}(\cdot \mid x,D)$$ over prior data $$x, D$$, up to an additive constant.
 
 $$\begin{aligned}
-& \mathbb{E}_{x,D}\left[ KL \left( p(. | x,D), q_{\theta}(. | x,D) \right) \right] \\
-&= - \mathbb{E}_{x,D}\left[ \int_y p(y | x,D) \, \log \frac{q_{\theta}(y | x,D)}{p(y | x,D)} \right] \\
-&= - \mathbb{E}_{x,D}\left[ \int_y p(y | x,D) \, \log q_{\theta}(y | x,D) \right] + \mathbb{E}_{x,D}\left[ \int_y p(y | x,D) \, \log p(y | x,D) \right] \\
-&= \mathbb{E}_{x,D}\left[ H \left( p(. | x,D), q_{\theta}(. | x,D) \right) \right] - \mathbb{E}_{x,D}\left[ H \left( p(. | x,D) \right) \right] \\
+& \mathbb{E}_{x,D}\left[ KL \left( p(\cdot \mid x,D), q_{\theta}( \cdot \mid x,D) \right) \right] \\
+&= - \mathbb{E}_{x,D}\left[ \int_y p(y \mid x,D) \, \log \frac{q_{\theta}(y \mid x,D)}{p(y \mid x,D)} \right] \\
+&= - \mathbb{E}_{x,D}\left[ \int_y p(y \mid x,D) \, \log q_{\theta}(y \mid x,D) \right] + \mathbb{E}_{x,D}\left[ \int_y p(y \mid x,D) \, \log p(y \mid x,D) \right] \\
+&= \mathbb{E}_{x,D}\left[ H \left( p(\cdot \mid x,D), q_{\theta}(\cdot \mid x,D) \right) \right] - \mathbb{E}_{x,D}\left[ H \left( p(\cdot \mid x,D) \right) \right] \\
 &= l_{\theta} + C
 \end{aligned}$$
 
