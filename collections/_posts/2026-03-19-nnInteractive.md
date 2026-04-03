@@ -155,7 +155,7 @@ Due to the absence of competing methods capable of processing 2D bounding boxes,
 <img src="/collections/images/nnInteractive/results_quantitative.jpg" width=1500></div>
 <p style="text-align: center;font-style:italic">Figure 4. Interactive Performance </p>
 
-nnInteractive achieves the **highest Dice scores in point-based refinement**, with a **large gap over all competitors**, despite 2D models receiving N points per slice and points being nInteractive’s weakest prompt type. Beyond points, nnInteractive best interaction prompts are scribbles and lasso. Interactions can be freely mixed for flexibility with better performances. 
+nnInteractive achieves the **highest Dice scores in point-based refinement**, with a **large gap over all competitors**, despite 2D models receiving N points per slice and points being nnInteractive’s weakest prompt type. Beyond points, nnInteractive’s best interaction prompts are scribbles and lasso. Interactions can be freely mixed for flexibility with better performance. 
 &nbsp;
 
 ## Autozoom performance
