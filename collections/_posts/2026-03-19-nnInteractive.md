@@ -38,7 +38,7 @@ In this paper, the authors present **nnInteractive, a 3D interactive segmentatio
 
 &nbsp;
 
-# nnInteractive : Network Archiecture
+# nnInteractive : Network Architecture
 
 <div style="text-align:center">
 <img src="/collections/images/nnInteractive/architecture_nninteractive.jpg" width=1500></div>
