@@ -29,7 +29,7 @@ This creates **a need for interactive segmentation**, where users can guide and 
 - **Limited interactions** : only basic prompts (points, bounding boxes) are supported, no scribbles or intuitive inputs
 - **No accessible interface** : no practical tool exists to connect users to these models efficiently
 
-In this paper, the author present **nnInteracive, a 3D interactive segmentation framework** that tackles theses challenges. Rather than proposing new architectural innovations, they have 4 goals : 
+In this paper, the authors present **nnInteractive, a 3D interactive segmentation framework** that tackles these challenges. Rather than proposing new architectural innovations, they have 4 goals : 
 
 1. <span style="background-color: #ff770089"> **Usability**</span>
 2. <span style="background-color: #6fff008d"> **Interaction diversity** </span> 
