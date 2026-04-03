@@ -13,7 +13,7 @@ pdf: "https://arxiv.org/pdf/2503.08373"
 
 # Highlights
 
-* [nnInteractive (2025)](https://arxiv.org/pdf/2503.08373) presents the first 3D interactive openset segmentation model based on nnUNet, supporting a wide range of positive and negative prompts (points, scribbles, bounding boxes, and lasso) across multiple imaging modalities (CT, MR, PET, etc.).
+* [nnInteractive (2025)](https://arxiv.org/pdf/2503.08373) presents the first 3D interactive open-set segmentation model based on nnUNet, supporting a wide range of positive and negative prompts (points, scribbles, bounding boxes, and lasso) across multiple imaging modalities (CT, MR, PET, etc.).
 * It is trained on an unprecedented scale with over 120 diverse 3D datasets, including a wide range of modalities, anatomical structures and label variations.
 * It achieves state-of-the-art performance segmentation accuracy, interactive refinement, and clinical usability.
 * Code for inference and pretrained weights are available on the [official Git repo](https://github.com/MIC-DKFZ/nnInteractive).
