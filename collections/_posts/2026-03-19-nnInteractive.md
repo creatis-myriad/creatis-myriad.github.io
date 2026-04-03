@@ -176,7 +176,7 @@ nnInteractive dynamically adapts to user input and is able to **efficiently reso
 &nbsp;
 
 ## Clinicians feedback
-nnInteractive can be **intregrated into established imaging platforms** such as Napari and MITK Workbench (<span style="background-color: #ff770089">Usability</span>).
+nnInteractive can be **integrated into established imaging platforms** such as Napari and MITK Workbench (<span style="background-color: #ff770089">Usability</span>).
 
 nnInteractive is benchmarked against expert manual tumor annotation in terms of accuracy and efficiency.
 **Segmentation consistency is comparable to inter-expert agreement**, with median Dice similarity scores of 0.842 (resident vs. specialist), 0.794 (specialist vs. nnInteractive), and 0.853 (resident vs. nnInteractive). 
