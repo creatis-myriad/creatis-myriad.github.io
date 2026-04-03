@@ -44,7 +44,7 @@ In this paper, the authors present **nnInteractive, a 3D interactive segmentatio
 <img src="/collections/images/nnInteractive/architecture_nninteractive.jpg" width=1500></div>
 <p style="text-align: center;font-style:italic">Figure 1. Overview of the nnInteractive Training Pipeline.</p>
 
-3D UNet remains state-of-the-art for 3D medical image segmentation despite the rise of transformer-based models in 2D. nnInteractive chooses **UNet-based architecture** build upon the nnU-Net framework using the Residual Encoder configuration as backbone. 
+3D UNet remains state-of-the-art for 3D medical image segmentation despite the rise of transformer-based models in 2D. nnInteractive chooses **UNet-based architecture** built upon the nnU-Net framework using the Residual Encoder configuration as backbone. 
 
 Key difference from SAM: **image and interaction prompts are concatenated directly as inputs**, rather than fusing interactions into a latent space. This way, prompts influence the full feature extraction process from the start, enabling task-relevant learning at the highest resolution.
 
