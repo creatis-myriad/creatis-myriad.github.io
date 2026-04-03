@@ -144,7 +144,7 @@ $$\rightarrow$$ **Qualitative comparison**
 <p style="text-align: center;font-style:italic">Figure 3.  Qualitative comparison of interactive segmentation methods on unseen test images with different static prompting strategies:
 points and 3D boxes.</p>
 
-nnInteractive achieves the highest accuracy, closely matching the ground truth, while others struggle with precision,consistency, or volumetric adaptation. 
+nnInteractive achieves the highest accuracy, closely matching the ground truth, while others struggle with precision, consistency, or volumetric adaptation. 
 &nbsp;
 
 $$\rightarrow$$ **Quantitative comparison**
