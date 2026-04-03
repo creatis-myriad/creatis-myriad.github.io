@@ -72,7 +72,7 @@ foreground volume distribution across all planes, biasing toward slices with mor
 
 $$\rightarrow$$ **Point (<span style="background-color: #6fff008d">Interaction diversity </span> )**
 
-A **point** interactation $$p \in \mathbb{R}^3 $$  is sampled from the error volume $$V$$ according to a probability distribution weighted by the normalized euclidean distance from the border. Voxels near the center are favored over those near the boundary.
+A **point** interaction $$p \in \mathbb{R}^3 $$  is sampled from the error volume $$V$$ according to a probability distribution weighted by the normalized Euclidean distance from the border. Voxels near the center are favored over those near the boundary.
 
 $$ \forall x \in V : p(x) = \frac{D(x)^{\alpha}}{\sum_{z\in V}D(z)^{\alpha}}$$
 with $$D$$ the normalized Euclidean Distance Transform (EDT) assigning higher values to voxels farther from the border (i.e., closer to the center) and $$\alpha$$ controls the sampling bias ($$\alpha =8 $$ :centered biased approach or $$\alpha =1 $$: uniform sampling).
