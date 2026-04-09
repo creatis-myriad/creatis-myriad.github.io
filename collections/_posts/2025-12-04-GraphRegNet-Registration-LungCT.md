@@ -4,10 +4,10 @@ title: "GraphRegNet: Deep Graph Regularisation Networks on Sparse Keypoints for 
 tags: Lung, Computed tomography,Three-dimensional displays,Feature extraction
 author: "María Márquez-Sosa"
 cite:
-    authors: "Tristan S.W. Stevens, Oisin Nolan, Jean-Luc Robert and Ruud J.G. van Sloun"
-    title:   "Nuclear Diffusion Models for Low-rank Background Supression in Videos"
+    authors: "Lasse Hansen and Mattias P. Heinrich"
+    title:   "GraphRegNet: Deep Graph Regularisation Networks on Sparse Keypoints for Dense Registration of 3D Lung CTs"
     venue:   "IEEE Transactions on Medical Imaging"
-pdf: "https://arxiv.org/abs/2509.20886"
+pdf: "https://ieeexplore.ieee.org/document/9406964/authors#authors"
 ---
 
 <br/>
@@ -33,20 +33,20 @@ Automated analysis of chest CT is central to the **diagnosis and treatment plann
 
 Lung CT registration is particularly difficult due to three factors:
 
-- **Large non rigid motion of fine structures**
+- **Large non-rigid motion of fine structures**
 During breathing, vessels and airways undergo displacements that are often larger than their own diameter.
 
 - **Sliding motion at anatomical boundaries**
-The lungs slide along the chest wall and between lobes. This breks the smooth and continuous motion assumptions of most regularization models and introduces physically incorrect constraints near the pleural surface.
+The lungs slide along the chest wall and between lobes. This breaks the smooth and continuous motion assumptions of most regularization models and introduces physically incorrect constraints near the pleural surface.
 
 ![Sliding motion](/collections/images/GraphRegNet/Sliding_motion.png)
 
-Figure 1: From left to right, inhalation, exhalation, and overlay. The overlay highlights sliding motion, mainly at the diaphragm-lung, inter-lobar and lung-pleural cavity interfaces [2].
+Figure 1: From left to right, inhalation, exhalation, and overlay. The overlay highlights sliding motion, mainly at the diaphragm-lung, interlobar and lung-pleural cavity interfaces [2].
 
 - **Respiration-induced intensity changes**
 Lung expansion and compression alter local tissue density. Consequently, voxel values differ even when anatomical correspondences are correct
-  - Most similarity metrics asume brightness constancy: sum of squared differences (SSD), cross-correlation (CC), and mutual information (MI).
-  - Quantitative assesment uses approaches relying on local spatial context.
+  - Most similarity metrics assume brightness constancy: sum of squared differences (SSD), cross-correlation (CC), and mutual information (MI).
+  - Quantitative assessment uses approaches relying on local spatial context.
 
 ## Related Work
 
@@ -62,7 +62,7 @@ These limitations motivated a **shift from dense voxel-based regression to spars
 ---
 # Methods
 
-The fixed image **$I_F$** and moving image **$I_M$** are defined as the inhale and exhale CT scans, respectively. The registration objective is to **calculate a displacement field** $D$:  $\mathbb{R}^3 \to \mathbb{R}$ that **best aligns the inhale and exhale images**.
+The fixed image **$I_F$** and moving image **$I_M$** are defined as the inhale and exhale CT scans, respectively. The registration objective is to **calculate a displacement field** $D$: $\mathbb{R}^3 \to \mathbb{R}$ that **best aligns the inhale and exhale images**.
 
 ![GraphRegNet](/collections/images/GraphRegNet/GraphRegNet.png)
 Figure 2: Overview of keypoint based deformable registration framework: **GraphRegNet**. Sparse keypoints are detected in $I_F$. MIND features are extracted from $I_F$ and $I_M$. Feature correlation across candidate displacements builds a cost tensor per keypoint. The model predicts displacements using a CNN encoder, a GCN for spatial regularization, and a CNN decoder. Sparse displacements are densified by trilinear extrapolation. Training is unsupervised using an MSE loss on fixed and warped MIND images [1].
@@ -91,11 +91,8 @@ Keypoints are extracted from the $I_F$ using the **Förstner operator** [3].
     4) Restrict the location of the keypoints to the lung region given by the lung mask.
     5) Adapt the number of keypoints in $P$ to a fixed number $N_p$ by farthest point sampling (if $|P| >= N_p$) or insertion of random points already present in $P$ (if $|P| < N_p$).
 
-  
-
-- Registration stage:  2048 keypoints. 
-- Refinement stage:  3072 keypoints.
-
+- Registration stage: 2048 keypoints. 
+- Refinement stage: 3072 keypoints.
 
 ## Image Feature Extraction
 
@@ -103,6 +100,7 @@ For both $I_F$ and $I_M$, the **modality independent neighborhood descriptor (MI
 
 - **Main idea:** For every voxel, MIND describes the local structure surrounding that voxel. 
 - **Computation:** At each voxel $x$, $r$ is an element from the search space $\mathbb{R}$, the descriptor is calculated as:
+
     ```math
     \text{MIND}(I, x, r) = \frac{1}{n}
     \exp \left(
@@ -120,14 +118,16 @@ For each keypoint $p \in P$ in the $I_F$, a discrete 3D displacement search is p
 
 The displacement space is defined using a quantization step size $q$ and a maximum expected displacement $l_{max}$.
 
- - Registration stage:  $q=2$ and $l_{max} = 14$. 
- - Refinement stage:  $q=1$ and $l_{max} = 8$.
+ - Registration stage: $q=2$ and $l_{max} = 14$. 
+ - Refinement stage: $q=1$ and $l_{max} = 8$.
 
 At each candidate displacement, similarity is computed using SSD between $F_F(p)$ and $F_M(p + l)$, resulting in a discrete cost tensor $C$ per keypoint, which is then smoothed with a Gaussian kernel ($\sigma = 1$) along the displacement dimensions. 
 
-$C(p,l)= \frac{1}{12}\sum_{1=0}^{11}(F_F^i(p)-F_M^i(p+l))^2$
+$$
+C(p,l)= \frac{1}{12}\sum_{1=0}^{11}(F_F^i(p)-F_M^i(p+l))^2
+$$
 
-where $F_F^i$ and $F_M^i$ denote the i-th channel of the respective 12 channgel feature map.
+where $F_F^i$ and $F_M^i$ denote the i-th channel of the respective 12 channel feature map.
 
 -The spatial dimensions of $C$ remain sparse and are defined only at the keypoint locations.
 
@@ -143,11 +143,11 @@ Each keypoint cost tensor $C(p)$ is processed independently by a convolutional e
 - The number of feature channels increases at each layer. 
 - Each convolution is followed by instance normalization and a leaky ReLU activation.
 
-The encoder outputs a **low-dimensional displacement embedding**  for each keypoint.
+The encoder outputs a **low-dimensional displacement embedding** for each keypoint.
 
 ### Graph Neural Network
 
-- A k-nearest-neighbor graph is constructed using the spatial coordinates of the keypoints ($ k = 15$). 
+- A k-nearest-neighbor graph is constructed using the spatial coordinates of the keypoints ($k = 15$). 
 - The displacement embeddings are concatenated with the corresponding 3D keypoint coordinates, and used as the initial node features.
 
 Three graph convolution layers based on **edge convolutions (EdgeConv)** [5] are applied in a DenseNet-fashion (the input features of all previous layers are concatenated with the current layer output) while keeping the output feature channels constant.  
@@ -158,7 +158,9 @@ $f_i' = \mathrm{ReLU}\left( \mathrm{avg}_{(i,j)\in E}  e_{ij} \right)$
 
 where $f_i'$ denotes the updated feature vector at node $i$, and $E$ is the edge set of the kNN graph. The edge features are computed as 
 
-$e_{ij} = h_\theta(f_i, f_j - f_i)$
+$$
+e_{ij} = h_\theta(f_i, f_j - f_i)
+$$
 
 where $h_\theta$ is a fully connected layer.
 
@@ -205,7 +207,7 @@ Figure 4: 3D rendering of case 8: inspiratory and expiratory CT from the DIR-Lab
 
 # Results
 
-- Contains only about 33,000 trainable parameters. The total inference time including refinement is less than 2 seconds on a NVIDIA Titan RTX GPU, with a memory usage of less than 4GB. 11GB used for training. 
+- Contains only about 33,000 trainable parameters. The total inference time including refinement is less than 2 seconds on a NVIDIA Titan RTX GPU, with a memory usage of less than 4 GB. 11 GB used for training. 
 
 ![Figures-GraphRegNet](/collections/images/GraphRegNet/figures-graphregnet.png)
 Figure 5: Qualitative results of GraphRegNet on COPDGene scan pairs in sagittal view. From left to right: initial and final color overlays of inhale and exhale scans, two views of the predicted displacement field, and the Jacobian within the lung. 
