@@ -270,7 +270,7 @@ The generative mechanism is first sampled as $$\phi \sim p(\phi)$$ which encodes
 
 The posterior predictive distribution $$p(y \mid x, D)$$ is approximated through a parametrized function $$q_{\theta}(y \mid x, D)$$
 
-The model $$q_{\theta}(\cdot)$$ is trained by minimiing the cross-entropy over samples drawn from the prior:
+The model $$q_{\theta}(\cdot)$$ is trained by minimizing the cross-entropy over samples drawn from the prior:
 
 $$l_{\theta} = \mathbb{E}_{D \cup \{x,y\} \sim p(D)}\left[ - \log q_{\theta}(y \mid x,D) \right]$$
 
@@ -333,8 +333,8 @@ They model:
 - noise
 - different graphs (i.e. relationships) across datasets
 
-They allows:
-- local, compositional, and parsimonious structures
+They allow:
+- local, composed, and parsimonious structures
 - plausible dependencies between columns
 - preference for simple relationships
 
@@ -359,7 +359,7 @@ Each dataset corresponds to a task for which TabPFN learns to perform Bayesian i
   - a small number of parents per node
   - a random topological ordering
   
-> The intuition beind this sampling scheme is that real-world tabular variables rarely exhibit global dependencies across all columns
+> The intuition behind this sampling scheme is that real-world tabular variables rarely exhibit global dependencies across all columns
 
 ##### 2- Sample the causal mechanisms
 
@@ -370,7 +370,7 @@ $$f_i$$ is randomly chosen from a mixture of function families:
 - linear functions
 - simple nonlinear functions
 - small neural networks
-- sometimes tree- or threshold-based function
+- sometimes tree- or threshold-based functions
 
 But with:
 - low depth
@@ -388,7 +388,7 @@ Once we have:
 - the structural functions
 - the noise terms,
 
-data are generated according to the causal ordering:
+features are generated according to the causal ordering:
 - variables without parents $$\rightarrow$$ sampled directly
 - intermediate variables $$\rightarrow$$ computed via $$𝑓_i$$
 - deeper variables $$\rightarrow$$ accumulate dependencies and noise
@@ -405,8 +405,8 @@ $$y = g \left( Pa(y) \right) + \epsilon_y$$
 
 where:
 - $$g$$ is sampled as a simple function
-- $$y$$ sometimes depends on few variables
-- $$y$$ sometimes depends indirectly on many through the DAG
+- $$y$$ sometimes depends on a few variables
+- $$y$$ sometimes depends indirectly on many variables through the DAG
 
 For classification:
 - $$g$$ produces a latent score
@@ -489,7 +489,7 @@ During training, each batch is populated with a dataset sampled from the SCM dis
 - One training run requires around 2 weeks on one node with eight Nvidia RTX 2080 Ti GPUs
 - The number of training samples was sampled for each dataset uniformly up to 2,048 and use a fixed validation set size of 128
 - The number of features was sampled using a beta distribution that was linearly scaled to the range 1–160
-- To avoid peaks in memory usage, the total size of each table was restricted to be below 75,000 cells by decreasing the number of samples for large numbers of features
+- To avoid peaks in memory usage, the total size of each table was restricted to be below 75,000 cells by decreasing the number of samples for tables with a large numbers of features
 
 
 #### Experiments
@@ -513,7 +513,7 @@ During training, each batch is populated with a dataset sampled from the SCM dis
 
 The figure below provides an analysis of the performance of TabPFN across various dataset types: 
 - add uninformative features (randomly shuffled features from the original dataset)
-- add outliers (multiply each cell with 2% probability with a random number between 0 and the outlier factor)
+- add outliers (2% probability of multiplying a cell with a random number between 0 and the outlier factor)
 - remove/drop samples
 - remove/drop features
 
