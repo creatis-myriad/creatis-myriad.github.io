@@ -87,7 +87,7 @@ A **lasso** encloses the 2D error region using morphological closing and dilatio
 
 $$\rightarrow$$  **Scribble (<span style="background-color: #6fff008d">Interaction diversity </span>)**
 
-Inspired by ScribblePrompt [^2], **three types of scribbles** are generated with equal probability and constant line thickness:
+Inspired by ScribblePrompt [^1], **three types of scribbles** are generated with equal probability and constant line thickness:
 - **Line Scribbles**: connecting two random points from the 2D error mask
 - **Center Scribbles**: extracting the skeleton of the 2D error mask, then truncating to simulate partial annotation.
 - **Contour Scribbles**: first eroding the 2D error mask and then computing the truncated contour of the eroded object.
@@ -187,8 +187,8 @@ In terms of efficiency, experts completed segmentations in $$179 \pm 114$$ s usi
 # Conclusion
 nnInteractive is a universal 3D interactive segmentation framework supporting a wide range of prompt types. It surpasses all existing methods in segmentation accuracy while significantly reducing annotation effort, and is designed for seamless adoption in both clinical and research workflows.
 &nbsp;
+
 # References
 
-
-[^2]: [Hallee E. Wong, Marianne Rakic, John Guttag, Adrian V. Dalca: ScribblePrompt: Fast and Flexible Interactive Segmentation for Any Biomedical Image (2023)](https://arxiv.org/pdf/2312.07381)
+[^1]: [Hallee E. Wong, Marianne Rakic, John Guttag, Adrian V. Dalca: ScribblePrompt: Fast and Flexible Interactive Segmentation for Any Biomedical Image (2023)](https://arxiv.org/pdf/2312.07381)
 
