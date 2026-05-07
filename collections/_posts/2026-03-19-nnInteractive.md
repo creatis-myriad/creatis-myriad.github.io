@@ -21,7 +21,7 @@ pdf: "https://arxiv.org/pdf/2503.08373"
 &nbsp;
 # Introduction
 
-3D segmentation is critical in medical imaging, biology, and industrial inspection : **3D data captures structural information that 2D images can not**. While automatic models perform well on known tasks, **they fail to generalize to unseen structures or domains**.
+3D segmentation is critical in medical imaging, biology, and industrial inspection: **3D data captures structural information that 2D images cannot**. While automatic models perform well on known tasks, **they fail to generalize to unseen structures or domains**.
 
 This creates **a need for interactive segmentation**, where users can guide and correct predictions. SAM-based models have shown great promise for 2D natural images, but extending them to 3D medical imaging remains challenging:
 - **2D-only processing** : most models segment slice by slice, missing volumetric context essential for anatomical consistency
