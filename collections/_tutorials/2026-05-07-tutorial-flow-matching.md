@@ -8,7 +8,7 @@ categories: flow matching, generative models, deep learning
 
 # Note
 
-The aim of this tutorial is to present general concepts and basis about flow matching, introduced from the point of view of normalizing flows.
+The aim of this tutorial is to present general concepts and fundamentals about flow matching, introduced from the point of view of normalizing flows.
 
 The following ressources can be useful for those who would like to delve deeper into this topic (most of the illustrations shown in the post are taken from these sources) : 
 
@@ -45,20 +45,21 @@ The following ressources can be useful for those who would like to delve deeper 
 
 ### Reminder on Normalizing Flows
 
-As our goal is to present Flow Matching from the starting point of view of Normalizing Flows, this section is a an introduction to this type of generative models. For a more complete presentation of Normalizing Flows, please refer to [this tutorial](https://creatis-myriad.github.io/tutorials/2023-01-05-tutorial_normalizing_flow.html).
+As our goal is to present Flow Matching from the starting point of view of Normalizing Flows, this section is a an introduction to this type of models. They can be used for data generation, and will be presented from this viewpoint. For a more complete presentation of Normalizing Flows, please refer to [this tutorial](https://creatis-myriad.github.io/tutorials/2023-01-05-tutorial_normalizing_flow.html).
 
-Let $$x \in X$$  be a random variable with a density function $$p_{X}$$ and denote $$f : X \to Z$$ a diffeomorphism. The change of variable operated by $$f$$ can be used to transform $$z \sim p_{Z}(z)$$ into a simpler random variable $$z = f(x)$$. One probability density can be retrieved from the other with the following formula :  
+Let $$x \in X$$  be a random variable with a density function $$p_{X}$$ and denote $$f : X \to Z$$ a diffeomorphism. The change of variable operated by $$f$$ can be used to transform $$x \sim p_{X}(x)$$ into a simpler random variable $$z = f(x)$$, with $$z \sim p_{Z}(z)$$. One probability density can be retrieved from the other with the following formula :  
 
 $$ p_{X}(x) = p_{Z}(f(x)) |\text{det}( \frac{\partial f(x)}{\partial x})|$$ 
 
 
 where $$\frac{\partial f}{\partial z}$$ is the Jacobian matrix of the application $$f$$ and $$\text{det}(\cdot)$$ designates the determinant of a matrix.
+Note that $$f$$ is a diffeomorphism and thus this model can be done in the two directions, i.e. from a simple distribution to a complex one (data generation) or from a complex distribution to a simpler one (encoding).
 
-**Normalizing flow** is a type of generative models which leverages type change of variable to transform a complex distribution into a simpler one (typically a multivariate normal distribution) though a serie of invertible mappings. Indeed, it is possible to stack in sequence several of the diffeomorphisms introduced above $$f_1, ..., f_K$$:
+**Normalizing flow** is a type of generative model that leverages the change-of-variables formula. A complex distribution is firrt "transformed" into a simpler one (typically a multivariate normal distribution) though a serie of invertible mappings, then generation is done with the inverse transformation. Indeed, it is possible to stack in sequence several of the diffeomorphisms introduced above $$f_1, ..., f_K$$:
 
 $$ f = f_K \circ f_{K-1} \circ \, ... \circ f_1 $$
 
-During the successive modifications, a sample $$x$$ from real data flows though a sequence of transformations and is progressively normalized. The following figure illustrates principle of this type of model :
+During the successive modifications, a sample $$x$$ from real data flows though a sequence of transformations and is progressively normalized. The following figure illustrates the principle of this type of model :
 
 <div style="text-align:center">
 <img src="/collections/images/flow_matching/nf.jpg" width=800></div>
@@ -78,22 +79,22 @@ where $$\theta=(\theta_1,...,\theta_K)$$ and $$\psi$$ respectiveley denotes the 
 
 Theoretically, any diffeomorphism could be used to build a normalizing flow model, but in practice it should satisfy two properties to be applicable:
 * Be invertible with an easy-to-compute inverse function
-* Computing the determinant of its Jacobian needs to be efficient. Typically, we want the Jacobian be a triangular matrix.
+* Computing the determinant of its Jacobian needs to be efficient. Typically, we want the Jacobian to be a triangular matrix.
 
 
-One of the earliest types of functions used in normalizing flows if the planar flow, which has the following form : 
+One of the earliest types of functions used in normalizing flows is the planar flow, which has the following form : 
 
 $$ f(x) = z + a h(b^{T} x + c) $$
 
-where $$\lambda = \{a \in \mathbb{R}^{D}, b \in \mathbb{R}^{D}, bc\in \mathbb{R} \}$$ are free parameters and $$h(\cdot)$$ is a differentiable element-wise and non-linear function.
+where $$\lambda = \{a \in \mathbb{R}^{D}, b \in \mathbb{R}^{D}, c\in \mathbb{R} \}$$ are free parameters and $$h(\cdot)$$ is a differentiable element-wise and non-linear function.
 
 &nbsp;
 
 ### Continuous Flow Matching
 
-With normalizing flows, the types of transform that are usable is restrict and thus directly limits the expressivity of parametrized approximators. As mentioned above, a workaournd is to stack small, *atomic* transforms. Typical networks, such as FastFlow, designed for unsupervised anomaly detection, contains between 4 and 12 layers of such transforms.
+With normalizing flows, the types of transform that can be used is restricted and thus directly limits the expressivity of parametrized approximators. As mentioned above, a workaournd is to stack small, *atomic* transforms. Typical networks, such as FastFlow, designed for unsupervised anomaly detection, contains between 4 and 12 layers of such transforms.
 
-An idea that naturally comes to mind when working with normalizing flows would be to increase the numbers of flows building blocks and increase their number to 100, 1000 or more. At the limit, we could even have an infinite number of such blocks. Obviously, on practice it is impossible to train that many blocks, but instead we could parametrize a build block by a *time parameter* $$t$$ : $$f(x, t;\theta)$$.
+An idea that naturally comes to mind when working with normalizing flows would be to increase the numbers of flows building blocks and increase their number to 100, 1000 or more. At the limit, we could even have an infinite number of such blocks. Obviously, in practice it is impossible to train that many blocks, but instead we could parametrize a build block by a *time parameter* $$t$$ : $$f(x, t;\theta)$$.
 
 With such network -- hypothetical for now --, a single forward pass would require to perform $$T=10, 100, 1000, ...$$ passes through this small, infinitesimal building block.
 
@@ -109,7 +110,7 @@ $$
 x_{k+1} = f_k (x_k) = x_k + \frac{1}{K} u_k (x_k)
 $$
 
-This equation can be interpreted as an *Euler step discretization of the following **Ordinary Differential Equation (ODE)** :
+This equation can be interpreted as an Euler step discretization of the following **Ordinary Differential Equation (ODE)** :
 
 $$
 \begin{cases}
@@ -133,8 +134,8 @@ $$
 $$
 
 Although very appealing at first sight, the Continuous Normaling Flow suffers from several limitations : 
-- the training procedure via log likelihood maximization with the formula above requires integrating the source distribution according the velocity field. This approach is sometimes called *with simulation*, and it does not scale well is higher dimension, such as images.
-- the learning process is not stable, likely because of numerical approximations or, more importantly, to the infinite number of possible probabiliry paths (Figure 4)
+- the training procedure via log likelihood maximization with the formula above requires integrating the source distribution according to the velocity field. This approach is sometimes called *with simulation*, and it does not scale well is higher dimension, such as images.
+- the learning process is not stable, likely because of numerical approximations or, more importantly, to the infinite number of possible probability paths (Figure 4)
   
 <div style="text-align:center">
 <img src="/collections/images/flow_matching/infinite_cnf.jpg" width=800></div>
@@ -146,15 +147,15 @@ Although very appealing at first sight, the Continuous Normaling Flow suffers fr
 
 ### Conditional Flow Matching to solve the limits of Continuous Normalizing Flows
 
-The idea behind Flow Matching is the same as Continuous Normalizing Flows, that is learning a velocity field $$u_{\theta}(x,t)$$ such that, when followed, it transforms the source distribution $$p_0$$ (typically centered Gaussian, but we will come back to that later) is transformed to the target distribution $$p_{\textrm{data}}$$. 
+The idea behind Flow Matching is the same as Continuous Normalizing Flows, that is learning a velocity field $$u_{\theta}(x,t)$$ such that, when followed, it transforms the source distribution $$p_0$$ (typically centered Gaussian, but we will come back to that later) into the target distribution $$p_{\textrm{data}}$$. 
 
-To be set the problem more formally, let's rename respectively these source and target random variables $$X_0$$ and $$X_1$$. We recall that we are looking for a vector field $$u : \mathbb{R}^D \times [0,1] \rightarrow \mathbb{R}^D$$ which allows to go from $$X_0 \sim p$$ to $$X_1 \sim q$$ (or sometimes we will write $$p_{\textrm{data}}$$ instead of $$q$$). In our case, the velocity field will be a $$\theta$$-parametrized neural network. This velocity field also defines a time-dependant flow $$\psi : \mathbb{R}^D \times [0,1] \rightarrow \mathbb{R}^D$$ defined as :
+To set the problem more formally, let's rename respectively these source and target random variables $$X_0$$ and $$X_1$$. We recall that we are looking for a vector field $$u : \mathbb{R}^D \times [0,1] \rightarrow \mathbb{R}^D$$ which allows to go from $$X_0 \sim p$$ to $$X_1 \sim q$$ (or sometimes we will write $$p_{\textrm{data}}$$ instead of $$q$$). In our case, the velocity field will be a $$\theta$$-parametrized neural network. This velocity field also defines a time-dependant flow $$\psi : \mathbb{R}^D \times [0,1] \rightarrow \mathbb{R}^D$$ defined as :
 
 $$
 \frac{\textrm{d} \psi_t (x)}{\textrm{d}t} = u_t (\psi_t (x))
 $$
 
-The goal of Flow Matchig is hence to learn a vector field $$u_{\theta , t}$$ such that its flow $$\psi_t$$ is such that $$X_t \overset{def}{:=} \psi_t(X_0) \sim p_t \textrm{ for } X_0 \sim p_0$$, i.e. it generates a probability path $$p_t$$ with $$p(t=0) = p$$ and $$p(t=1) =q $$.
+The goal of Flow Matching is hence to learn a vector field $$u_{\theta , t}$$ such that its flow $$\psi_t$$ is such that $$X_t \overset{def}{:=} \psi_t(X_0) \sim p_t \textrm{ for } X_0 \sim p_0$$, i.e. it generates a probability path $$p_t$$ with $$p(t=0) = p$$ and $$p(t=1) =q $$.
 
 &nbsp;
 
@@ -205,8 +206,8 @@ To train a model of Flow Matching, we rely on an empirical estimation of the los
 
 ***Sampling***
 
-Once the training is done, you have obtained an estimator of the velocity field $$u_t^{\theta}$$, which you can use to sample data in $$p_{\textrm{data}}$$ from $$p_0$$. Since the relationship between the probability densities and tue vector field is an ODE, data is sampled by solving the ODE, i.e. follwing $$u_t^{\theta}$$ from $$t=0$$ to $$t=1$$. Any ODE solver can be used, but typically the -- simplest -- Euler is sufficient. Hence, the sampling procedure is the following : 
-- Get a initial sample $$x^{(0)}$$ (a data point, see later, or sample it from the known source distribution $$p_0$$)
+Once the training is done, you have obtained an estimator of the velocity field $$u_t^{\theta}$$, which you can use to sample data in $$p_{\textrm{data}}$$ from $$p_0$$. Since the relationship between the probability densities and true vector field is an ODE, data is sampled by solving the ODE, i.e. following $$u_t^{\theta}$$ from $$t=0$$ to $$t=1$$. Any ODE solver can be used, but typically the -- simplest -- Euler is sufficient. Hence, the sampling procedure is the following : 
+- Get an initial sample $$x^{(0)}$$ (a data point, see later, or sample it from the known source distribution $$p_0$$)
 - Define a number of steps $$T$$
 - From $$x^{(0)}$$, iterate $$T$$ times the procedure : $$x_{t+1} = x_t + \frac{1}{T} u_t^{\theta} (x_t)$$
 
@@ -253,7 +254,7 @@ A slightly longer (but way better) code to start using Flow Matching can be foun
 
 # Link with SDE, ODE and Diffusion Models
 
-The link between Stochastic Differential Equation (SDE), Ordinary Differential Equation (ODE), Flow Matching and Diffusion Models would need a whole tutorial to be explained in details, but we will try to give an idea of the link between these conecepts. [This post](https://creatis-myriad.github.io/tutorials/2023-05-09-tutorial-score-based-models.html) have a paragraph which gives a short introduction to SDE.
+The link between Stochastic Differential Equation (SDE), Ordinary Differential Equation (ODE), Flow Matching and Diffusion Models would need a whole tutorial to be explained in details, but we will try to give an idea of the link between these concepts. [This post](https://creatis-myriad.github.io/tutorials/2023-05-09-tutorial-score-based-models.html) have a paragraph which gives a short introduction to SDE.
 
 To put it simply, there is a hierarchy between them : SDE is the more general concept, ODE is a particular type of SDE, Flow Matching is a sub-case of ODE and Diffusion Models is a sub-case of SDE. The forward process of a SDE is defined as follows :
 
@@ -305,7 +306,7 @@ Another field of investigation on Flow Matching is the extension of its formulat
 
 # Conclusion
 
-Flow Matching is the new state-of-the-art paradigm for image generation and data ditribution estimation. It relies on the learning of vector fields and conditional probability paths to transform the source distribution into the target distribution. It allows to solve the constraints of continuous normalizing flows, which were limitating to scale them to high dimension problems. Compared to diffusion models, Flow Matching is simpler and has several advantages, in particular the flexibily of time steps at inference and the possibility to contruct paths between two arbitrary distributions.
+Flow Matching is the new state-of-the-art paradigm for image generation and data distribution estimation. It relies on the learning of vector fields and conditional probability paths to transform the source distribution into the target distribution. It allows to solve the constraints of continuous normalizing flows, which were limitating to scale them to high dimension problems. Compared to diffusion models, Flow Matching is simpler and has several advantages, in particular the flexibility of time steps at inference and the possibility to build paths between two arbitrary distributions.
 
 &nbsp;
 
