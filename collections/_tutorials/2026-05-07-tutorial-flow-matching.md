@@ -55,11 +55,11 @@ $$ p_{X}(x) = p_{Z}(f(x)) |\text{det}( \frac{\partial f(x)}{\partial x})|$$
 where $$\frac{\partial f}{\partial z}$$ is the Jacobian matrix of the application $$f$$ and $$\text{det}(\cdot)$$ designates the determinant of a matrix.
 Note that $$f$$ is a diffeomorphism and thus this model can be done in the two directions, i.e. from a simple distribution to a complex one (data generation) or from a complex distribution to a simpler one (encoding).
 
-**Normalizing flow** is a type of generative model that leverages the change-of-variables formula. A complex distribution is firrt "transformed" into a simpler one (typically a multivariate normal distribution) though a serie of invertible mappings, then generation is done with the inverse transformation. Indeed, it is possible to stack in sequence several of the diffeomorphisms introduced above $$f_1, ..., f_K$$:
+**Normalizing flow** is a type of generative model that leverages the change-of-variables formula. We learn to transform a complex distribution into a simpler one (typically a multivariate normal distribution) though a serie of invertible mappings, then generation is done with the inverse transformation. Indeed, it is possible to stack in sequence several of the diffeomorphisms introduced above $$f_1, ..., f_K$$:
 
 $$ f = f_K \circ f_{K-1} \circ \, ... \circ f_1 $$
 
-During the successive modifications, a sample $$x$$ from real data flows though a sequence of transformations and is progressively normalized. The following figure illustrates the principle of this type of model :
+During the successive modifications, a sample $$x$$ from real data flows though a sequence of transformations and is progressively "normalized". The following figure illustrates the principle of this type of model :
 
 <div style="text-align:center">
 <img src="/collections/images/flow_matching/nf.jpg" width=800></div>
