@@ -67,7 +67,7 @@ During the successive modifications, a sample $$x$$ from real data flows though 
 
 &nbsp;
 
-Given such transformation, it is possible to compute directly the likelihood of some data observed $$x = \{x^{(i)}\}_{i=1,...,N}$$ :
+Given such transformation, it is possible to compute directly the likelihood of some data observed $$x = \{x^{(i)}\}_{i=1,...,N}$$. This is an interesting property because it allows for parameter optimization through direct log-likelihood maximization, without relying on a lower bound of the likelihood, as is the case with VAEs for example. It is computed as follows :
 
 $$ \log p(x;\theta, \psi) = \sum_{i=1}^{N} \log p_{Z}(f(x^{(i)};\theta) ; \psi) + \log |\text{det} \frac{\partial f(x^{(i)};\theta)}{\partial x^{(i)}} | \\
  = \sum_{i=1}^{N} \log p_{Z}(f(x^{(i)};\theta);\psi) + \sum_{k=1}^{K} \log |\text{det} \frac{\partial f_{k}(x_{k-1}^{(i)};\theta_k)}{\partial x_{k-1}^{(i)}} | $$
@@ -84,7 +84,7 @@ Theoretically, any diffeomorphism could be used to build a normalizing flow mode
 
 One of the earliest types of functions used in normalizing flows is the planar flow, which has the following form : 
 
-$$ f(x) = z + a h(b^{T} x + c) $$
+$$ f(x) = x + a h(b^{T} x + c) $$
 
 where $$\lambda = \{a \in \mathbb{R}^{D}, b \in \mathbb{R}^{D}, c\in \mathbb{R} \}$$ are free parameters and $$h(\cdot)$$ is a differentiable element-wise and non-linear function.
 
