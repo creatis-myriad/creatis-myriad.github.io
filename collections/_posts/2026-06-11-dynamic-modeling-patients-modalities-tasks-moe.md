@@ -1,14 +1,13 @@
 ---
-
 layout: review
-title: Dynamic Modeling of Patients, Modalities and Tasks via Multi-modal Multi-task Mixture of Experts
+title: "Dynamic Modeling of Patients, Modalities and Tasks via Multi-modal Multi-task Mixture of Experts"
 tags: deep-learning multimodal-learning multi-task-learning mixture-of-experts medical-imaging
 cite:
-authors: "C. Wu, Z. Shuai, Z. Tang, L. Wang, L. Shen"
-title: "Dynamic Modeling of Patients, Modalities and Tasks via Multi-modal Multi-task Mixture of Experts"
-venue: "ICLR 2025"
+    authors: "C. Wu, Z. Shuai, Z. Tang, L. Wang, L. Shen"
+    title:   "Dynamic Modeling of Patients, Modalities and Tasks via Multi-modal Multi-task Mixture of Experts"
+    venue:   "ICLR 2025"
 pdf: "https://openreview.net/pdf?id=NJxCpMt0sf"
------------------------------------------------
+---
 
 # Dynamic Modeling of Patients, Modalities and Tasks via Multi-modal Multi-task Mixture of Experts
 
