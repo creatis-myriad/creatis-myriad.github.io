@@ -15,7 +15,6 @@ pdf: "https://openreview.net/pdf?id=NJxCpMt0sf"
 * **M<sup>4</sup>oE** is a multi-modal, multi-task Mixture-of-Experts framework for medical tasks.
 * The paper focuses on two realistic clinical problems that are often simplified away: **patient-dependent modality fusion** and **task-dependent modality selection**.
 * The model decomposes information into **modality-specific** and **modality-shared task-dependent** components through two modules: MSoE and MToE.
-
 * Experiments on mammography and retinal datasets show consistent gains over medical baselines, general multi-modal multi-task baselines, and ablated variants.
 
 # Motivation
