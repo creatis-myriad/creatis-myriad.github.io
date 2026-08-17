@@ -23,7 +23,7 @@ Multi-modal multi-task learning is a natural fit for medical imaging. A clinicia
 
 The key point of this paper is that the relationship between modalities and tasks is not static across patients.
 <div style="text-align:center">
-<img src="/collections/images/m4oe/Background intro.png" width=900></div>
+<img src="/collections/images/m4oe/Background intro.jpg" width=900></div>
 <p style="text-align: center;font-style:italic">Figure 1. Traditional multi-modal multi-task modeling uses a fixed shared representation, while M<sup>4</sup>oE creates dynamic links among patients, modalities, experts, and tasks.</p>
 
 The authors identify two challenges.
@@ -56,7 +56,7 @@ M<sup>4</sup>oE contains three main stages:
 The output of MSoE and MToE is then fused by a basic Soft-MoE fusion block and passed to task-specific heads.
 
 <div style="text-align:center">
-<img src="/collections/images/m4oe/Model.png" width=900></div>
+<img src="/collections/images/m4oe/Model.jpg" width=900></div>
 <p style="text-align: center;font-style:italic">Figure 2. M<sup>4</sup>oE consists of modality-specific MoEs, a modality-task MoE, and a final Soft-MoE fusion block before the task heads.</p>
 
 ## Soft MoE
@@ -125,7 +125,7 @@ The model is evaluated on four public multi-modal medical imaging datasets.
 The main metrics are accuracy for classification tasks and Dice score for segmentation. The reported M<sup>4</sup>oE configuration uses 128 experts in MToE and 32 experts in each MSoE, trained with Adam for 100 epochs.
 
 <div style="text-align:center">
-<img src="/collections/images/m4oe/MO4E performance table.png" width=900></div>
+<img src="/collections/images/m4oe/MO4E performance table.jpg" width=900></div>
 <p style="text-align: center;font-style:italic">Table 1. M<sup>4</sup>oE consistently improves over single-task baselines, multi-task baselines, and ablated variants across mammography and retinal benchmarks.</p>
 
 The main empirical conclusions are:
@@ -144,7 +144,7 @@ The paper first studies whether standard fusion really uses all modalities. On t
 The result shows a clear performance drop for several modalities in the joint model. This suggests that the multi-modal model has not optimized all modality paths equally; some modalities are suppressed.
 
 <div style="text-align:center">
-<img src="/collections/images/m4oe/Visulization1.png" width=900></div>
+<img src="/collections/images/m4oe/Visulization1.jpg" width=900></div>
 <p style="text-align: center;font-style:italic">Figure 3. Plain multi-modal fusion and plain Soft MoE show modality competition, while M<sup>4</sup>oE yields more balanced modality utilization.</p>
 
 The comparison between a plain Soft MoE and M<sup>4</sup>oE is especially informative. A generic MoE already provides dynamic routing, but it can still concentrate too much expert capacity on one modality. M<sup>4</sup>oE, through MSoE and MToE, distributes modality utilization more evenly.
@@ -168,7 +168,7 @@ Because MToE defines routing probabilities between modalities, experts, and task
 * **Population level:** averaged across the dataset, which modalities are globally important for each task?
 
 <div style="text-align:center">
-<img src="/collections/images/m4oe/visulization 2.png" width=900></div>
+<img src="/collections/images/m4oe/visulization 2.jpg" width=900></div>
 <p style="text-align: center;font-style:italic">Figure 5. M<sup>4</sup>oE provides sample-level and population-level modality contribution estimates.</p>
 
 
