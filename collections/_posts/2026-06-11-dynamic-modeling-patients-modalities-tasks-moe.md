@@ -79,9 +79,9 @@ The core contribution is **MToE**, the Modality-shared Modality-Task MoE.
 
 MToE receives tokens from all modalities and routes them into experts with task-specific slots. Each expert processes slots associated with different tasks, and the model uses learnable task embeddings to distinguish the target tasks. In other words, experts are the link between:
 
-* modality tokens,
-* patient-dependent routing,
-* and task-specific feature extraction.
+* modality tokens;
+* patient-dependent routing; and
+* task-specific feature extraction.
 
 This module is different from a generic multi-modal MoE because the routing tensor explicitly includes the task dimension. The routing weights can therefore be interpreted as a learned relation among modalities, experts, and tasks.
 
