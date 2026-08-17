@@ -125,7 +125,7 @@ The model is evaluated on four public multi-modal medical imaging datasets.
 The main metrics are accuracy for classification tasks and Dice score for segmentation. The reported M<sup>4</sup>oE configuration uses 128 experts in MToE and 32 experts in each MSoE, trained with Adam for 100 epochs.
 
 <div style="text-align:center">
-<img src="/collections/images/m4oe/MO4E performance table.jpg" width=900></div>
+<img src="/collections/images/m4oe/M4oE performance table.jpg" width=900></div>
 <p style="text-align: center;font-style:italic">Table 1. M<sup>4</sup>oE consistently improves over single-task baselines, multi-task baselines, and ablated variants across mammography and retinal benchmarks.</p>
 
 The main empirical conclusions are:
