@@ -14,7 +14,7 @@ pdf: "https://arxiv.org/abs/2403.05780"
 
 # Highlights
 
-- **uniGradICON** [1] is presented as a first step towards a foundation model for medical image registration.
+- **uniGradICON** [^1] is presented as a first step towards a foundation model for medical image registration.
 - The central claim is that a single deep learning (DL) registration model can cover multiple registration settings that normally require separate task specific networks.
 - The paper focuses on three capabilities: 
   1) Performance across several in-distribution datasets.
@@ -30,7 +30,7 @@ pdf: "https://arxiv.org/abs/2403.05780"
 - Code and model available: [Github](https://github.com/uncbiag/uniGradICON) 
 -  **uniGradICON** has been used as a baseline in [LUMIR Brain MRI Registration Challenge](https://github.com/JHU-MedImage-Reg/LUMIR_L2R) 
 - An extention of this work:
-  - **multiGradICON: A Foundation Model for Multimodal Medical Image Registration** [2] won best oral presentation at 2024 MICCAI Workshop for Biomedical Image Registration (WBIR) 
+  - **multiGradICON: A Foundation Model for Multimodal Medical Image Registration** [^2] won best oral presentation at 2024 MICCAI Workshop for Biomedical Image Registration (WBIR) 
 
 ---
 
@@ -40,12 +40,14 @@ pdf: "https://arxiv.org/abs/2403.05780"
 
 <figure style="text-align:center;">
   <img src="/collections/images/uniGradICON/Transform.gif" width=1000 alt="Illustration of image registration showing source image, deformation field, warped image, and target image">
-  <figcaption><i>Figure 1. Illustration of image registration. From left to right: source image, deformation field, warped image, and target image. The transformation is physically plausible, ensuring a one to one mapping without folding.</i></figcaption>
+  <figcaption markdown="1">
+  <i>Figure 1. Illustration of image registration. From left to right: source image, deformation field, warped image, and target image. The transformation is physically plausible, ensuring a one to one mapping without folding.</i>
+  </figcaption>
 </figure>
 
 ## Classical registration methods
 
-Classical approaches formulate registration as an optimization problem solved independently for each image pair [3].
+Classical approaches formulate registration as an optimization problem solved independently for each image pair [^6].
 
 These methods can be described along three dimensions:
 
@@ -79,7 +81,7 @@ These methods can also be characterized along several key dimensions:
 1) **Learning paradigm**
     - Supervised, semi-supervised or unsupervised training
 2) **Network architecture**
-    - Typically encoder-decoder structures such as U-Net [4]
+    - Typically encoder-decoder structures such as U-Net [^4]
     - Multi-scale or coarse to fine designs for large deformations
     - Multi-step formulations with iterative refinement
 3) **Generalization capability**
@@ -116,15 +118,15 @@ _The trade-off between generality, efficiency, and robustness motivates the deve
 
 # Problem formulation
 
-Let $I_A : \Omega \to \mathbb{R}$ and $I_B : \Omega \to \mathbb{R}$ denote the source and the target images on a spatial domain $\Omega \to \mathbb{R^d}$.  
+Let $$I_A : \Omega \to \mathbb{R}$$ and $$I_B : \Omega \to \mathbb{R}$$ denote the source and the target images on a spatial domain $$\Omega \to \mathbb{R^d}$$.  
 
-The **goal of image registration** is to estimate a spatial transformation $\Phi_{AB} : \mathbb{R}^d \to \mathbb{R}^d$ such that the warped source image aligns with the target:
+The **goal of image registration** is to estimate a spatial transformation $$\Phi_{AB} : \mathbb{R}^d \to \mathbb{R}^d$$ such that the warped source image aligns with the target:
 
 $$
 I_A \circ \Phi_{AB} \sim I_B.
 $$
 
-The transformation map $\Phi_{AB}$ is a **diffeomorphism** if it is differentiable, bijective, and its inverse is differentiable as well. 
+The transformation map $$\Phi_{AB}$$ is a **diffeomorphism** if it is differentiable, bijective, and its inverse is differentiable as well. 
  - This ensures **smooth, invertible, and topology preserving mappings**.
 
 ## Optimization based formulation
@@ -135,14 +137,14 @@ $$
 \tau^* = \arg\min_{\tau} \; \mathcal{L}_{\text{sim}}(I_A \circ \varphi_{\tau}^{-1}, I_B) + \lambda \, \mathcal{L}_{\text{reg}}(\tau),
 $$
 
-- $\mathcal{L}_{\text{sim}}(\cdot, \cdot)$: similarity measure between the warped source and the target
-- $\mathcal{L}_{\text{reg}}(\cdot)$: regularizer
-- $\tau$: transformation parameters
-- $\lambda \geq 0$: weighting parameter
+- $$\mathcal{L}_{\text{sim}}(\cdot, \cdot)$$: similarity measure between the warped source and the target
+- $$\mathcal{L}_{\text{reg}}(\cdot)$$: regularizer
+- $$\tau$$: transformation parameters
+- $$\lambda \geq 0$$: weighting parameter
 
 ## Learning based formulation
 
-Learning based approaches replace per pair optimization with a parametric model $\Phi_\theta$, over the parameters $\theta$ of a neural network, that directly predicts the transformation from image pairs.
+Learning based approaches replace per pair optimization with a parametric model $$\Phi_\theta$$, over the parameters $$\theta$$ of a neural network, that directly predicts the transformation from image pairs.
 
 Given a dataset of image pairs
 
@@ -156,7 +158,7 @@ $$
 \theta^* = \arg\min_{\theta} \; \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}_{\text{sim}}\left(I_A^i \circ \Phi^{AB}_{\theta,i}, I_B^i\right) + \lambda \, \mathcal{L}_{\text{reg}}(\Phi^{AB}_{\theta,i}),
 $$
 
-- $\Phi^{AB}_{\theta,i}$ is as shorthand for $\Phi_{\theta}[I_A^i, I_B^i]$: predicted transformation for the $i$-th input image pair.
+- $$\Phi^{AB}_{\theta,i}$$ is as shorthand for $$\Phi_{\theta}[I_A^i, I_B^i]$$: predicted transformation for the $$i$$-th input image pair.
 - The loss retains the same structure as classical registration, combining similarity and regularization.
 
 ---
@@ -169,7 +171,7 @@ $$
 \Phi^{AB} = Id + D
 $$
 
-where $D$ is a dense displacement field predicted by the network, mapping each spatial location to a new position.
+where $$D$$ is a dense displacement field predicted by the network, mapping each spatial location to a new position.
 
 To enforce physically plausible deformations, explicit regularization is applied to the displacement field. Common choises include **bending energy** 
 
@@ -192,7 +194,7 @@ To address these issues, implicit regularization strategies have been proposed.
 
 ## Inverse consistency (ICON)
 
-ICON [5] introduces inverse consistency as a regularization mechanism:
+ICON [^5] introduces inverse consistency as a regularization mechanism:
 
 $$
 \Phi_{AB} \circ \Phi_{BA} \approx \text{Id}
@@ -214,13 +216,13 @@ $$
 
 ## Gradient inverse consistency (GradICON)
 
-GradICON [3] extends ICON by enforcing inverse consistency at the differential level. Instead of penalizing the transformation directly, it **penalizes on the Jacobian of the inverse consistency**:
+GradICON [^3] extends ICON by enforcing inverse consistency at the differential level. Instead of penalizing the transformation directly, it **penalizes on the Jacobian of the inverse consistency**:
 
 $$
 \mathcal{L}_{\text{GradICON}} = \left\| \nabla \left( \Phi_{AB} \circ \Phi_{BA} \right) - I \right\|_F^2
 $$
 
-It acts as an **implicit first-order regularization** (see paper for demonstration of $H^1$ type regularization). It penalizes high-frequency distortions while allowing low-frequency deformations, which provides a balance between smoothness and flexibility.
+It acts as an **implicit first-order regularization** (see paper for demonstration of $$H^1$$ type regularization). It penalizes high-frequency distortions while allowing low-frequency deformations, which provides a balance between smoothness and flexibility.
 
 #### Intuition  
   - Enforces consistency at the local (differential) level rather than globally 
@@ -237,7 +239,9 @@ It acts as an **implicit first-order regularization** (see paper for demonstrati
 
 <figure style="text-align:center;">
   <img src="/collections/images/uniGradICON/results_gradicon.jpg" width=700 alt="Results using the uniGradICON regularizer showing source image, target image, and overlap between warped source and deformation field">
-  <figcaption><i>Figure 2. Results obtained using the uniGradICON regularizer, source (left), target (middle) and overlap between the warped source and the deformation field (right). Gradient Inverse Consistency enforces spatially regular transformations and achieves accurate alignment across knee, brain, and lung datasets [3].</i></figcaption>
+  <figcaption markdown="1">
+  <i>Figure 2. Results obtained using the uniGradICON regularizer, source (left), target (middle) and overlap between the warped source and the deformation field (right). Gradient Inverse Consistency enforces spatially regular transformations and achieves accurate alignment across knee, brain, and lung datasets [^3].</i>
+  </figcaption>
 </figure>
 
 --- 
@@ -284,7 +288,9 @@ A composite training dataset was created from 12 publicly available datasets wit
 
 <figure style="text-align:center;">
   <img src="/collections/images/uniGradICON/data.jpg" width=800 alt="Summary of datasets used for training and evaluation">
-  <figcaption><i>Table 1. Summary of datasets used for training and evaluation.</i></figcaption>
+  <figcaption markdown="1">
+  <i>Table 1. Summary of datasets used for training and evaluation.</i>
+  </figcaption>
 </figure>
 
 The performance of uniGradICON is evaluated across four dataset categories, as defined in Table 2.
@@ -331,7 +337,9 @@ The performance of uniGradICON is evaluated across four dataset categories, as d
       </tr>
     </tbody>
   </table>
-  <figcaption><i>Table 2. Types of generalization. ✓ and ✗ indicate whether the corresponding data are included in the composite training dataset. − indicates cases where generalization is not explicitly evaluated for uniGradICON.</i></figcaption>
+  <figcaption markdown="1">
+  <i>Table 2. Types of generalization. ✓ and ✗ indicate whether the corresponding data are included in the composite training dataset. − indicates cases where generalization is not explicitly evaluated for uniGradICON.</i>
+  </figcaption>
 </figure>
 
 ## Training protocol
@@ -371,7 +379,9 @@ To reduce bias caused by the imbalance in pair across datasets, a fixed number o
       </tr>
     </tbody>
   </table>
-  <figcaption><i>Table 3. Preprocessing steps applied to the different imaging modalities</i></figcaption>
+  <figcaption markdown="1">
+  <i>Table 3. Preprocessing steps applied to the different imaging modalities</i>
+  </figcaption>
 </figure>
 
 ### Spacing 
@@ -382,20 +392,22 @@ All images were resized to a fixed resolution of [175, 175, 175] using trilinear
 
 ## Registration Network
 
-The registration network follows a **multi-step, multi-resolution architecture** based on the GradICON framework. It estimates a dense deformation field by progressively refining spatial transformations between a $I^A$ and $I^B$.
+The registration network follows a **multi-step, multi-resolution architecture** based on the GradICON framework. It estimates a dense deformation field by progressively refining spatial transformations between a $$I^A$$ and $$I^B$$.
 
 <figure style="text-align:center;">
   <img src="/collections/images/uniGradICON/model_gradicon.jpg" width=700 alt="Illustration of the GradICON framework showing atomic registration networks, downsampling, and transformation composition">
-  <figcaption><i>Figure 2. Illustration of the GradICON framework. The model is constructed from atomic registration networks $\Psi_i$ using downsampling (Down) and sequential transformation composition (TS) [3].</i></figcaption>
+  <figcaption markdown="1">
+  <i>Figure 2. Illustration of the GradICON framework. The model is constructed from atomic registration networks $$\Psi_i$$ using downsampling (Down) and sequential transformation composition (TS) [^3].</i>
+  </figcaption>
 </figure>
 
-The model consists of four identical U-Net modules $\Psi_1$, $\Psi_2$, $\Psi_3$, and $\Psi_4$, which each predict a displacement field. These modules are combined through two key operators:
+The model consists of four identical U-Net modules $$\Psi_1$$, $$\Psi_2$$, $$\Psi_3$$, and $$\Psi_4$$, which each predict a displacement field. These modules are combined through two key operators:
 
 #### **Downsampling (Down / DS)**
   Applies average pooling to process images at lower resolution:  
 
 $$
-DS\{\Psi_\theta\}[I^A​,I^B​]=\Psi_\theta[avgPool(I_A​,2),avgPool(I_B​,2)]
+DS\{\Psi_\theta\}[I^A,I^B]=\Psi_\theta[avgPool(I_A,2),avgPool(I_B,2)]
 $$
 
 #### **Two-Step composition (TS)**
@@ -408,7 +420,7 @@ $$
 
 ### Network Architecture
 
-The full deformation model $\Psi_\theta$ is defined as:
+The full deformation model $$\Psi_\theta$$ is defined as:
 
 $$
 \Psi_\theta = TS\left\{
@@ -426,15 +438,15 @@ _This formulation explicitly encodes a coarse-to-fine refinement strategy with r
 
 ### Stage 1, coarse to fine estimation
 
-- $\Psi_1$ predicts a deformation at 1/4 resolution  
-- $\Psi_2$ refines it at 1/2 resolution  
-- $\Psi_3$ refines it at full resolution  
+- $$\Psi_1$$ predicts a deformation at 1/4 resolution  
+- $$\Psi_2$$ refines it at 1/2 resolution  
+- $$\Psi_3$$ refines it at full resolution  
 
 At each step, the moving image is warped using the current estimate before being passed to the next network. Each network therefore learns only the **residual deformation**.
 
 ### Stage 2, final refinement
 
-- $\Psi_4$ operates at full resolution  
+- $$\Psi_4$$ operates at full resolution  
 - It refines the deformation produced by Stage 1  
 
 This final step **improves alignment of fine anatomical details**.
@@ -452,8 +464,8 @@ $$
 \lambda \left\| \nabla \left(\Phi^{AB} \circ \Phi^{BA}\right) - \mathbf{I} \right\|_F^2
 $$
 
-- $\Phi^{AB}=\Psi_\theta[I^A,I^B]$ maps $I^A$ to $I^B$
-* $\Phi^{BA}=\Psi_\theta[I^B,I^A]$ is obtained by swapping the input pair
+- $$\Phi^{AB}=\Psi_\theta[I^A,I^B]$$ maps $$I^A$$ to $$I^B$$
+* $$\Phi^{BA}=\Psi_\theta[I^B,I^A]$$ is obtained by swapping the input pair
 * The similarity term is computed symmetrically in both directions
 * The regularization term enforces gradient inverse consistency
 
@@ -465,8 +477,8 @@ The network is trained in two stages:
 
 * Stage 1 trained for 800 epochs
 * Stage 2 trained for 200 epochs
-* Learning rate set to $5 \times 10^{-5}$
-* Regularization weight $\lambda = 1.5$ 
+* Learning rate set to $$5 \times 10^{-5}$$
+* Regularization weight $$\lambda = 1.5$$ 
 
 **These settings are kept fixed across datasets, defining unified training protocol.**
 
@@ -474,7 +486,7 @@ The network is trained in two stages:
 
 At inference time, the predicted transformation can be further refined by **instance optimization** (IO).
 
-* The network output $\Psi_\theta [I^A,I^B]$ is used as initialization
+* The network output $$\Psi_\theta [I^A,I^B]$$ is used as initialization
 * The same symmetric loss function is optimized for a specific image pair
 * Gradient descent is applied for a few iterations
 
@@ -483,7 +495,9 @@ At inference time, the predicted transformation can be further refined by **inst
 <figure style="text-align:center;">
   <img src="/collections/images/uniGradICON/images1.jpg" width=700 alt="uniGradICON registration results showing source, target, warped image, overlay, and difference image">
   <img src="/collections/images/uniGradICON/images2.jpg" width=700 alt="Additional uniGradICON registration results showing source, target, warped image, overlay, and difference image">
-  <figcaption><i>Figure 3. Visualization of uniGradICON registration results for zero-shot inference. From left to right: source image, target image, warped image, overlay between the source and the displacement field, and difference image [1].</i></figcaption>
+  <figcaption markdown="1">
+  <i>Figure 3. Visualization of uniGradICON registration results for zero-shot inference. From left to right: source image, target image, warped image, overlay between the source and the displacement field, and difference image [^1].</i>
+  </figcaption>
 </figure>
 
 ## Performance on in-distribution tasks
@@ -492,7 +506,9 @@ The in-distribution performance of uniGradICON was evaluated on lungs (dataset 5
 
 <figure style="text-align:center;">
   <img src="/collections/images/uniGradICON/results1.jpg" width=700 alt="Comparison between task specific and universal registration models based on VoxelMorph, LapIRN and uniGradICON">
-  <figcaption><i>Table 4. Comparison between task-specific (top) and universal (bottom) models, including VoxelMorph, LapIRN and GradICON [1].</i></figcaption>
+  <figcaption markdown="1">
+  <i>Table 4. Comparison between task-specific (top) and universal (bottom) models, including VoxelMorph, LapIRN and GradICON [^1].</i>
+  </figcaption>
 </figure>
 
 _uniGradICON achieves performance comparable to models trained specifically for each dataset, while using a single unified model._
@@ -508,7 +524,9 @@ Zero-shot inference of uniGradICON was evaluated on one lung dataset (dataset 8 
   - This comparison assumes similar distributions between validation and test sets
 <figure style="text-align:center;">
   <img src="/collections/images/uniGradICON/results2.jpg" width=700 alt="Zero-shot performance of uniGradICON on Type I out-of-distribution tasks with and without instance optimization">
-  <figcaption><i>Table 5. Zero-shot performance of uniGradICON on Type I out-of-distribution tasks, with and without IO [1].</i></figcaption>
+  <figcaption markdown="1">
+  <i>Table 5. Zero-shot performance of uniGradICON on Type I out-of-distribution tasks, with and without IO [^1].</i>
+  </figcaption>
 </figure>
 
 **Instance optimization further improves the results in all cases.** 
@@ -522,7 +540,9 @@ Generalization is evaluated by excluding L2R-Abdomen (dataset 4) from the traini
 
 <figure style="text-align:center;">
   <img src="/collections/images/uniGradICON/results3.jpg" width=700 alt="Zero-shot performance of uniGradICON on Type II out-of-distribution tasks with and without instance optimization">
-  <figcaption><i>Table 6. Zero-shot performance of uniGradICON on Type II out-of-distribution tasks, with and without IO [1].</i></figcaption>
+  <figcaption markdown="1">
+  <i>Table 6. Zero-shot performance of uniGradICON on Type II out-of-distribution tasks, with and without IO [^1].</i>
+  </figcaption>
 </figure>
 
 ### **Type III**:  same anatomical region, unseen modalities
@@ -531,18 +551,22 @@ Generalization is evaluated on two datasets with unseen modality combinations: l
 
 <figure style="text-align:center;">
   <img src="/collections/images/uniGradICON/results4.jpg" width=700 alt="Zero-shot performance of uniGradICON on Type III out-of-distribution tasks with and without instance optimization">
-  <figcaption><i>Table 7. Zero-shot performance of uniGradICON on Type III out-of-distribution tasks, with and without IO [1].</i></figcaption>
+  <figcaption markdown="1">
+  <i>Table 7. Zero-shot performance of uniGradICON on Type III out-of-distribution tasks, with and without IO [^1].</i>
+  </figcaption>
 </figure>
 
 uniGradICON can generalize to unseen modalities and handle multi-modal registration, although performance depends on the difficulty of the modality shift. 
 
 ## Performance on finetuning on out-of-distribution dataset
 
-The performance of uniGradICON was evaluated when used as an **initialization** and fine-tuned on a lung CT/CBCT registration task (Dataset 11) for 4000 epochs, using the same hyperparameters.
+The performance of uniGradICON was evaluated when used as an **initialization** and fine-tuned on the L2R-CBCT training dataset (Dataset 13, a lung CT/CBCT registration task) for 4000 epochs, using the same hyperparameters, then evaluated on the Dataset 11 validation set.
 
 <figure style="text-align:center;">
   <img src="/collections/images/uniGradICON/results5.jpg" width=700 alt="Evaluation of uniGradICON on Type III out-of-distribution tasks with zero-shot inference, instance optimization, and target task finetuning">
-  <figcaption><i>Table 8. Evaluation of uniGradICON on Type III out-of-distribution tasks with zero-shot inference, IO, and target task fine-tuning [1].</i></figcaption>
+  <figcaption markdown="1">
+  <i>Table 8. Evaluation of uniGradICON on Type III out-of-distribution tasks with zero-shot inference, IO, and target task fine-tuning [^1].</i>
+  </figcaption>
 </figure>
 
 
@@ -553,7 +577,7 @@ The performance of uniGradICON was evaluated when used as an **initialization** 
 - Limited multi-modal generalization abilities
   - Current approach relies on LNCC, which is not optimal for cross-modality alignment
   - Could benefit from modality-agnostic representations
-  - Alternative similarity measures could improve performance, such as $1 - LNCC^2$, normalized mutual information (MI) or MIND (Modality independent neighbourhood descriptor).
+  - Alternative similarity measures could improve performance, such as $$1 - LNCC^2$$, normalized mutual information (MI) or MIND (Modality independent neighbourhood descriptor).
 
 # Conclusions
 
@@ -562,7 +586,9 @@ The performance of uniGradICON was evaluated when used as an **initialization** 
 - uniGradICON performs on par with task specific SOTA methods on in-distribution tasks, gives competitive zero-shot transfer on new datasets and some unseen modalities, and provides a strong initialization for later fine-tuning.
 
 <div style="border-left: 4px solid #007acc; background-color: #f5f5f5; padding: 12px; margin: 16px 0;">
-  <strong>Limitations mainly covered in multiGradICON [2]</strong>
+  <strong markdown="1">
+  Limitations mainly covered in multiGradICON [^2]
+  </strong>
   <ul style="margin-top: 8px;">
     <li>Uses a multimodal similarity measure</li>
     <li>Incorporates multimodal registration tasks into training</li>
@@ -577,20 +603,19 @@ The performance of uniGradICON was evaluated when used as an **initialization** 
 
   <figure style="text-align:center; margin-top:16px;">
     <img src="/collections/images/uniGradICON/comparison.jpg" width=700 alt="Comparison between uniGradICON and multiGradICON on T1w MRI and mean diffusivity registration">
-    <figcaption><i>Figure 4. Comparison of uni- and multiGradICON on T1w MRI-mean diffusivity (MD) registration from ABCD. Note the improved matching of the ventricles for multiGradICON [2].</i></figcaption>
+  <figcaption markdown="1">
+  <i>Figure 4. Comparison of uni- and multiGradICON on T1w MRI-mean diffusivity (MD) registration from ABCD. Note the improved matching of the ventricles for multiGradICON [^2].</i>
+  </figcaption>
   </figure>
 </div>
 
 
 # References 
 
-[1] Tian, L. et al. (2024). uniGradICON: A Foundation Model for Medical Image Registration. In: Linguraru, M.G., et al. Medical Image Computing and Computer Assisted Intervention – MICCAI 2024. MICCAI 2024. Lecture Notes in Computer Science, vol 15002. Springer, Cham. https://doi.org/10.1007/978-3-031-72069-7_70
-
-[2] Demir, B. et al. (2024). MultiGradICON: A Foundation Model for Multimodal Medical Image Registration. In: Modat, M., Simpson, I., Špiclin, Ž., Bastiaansen, W., Hering, A., Mok, T.C.W. (eds) Biomedical Image Registration. WBIR 2024. Lecture Notes in Computer Science, vol 15249. Springer, Cham. https://doi.org/10.1007/978-3-031-73480-9_1
-
-[3] Tian, L., Greer, H., Vialard, F. X., Kwitt, R., Estépar, R. S. J., Rushmore, R. J., Makris, N., Bouix, S., & Niethammer, M. (2023). GradICON: Approximate Diffeomorphisms via Gradient Inverse Consistency. Proceedings. IEEE Computer Society Conference on Computer Vision and Pattern Recognition, 2023, 18084–18094. https://doi.org/10.1109/cvpr52729.2023.01734
-
-[4] Ronneberger, O., Fischer, P., Brox, T. (2015). U-Net: Convolutional Networks for Biomedical Image Segmentation. In: Navab, N., Hornegger, J., Wells, W., Frangi, A. (eds) Medical Image Computing and Computer-Assisted Intervention – MICCAI 2015. MICCAI 2015. Lecture Notes in Computer Science(), vol 9351. Springer, Cham. https://doi.org/10.1007/978-3-319-24574-4_28 
-
-[5] Greer, H., Kwitt, R., Vialard, F. X., & Niethammer, M. (2021). ICON: Learning Regular Maps Through Inverse Consistency. Proceedings. IEEE International Conference on Computer Vision, 2021, 3376–3385. https://doi.org/10.1109/iccv48922.2021.00338
+[^1]: Tian, L. et al. (2024). uniGradICON: A Foundation Model for Medical Image Registration. In: Linguraru, M.G., et al. Medical Image Computing and Computer Assisted Intervention – MICCAI 2024. MICCAI 2024. Lecture Notes in Computer Science, vol 15002. Springer, Cham. [10.1007/978-3-031-72069-7_70](https://doi.org/10.1007/978-3-031-72069-7_70)
+[^2]: Demir, B. et al. (2024). MultiGradICON: A Foundation Model for Multimodal Medical Image Registration. In: Modat, M., Simpson, I., Špiclin, Ž., Bastiaansen, W., Hering, A., Mok, T.C.W. (eds) Biomedical Image Registration. WBIR 2024. Lecture Notes in Computer Science, vol 15249. Springer, Cham. [10.1007/978-3-031-73480-9_1](https://doi.org/10.1007/978-3-031-73480-9_1)
+[^3]: Tian, L., Greer, H., Vialard, F. X., Kwitt, R., Estépar, R. S. J., Rushmore, R. J., Makris, N., Bouix, S., & Niethammer, M. (2023). GradICON: Approximate Diffeomorphisms via Gradient Inverse Consistency. Proceedings. IEEE Computer Society Conference on Computer Vision and Pattern Recognition, 2023, 18084–18094. [10.1109/cvpr52729.2023.01734](https://doi.org/10.1109/cvpr52729.2023.01734)
+[^4]: Ronneberger, O., Fischer, P., Brox, T. (2015). U-Net: Convolutional Networks for Biomedical Image Segmentation. In: Navab, N., Hornegger, J., Wells, W., Frangi, A. (eds) Medical Image Computing and Computer-Assisted Intervention – MICCAI 2015. MICCAI 2015. Lecture Notes in Computer Science(), vol 9351. Springer, Cham. [10.1007/978-3-319-24574-4_28](https://doi.org/10.1007/978-3-319-24574-4_28)
+[^5]: Greer, H., Kwitt, R., Vialard, F. X., & Niethammer, M. (2021). ICON: Learning Regular Maps Through Inverse Consistency. Proceedings. IEEE International Conference on Computer Vision, 2021, 3376–3385. [10.1109/iccv48922.2021.00338](https://doi.org/10.1109/iccv48922.2021.00338)
+[^6]: Avants, B.B., Epstein, C.L., Grossman, M., Gee, J.C. (2008). Symmetric diffeomorphic image registration with cross-correlation: evaluating automated labeling of elderly and neurodegenerative brain. Medical Image Analysis, 12(1), 26–41.
 
