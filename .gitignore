@@ -15,6 +15,7 @@ package-lock.json
 
 # Ignore folders related to IDEs
 .vscode/
+*.code-workspace
 
 # Ignore rbenv config
 .ruby-version
